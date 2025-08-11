@@ -17,12 +17,37 @@ import (
 )
 
 var bot *forms.MembershipChatbot
+var chatActivated bool
+var chatTarget string
 
 func handleChats(input string, v *events.Message, sendMessage func(message string, v *events.Message)) {
+	if !chatActivated || chatTarget == "" {
+		if input == "new kaso member" {
+			chatActivated = true
+			chatTarget = v.Info.Sender.User
+
+			bot = forms.NewMembershipChatBot()
+
+			log.Println("Initialised session for", chatTarget)
+		} else {
+			log.Println("Discarding", input)
+			return
+		}
+	} else if v.Info.Sender.User != chatTarget {
+		return
+	}
+
+	log.Println("New message from", v.Info.Sender.User)
+
 	question := bot.ProcessInput(input)
 
 	if question == "" {
+		chatActivated = false
+		chatTarget = ""
+
 		fmt.Printf("%#v\n", bot.Data)
+
+		sendMessage("Done", v)
 	} else {
 		sendMessage(question, v)
 	}
@@ -30,8 +55,6 @@ func handleChats(input string, v *events.Message, sendMessage func(message strin
 
 func Main(phoneNumber string, debug bool) {
 	ctx := context.Background()
-
-	bot = forms.NewMembershipChatBot()
 
 	dbLog := waLog.Stdout("Database", "INFO", true)
 
