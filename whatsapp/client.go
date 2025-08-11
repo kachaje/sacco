@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sacco/forms"
 
 	_ "github.com/mattn/go-sqlite3"
 	"go.mau.fi/whatsmeow"
@@ -15,16 +16,28 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func handleChats(message string, sendMessage func(message string, v *events.Message)) {
-	fmt.Println("Received a message:", message)
+var bot *forms.MembershipChatbot
 
-	_ = sendMessage
+func handleChats(input string, v *events.Message, sendMessage func(message string, v *events.Message)) {
+	question := bot.ProcessInput(input)
+
+	if question == "" {
+		fmt.Printf("%#v\n", bot.Data)
+	} else {
+		sendMessage(question, v)
+	}
 }
 
 func Main(phoneNumber string, debug bool) {
 	ctx := context.Background()
 
+	bot = forms.NewMembershipChatBot()
+
 	dbLog := waLog.Stdout("Database", "INFO", true)
+
+	if !debug {
+		dbLog = waLog.Noop
+	}
 
 	container, err := sqlstore.New(ctx, "sqlite3", fmt.Sprintf("file:%s.db?_foreign_keys=on", phoneNumber), dbLog)
 	if err != nil {
@@ -37,6 +50,10 @@ func Main(phoneNumber string, debug bool) {
 	}
 
 	clientLog := waLog.Stdout("Client", "INFO", true)
+
+	if !debug {
+		clientLog = waLog.Noop
+	}
 
 	client := whatsmeow.NewClient(deviceStore, clientLog)
 
@@ -76,7 +93,7 @@ func Main(phoneNumber string, debug bool) {
 
 					client.MarkRead([]types.MessageID{v.Info.ID}, v.Info.Timestamp, v.Info.Chat, v.Info.Sender)
 				default:
-					handleChats(messageBody, sendMessage)
+					handleChats(messageBody, v, sendMessage)
 				}
 			}
 		case *events.PairSuccess:
