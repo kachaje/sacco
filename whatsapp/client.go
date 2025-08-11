@@ -15,6 +15,12 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+func handleChats(message string, sendMessage func(message string, v *events.Message)) {
+	fmt.Println("Received a message:", message)
+
+	_ = sendMessage
+}
+
 func Main(phoneNumber string, debug bool) {
 	ctx := context.Background()
 
@@ -54,21 +60,23 @@ func Main(phoneNumber string, debug bool) {
 	}
 
 	client.AddEventHandler(func(evt any) {
+		sendMessage := func(message string, v *events.Message) {
+			client.SendMessage(context.Background(), v.Info.Chat, &waE2E.Message{
+				Conversation: proto.String(message),
+			})
+		}
+
 		switch v := evt.(type) {
 		case *events.Message:
 			var messageBody = v.Message.GetConversation()
 			if messageBody != "" {
 				switch messageBody {
 				case "ping":
-					client.SendMessage(context.Background(), v.Info.Chat, &waE2E.Message{
-						Conversation: proto.String("pong"),
-					})
+					sendMessage("pong", v)
 
 					client.MarkRead([]types.MessageID{v.Info.ID}, v.Info.Timestamp, v.Info.Chat, v.Info.Sender)
-
-					log.Println("Received a message:", messageBody)
 				default:
-					fmt.Println("Received a message:", messageBody)
+					handleChats(messageBody, sendMessage)
 				}
 			}
 		case *events.PairSuccess:
@@ -78,5 +86,5 @@ func Main(phoneNumber string, debug bool) {
 		}
 	})
 
-	select{}
+	select {}
 }
