@@ -8,12 +8,43 @@ import (
 	"net"
 	"net/http"
 	"sacco/forms"
+	"time"
 
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 	"github.com/gorilla/websocket"
 )
 
 var conn *websocket.Conn
 var err error
+
+func WaitForPort(host string, port string, timeout time.Duration, retryInterval time.Duration, debug bool) error {
+	address := net.JoinHostPort(host, port)
+	startTime := time.Now()
+
+	for {
+		conn, err := net.DialTimeout("tcp", address, retryInterval)
+		if err == nil {
+			conn.Close()
+			if debug {
+				fmt.Printf("Port %s on %s is open.\n", port, host)
+			}
+			return nil
+		}
+
+		if time.Since(startTime) >= timeout {
+			return fmt.Errorf("timeout waiting for port %s on %s: %w", port, host, err)
+		}
+
+		if debug {
+			fmt.Printf("Waiting for port %s on %s... Retrying in %v\n", port, host, retryInterval)
+		}
+
+		time.Sleep(retryInterval)
+	}
+}
 
 func wsHandler(w http.ResponseWriter, r *http.Request) {
 	upgrader := websocket.Upgrader{
@@ -68,7 +99,7 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 func GetFreePort() (port int, err error) {
 	var a *net.TCPAddr
-	if a, err = net.ResolveTCPAddr("tcp", "localhost:0"); err == nil {
+	if a, err = net.ResolveTCPAddr("tcp", "0.0.0.0:0"); err == nil {
 		var l *net.TCPListener
 		if l, err = net.ListenTCP("tcp", a); err == nil {
 			defer l.Close()
@@ -94,8 +125,67 @@ func main() {
 
 	log.Printf("Server started on port %d\n", port)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	go func() {
+		err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+		if err != nil {
+			log.Panic(err)
+		}
+	}()
+
+	err := WaitForPort("localhost", fmt.Sprint(port), 30*time.Second, 2*time.Second, false)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
+
+	url := fmt.Sprintf("ws://localhost:%d/ws", port)
+
+	ws, _, err := websocket.DefaultDialer.Dial(url, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer ws.Close()
+
+	bot := forms.NewMembershipChatBot()
+
+	var question, input string
+
+	question = bot.ProcessInput(input)
+
+	myApp := app.New()
+	myWindow := myApp.NewWindow("Simple Fyne App")
+	myWindow.Resize(fyne.NewSize(400, 200))
+
+	questionLabel := widget.NewLabel(question)
+
+	inputEntry := widget.NewEntry()
+
+	outputLabel := widget.NewLabel(fmt.Sprintf("Server running on port :%d", port))
+
+	submitButton := widget.NewButton("Submit", func() {
+		input = inputEntry.Text
+
+		question = bot.ProcessInput(input)
+
+		inputEntry.SetText("")
+
+		if question == "" {
+			questionLabel.SetText("Done")
+
+			payload, _ := json.MarshalIndent(bot.Data, "", "  ")
+
+			outputLabel.SetText(string(payload))
+		} else {
+			questionLabel.SetText(question)
+		}
+	})
+
+	content := container.NewVBox(
+		questionLabel,
+		inputEntry,
+		submitButton,
+		outputLabel,
+	)
+
+	myWindow.SetContent(content)
+	myWindow.ShowAndRun()
 }
