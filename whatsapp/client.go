@@ -2,6 +2,7 @@ package whatsapp
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"sacco/forms"
@@ -45,9 +46,9 @@ func handleChats(input string, v *events.Message, sendMessage func(message strin
 		chatActivated = false
 		chatTarget = ""
 
-		fmt.Printf("%#v\n", bot.Data)
+		payload, _ := json.MarshalIndent(bot.Data, "", "  ")
 
-		sendMessage("Done", v)
+		sendMessage(string(payload), v)
 	} else {
 		sendMessage(question, v)
 	}

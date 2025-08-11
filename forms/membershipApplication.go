@@ -37,20 +37,20 @@ type UtilityBillTypeState struct{}
 type DoneState struct{}
 
 func (s *StartState) Handle(input string, data *MemberData) (State, string) {
-	return &SurnameState{}, "Surname:"
-}
-
-func (s *SurnameState) Handle(input string, data *MemberData) (State, string) {
-	if input == "" {
-		return &SurnameState{}, "Surname:"
-	} else {
-		data.Surname = input
-
-		return &FirstNameState{}, "First Name:"
-	}
+	return &FirstNameState{}, "First Name:"
 }
 
 func (s *FirstNameState) Handle(input string, data *MemberData) (State, string) {
+	if input == "" {
+		return &FirstNameState{}, "First Name:"
+	} else {
+		data.Surname = input
+
+		return &SurnameState{}, "Surname:"
+	}
+}
+
+func (s *SurnameState) Handle(input string, data *MemberData) (State, string) {
 	if input == "" {
 		return &SurnameState{}, "Surname:"
 	} else {
@@ -76,7 +76,7 @@ func (s *GenderState) Handle(input string, data *MemberData) (State, string) {
 1. Female
 2. Male`
 	} else {
-		data.MaritalStatus = map[string]string{
+		data.Gender = map[string]string{
 			"1": "Female",
 			"2": "Male",
 		}[input]
@@ -120,7 +120,7 @@ func (s *MaritalStatusState) Handle(input string, data *MemberData) (State, stri
 3. Widowed
 4. Divorced`
 	} else {
-		data.MaritalStatus = map[string]string{
+		data.Title = map[string]string{
 			"1": "Married",
 			"2": "Single",
 			"3": "Widowed",
