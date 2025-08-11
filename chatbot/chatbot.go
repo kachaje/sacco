@@ -6,7 +6,7 @@ import (
 )
 
 type State interface {
-	Handle(input string, data *ChatData) (State, string) 
+	Handle(input string, data *ChatData) (State, string)
 }
 
 type ChatData struct {
