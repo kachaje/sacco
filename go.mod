@@ -3,6 +3,7 @@ module sacco
 go 1.24.3
 
 require (
+	github.com/gorilla/websocket v1.5.0
 	github.com/mattn/go-sqlite3 v1.14.30
 	go.mau.fi/whatsmeow v0.0.0-20250807072145-72ce90b82194
 	google.golang.org/protobuf v1.36.7
@@ -11,7 +12,6 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/petermattis/goid v0.0.0-20250508124226-395b08cebbdb // indirect
