@@ -94,7 +94,16 @@ func (s *GenderState) Handle(input string, data *MemberData) (State, string) {
 
 func (s *TitleState) Handle(input string, data *MemberData) (State, string) {
 	if !slices.Contains([]string{"1", "2", "3", "4", "5", "6", "7"}, input) {
-		data.MaritalStatus = map[string]string{
+		return &TitleState{}, `Title:
+1. Mr
+2. Mrs
+3. Miss
+4. Dr
+5. Prof
+6. Rev
+7. Other`
+	} else {
+		data.Title = map[string]string{
 			"1": "Mr",
 			"2": "Mrs",
 			"3": "Miss",
@@ -103,13 +112,13 @@ func (s *TitleState) Handle(input string, data *MemberData) (State, string) {
 			"6": "Rev",
 			"7": "Other",
 		}[input]
-	}
 
-	return &MaritalStatusState{}, `Marital Status:
+		return &MaritalStatusState{}, `Marital Status:
 1. Married
 2. Single
 3. Widowed
 4. Divorced`
+	}
 }
 
 func (s *MaritalStatusState) Handle(input string, data *MemberData) (State, string) {
@@ -120,7 +129,7 @@ func (s *MaritalStatusState) Handle(input string, data *MemberData) (State, stri
 3. Widowed
 4. Divorced`
 	} else {
-		data.Title = map[string]string{
+		data.MaritalStatus = map[string]string{
 			"1": "Married",
 			"2": "Single",
 			"3": "Widowed",

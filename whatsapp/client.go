@@ -36,6 +36,13 @@ func handleChats(input string, v *events.Message, sendMessage func(message strin
 		}
 	} else if v.Info.Sender.User != chatTarget {
 		return
+	} else if input == "abort" {
+		chatActivated = false
+		chatTarget = ""
+
+		sendMessage("Session aborted", v)
+		
+		return
 	}
 
 	log.Println("New message from", v.Info.Sender.User)

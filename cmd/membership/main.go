@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 	"sacco/forms"
@@ -28,5 +29,7 @@ func main() {
 		input = scanner.Text()
 	}
 
-	fmt.Printf("%#v\n", bot.Data)
+	payload, _ := json.MarshalIndent(bot.Data, "", "  ")
+
+	fmt.Printf("%s\n", payload)
 }
