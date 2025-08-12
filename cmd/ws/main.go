@@ -10,12 +10,17 @@ import (
 	"sacco/forms"
 	"time"
 
+	_ "embed"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"github.com/gorilla/websocket"
+	"html/template"
 )
+
+//go:embed index.html
+var indexHTML string
 
 var conn *websocket.Conn
 var err error
@@ -110,82 +115,105 @@ func GetFreePort() (port int, err error) {
 }
 
 func main() {
-	var port int
+	var port int = 8080
+	var interactive bool
 
-	port, err = GetFreePort()
-	if err != nil {
-		panic(err)
+	if port == 0 {
+		port, err = GetFreePort()
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	flag.IntVar(&port, "p", port, "peer port")
+	flag.BoolVar(&interactive, "i", interactive, "interactive mode")
 
 	flag.Parse()
 
 	http.HandleFunc("/ws", wsHandler)
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.New("index").Parse(indexHTML)
+		if err != nil {
+			http.Error(w, "Error parsing template", http.StatusInternalServerError)
+			return
+		}
+		err = tmpl.Execute(w, nil)
+		if err != nil {
+			http.Error(w, "Error executing template", http.StatusInternalServerError)
+		}
+	})
+
 	log.Printf("Server started on port %d\n", port)
 
-	go func() {
+	if !interactive {
 		err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 		if err != nil {
 			log.Panic(err)
 		}
-	}()
+	} else {
+		go func() {
+			err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+			if err != nil {
+				log.Panic(err)
+			}
+		}()
 
-	err := WaitForPort("localhost", fmt.Sprint(port), 30*time.Second, 2*time.Second, false)
-	if err != nil {
-		log.Fatal(err)
-	}
+		err := WaitForPort("localhost", fmt.Sprint(port), 30*time.Second, 2*time.Second, false)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	url := fmt.Sprintf("ws://localhost:%d/ws", port)
+		url := fmt.Sprintf("ws://localhost:%d/ws", port)
 
-	ws, _, err := websocket.DefaultDialer.Dial(url, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer ws.Close()
+		ws, _, err := websocket.DefaultDialer.Dial(url, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer ws.Close()
 
-	bot := forms.NewMembershipChatBot()
+		bot := forms.NewMembershipChatBot()
 
-	var question, input string
-
-	question = bot.ProcessInput(input)
-
-	myApp := app.New()
-	myWindow := myApp.NewWindow("Simple Fyne App")
-	myWindow.Resize(fyne.NewSize(400, 200))
-
-	questionLabel := widget.NewLabel(question)
-
-	inputEntry := widget.NewEntry()
-
-	outputLabel := widget.NewLabel(fmt.Sprintf("Server running on port :%d", port))
-
-	submitButton := widget.NewButton("Submit", func() {
-		input = inputEntry.Text
+		var question, input string
 
 		question = bot.ProcessInput(input)
 
-		inputEntry.SetText("")
+		myApp := app.New()
+		myWindow := myApp.NewWindow("Simple Fyne App")
+		myWindow.Resize(fyne.NewSize(400, 200))
 
-		if question == "" {
-			questionLabel.SetText("Done")
+		questionLabel := widget.NewLabel(question)
 
-			payload, _ := json.MarshalIndent(bot.Data, "", "  ")
+		inputEntry := widget.NewEntry()
 
-			outputLabel.SetText(string(payload))
-		} else {
-			questionLabel.SetText(question)
-		}
-	})
+		outputLabel := widget.NewLabel(fmt.Sprintf("Server running on port :%d", port))
 
-	content := container.NewVBox(
-		questionLabel,
-		inputEntry,
-		submitButton,
-		outputLabel,
-	)
+		submitButton := widget.NewButton("Submit", func() {
+			input = inputEntry.Text
 
-	myWindow.SetContent(content)
-	myWindow.ShowAndRun()
+			question = bot.ProcessInput(input)
+
+			inputEntry.SetText("")
+
+			if question == "" {
+				questionLabel.SetText("Done")
+
+				payload, _ := json.MarshalIndent(bot.Data, "", "  ")
+
+				outputLabel.SetText(string(payload))
+			} else {
+				questionLabel.SetText(question)
+			}
+		})
+
+		content := container.NewVBox(
+			questionLabel,
+			inputEntry,
+			submitButton,
+			outputLabel,
+		)
+
+		myWindow.SetContent(content)
+		myWindow.ShowAndRun()
+	}
 }
