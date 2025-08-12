@@ -3,16 +3,20 @@
   "enterLanguage": {
     "type": "inputScreen",
     "text": "Language",
-    "options": {
-      "option": {
+    "options": [
+      {
         "position": 1,
-        "all": "English"
+        "label": {
+          "all": "English"
+        }
       },
-      "option": {
+      {
         "position": 2,
-        "all": "Chichewa"
+        "label": {
+          "all": "Chichewa"
+        }
       }
-    },
+    ],
     "inputIdentifier": "language",
     "nextScreen": "enterFirstName"
   },
@@ -40,19 +44,23 @@
       "en": "Other Name?",
       "ny": "Dzina Lina?"
     },
-    "options": {
-      "option": {
+    "options": [
+      {
         "position": 1,
-        "en": "Yes",
-        "ny": "Inde",
+        "label": {
+          "en": "Yes",
+          "ny": "Inde"
+        },
         "nextScreen": "enterOtherName"
       },
-      "option": {
+      {
         "position": 2,
-        "en": "No",
-        "ny": "Ayi"
+        "label": {
+          "en": "No",
+          "ny": "Ayi"
+        }
       }
-    },
+    ],
     "inputIdentifier": "askOtherName",
     "nextScreen": "enterGender"
   },
@@ -71,18 +79,22 @@
       "en": "Gender",
       "ny": "Amuna/Akazi"
     },
-    "options": {
-      "option": {
+    "options": [
+      {
         "position": 1,
-        "en": "Female",
-        "ny": "Akazi"
+        "label": {
+          "en": "Female",
+          "ny": "Akazi"
+        }
       },
-      "option": {
+      {
         "position": 2,
-        "en": "Male",
-        "ny": "Amuna"
+        "label": {
+          "en": "Male",
+          "ny": "Amuna"
+        }
       }
-    },
+    ],
     "inputIdentifier": "gender",
     "nextScreen": "enterTitle"
   },
@@ -92,39 +104,53 @@
       "en": "Title",
       "ny": "Udindo"
     },
-    "options": {
-      "option": {
+    "options": [
+      {
         "position": 1,
-        "all": "Mr"
+        "label": {
+          "all": "Mr"
+        }
       },
-      "option": {
+      {
         "position": 2,
-        "en": "Mrs",
-        "ny": "Mayi"
+        "label": {
+          "en": "Mrs",
+          "ny": "Mayi"
+        }
       },
-      "option": {
+      {
         "position": 3,
-        "all": "Miss"
+        "label": {
+          "all": "Miss"
+        }
       },
-      "option": {
+      {
         "position": 4,
-        "all": "Dr"
+        "label": {
+          "all": "Dr"
+        }
       },
-      "option": {
+      {
         "position": 5,
-        "all": "Prof"
+        "label": {
+          "all": "Prof"
+        }
       },
-      "option": {
+      {
         "position": 6,
-        "en": "Rev",
-        "ny": "Abusa"
+        "label": {
+          "en": "Rev",
+          "ny": "Abusa"
+        }
       },
-      "option": {
+      {
         "position": 7,
-        "en": "Other",
-        "ny": "Ena"
+        "label": {
+          "en": "Other",
+          "ny": "Ena"
+        }
       }
-    },
+    ],
     "inputIdentifier": "title",
     "nextScreen": "enterMaritalStatus"
   },
@@ -134,28 +160,36 @@
       "en": "Marital Status",
       "ny": "Muli M'banja"
     },
-    "options": {
-      "option": {
+    "options": [
+      {
         "position": 1,
-        "en": "Married",
-        "ny": "Inde"
+        "label": {
+          "en": "Married",
+          "ny": "Inde"
+        }
       },
-      "option": {
+      {
         "position": 2,
-        "en": "Single",
-        "ny": "Ayi"
+        "label": {
+          "en": "Single",
+          "ny": "Ayi"
+        }
       },
-      "option": {
+      {
         "position": 3,
-        "en": "Widowed",
-        "ny": "Woferedwa"
+        "label": {
+          "en": "Widowed",
+          "ny": "Woferedwa"
+        }
       },
-      "option": {
+      {
         "position": 4,
-        "en": "Divorced",
-        "ny": "Osudzulidwa"
+        "label": {
+          "en": "Divorced",
+          "ny": "Osudzulidwa"
+        }
       }
-    },
+    ],
     "inputIdentifier": "maritalStatus",
     "nextScreen": "enterDateOfBirth"
   },

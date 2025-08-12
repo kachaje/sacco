@@ -4,12 +4,12 @@ enterLanguage:
   type: inputScreen
   text: Language
   options:
-    option:
-      position: 1
-      all: English
-    option:
-      position: 2
-      all: Chichewa
+    - position: 1
+      label:
+        all: English
+    - position: 2
+      label:
+        all: Chichewa
   inputIdentifier: language
   nextScreen: enterFirstName
 
@@ -35,15 +35,15 @@ enterAskOtherName:
     en: Other Name?
     ny: Dzina Lina?
   options:
-    option:
-      position: 1
-      en: Yes
-      ny: Inde
+    - position: 1
+      label:
+        en: Yes
+        ny: Inde
       nextScreen: enterOtherName
-    option:
-      position: 2
-      en: No
-      ny: Ayi
+    - position: 2
+      label:
+        en: No
+        ny: Ayi
   inputIdentifier: askOtherName
   nextScreen: enterGender
 
@@ -61,14 +61,14 @@ enterGender:
     en: Gender
     ny: Amuna/Akazi
   options:
-    option:
-      position: 1
-      en: Female
-      ny: Akazi
-    option:
-      position: 2
-      en: Male
-      ny: Amuna
+    - position: 1
+      label:
+        en: Female
+        ny: Akazi
+    - position: 2
+      label:
+        en: Male
+        ny: Amuna
   inputIdentifier: gender
   nextScreen: enterTitle
 
@@ -78,30 +78,30 @@ enterTitle:
     en: Title
     ny: Udindo
   options:
-    option:
-      position: 1
-      all: Mr
-    option:
-      position: 2
-      en: Mrs
-      ny: Mayi
-    option:
-      position: 3
-      all: Miss
-    option:
-      position: 4
-      all: Dr
-    option:
-      position: 5
-      all: Prof
-    option:
-      position: 6
-      en: Rev
-      ny: Abusa
-    option:
-      position: 7
-      en: Other
-      ny: Ena
+    - position: 1
+      label:
+        all: Mr
+    - position: 2
+      label:
+        en: Mrs
+        ny: Mayi
+    - position: 3
+      label:
+        all: Miss
+    - position: 4
+      label:
+        all: Dr
+    - position: 5
+      label:
+        all: Prof
+    - position: 6
+      label:
+        en: Rev
+        ny: Abusa
+    - position: 7
+      label:
+        en: Other
+        ny: Ena
   inputIdentifier: title
   nextScreen: enterMaritalStatus
 
@@ -111,22 +111,22 @@ enterMaritalStatus:
     en: Marital Status
     ny: Muli M'banja
   options:
-    option:
-      position: 1
-      en: Married
-      ny: Inde
-    option:
-      position: 2
-      en: Single
-      ny: Ayi
-    option:
-      position: 3
-      en: Widowed
-      ny: Woferedwa
-    option:
-      position: 4
-      en: Divorced
-      ny: Osudzulidwa
+    - position: 1
+      label:
+        en: Married
+        ny: Inde
+    - position: 2
+      label:
+        en: Single
+        ny: Ayi
+    - position: 3
+      label:
+        en: Widowed
+        ny: Woferedwa
+    - position: 4
+      label:
+        en: Divorced
+        ny: Osudzulidwa
   inputIdentifier: maritalStatus
   nextScreen: enterDateOfBirth
 
@@ -137,7 +137,7 @@ enterDateOfBirth:
     ny: Tsiku Lobadwa
   inputIdentifier: dateOfBirth
   nextScreen: enterNationalId
-  
+
 enterNationalId:
   type: inputScreen
   text:
