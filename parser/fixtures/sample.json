@@ -1,0 +1,44 @@
+{
+  "initialScreen": "enterLanguage",
+  "enterLanguage": {
+    "type": "inputScreen",
+    "text": "Language",
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "all": "English"
+        }
+      },
+      {
+        "position": 2,
+        "label": {
+          "all": "Chichewa"
+        }
+      }
+    ],
+    "inputIdentifier": "language",
+    "nextScreen": "enterFirstName"
+  },
+  "enterFirstName": {
+    "type": "inputScreen",
+    "text": {
+      "en": "First Name",
+      "ny": "Dzina Loyamba"
+    },
+    "inputIdentifier": "firstName",
+    "nextScreen": "enterLastName"
+  },
+  "enterLastName": {
+    "type": "inputScreen",
+    "text": {
+      "en": "Last Name",
+      "ny": "Dzina La Abambo"
+    },
+    "inputIdentifier": "lastName",
+    "nextScreen": "enterAskOtherName"
+  },
+  "formSummary": {
+    "type": "quitScreen"
+  }
+}
