@@ -3,3 +3,4 @@
 wsclient
 *.apk
 .vscode/
+backups/
