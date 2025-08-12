@@ -36,7 +36,46 @@
       "ny": "Dzina La Abambo"
     },
     "inputIdentifier": "lastName",
-    "nextScreen": "enterAskOtherName"
+    "nextScreen": "enterMaritalStatus"
+  },
+  "enterMaritalStatus": {
+    "type": "inputScreen",
+    "text": {
+      "en": "Marital Status",
+      "ny": "Muli M'banja"
+    },
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "en": "Married",
+          "ny": "Inde"
+        }
+      },
+      {
+        "position": 2,
+        "label": {
+          "en": "Single",
+          "ny": "Ayi"
+        }
+      },
+      {
+        "position": 3,
+        "label": {
+          "en": "Widowed",
+          "ny": "Woferedwa"
+        }
+      },
+      {
+        "position": 4,
+        "label": {
+          "en": "Divorced",
+          "ny": "Osudzulidwa"
+        }
+      }
+    ],
+    "inputIdentifier": "maritalStatus",
+    "nextScreen": "formSummary"
   },
   "formSummary": {
     "type": "quitScreen"
