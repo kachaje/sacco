@@ -13,7 +13,7 @@ const (
 
 type WorkFlow struct {
 	Tree map[string]any
-	Data *map[string]any
+	Data map[string]any
 
 	CurrentScreen   string
 	NextScreen      string
@@ -24,7 +24,7 @@ type WorkFlow struct {
 func NewWorkflow(tree map[string]any) *WorkFlow {
 	return &WorkFlow{
 		Tree:          tree,
-		Data:          &map[string]any{},
+		Data:          map[string]any{},
 		CurrentScreen: INITIAL_SCREEN,
 	}
 }
@@ -130,6 +130,12 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				}
 
 				if nextRoute != "" {
+					if node["inputIdentifier"] != nil {
+						inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
+
+						w.Data[inputIdentifier] = input
+					}
+
 					w.PreviousScreen = w.CurrentScreen
 					w.CurrentScreen = nextRoute
 
@@ -137,6 +143,12 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 					return node
 				}
+			}
+
+			if node != nil && node["inputIdentifier"] != nil {
+				inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
+
+				w.Data[inputIdentifier] = input
 			}
 
 			if node["nextScreen"] != nil {
@@ -154,6 +166,12 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 						return node
 					}
 				}
+			}
+
+			if node != nil && node["inputIdentifier"] != nil {
+				inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
+
+				w.Data[inputIdentifier] = input
 			}
 
 			if node["nextScreen"] != nil {

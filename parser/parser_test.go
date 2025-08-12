@@ -2,6 +2,7 @@ package parser_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"sacco/parser"
@@ -213,5 +214,13 @@ func TestNextNode(t *testing.T) {
 
 	if wf.PreviousScreen != "enterLanguage" {
 		t.Fatalf("Test failed. Expected: 'enterLanguage'; Actual: '%v'", wf.PreviousScreen)
+	}
+
+	if wf.Data["dateOfBirth"] == nil || fmt.Sprintf("%v", wf.Data["dateOfBirth"]) != "1999-09-01" {
+		t.Fatalf("Test failed. Expected: '1999-09-01'; Actual: %v", wf.Data["dateOfBirth"])
+	}
+
+	if wf.Data["language"] == nil || fmt.Sprintf("%v", wf.Data["language"]) != "1" {
+		t.Fatalf("Test failed. Expected: '1'; Actual: %v", wf.Data["dateOfBirth"])
 	}
 }
