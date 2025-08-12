@@ -164,4 +164,3 @@ enterUtilityBillNo:
 
 formSummary:
   type: quitScreen
-  text: {{ summary }}
