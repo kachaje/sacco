@@ -1,6 +1,9 @@
 package parser
 
-import "fmt"
+import (
+	"fmt"
+	"regexp"
+)
 
 const (
 	INITIAL_SCREEN = "initialScreen"
@@ -37,14 +40,26 @@ func (w *WorkFlow) GetNode(screen string) map[string]any {
 	return nil
 }
 
-func (w *WorkFlow) InputIncluded(input string, options []any) (bool, *string) {
-	nextRoute := w.CurrentScreen
+func (w *WorkFlow) InputIncluded(input string, options []any) (bool, string) {
+	var nextRoute string
 	found := false
 
 	for _, opt := range options {
 		option, ok := opt.(map[string]any)
 		if ok && option["position"] != nil {
-			if val, ok := option["position"].(int); ok && fmt.Sprint(val) == input {
+			var value int
+
+			val, ok := option["position"].(int)
+			if ok {
+				value = val
+			} else {
+				val, ok := option["position"].(float64)
+				if ok {
+					value = int(val)
+				}
+			}
+
+			if fmt.Sprint(value) == input {
 				found = true
 
 				if option["nextScreen"] != nil {
@@ -55,7 +70,7 @@ func (w *WorkFlow) InputIncluded(input string, options []any) (bool, *string) {
 		}
 	}
 
-	return found, &nextRoute
+	return found, nextRoute
 }
 
 func (w *WorkFlow) NodeOptions(input string) []string {
@@ -114,16 +129,37 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 					return node
 				}
 
-				fmt.Println("##########", valid, nextRoute)
-
-				if nextRoute != nil {
+				if nextRoute != "" {
 					w.PreviousScreen = w.CurrentScreen
-					w.CurrentScreen = *nextRoute
+					w.CurrentScreen = nextRoute
 
 					node = w.GetNode(w.CurrentScreen)
 
 					return node
 				}
+			}
+
+			if node["nextScreen"] != nil {
+				nextScreen = fmt.Sprintf("%v", node["nextScreen"])
+
+				node = w.GetNode(nextScreen)
+			}
+		} else {
+			if node["validationRule"] != nil {
+				val, ok := node["validationRule"].(string)
+				if ok {
+					re := regexp.MustCompile(val)
+
+					if !re.MatchString(input) {
+						return node
+					}
+				}
+			}
+
+			if node["nextScreen"] != nil {
+				nextScreen = fmt.Sprintf("%v", node["nextScreen"])
+
+				node = w.GetNode(nextScreen)
 			}
 		}
 	}

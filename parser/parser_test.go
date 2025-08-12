@@ -2,7 +2,6 @@ package parser_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"sacco/parser"
@@ -76,8 +75,8 @@ func TestInputIncluded(t *testing.T) {
 	if result {
 		t.Fatalf("Test failed. Expected: false; Actual: %v", result)
 	}
-	if *nextRoute != defaultRoute {
-		t.Fatalf("Test failed. Expected: %s; Actual: %s", defaultRoute, *nextRoute)
+	if nextRoute != "" {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", defaultRoute, nextRoute)
 	}
 
 	result, nextRoute = wf.InputIncluded("1", options)
@@ -85,8 +84,8 @@ func TestInputIncluded(t *testing.T) {
 	if !result {
 		t.Fatalf("Test failed. Expected: true; Actual: %v", result)
 	}
-	if *nextRoute != targetRoute {
-		t.Fatalf("Test failed. Expected: %s; Actual: %s", targetRoute, *nextRoute)
+	if nextRoute != targetRoute {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", targetRoute, nextRoute)
 	}
 
 	wf.CurrentScreen = defaultRoute
@@ -96,8 +95,8 @@ func TestInputIncluded(t *testing.T) {
 	if !result {
 		t.Fatalf("Test failed. Expected: true; Actual: %v", result)
 	}
-	if *nextRoute != "enterGender" {
-		t.Fatalf("Test failed. Expected: enterGender; Actual: %s", *nextRoute)
+	if nextRoute != "enterGender" {
+		t.Fatalf("Test failed. Expected: enterGender; Actual: %s", nextRoute)
 	}
 }
 
@@ -184,5 +183,35 @@ func TestNextNode(t *testing.T) {
 		t.Fatalf("Test failed. Expected: 'initialScreen'; Actual: '%v'", wf.PreviousScreen)
 	}
 
-	fmt.Printf("%#v\n", result)
+	wf.CurrentScreen = "enterDateOfBirth"
+
+	wf.NextNode("1999")
+
+	if wf.CurrentScreen != "enterDateOfBirth" {
+		t.Fatalf("Test failed. Expected: 'enterDateOfBirth'; Actual: '%v'", wf.CurrentScreen)
+	}
+
+	wf.NextNode("1999-09-01")
+
+	if wf.CurrentScreen != "enterMaritalStatus" {
+		t.Fatalf("Test failed. Expected: 'enterMaritalStatus'; Actual: '%v'", wf.CurrentScreen)
+	}
+
+	wf.CurrentScreen = "enterLanguage"
+
+	result = wf.NextNode("1")
+
+	for _, key := range []string{"type", "text", "inputIdentifier", "nextScreen"} {
+		if result[key] == nil {
+			t.Fatalf("Test failed on key %s", key)
+		}
+	}
+
+	if wf.CurrentScreen != "enterFirstName" {
+		t.Fatalf("Test failed. Expected: 'enterFirstName'; Actual: '%v'", wf.CurrentScreen)
+	}
+
+	if wf.PreviousScreen != "enterLanguage" {
+		t.Fatalf("Test failed. Expected: 'enterLanguage'; Actual: '%v'", wf.PreviousScreen)
+	}
 }
