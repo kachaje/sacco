@@ -36,6 +36,51 @@
       "ny": "Dzina La Abambo"
     },
     "inputIdentifier": "lastName",
+    "nextScreen": "enterDateOfBirth"
+  },
+  "enterAskOtherName": {
+    "type": "inputScreen",
+    "text": {
+      "en": "Other Name?",
+      "ny": "Dzina Lina?"
+    },
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "en": "Yes",
+          "ny": "Inde"
+        },
+        "nextScreen": "enterOtherName"
+      },
+      {
+        "position": 2,
+        "label": {
+          "en": "No",
+          "ny": "Ayi"
+        }
+      }
+    ],
+    "inputIdentifier": "askOtherName",
+    "nextScreen": "enterGender"
+  },
+  "enterOtherName": {
+    "type": "inputScreen",
+    "text": {
+      "en": "Other Name",
+      "ny": "Dzina Lina"
+    },
+    "inputIdentifier": "otherName",
+    "nextScreen": "enterDateOfBirth"
+  },
+  "enterDateOfBirth": {
+    "type": "inputScreen",
+    "text": {
+      "en": "Date of Birth",
+      "ny": "Tsiku Lobadwa"
+    },
+    "validationRule": "^\\d{4}-\\d{2}-\\d{2}$",
+    "inputIdentifier": "dateOfBirth",
     "nextScreen": "enterMaritalStatus"
   },
   "enterMaritalStatus": {

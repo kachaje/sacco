@@ -37,7 +37,8 @@ func (w *WorkFlow) GetNode(screen string) map[string]any {
 	return nil
 }
 
-func (w *WorkFlow) InputIncluded(input string, options []any) bool {
+func (w *WorkFlow) InputIncluded(input string, options []any) (bool, *string) {
+	nextRoute := w.CurrentScreen
 	found := false
 
 	for _, opt := range options {
@@ -45,12 +46,16 @@ func (w *WorkFlow) InputIncluded(input string, options []any) bool {
 		if ok && option["position"] != nil {
 			if val, ok := option["position"].(int); ok && fmt.Sprint(val) == input {
 				found = true
+
+				if option["nextScreen"] != nil {
+					nextRoute = fmt.Sprintf("%s", option["nextScreen"])
+				}
 				break
 			}
 		}
 	}
 
-	return found
+	return found, &nextRoute
 }
 
 func (w *WorkFlow) NodeOptions(input string) []string {
@@ -103,9 +108,22 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 			val, ok := options.([]any)
 			if ok {
-				valid := w.InputIncluded(input, val)
+				valid, nextRoute := w.InputIncluded(input, val)
 
-				fmt.Println("##########", valid)
+				if !valid {
+					return node
+				}
+
+				fmt.Println("##########", valid, nextRoute)
+
+				if nextRoute != nil {
+					w.PreviousScreen = w.CurrentScreen
+					w.CurrentScreen = *nextRoute
+
+					node = w.GetNode(w.CurrentScreen)
+
+					return node
+				}
 			}
 		}
 	}

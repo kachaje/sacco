@@ -135,6 +135,7 @@ enterDateOfBirth:
   text:
     en: Date of Birth
     ny: Tsiku Lobadwa
+  validationRule: "^\\d{4}-\\d{2}-\\d{2}$"
   inputIdentifier: dateOfBirth
   nextScreen: enterNationalId
 

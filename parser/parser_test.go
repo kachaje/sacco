@@ -44,33 +44,48 @@ func TestGetNode(t *testing.T) {
 }
 
 func TestInputIncluded(t *testing.T) {
+	targetRoute := "enterOtherName"
+
 	options := []any{
 		map[string]any{
 			"position": 1,
 			"label": map[string]any{
-				"all": "English",
+				"en": "Yes",
+				"ny": "Inde",
 			},
+			"nextScreen": targetRoute,
 		},
 		map[string]any{
 			"position": 2,
 			"label": map[string]any{
-				"all": "Chichewa",
+				"en": "No",
+				"ny": "Ayi",
 			},
 		},
 	}
 
 	wf := parser.NewWorkflow(data)
 
-	result := wf.InputIncluded("3", options)
+	defaultRoute := "enterAskOtherName"
+
+	wf.CurrentScreen = defaultRoute
+
+	result, nextRoute := wf.InputIncluded("3", options)
 
 	if result {
 		t.Fatalf("Test failed. Expected: false; Actual: %v", result)
 	}
+	if *nextRoute != defaultRoute {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", defaultRoute, *nextRoute)
+	}
 
-	result = wf.InputIncluded("1", options)
+	result, nextRoute = wf.InputIncluded("1", options)
 
 	if !result {
 		t.Fatalf("Test failed. Expected: true; Actual: %v", result)
+	}
+	if *nextRoute != targetRoute {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", targetRoute, *nextRoute)
 	}
 }
 

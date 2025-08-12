@@ -41,7 +41,7 @@ func handleChats(input string, v *events.Message, sendMessage func(message strin
 		chatTarget = ""
 
 		sendMessage("Session aborted", v)
-		
+
 		return
 	}
 
