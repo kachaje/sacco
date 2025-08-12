@@ -116,7 +116,8 @@ func GetFreePort() (port int, err error) {
 
 func main() {
 	var port int = 8080
-	var interactive bool
+	var interactive bool = true
+	var resetting bool
 
 	if port == 0 {
 		port, err = GetFreePort()
@@ -188,7 +189,11 @@ func main() {
 
 		outputLabel := widget.NewLabel(fmt.Sprintf("Server running on port :%d", port))
 
-		submitButton := widget.NewButton("Submit", func() {
+		handleSubmit := func() {
+			if resetting {
+				return
+			}
+
 			input = inputEntry.Text
 
 			question = bot.ProcessInput(input)
@@ -196,14 +201,20 @@ func main() {
 			inputEntry.SetText("")
 
 			if question == "" {
+				resetting = true
 				questionLabel.SetText("Done")
 
 				payload, _ := json.MarshalIndent(bot.Data, "", "  ")
 
 				outputLabel.SetText(string(payload))
 			} else {
+				resetting = false
 				questionLabel.SetText(question)
 			}
+		}
+
+		submitButton := widget.NewButton("Submit", func() {
+			handleSubmit()
 		})
 
 		content := container.NewVBox(
@@ -214,6 +225,17 @@ func main() {
 		)
 
 		myWindow.SetContent(content)
+
+		inputEntry.OnSubmitted = func(s string) {
+			handleSubmit()
+		}
+
+		myWindow.Canvas().SetOnTypedKey(func(keyEvent *fyne.KeyEvent) {
+			if keyEvent.Name == fyne.KeyReturn {
+				handleSubmit()
+			}
+		})
+
 		myWindow.ShowAndRun()
 	}
 }
