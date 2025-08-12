@@ -61,6 +61,7 @@ func TestInputIncluded(t *testing.T) {
 				"en": "No",
 				"ny": "Ayi",
 			},
+			"nextScreen": "enterGender",
 		},
 	}
 
@@ -86,6 +87,17 @@ func TestInputIncluded(t *testing.T) {
 	}
 	if *nextRoute != targetRoute {
 		t.Fatalf("Test failed. Expected: %s; Actual: %s", targetRoute, *nextRoute)
+	}
+
+	wf.CurrentScreen = defaultRoute
+
+	result, nextRoute = wf.InputIncluded("2", options)
+
+	if !result {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", result)
+	}
+	if *nextRoute != "enterGender" {
+		t.Fatalf("Test failed. Expected: enterGender; Actual: %s", *nextRoute)
 	}
 }
 

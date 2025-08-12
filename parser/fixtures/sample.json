@@ -58,7 +58,8 @@
         "label": {
           "en": "No",
           "ny": "Ayi"
-        }
+        },
+        "nextScreen": "enterGender"
       }
     ],
     "inputIdentifier": "askOtherName",
