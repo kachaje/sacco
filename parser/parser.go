@@ -37,11 +37,12 @@ func (w *WorkFlow) GetNode(screen string) map[string]any {
 	return nil
 }
 
-func (w *WorkFlow) InputIncluded(input string, options []map[string]any) bool {
+func (w *WorkFlow) InputIncluded(input string, options []any) bool {
 	found := false
 
-	for _, option := range options {
-		if option["position"] != nil {
+	for _, opt := range options {
+		option, ok := opt.(map[string]any)
+		if ok && option["position"] != nil {
 			if val, ok := option["position"].(int); ok && fmt.Sprint(val) == input {
 				found = true
 				break
@@ -97,7 +98,16 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	} else {
 		node = w.GetNode(w.CurrentScreen)
 
-		fmt.Println("##########")
+		if node["options"] != nil {
+			options := node["options"]
+
+			val, ok := options.([]any)
+			if ok {
+				valid := w.InputIncluded(input, val)
+
+				fmt.Println("##########", valid)
+			}
+		}
 	}
 
 	w.PreviousScreen = w.CurrentScreen

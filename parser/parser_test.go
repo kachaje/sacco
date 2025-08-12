@@ -44,14 +44,14 @@ func TestGetNode(t *testing.T) {
 }
 
 func TestInputIncluded(t *testing.T) {
-	options := []map[string]any{
-		{
+	options := []any{
+		map[string]any{
 			"position": 1,
 			"label": map[string]any{
 				"all": "English",
 			},
 		},
-		{
+		map[string]any{
 			"position": 2,
 			"label": map[string]any{
 				"all": "Chichewa",
