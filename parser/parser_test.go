@@ -405,3 +405,50 @@ func TestGotoMenu(t *testing.T) {
 		t.Fatalf("Test failed. Expected: %s; Actual: %v", target, wf.CurrentScreen)
 	}
 }
+
+func TestCancel(t *testing.T) {
+	called := false
+
+	wf := parser.NewWorkflow(data, func(m map[string]any) {
+		if m != nil {
+			t.Fatalf("Test failed. Expected: nil; Actual: %v", m)
+		}
+
+		called = true
+	})
+
+	wf.Data = map[string]any{
+		"language":      "1",
+		"firstName":     "Mary",
+		"lastName":      "Banda",
+		"askOtherName":  "2",
+		"dateOfBirth":   "1999-09-01",
+		"maritalStatus": "2",
+	}
+
+	node := wf.NextNode("formSummary")
+
+	if node == nil {
+		t.Fatal("Test failed")
+	}
+
+	node = wf.NextNode("99")
+
+	if node != nil {
+		t.Fatal("Test failed")
+	}
+
+	if len(wf.Data) != 0 {
+		t.Fatalf("Test failed. Expected: 0; Actual: %v", len(wf.Data))
+	}
+
+	target := "initialScreen"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target, wf.CurrentScreen)
+	}
+
+	if !called {
+		t.Fatal("Test failed")
+	}
+}

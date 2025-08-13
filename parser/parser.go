@@ -153,6 +153,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.CurrentLanguage = LANG_EN
 		w.PreviousScreen = ""
 
+		if w.SubmitCallback != nil {
+			w.SubmitCallback(nil)
+		}
+
 		return nil
 	case "0":
 		// Main Menu
