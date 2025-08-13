@@ -48,7 +48,8 @@ rerunSwitch:
 				"1. Membership Application\n" +
 				"2. Loan Application\n" +
 				"3. Check Balance\n" +
-				"4. Exit"
+				"4. Banking Details\n" +
+				"5. Exit"
 		case "1":
 			session.CurrentMenu = "registration"
 			goto rerunSwitch
@@ -59,10 +60,37 @@ rerunSwitch:
 			session.CurrentMenu = "balance"
 			goto rerunSwitch
 		case "4":
+			session.CurrentMenu = "banking"
+			goto rerunSwitch
+		case "5":
 			response = "END Thank you for using our service"
 			mu.Lock()
 			delete(sessions, sessionID)
 			mu.Unlock()
+		}
+	case "banking":
+		if text == "0" {
+			session.CurrentMenu = "main"
+			goto rerunSwitch
+		} else {
+			switch text {
+			case "1":
+				response = "CON National Bank of Malawi\n" +
+					"Name: Kaso SACCO\n" +
+					"Number: 0985 242 629\n" +
+					"0. Back to Main Menu"
+			case "2":
+				response = "CON Airtel Money\n" +
+					"Name: Kaso SACCO\n" +
+					"Number: 1006857589\n" +
+					"Branch: Lilongwe\n" +
+					"0. Back to Main Menu"
+			default:
+				response = "CON Banking Details\n" +
+					"1. National Bank\n" +
+					"2. Airtel Money\n" +
+					"0. Back to Main Menu"
+			}
 		}
 	case "registration":
 		if text == "0" {
