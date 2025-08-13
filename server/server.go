@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sacco/utils"
 	"sync"
 )
 
@@ -52,13 +53,16 @@ rerunSwitch:
 			session.CurrentMenu = "registration"
 			goto rerunSwitch
 		case "2":
-			session.CurrentMenu = "load"
+			session.CurrentMenu = "loan"
 			goto rerunSwitch
 		case "3":
 			session.CurrentMenu = "balance"
 			goto rerunSwitch
 		case "4":
 			response = "END Thank you for using our service"
+			mu.Lock()
+			delete(sessions, sessionID)
+			mu.Unlock()
 		}
 	case "registration":
 		if text == "0" {
@@ -92,10 +96,18 @@ rerunSwitch:
 
 func Main() {
 	var port int
+	var err error
 
 	flag.IntVar(&port, "p", port, "server port")
 
 	flag.Parse()
+
+	if port == 0 {
+		port, err = utils.GetFreePort()
+		if err != nil {
+			log.Panic(err)
+		}
+	}
 
 	http.HandleFunc("/ussd", ussdHandler)
 	log.Printf("USSD server listening on :%d\n", port)
