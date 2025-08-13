@@ -240,10 +240,404 @@
       "ny": "Nambala ya Umboni"
     },
     "inputIdentifier": "utilityBillNumber",
-    "nextScreen": "formSummary"
+    "nextScreen": "enterAskEmployed"
+  },
+  "enterAskEmployed": {
+    "order": 12,
+    "type": "inputScreen",
+    "text": {
+      "en": "Employed?",
+      "ny": "Muli Pantchito?"
+    },
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "en": "Yes",
+          "ny": "Inde"
+        },
+        "nextScreen": "enterEmployerName"
+      },
+      {
+        "position": 2,
+        "label": {
+          "en": "No",
+          "ny": "Ayi"
+        },
+        "nextScreen": "enterPostalAddress"
+      }
+    ],
+    "inputIdentifier": "askEmployed"
+  },
+  "enterEmployerName": {
+    "order": 13,
+    "type": "inputScreen",
+    "text": {
+      "en": "Employer Name",
+      "ny": "Kogwira Ntchito"
+    },
+    "nextScreen": "enterNetPay",
+    "inputIdentifier": "employerName"
+  },
+  "enterNetPay": {
+    "order": 14,
+    "type": "inputScreen",
+    "text": {
+      "en": "Net Pay",
+      "ny": "Mumalandila Zingati"
+    },
+    "nextScreen": "enterJobTitle",
+    "inputIdentifier": "netPay"
+  },
+  "enterJobTitle": {
+    "order": 15,
+    "type": "inputScreen",
+    "text": {
+      "en": "Job Title",
+      "ny": "Udindo Wanu"
+    },
+    "nextScreen": "enterEmployerAddress",
+    "inputIdentifier": "jobTitle"
+  },
+  "enterEmployerAddress": {
+    "order": 16,
+    "type": "inputScreen",
+    "text": {
+      "en": "Employer Address",
+      "ny": "Keyala Yakuntchito"
+    },
+    "nextScreen": "enterHighestQualification",
+    "inputIdentifier": "employerAddress"
+  },
+  "enterHighestQualification": {
+    "order": 17,
+    "type": "inputScreen",
+    "text": {
+      "en": "Highest Qualification",
+      "ny": "Mulingo Wamaphunziro Anu"
+    },
+    "nextScreen": "enterPostalAddress",
+    "inputIdentifier": "highestQualification"
+  },
+  "enterPostalAddress": {
+    "order": 18,
+    "type": "inputScreen",
+    "text": {
+      "en": "Your Postal Address",
+      "ny": "Adiresi Yanu"
+    },
+    "nextScreen": "enterResidentialAddress",
+    "inputIdentifier": "postalAddress"
+  },
+  "enterResidentialAddress": {
+    "order": 19,
+    "type": "inputScreen",
+    "text": {
+      "en": "Residential Address",
+      "ny": "Komwe Mumakhala"
+    },
+    "nextScreen": "enterPhoneNumber",
+    "inputIdentifier": "residentialAddress"
+  },
+  "enterPhoneNumber": {
+    "order": 20,
+    "type": "inputScreen",
+    "text": {
+      "en": "Phone Number",
+      "ny": "Nambala Yafoni"
+    },
+    "nextScreen": "enterVillage",
+    "inputIdentifier": "phoneNumber"
+  },
+  "enterVillage": {
+    "order": 21,
+    "type": "inputScreen",
+    "text": {
+      "en": "Home Village",
+      "ny": "Mudzi Wochokera"
+    },
+    "nextScreen": "enterTA",
+    "inputIdentifier": "homeVillage"
+  },
+  "enterTA": {
+    "order": 22,
+    "type": "inputScreen",
+    "text": {
+      "en": "Home T/A",
+      "ny": "Mfumu Yayikulu"
+    },
+    "nextScreen": "enterDistrict",
+    "inputIdentifier": "homeTA"
+  },
+  "enterDistrict": {
+    "order": 23,
+    "type": "inputScreen",
+    "text": {
+      "en": "Home District",
+      "ny": "Boma Lakwanu"
+    },
+    "nextScreen": "enterNextOfKin",
+    "inputIdentifier": "homeDistrict"
+  },
+  "enterNextOfKin": {
+    "order": 24,
+    "type": "inputScreen",
+    "text": {
+      "en": "Next Of Kin Name",
+      "ny": "Dzina Lawachibale"
+    },
+    "nextScreen": "enterNextOfKinPhone",
+    "inputIdentifier": "nextOfKinName"
+  },
+  "enterNextOfKinPhone": {
+    "order": 25,
+    "type": "inputScreen",
+    "text": {
+      "en": "Next Of Kin Phone",
+      "ny": "Foni ya Wachibale"
+    },
+    "nextScreen": "enterNextOfKinAddress",
+    "inputIdentifier": "nextOfKinPhone"
+  },
+  "enterNextOfKinAddress": {
+    "order": 26,
+    "type": "inputScreen",
+    "text": {
+      "en": "Next Of Kin Address",
+      "ny": "Keyala ya Wachibale"
+    },
+    "nextScreen": "enterAskBeneficiaries",
+    "inputIdentifier": "nextOfKinAddress"
+  },
+  "enterAskBeneficiaries": {
+    "order": 27,
+    "type": "inputScreen",
+    "text": {
+      "en": "Add Beneficiaries?",
+      "ny": "Pali Angadzalandile?"
+    },
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "en": "Yes",
+          "ny": "Inde"
+        },
+        "nextScreen": "enterBeneficiary1"
+      },
+      {
+        "position": 2,
+        "label": {
+          "en": "No",
+          "ny": "Ayi"
+        },
+        "nextScreen": "formSummary"
+      }
+    ],
+    "inputIdentifier": "askBeneficiaries"
+  },
+  "enterBeneficiary1": {
+    "order": 28,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 1 Name",
+      "ny": "Dzina Wolandila 1"
+    },
+    "nextScreen": "enterBeneficiary1Percent",
+    "inputIdentifier": "beneficiary1Name"
+  },
+  "enterBeneficiary1Percent": {
+    "order": 29,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 1 Percent",
+      "ny": "Mulingo Wolandila 1"
+    },
+    "nextScreen": "enterBeneficiary1Contact",
+    "inputIdentifier": "beneficiary1Percent"
+  },
+  "enterBeneficiary1Contact": {
+    "order": 30,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 1 Contact",
+      "ny": "Keyala Wolandila 1"
+    },
+    "nextScreen": "enterAskBeneficiary2",
+    "inputIdentifier": "beneficiary1Contact"
+  },
+  "enterAskBeneficiary2": {
+    "order": 31,
+    "type": "inputScreen",
+    "text": {
+      "en": "Another Beneficiary?",
+      "ny": "Pali Winanso?"
+    },
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "en": "Yes",
+          "ny": "Inde"
+        },
+        "nextScreen": "enterBeneficiary2"
+      },
+      {
+        "position": 2,
+        "label": {
+          "en": "No",
+          "ny": "Ayi"
+        },
+        "nextScreen": "formSummary"
+      }
+    ],
+    "inputIdentifier": "askBeneficiary2"
+  },
+  "enterBeneficiary2": {
+    "order": 32,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 2 Name",
+      "ny": "Dzina Wolandila 2"
+    },
+    "nextScreen": "enterBeneficiary2Percent",
+    "inputIdentifier": "beneficiary2Name"
+  },
+  "enterBeneficiary2Percent": {
+    "order": 33,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 2 Percent",
+      "ny": "Mulingo Wolandila 2"
+    },
+    "nextScreen": "enterBeneficiary2Contact",
+    "inputIdentifier": "beneficiary2Percent"
+  },
+  "enterBeneficiary2Contact": {
+    "order": 34,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 2 Contact",
+      "ny": "Keyala Wolandila 2"
+    },
+    "nextScreen": "enterAskBeneficiary3",
+    "inputIdentifier": "beneficiary2Contact"
+  },
+  "enterAskBeneficiary3": {
+    "order": 35,
+    "type": "inputScreen",
+    "text": {
+      "en": "Another Beneficiary?",
+      "ny": "Pali Winanso?"
+    },
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "en": "Yes",
+          "ny": "Inde"
+        },
+        "nextScreen": "enterBeneficiary3"
+      },
+      {
+        "position": 2,
+        "label": {
+          "en": "No",
+          "ny": "Ayi"
+        },
+        "nextScreen": "formSummary"
+      }
+    ],
+    "inputIdentifier": "askBeneficiary3"
+  },
+  "enterBeneficiary3": {
+    "order": 36,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 3 Name",
+      "ny": "Dzina Wolandila 3"
+    },
+    "nextScreen": "enterBeneficiary3Percent",
+    "inputIdentifier": "beneficiary3Name"
+  },
+  "enterBeneficiary3Percent": {
+    "order": 37,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 3 Percent",
+      "ny": "Mulingo Wolandila 3"
+    },
+    "nextScreen": "enterBeneficiary3Contact",
+    "inputIdentifier": "beneficiary3Percent"
+  },
+  "enterBeneficiary3Contact": {
+    "order": 38,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 3 Contact",
+      "ny": "Keyala Wolandila 3"
+    },
+    "nextScreen": "enterAskBeneficiary4",
+    "inputIdentifier": "beneficiary3Contact"
+  },
+  "enterAskBeneficiary4": {
+    "order": 39,
+    "type": "inputScreen",
+    "text": {
+      "en": "Another Beneficiary?",
+      "ny": "Pali Winanso?"
+    },
+    "options": [
+      {
+        "position": 1,
+        "label": {
+          "en": "Yes",
+          "ny": "Inde"
+        },
+        "nextScreen": "enterBeneficiary4"
+      },
+      {
+        "position": 2,
+        "label": {
+          "en": "No",
+          "ny": "Ayi"
+        },
+        "nextScreen": "formSummary"
+      }
+    ],
+    "inputIdentifier": "askBeneficiary4"
+  },
+  "enterBeneficiary4": {
+    "order": 40,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 4 Name",
+      "ny": "Dzina Wolandila 4"
+    },
+    "nextScreen": "enterBeneficiary4Percent",
+    "inputIdentifier": "beneficiary4Name"
+  },
+  "enterBeneficiary4Percent": {
+    "order": 41,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 4 Percent",
+      "ny": "Mulingo Wolandila 4"
+    },
+    "nextScreen": "enterBeneficiary4Contact",
+    "inputIdentifier": "beneficiary4Percent"
+  },
+  "enterBeneficiary4Contact": {
+    "order": 42,
+    "type": "inputScreen",
+    "text": {
+      "en": "Beneficiary 4 Contact",
+      "ny": "Keyala Wolandila 4"
+    },
+    "nextScreen": "formSummary",
+    "inputIdentifier": "beneficiary4Contact"
   },
   "formSummary": {
-    "order": 12,
     "type": "quitScreen"
   }
 }
