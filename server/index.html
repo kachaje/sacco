@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaso SACCO</title>
+  </head>
+  <body>
+    <h1>Kaso SACCO</h1>
+    <pre id="messages"></pre>
+    <input type="text" id="messageInput" style="padding: 5px" />
+    <button id="sendButton" style="padding: 5px">Send</button>
+
+    <script>
+      const messageInput = document.getElementById("messageInput");
+      const sendButton = document.getElementById("sendButton");
+      const messagesDiv = document.getElementById("messages");
+
+      function handleKeydown(e) {
+        if (e.key == "Enter") {
+          sendButton.click();
+        }
+      }
+
+      messageInput.addEventListener("keydown", handleKeydown);
+
+      const socket = new WebSocket("ws://localhost:8080/ws");
+
+      socket.onopen = function (event) {
+        console.log("WebSocket connection established.");
+        messagesDiv.innerHTML = "<p>Connected to server.</p>";
+      };
+
+      socket.onmessage = function (event) {
+        const message = event.data;
+        console.log("Received message:", message);
+        messagesDiv.innerHTML = `<p>${message}</p>`;
+      };
+
+      socket.onerror = function (event) {
+        console.error("WebSocket error:", event);
+        messagesDiv.innerHTML = `<p style="color: red;">Error: ${event.message}</p>`;
+      };
+
+      socket.onclose = function (event) {
+        console.log("WebSocket connection closed.");
+      };
+
+      sendButton.onclick = function () {
+        const message = messageInput.value;
+        if (message) {
+          socket.send(message);
+          messagesDiv.innerHTML = `<p>Client: ${message}</p>`;
+          messageInput.value = "";
+        } else {
+          window.location.reload();
+        }
+      };
+    </script>
+  </body>
+</html>

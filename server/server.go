@@ -5,14 +5,23 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"regexp"
 	"sacco/utils"
 	"sync"
+
+	_ "embed"
+	"html/template"
+
+	"github.com/gorilla/websocket"
 )
 
 type Session struct {
 	CurrentMenu string
 	Data        map[string]string
 }
+
+//go:embed index.html
+var indexHTML string
 
 var sessions = make(map[string]*Session)
 var mu sync.Mutex
@@ -122,6 +131,35 @@ rerunSwitch:
 	fmt.Fprint(w, response)
 }
 
+func wsHandler(w http.ResponseWriter, r *http.Request) {
+	upgrader := websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
+
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer conn.Close()
+
+	log.Println("Client connected")
+
+	for {
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			break
+		}
+
+		input := string(message)
+
+		_ = input
+	}
+}
+
 func Main() {
 	var port int
 	var err error
@@ -136,6 +174,22 @@ func Main() {
 			log.Panic(err)
 		}
 	}
+
+	http.HandleFunc("/ws", wsHandler)
+
+	indexHTML = regexp.MustCompile("8080").ReplaceAllString(indexHTML, fmt.Sprint(port))
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.New("index").Parse(indexHTML)
+		if err != nil {
+			http.Error(w, "Error parsing template", http.StatusInternalServerError)
+			return
+		}
+		err = tmpl.Execute(w, nil)
+		if err != nil {
+			http.Error(w, "Error executing template", http.StatusInternalServerError)
+		}
+	})
 
 	http.HandleFunc("/ussd", ussdHandler)
 	log.Printf("USSD server listening on :%d\n", port)
