@@ -3,12 +3,15 @@ package parser
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
 
 const (
 	INITIAL_SCREEN = "initialScreen"
 	INPUT_SCREEN   = "inputScreen"
 	QUIT_SCREEN    = "quitScreen"
+	LANG_EN        = "1"
+	LANG_NY        = "2"
 )
 
 type WorkFlow struct {
@@ -23,9 +26,10 @@ type WorkFlow struct {
 
 func NewWorkflow(tree map[string]any) *WorkFlow {
 	return &WorkFlow{
-		Tree:          tree,
-		Data:          map[string]any{},
-		CurrentScreen: INITIAL_SCREEN,
+		Tree:            tree,
+		Data:            map[string]any{},
+		CurrentScreen:   INITIAL_SCREEN,
+		CurrentLanguage: LANG_EN,
 	}
 }
 
@@ -186,4 +190,43 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	w.CurrentScreen = nextScreen
 
 	return node
+}
+
+func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
+	var label string
+	var startLabel string
+
+	if w.Tree[INITIAL_SCREEN] != nil {
+		startLabel = fmt.Sprintf("%s", w.Tree[INITIAL_SCREEN])
+	}
+
+	if node != nil {
+		var title string
+
+		if node["text"] != nil {
+			title = fmt.Sprintf("%s: ", node["text"])
+		}
+
+		options := w.NodeOptions(input)
+
+		if w.CurrentLanguage == LANG_NY {
+			if input != startLabel {
+				options = append(options, "0. Tiyambirenso")
+			}
+
+			options = append(options, "99. Basi")
+		} else {
+			if input != startLabel {
+				options = append(options, "0. Main Menu")
+			}
+
+			options = append(options, "99. Cancel")
+		}
+
+		label = fmt.Sprintf(`%s
+%s
+`, title, strings.Join(options, "\n"))
+	}
+
+	return label
 }

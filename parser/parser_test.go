@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sacco/parser"
+	"sacco/utils"
 	"testing"
 )
 
@@ -222,5 +223,37 @@ func TestNextNode(t *testing.T) {
 
 	if wf.Data["language"] == nil || fmt.Sprintf("%v", wf.Data["language"]) != "1" {
 		t.Fatalf("Test failed. Expected: '1'; Actual: %v", wf.Data["dateOfBirth"])
+	}
+}
+
+func TestGetLabel(t *testing.T) {
+	wf := parser.NewWorkflow(data)
+
+	node := wf.NextNode("")
+
+	if node == nil {
+		t.Fatal("Test failed")
+	}
+
+	target := "Language: 1. English 2. Chichewa 99. Cancel"
+
+	result := wf.GetLabel(node, wf.CurrentScreen)
+
+	label := utils.CleanScript([]byte(result))
+
+	if label != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, label)
+	}
+
+	wf.CurrentLanguage = "2"
+
+	target = "Language: 1. English 2. Chichewa 99. Basi"
+
+	result = wf.GetLabel(node, wf.CurrentScreen)
+
+	label = utils.CleanScript([]byte(result))
+
+	if label != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, label)
 	}
 }
