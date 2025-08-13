@@ -164,15 +164,9 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 	sessionId := uuid.NewString()
 
+	var text string
+
 	for {
-		_, message, err := conn.ReadMessage()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			break
-		}
-
-		text := string(message)
-
 		data := url.Values{}
 		data.Set("sessionId", sessionId)
 		data.Set("text", text)
@@ -206,11 +200,21 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		err = conn.WriteMessage(websocket.TextMessage, body)
+		response := regexp.MustCompile(`^CON\s|^END\s`).ReplaceAllString(string(body), "")
+
+		err = conn.WriteMessage(websocket.TextMessage, []byte(response))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			break
 		}
+
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			break
+		}
+
+		text = string(message)
 	}
 }
 
