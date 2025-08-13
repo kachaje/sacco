@@ -120,14 +120,20 @@ func (w *WorkFlow) NodeOptions(input string) []string {
 				if ok {
 					position := fmt.Sprintf("%v", optVal["position"])
 
+					activeLang := LANG_EN_LABEL
+
+					if w.CurrentLanguage == LANG_NY {
+						activeLang = LANG_NY_LABEL
+					}
+
 					val, ok := optVal["label"].(map[string]any)
 					if ok {
 						if val["all"] != nil {
 							entry := fmt.Sprintf("%s. %s", position, val["all"])
 
 							options = append(options, entry)
-						} else if w.CurrentLanguage != "" && val[w.CurrentLanguage] != nil {
-							entry := fmt.Sprintf("%s. %s", position, val[w.CurrentLanguage])
+						} else if w.CurrentLanguage != "" && val[activeLang] != nil {
+							entry := fmt.Sprintf("%s. %s", position, val[activeLang])
 
 							options = append(options, entry)
 						}
@@ -407,16 +413,13 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 
 			sort.Ints(indices)
 
-			j := 0
 			for i := range indices {
 				key := w.ScreenOrder[i]
 
 				if data[key] != nil {
 					dispLabel := w.LoadLabel(key)
 
-					result = append(result, fmt.Sprintf("%d. %s: %v", j+1, dispLabel, data[key]))
-
-					j++
+					result = append(result, fmt.Sprintf("- %s: %v", dispLabel, data[key]))
 				}
 			}
 

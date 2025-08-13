@@ -42,7 +42,7 @@
       "ny": "Dzina La Abambo"
     },
     "inputIdentifier": "lastName",
-    "nextScreen": "enterDateOfBirth"
+    "nextScreen": "enterAskOtherName"
   },
   "enterAskOtherName": {
     "order": 3,
@@ -66,11 +66,11 @@
           "en": "No",
           "ny": "Ayi"
         },
-        "nextScreen": "enterGender"
+        "nextScreen": "enterDateOfBirth"
       }
     ],
     "inputIdentifier": "askOtherName",
-    "nextScreen": "enterGender"
+    "nextScreen": "enterDateOfBirth"
   },
   "enterOtherName": {
     "order": 4,

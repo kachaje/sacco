@@ -504,3 +504,170 @@ func TestSubmit(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 }
+
+func TestNavNext(t *testing.T) {
+	called := false
+
+	wf := parser.NewWorkflow(data, func(m map[string]any) {
+		if m == nil {
+			t.Fatalf("Test failed")
+		}
+
+		if len(m) != 6 {
+			t.Fatalf("Test failed. Expected: 6; Actual: %v", len(m))
+		}
+
+		called = true
+	})
+
+	target := `Language: 
+1. English
+2. Chichewa
+99. Cancel`
+
+	result := wf.NavNext("")
+
+	if utils.CleanString(target) != utils.CleanString(result) {
+		t.Fatalf(`Test failed.
+Expected: %s
+Actual: %s`, target, result)
+	}
+
+	target = "enterLanguage"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	target = `Dzina Loyamba: 
+00. Tiyambirenso
+99. Basi`
+
+	result = wf.NavNext("2")
+
+	if utils.CleanString(target) != utils.CleanString(result) {
+		t.Fatalf(`Test failed.
+Expected: %s
+Actual: %s`, target, result)
+	}
+
+	if wf.CurrentLanguage != "2" {
+		t.Fatalf("Test failed. Expected: 2; Actual: %v", wf.CurrentLanguage)
+	}
+
+	target = "enterFirstName"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	target = `Dzina La Abambo: 
+00. Tiyambirenso
+99. Basi`
+
+	result = wf.NavNext("Mary")
+
+	if utils.CleanString(target) != utils.CleanString(result) {
+		t.Fatalf(`Test failed.
+Expected: %s
+Actual: %s`, target, result)
+	}
+
+	target = "enterLastName"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	target = `Dzina Lina?: 
+1. Inde
+2. Ayi
+00. Tiyambirenso
+99. Basi`
+
+	result = wf.NavNext("Banda")
+
+	if utils.CleanString(target) != utils.CleanString(result) {
+		t.Fatalf(`Test failed.
+Expected: %s
+Actual: %s`, target, result)
+	}
+
+	target = "enterAskOtherName"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	target = `Tsiku Lobadwa: 
+00. Tiyambirenso
+99. Basi`
+
+	result = wf.NavNext("2")
+
+	if utils.CleanString(target) != utils.CleanString(result) {
+		t.Fatalf(`Test failed.
+Expected: %s
+Actual: %s`, target, result)
+	}
+
+	target = "enterDateOfBirth"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	target = `Muli M'banja: 
+1. Inde
+2. Ayi
+3. Woferedwa
+4. Osudzulidwa
+00. Tiyambirenso
+99. Basi`
+
+	result = wf.NavNext("1999-09-01")
+
+	if utils.CleanString(target) != utils.CleanString(result) {
+		t.Fatalf(`Test failed.
+Expected: %s
+Actual: %s`, target, result)
+	}
+
+	target = "enterMaritalStatus"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	target = `Zomwe Mwalemba
+- Chiyankhulo: Chichewa
+- Dzina Loyamba: Mary
+- Dzina La Abambo: Banda
+- Dzina Lina?: No
+- Tsiku Lobadwa: 1999-09-01
+- Muli M'banja: Single
+
+0. Zatheka
+00. Tiyambirenso
+99. Basi`
+
+	result = wf.NavNext("2")
+
+	if utils.CleanString(target) != utils.CleanString(result) {
+		t.Fatalf(`Test failed.
+Expected: %s
+Actual: %s`, target, result)
+	}
+
+	target = "formSummary"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	wf.NavNext("0")
+
+	if !called {
+		t.Fatal("Test failed")
+	}
+}
