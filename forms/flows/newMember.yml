@@ -1,6 +1,7 @@
 initialScreen: enterLanguage
 
 enterLanguage:
+  order: 0
   type: inputScreen
   text: Language
   options:
@@ -14,6 +15,7 @@ enterLanguage:
   nextScreen: enterFirstName
 
 enterFirstName:
+  order: 1
   type: inputScreen
   text:
     en: First Name
@@ -22,6 +24,7 @@ enterFirstName:
   nextScreen: enterLastName
 
 enterLastName:
+  order: 2
   type: inputScreen
   text:
     en: Last Name
@@ -30,6 +33,7 @@ enterLastName:
   nextScreen: enterAskOtherName
 
 enterAskOtherName:
+  order: 3
   type: inputScreen
   text:
     en: Other Name?
@@ -48,6 +52,7 @@ enterAskOtherName:
   nextScreen: enterGender
 
 enterOtherName:
+  order: 4
   type: inputScreen
   text:
     en: Other Name
@@ -56,6 +61,7 @@ enterOtherName:
   nextScreen: enterGender
 
 enterGender:
+  order: 5
   type: inputScreen
   text:
     en: Gender
@@ -73,6 +79,7 @@ enterGender:
   nextScreen: enterTitle
 
 enterTitle:
+  order: 6
   type: inputScreen
   text:
     en: Title
@@ -106,6 +113,7 @@ enterTitle:
   nextScreen: enterMaritalStatus
 
 enterMaritalStatus:
+  order: 7
   type: inputScreen
   text:
     en: Marital Status
@@ -131,6 +139,7 @@ enterMaritalStatus:
   nextScreen: enterDateOfBirth
 
 enterDateOfBirth:
+  order: 8
   type: inputScreen
   text:
     en: Date of Birth
@@ -140,6 +149,7 @@ enterDateOfBirth:
   nextScreen: enterNationalId
 
 enterNationalId:
+  order: 9
   type: inputScreen
   text:
     en: National ID
@@ -148,6 +158,7 @@ enterNationalId:
   nextScreen: enterUtilityBillType
 
 enterUtilityBillType:
+  order: 10
   type: inputScreen
   text:
     en: Utility Bill Type
@@ -156,6 +167,7 @@ enterUtilityBillType:
   nextScreen: enterUtilityBillNo
 
 enterUtilityBillNo:
+  order: 11
   type: inputScreen
   text:
     en: Utility Bill Number
@@ -164,4 +176,5 @@ enterUtilityBillNo:
   nextScreen: formSummary
 
 formSummary:
+  order: 12
   type: quitScreen

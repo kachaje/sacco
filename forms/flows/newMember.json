@@ -1,6 +1,7 @@
 {
   "initialScreen": "enterLanguage",
   "enterLanguage": {
+    "order": 0,
     "type": "inputScreen",
     "text": "Language",
     "options": [
@@ -21,6 +22,7 @@
     "nextScreen": "enterFirstName"
   },
   "enterFirstName": {
+    "order": 1,
     "type": "inputScreen",
     "text": {
       "en": "First Name",
@@ -30,6 +32,7 @@
     "nextScreen": "enterLastName"
   },
   "enterLastName": {
+    "order": 2,
     "type": "inputScreen",
     "text": {
       "en": "Last Name",
@@ -39,6 +42,7 @@
     "nextScreen": "enterAskOtherName"
   },
   "enterAskOtherName": {
+    "order": 3,
     "type": "inputScreen",
     "text": {
       "en": "Other Name?",
@@ -65,6 +69,7 @@
     "nextScreen": "enterGender"
   },
   "enterOtherName": {
+    "order": 4,
     "type": "inputScreen",
     "text": {
       "en": "Other Name",
@@ -74,6 +79,7 @@
     "nextScreen": "enterGender"
   },
   "enterGender": {
+    "order": 5,
     "type": "inputScreen",
     "text": {
       "en": "Gender",
@@ -99,6 +105,7 @@
     "nextScreen": "enterTitle"
   },
   "enterTitle": {
+    "order": 6,
     "type": "inputScreen",
     "text": {
       "en": "Title",
@@ -155,6 +162,7 @@
     "nextScreen": "enterMaritalStatus"
   },
   "enterMaritalStatus": {
+    "order": 7,
     "type": "inputScreen",
     "text": {
       "en": "Marital Status",
@@ -194,6 +202,7 @@
     "nextScreen": "enterDateOfBirth"
   },
   "enterDateOfBirth": {
+    "order": 8,
     "type": "inputScreen",
     "text": {
       "en": "Date of Birth",
@@ -204,6 +213,7 @@
     "nextScreen": "enterNationalId"
   },
   "enterNationalId": {
+    "order": 9,
     "type": "inputScreen",
     "text": {
       "en": "National ID",
@@ -213,6 +223,7 @@
     "nextScreen": "enterUtilityBillType"
   },
   "enterUtilityBillType": {
+    "order": 10,
     "type": "inputScreen",
     "text": {
       "en": "Utility Bill Type",
@@ -222,6 +233,7 @@
     "nextScreen": "enterUtilityBillNo"
   },
   "enterUtilityBillNo": {
+    "order": 11,
     "type": "inputScreen",
     "text": {
       "en": "Utility Bill Number",
@@ -231,6 +243,7 @@
     "nextScreen": "formSummary"
   },
   "formSummary": {
+    "order": 12,
     "type": "quitScreen"
   }
 }
