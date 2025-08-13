@@ -671,3 +671,25 @@ Actual: %s`, target, result)
 		t.Fatal("Test failed")
 	}
 }
+
+func TestNavMain(t *testing.T) {
+	wf := parser.NewWorkflow(data, nil)
+
+	wf.NavNext("")
+
+	wf.NavNext("1")
+
+	target := "enterFirstName"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	wf.NavMain()
+
+	target = "initialScreen"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+}

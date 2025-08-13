@@ -481,3 +481,11 @@ func (w *WorkFlow) NavNext(input string) string {
 
 	return label
 }
+
+func (w *WorkFlow) NavMain() string {
+	node := w.NextNode("0")
+
+	label := w.GetLabel(node, w.CurrentScreen)
+
+	return label
+}
