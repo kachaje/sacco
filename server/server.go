@@ -9,7 +9,9 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"sacco/parser"
 	"sacco/utils"
+	"strings"
 	"sync"
 
 	_ "embed"
@@ -20,16 +22,34 @@ import (
 )
 
 type Session struct {
-	CurrentMenu string
-	Data        map[string]string
+	CurrentMenu       string
+	Data              map[string]string
+	NewMemberWorkflow *parser.WorkFlow
 }
 
 //go:embed index.html
 var indexHTML string
 
+//go:embed workflows/newMember.yml
+var newMemberTemplate string
+
 var sessions = make(map[string]*Session)
 var mu sync.Mutex
 var port int
+var newMemberData map[string]any
+
+func init() {
+	var err error
+
+	newMemberData, err = utils.LoadYaml(newMemberTemplate)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func saveData(data map[string]any) {
+	fmt.Println(data)
+}
 
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.FormValue("sessionId")
@@ -44,8 +64,9 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	session, exists := sessions[sessionID]
 	if !exists {
 		session = &Session{
-			CurrentMenu: "main",
-			Data:        make(map[string]string),
+			CurrentMenu:       "main",
+			Data:              make(map[string]string),
+			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData),
 		}
 		sessions[sessionID] = session
 	}
@@ -107,12 +128,17 @@ rerunSwitch:
 			}
 		}
 	case "registration":
-		if text == "0" {
+		if text == "0" || text == "" {
 			session.CurrentMenu = "main"
 			goto rerunSwitch
 		} else {
-			response = "CON Membership Application\n" +
-				"0. Back to Main Menu"
+			response = session.NewMemberWorkflow.NavNext(text)
+
+			if strings.TrimSpace(response) == "" {
+				session.CurrentMenu = "main"
+				text = ""
+				goto rerunSwitch
+			}
 		}
 	case "loan":
 		if text == "0" {
