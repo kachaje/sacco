@@ -140,6 +140,21 @@ func (w *WorkFlow) NodeOptions(input string) []string {
 	return options
 }
 
+func (w *WorkFlow) CheckLanguage() {
+	if w.Data != nil && w.Data["language"] != nil {
+		val, ok := w.Data["language"].(string)
+		if ok {
+			switch val {
+			case LANG_NY:
+				w.CurrentLanguage = LANG_NY
+			default:
+				w.CurrentLanguage = LANG_EN
+			}
+
+		}
+	}
+}
+
 func (w *WorkFlow) NextNode(input string) map[string]any {
 	var node map[string]any
 	var nextScreen string
@@ -203,6 +218,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 						inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
 
 						w.Data[inputIdentifier] = input
+
+						if inputIdentifier == "language" {
+							w.CheckLanguage()
+						}
 					}
 
 					w.PreviousScreen = w.CurrentScreen
@@ -218,6 +237,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
 
 				w.Data[inputIdentifier] = input
+
+				if inputIdentifier == "language" {
+					w.CheckLanguage()
+				}
 			}
 
 			if node["nextScreen"] != nil {
@@ -241,6 +264,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
 
 				w.Data[inputIdentifier] = input
+
+				if inputIdentifier == "language" {
+					w.CheckLanguage()
+				}
 			}
 
 			if node["nextScreen"] != nil {
@@ -440,6 +467,14 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 `, title, strings.Join(options, "\n"))
 		}
 	}
+
+	return label
+}
+
+func (w *WorkFlow) NavNext(input string) string {
+	node := w.NextNode(input)
+
+	label := w.GetLabel(node, w.CurrentScreen)
 
 	return label
 }
