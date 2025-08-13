@@ -370,3 +370,38 @@ Expected: %v;
 Actual: %v`, target, result)
 	}
 }
+
+func TestGotoMenu(t *testing.T) {
+	wf := parser.NewWorkflow(data, nil)
+
+	wf.Data = map[string]any{
+		"language":      "1",
+		"firstName":     "Mary",
+		"lastName":      "Banda",
+		"askOtherName":  "2",
+		"dateOfBirth":   "1999-09-01",
+		"maritalStatus": "2",
+	}
+
+	node := wf.NextNode("formSummary")
+
+	if node == nil {
+		t.Fatal("Test failed")
+	}
+
+	node = wf.NextNode("0")
+
+	if node == nil {
+		t.Fatal("Test failed")
+	}
+
+	if len(wf.Data) != 0 {
+		t.Fatalf("Test failed. Expected: 0; Actual: %v", len(wf.Data))
+	}
+
+	target := "enterLanguage"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target, wf.CurrentScreen)
+	}
+}
