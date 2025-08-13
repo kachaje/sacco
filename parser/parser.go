@@ -239,7 +239,26 @@ func (w *WorkFlow) ResolveData(data map[string]any) map[string]any {
 	result := map[string]any{}
 
 	for key, value := range data {
-		fmt.Println(key, value)
+		nodeId := w.ScreenIdMap[key]
+
+		if nodeId != "" {
+			if w.Tree[nodeId] != nil {
+				val, ok := w.Tree[nodeId].(map[string]any)
+				if ok {
+					if val["options"] != nil {
+						opts, ok := val["options"].([]any)
+
+						if ok {
+							mappedValue := w.OptionValue(opts, fmt.Sprintf("%v", value))
+
+							result[key] = mappedValue
+						}
+					} else {
+						result[key] = value
+					}
+				}
+			}
+		}
 	}
 
 	return result

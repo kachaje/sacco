@@ -283,8 +283,6 @@ func TestResolveData(t *testing.T) {
 		"maritalStatus": "Single",
 	}
 
-	fmt.Println(result)
-
 	if result == nil {
 		t.Fatal("Test failed")
 	}
