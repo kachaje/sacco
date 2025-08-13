@@ -226,6 +226,76 @@ func TestNextNode(t *testing.T) {
 	}
 }
 
+func TestOptionValue(t *testing.T) {
+	wf := parser.NewWorkflow(data)
+
+	wf.CurrentLanguage = "2"
+
+	options := []any{
+		map[string]any{
+			"position": 1,
+			"label": map[string]any{
+				"en": "Yes",
+				"ny": "Inde",
+			},
+			"nextScreen": "",
+		},
+		map[string]any{
+			"position": 2,
+			"label": map[string]any{
+				"all": "No",
+			},
+			"nextScreen": "enterGender",
+		},
+	}
+
+	result := wf.OptionValue(options, "2")
+
+	if result != "No" {
+		t.Fatalf("Test failed. Expected: No; Actual: %v", result)
+	}
+
+	result = wf.OptionValue(options, "1")
+
+	if result != "Yes" {
+		t.Fatalf("Test failed. Expected: Yes; Actual: %v", result)
+	}
+}
+
+func TestResolveData(t *testing.T) {
+	wf := parser.NewWorkflow(data)
+
+	result := wf.ResolveData(map[string]any{
+		"language":      "1",
+		"firstName":     "Mary",
+		"lastName":      "Banda",
+		"askOtherName":  "2",
+		"dateOfBirth":   "1999-09-01",
+		"maritalStatus": "2",
+	})
+
+	target := map[string]any{
+		"language":      "English",
+		"firstName":     "Mary",
+		"lastName":      "Banda",
+		"askOtherName":  "No",
+		"dateOfBirth":   "1999-09-01",
+		"maritalStatus": "Single",
+	}
+
+	fmt.Println(result)
+
+	if result == nil {
+		t.Fatal("Test failed")
+	}
+
+	for key, val := range target {
+		if result[key] == nil || fmt.Sprintf("%v", result[key]) != fmt.Sprintf("%v", val) {
+			t.Fatalf("Test failed. Expected: %v; Actual: %v", val, result[key])
+		}
+	}
+}
+
 func TestGetLabel(t *testing.T) {
 	wf := parser.NewWorkflow(data)
 
@@ -255,5 +325,14 @@ func TestGetLabel(t *testing.T) {
 
 	if label != target {
 		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, label)
+	}
+
+	wf.Data = map[string]any{
+		"language":      "1",
+		"firstName":     "Mary",
+		"lastName":      "Banda",
+		"askOtherName":  "2",
+		"dateOfBirth":   "1999-09-01",
+		"maritalStatus": "2",
 	}
 }

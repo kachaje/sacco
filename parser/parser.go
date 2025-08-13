@@ -12,6 +12,8 @@ const (
 	QUIT_SCREEN    = "quitScreen"
 	LANG_EN        = "1"
 	LANG_NY        = "2"
+	LANG_EN_LABEL  = "en"
+	LANG_NY_LABEL  = "ny"
 )
 
 type WorkFlow struct {
@@ -22,15 +24,30 @@ type WorkFlow struct {
 	NextScreen      string
 	PreviousScreen  string
 	CurrentLanguage string
+	ScreenIdMap     map[string]string
 }
 
 func NewWorkflow(tree map[string]any) *WorkFlow {
-	return &WorkFlow{
+	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
 		CurrentScreen:   INITIAL_SCREEN,
 		CurrentLanguage: LANG_EN,
+		ScreenIdMap:     map[string]string{},
 	}
+
+	for key, value := range tree {
+		row, ok := value.(map[string]any)
+		if ok {
+			if row["inputIdentifier"] != nil {
+				id := fmt.Sprintf("%v", row["inputIdentifier"])
+
+				w.ScreenIdMap[id] = key
+			}
+		}
+	}
+
+	return w
 }
 
 func (w *WorkFlow) GetNode(screen string) map[string]any {
@@ -192,40 +209,89 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	return node
 }
 
-func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
-	var label string
-	var startLabel string
+func (w *WorkFlow) OptionValue(options []any, input string) string {
+	var result string
 
-	if w.Tree[INITIAL_SCREEN] != nil {
-		startLabel = fmt.Sprintf("%s", w.Tree[INITIAL_SCREEN])
+	for _, row := range options {
+		optVal, ok := row.(map[string]any)
+		if ok {
+			position := fmt.Sprintf("%v", optVal["position"])
+
+			if position == input {
+				val, ok := optVal["label"].(map[string]any)
+				if ok {
+					if val["all"] != nil {
+						result = fmt.Sprintf("%v", val["all"])
+						break
+					} else if val[LANG_EN_LABEL] != nil {
+						result = fmt.Sprintf("%s", val[LANG_EN_LABEL])
+						break
+					}
+				}
+			}
+		}
 	}
 
+	return result
+}
+
+func (w *WorkFlow) ResolveData(data map[string]any) map[string]any {
+	result := map[string]any{}
+
+	for key, value := range data {
+		fmt.Println(key, value)
+	}
+
+	return result
+}
+
+func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
+	var label string
+
 	if node != nil {
+		var nodeType string
+		var startLabel string
 		var title string
 
-		if node["text"] != nil {
-			title = fmt.Sprintf("%s: ", node["text"])
+		if node["type"] != nil {
+			nodeType = fmt.Sprintf("%s", node["type"])
 		}
 
-		options := w.NodeOptions(input)
+		if nodeType == "" {
+			return label
+		}
 
-		if w.CurrentLanguage == LANG_NY {
-			if input != startLabel {
-				options = append(options, "0. Tiyambirenso")
-			}
-
-			options = append(options, "99. Basi")
+		if nodeType == QUIT_SCREEN {
+			fmt.Println(w.Data)
 		} else {
-			if input != startLabel {
-				options = append(options, "0. Main Menu")
+			if w.Tree[INITIAL_SCREEN] != nil {
+				startLabel = fmt.Sprintf("%s", w.Tree[INITIAL_SCREEN])
 			}
 
-			options = append(options, "99. Cancel")
-		}
+			if node["text"] != nil {
+				title = fmt.Sprintf("%s: ", node["text"])
+			}
 
-		label = fmt.Sprintf(`%s
+			options := w.NodeOptions(input)
+
+			if w.CurrentLanguage == LANG_NY {
+				if input != startLabel {
+					options = append(options, "0. Tiyambirenso")
+				}
+
+				options = append(options, "99. Basi")
+			} else {
+				if input != startLabel {
+					options = append(options, "0. Main Menu")
+				}
+
+				options = append(options, "99. Cancel")
+			}
+
+			label = fmt.Sprintf(`%s
 %s
 `, title, strings.Join(options, "\n"))
+		}
 	}
 
 	return label
