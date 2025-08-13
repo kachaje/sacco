@@ -159,6 +159,19 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 		return nil
 	case "0":
+		// Submit
+		if w.SubmitCallback != nil {
+			w.SubmitCallback(w.Data)
+		}
+
+		w.CurrentScreen = INITIAL_SCREEN
+		w.CurrentLanguage = LANG_EN
+		w.PreviousScreen = ""
+
+		w.Data = map[string]any{}
+
+		return nil
+	case "00":
 		// Main Menu
 		w.Data = map[string]any{}
 		w.CurrentScreen = INITIAL_SCREEN
@@ -382,11 +395,13 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 
 			if w.CurrentLanguage == LANG_NY {
 				result = append(result, "")
-				result = append(result, "0. Tiyambirenso")
+				result = append(result, "0. Zatheka")
+				result = append(result, "00. Tiyambirenso")
 				result = append(result, "99. Basi")
 			} else {
 				result = append(result, "")
-				result = append(result, "0. Main Menu")
+				result = append(result, "0. Submit")
+				result = append(result, "00. Main Menu")
 				result = append(result, "99. Cancel")
 			}
 
@@ -408,13 +423,13 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 
 			if w.CurrentLanguage == LANG_NY {
 				if input != startLabel {
-					options = append(options, "0. Tiyambirenso")
+					options = append(options, "00. Tiyambirenso")
 				}
 
 				options = append(options, "99. Basi")
 			} else {
 				if input != startLabel {
-					options = append(options, "0. Main Menu")
+					options = append(options, "00. Main Menu")
 				}
 
 				options = append(options, "99. Cancel")
