@@ -2,7 +2,9 @@
   "initialScreen": "enterLanguage",
   "enterLanguage": {
     "type": "inputScreen",
-    "text": "Language",
+    "text": {
+      "all": "Language"
+    },
     "options": [
       {
         "position": 1,

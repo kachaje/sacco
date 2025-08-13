@@ -294,6 +294,18 @@ func TestResolveData(t *testing.T) {
 	}
 }
 
+func TestLoadLabel(t *testing.T) {
+	wf := parser.NewWorkflow(data)
+
+	target := "Language"
+
+	result := wf.LoadLabel("language")
+
+	if result != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, result)
+	}
+}
+
 func TestGetLabel(t *testing.T) {
 	wf := parser.NewWorkflow(data)
 
@@ -333,4 +345,12 @@ func TestGetLabel(t *testing.T) {
 		"dateOfBirth":   "1999-09-01",
 		"maritalStatus": "2",
 	}
+
+	wf.CurrentScreen = "formSummary"
+
+	node = wf.GetNode(wf.CurrentScreen)
+
+	result = wf.GetLabel(node, wf.CurrentScreen)
+
+	fmt.Println(result)
 }

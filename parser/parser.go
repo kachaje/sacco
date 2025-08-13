@@ -25,6 +25,7 @@ type WorkFlow struct {
 	PreviousScreen  string
 	CurrentLanguage string
 	ScreenIdMap     map[string]string
+	ScreenOrder     map[int]string
 }
 
 func NewWorkflow(tree map[string]any) *WorkFlow {
@@ -34,8 +35,10 @@ func NewWorkflow(tree map[string]any) *WorkFlow {
 		CurrentScreen:   INITIAL_SCREEN,
 		CurrentLanguage: LANG_EN,
 		ScreenIdMap:     map[string]string{},
+		ScreenOrder:     map[int]string{},
 	}
 
+	i := 0
 	for key, value := range tree {
 		row, ok := value.(map[string]any)
 		if ok {
@@ -43,6 +46,10 @@ func NewWorkflow(tree map[string]any) *WorkFlow {
 				id := fmt.Sprintf("%v", row["inputIdentifier"])
 
 				w.ScreenIdMap[id] = key
+
+				w.ScreenOrder[i] = id
+
+				i++
 			}
 		}
 	}
@@ -264,6 +271,39 @@ func (w *WorkFlow) ResolveData(data map[string]any) map[string]any {
 	return result
 }
 
+func (w *WorkFlow) LoadLabel(key string) string {
+	dispLabel := key
+
+	if w.ScreenIdMap[key] != "" && w.Tree[w.ScreenIdMap[key]] != nil {
+		val, ok := w.Tree[w.ScreenIdMap[key]].(map[string]any)
+		if ok {
+			if val["text"] != nil {
+				vl, ok := val["text"].(map[string]any)
+				if ok {
+					if vl["all"] != nil {
+						dispLabel = fmt.Sprintf("%v", vl["all"])
+					} else if w.CurrentLanguage != "" {
+						langLabel := LANG_EN_LABEL
+
+						switch w.CurrentLanguage {
+						case LANG_NY:
+							langLabel = LANG_NY_LABEL
+						default:
+							langLabel = LANG_EN_LABEL
+						}
+
+						if vl[langLabel] != nil {
+							dispLabel = fmt.Sprintf("%v", vl[langLabel])
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return dispLabel
+}
+
 func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 	var label string
 
@@ -281,7 +321,21 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 		}
 
 		if nodeType == QUIT_SCREEN {
-			fmt.Println(w.Data)
+			data := w.ResolveData(w.Data)
+
+			result := make([]string, len(w.ScreenOrder))
+
+			fmt.Println(w.ScreenOrder)
+
+			for i, key := range w.ScreenOrder {
+				if data[key] != nil {
+					dispLabel := w.LoadLabel(key)
+
+					result[i] = fmt.Sprintf("%d. %s: %v", i+1, dispLabel, data[key])
+				}
+			}
+
+			fmt.Println(result)
 		} else {
 			if w.Tree[INITIAL_SCREEN] != nil {
 				startLabel = fmt.Sprintf("%s", w.Tree[INITIAL_SCREEN])
