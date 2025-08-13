@@ -327,7 +327,7 @@ func TestGetLabel(t *testing.T) {
 
 	wf.CurrentLanguage = "2"
 
-	target = "Language: 1. English 2. Chichewa 99. Basi"
+	target = "Chiyankhulo: 1. English 2. Chichewa 99. Basi"
 
 	result = wf.GetLabel(node, wf.CurrentScreen)
 
@@ -350,7 +350,23 @@ func TestGetLabel(t *testing.T) {
 
 	node = wf.GetNode(wf.CurrentScreen)
 
+	target = `Zomwe Mwalemba
+1. Chiyankhulo: English
+2. Dzina Loyamba: Mary
+3. Dzina La Abambo: Banda
+4. Dzina Lina?: No
+5. Tsiku Lobadwa: 1999-09-01
+6. Muli M'banja: Single
+
+0. Tiyambirenso
+99. Basi
+`
+	
 	result = wf.GetLabel(node, wf.CurrentScreen)
 
-	fmt.Println(result)
+	if utils.CleanScript([]byte(target)) != utils.CleanScript([]byte(result)) {
+		t.Fatalf(`Test failed. 
+Expected: %v; 
+Actual: %v`, target, result)
+	}
 }

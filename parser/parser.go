@@ -3,6 +3,8 @@ package parser
 import (
 	"fmt"
 	"regexp"
+	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -38,7 +40,6 @@ func NewWorkflow(tree map[string]any) *WorkFlow {
 		ScreenOrder:     map[int]string{},
 	}
 
-	i := 0
 	for key, value := range tree {
 		row, ok := value.(map[string]any)
 		if ok {
@@ -47,9 +48,13 @@ func NewWorkflow(tree map[string]any) *WorkFlow {
 
 				w.ScreenIdMap[id] = key
 
-				w.ScreenOrder[i] = id
+				if row["order"] != nil {
+					i, err := strconv.Atoi(fmt.Sprintf("%v", row["order"]))
 
-				i++
+					if err == nil {
+						w.ScreenOrder[i] = id
+					}
+				}
 			}
 		}
 	}
@@ -323,26 +328,57 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 		if nodeType == QUIT_SCREEN {
 			data := w.ResolveData(w.Data)
 
-			result := make([]string, len(w.ScreenOrder))
+			result := []string{}
 
-			fmt.Println(w.ScreenOrder)
+			if w.CurrentLanguage == LANG_NY {
+				result = append(result, "Zomwe Mwalemba")
+			} else {
+				result = append(result, "Summary")
+			}
 
-			for i, key := range w.ScreenOrder {
+			indices := make([]int, 0, len(w.ScreenOrder))
+
+			for k := range w.ScreenOrder {
+				indices = append(indices, k)
+			}
+
+			sort.Ints(indices)
+
+			j := 0
+			for i := range indices {
+				key := w.ScreenOrder[i]
+
 				if data[key] != nil {
 					dispLabel := w.LoadLabel(key)
 
-					result[i] = fmt.Sprintf("%d. %s: %v", i+1, dispLabel, data[key])
+					result = append(result, fmt.Sprintf("%d. %s: %v", j+1, dispLabel, data[key]))
+
+					j++
 				}
 			}
 
-			fmt.Println(result)
+			if w.CurrentLanguage == LANG_NY {
+				result = append(result, "")
+				result = append(result, "0. Tiyambirenso")
+				result = append(result, "99. Basi")
+			} else {
+				result = append(result, "")
+				result = append(result, "0. Main Menu")
+				result = append(result, "99. Cancel")
+			}
+
+			label = strings.Join(result, "\n")
 		} else {
 			if w.Tree[INITIAL_SCREEN] != nil {
 				startLabel = fmt.Sprintf("%s", w.Tree[INITIAL_SCREEN])
 			}
 
-			if node["text"] != nil {
-				title = fmt.Sprintf("%s: ", node["text"])
+			if node["inputIdentifier"] != nil {
+				id := fmt.Sprintf("%v", node["inputIdentifier"])
+
+				dispLabel := w.LoadLabel(id)
+
+				title = fmt.Sprintf("%s: ", dispLabel)
 			}
 
 			options := w.NodeOptions(input)

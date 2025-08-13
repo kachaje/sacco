@@ -1,9 +1,11 @@
 {
   "initialScreen": "enterLanguage",
   "enterLanguage": {
+    "order": 0,
     "type": "inputScreen",
     "text": {
-      "all": "Language"
+      "en": "Language",
+      "ny": "Chiyankhulo"
     },
     "options": [
       {
@@ -23,6 +25,7 @@
     "nextScreen": "enterFirstName"
   },
   "enterFirstName": {
+    "order": 1,
     "type": "inputScreen",
     "text": {
       "en": "First Name",
@@ -32,6 +35,7 @@
     "nextScreen": "enterLastName"
   },
   "enterLastName": {
+    "order": 2,
     "type": "inputScreen",
     "text": {
       "en": "Last Name",
@@ -41,6 +45,7 @@
     "nextScreen": "enterDateOfBirth"
   },
   "enterAskOtherName": {
+    "order": 3,
     "type": "inputScreen",
     "text": {
       "en": "Other Name?",
@@ -68,6 +73,7 @@
     "nextScreen": "enterGender"
   },
   "enterOtherName": {
+    "order": 4,
     "type": "inputScreen",
     "text": {
       "en": "Other Name",
@@ -77,6 +83,7 @@
     "nextScreen": "enterDateOfBirth"
   },
   "enterDateOfBirth": {
+    "order": 5,
     "type": "inputScreen",
     "text": {
       "en": "Date of Birth",
@@ -87,6 +94,7 @@
     "nextScreen": "enterMaritalStatus"
   },
   "enterMaritalStatus": {
+    "order": 6,
     "type": "inputScreen",
     "text": {
       "en": "Marital Status",
@@ -126,6 +134,7 @@
     "nextScreen": "formSummary"
   },
   "formSummary": {
+    "order": 7,
     "type": "quitScreen"
   }
 }
