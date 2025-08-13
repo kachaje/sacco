@@ -1,10 +1,13 @@
 package server
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"regexp"
 	"sacco/utils"
 	"sync"
@@ -12,6 +15,7 @@ import (
 	_ "embed"
 	"html/template"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
 
@@ -25,6 +29,7 @@ var indexHTML string
 
 var sessions = make(map[string]*Session)
 var mu sync.Mutex
+var port int
 
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.FormValue("sessionId")
@@ -132,11 +137,21 @@ rerunSwitch:
 }
 
 func wsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	upgrader := websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
 	}
+
+	fmt.Println(r.Method)
+
+	phoneNumber := r.URL.Query().Get("phoneNumber")
+	serviceCode := r.URL.Query().Get("serviceCode")
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -147,6 +162,8 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Client connected")
 
+	sessionId := uuid.NewString()
+
 	for {
 		_, message, err := conn.ReadMessage()
 		if err != nil {
@@ -154,14 +171,50 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		input := string(message)
+		text := string(message)
 
-		_ = input
+		data := url.Values{}
+		data.Set("sessionId", sessionId)
+		data.Set("text", text)
+		data.Set("phoneNumber", phoneNumber)
+		data.Set("serviceCode", serviceCode)
+
+		encodedData := data.Encode()
+
+		payload := bytes.NewBufferString(encodedData)
+
+		req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://localhost:%d/ussd", port), payload)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			break
+		}
+
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+		client := &http.Client{}
+
+		resp, err := client.Do(req)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			break
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			break
+		}
+
+		err = conn.WriteMessage(websocket.TextMessage, body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			break
+		}
 	}
 }
 
 func Main() {
-	var port int
 	var err error
 
 	flag.IntVar(&port, "p", port, "server port")
