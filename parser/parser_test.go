@@ -360,6 +360,7 @@ func TestGetLabel(t *testing.T) {
 
 0. Zatheka
 00. Tiyambirenso
+98. Bwererani
 99. Basi
 `
 
@@ -541,6 +542,7 @@ Actual: %s`, target, result)
 
 	target = `Dzina Loyamba: 
 00. Tiyambirenso
+98. Bwererani
 99. Basi`
 
 	result = wf.NavNext("2")
@@ -563,6 +565,7 @@ Actual: %s`, target, result)
 
 	target = `Dzina La Abambo: 
 00. Tiyambirenso
+98. Bwererani
 99. Basi`
 
 	result = wf.NavNext("Mary")
@@ -583,6 +586,7 @@ Actual: %s`, target, result)
 1. Inde
 2. Ayi
 00. Tiyambirenso
+98. Bwererani
 99. Basi`
 
 	result = wf.NavNext("Banda")
@@ -601,6 +605,7 @@ Actual: %s`, target, result)
 
 	target = `Tsiku Lobadwa: 
 00. Tiyambirenso
+98. Bwererani
 99. Basi`
 
 	result = wf.NavNext("2")
@@ -623,6 +628,7 @@ Actual: %s`, target, result)
 3. Woferedwa
 4. Osudzulidwa
 00. Tiyambirenso
+98. Bwererani
 99. Basi`
 
 	result = wf.NavNext("1999-09-01")
@@ -649,6 +655,7 @@ Actual: %s`, target, result)
 
 0. Zatheka
 00. Tiyambirenso
+98. Bwererani
 99. Basi`
 
 	result = wf.NavNext("2")
@@ -688,6 +695,32 @@ func TestNavMain(t *testing.T) {
 	wf.NavMain()
 
 	target = "initialScreen"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+}
+
+func TestBack(t *testing.T) {
+	wf := parser.NewWorkflow(data, nil)
+
+	wf.NavNext("")
+
+	wf.NavNext("1")
+
+	target := "enterFirstName"
+
+	if wf.CurrentScreen != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
+	}
+
+	node := wf.NextNode("98")
+
+	if node == nil {
+		t.Fatal("Test failed")
+	}
+
+	target = "enterLanguage"
 
 	if wf.CurrentScreen != target {
 		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
