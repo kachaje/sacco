@@ -117,7 +117,7 @@ func TestNodeOptions(t *testing.T) {
 		}
 	}
 
-	wf.CurrentLanguage = "ny"
+	wf.CurrentLanguage = "2"
 
 	result = wf.NodeOptions("enterMaritalStatus")
 
@@ -351,12 +351,12 @@ func TestGetLabel(t *testing.T) {
 	node = wf.GetNode(wf.CurrentScreen)
 
 	target = `Zomwe Mwalemba
-1. Chiyankhulo: English
-2. Dzina Loyamba: Mary
-3. Dzina La Abambo: Banda
-4. Dzina Lina?: No
-5. Tsiku Lobadwa: 1999-09-01
-6. Muli M'banja: Single
+- Chiyankhulo: English
+- Dzina Loyamba: Mary
+- Dzina La Abambo: Banda
+- Dzina Lina?: No
+- Tsiku Lobadwa: 1999-09-01
+- Muli M'banja: Single
 
 0. Zatheka
 00. Tiyambirenso
