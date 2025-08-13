@@ -28,9 +28,10 @@ type WorkFlow struct {
 	CurrentLanguage string
 	ScreenIdMap     map[string]string
 	ScreenOrder     map[int]string
+	SubmitCallback  func(map[string]any)
 }
 
-func NewWorkflow(tree map[string]any) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any)) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -38,6 +39,7 @@ func NewWorkflow(tree map[string]any) *WorkFlow {
 		CurrentLanguage: LANG_EN,
 		ScreenIdMap:     map[string]string{},
 		ScreenOrder:     map[int]string{},
+		SubmitCallback:  callbackFunc,
 	}
 
 	for key, value := range tree {
@@ -142,6 +144,23 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	var node map[string]any
 	var nextScreen string
 	var ok bool
+
+	switch input {
+	case "99":
+		// Cancel
+		w.Data = map[string]any{}
+		w.CurrentScreen = INITIAL_SCREEN
+		w.CurrentLanguage = LANG_EN
+		w.PreviousScreen = ""
+
+		return nil
+	case "0":
+		// Main Menu
+		w.Data = map[string]any{}
+		w.CurrentScreen = INITIAL_SCREEN
+		w.CurrentLanguage = LANG_EN
+		w.PreviousScreen = ""
+	}
 
 	if w.CurrentScreen == INITIAL_SCREEN {
 		nextScreen, ok = w.Tree[INITIAL_SCREEN].(string)

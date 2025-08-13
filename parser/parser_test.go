@@ -29,7 +29,7 @@ func init() {
 }
 
 func TestGetNode(t *testing.T) {
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	result := wf.GetNode("enterLanguage")
 
@@ -66,7 +66,7 @@ func TestInputIncluded(t *testing.T) {
 		},
 	}
 
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	defaultRoute := "enterAskOtherName"
 
@@ -103,7 +103,7 @@ func TestInputIncluded(t *testing.T) {
 }
 
 func TestNodeOptions(t *testing.T) {
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	result := wf.NodeOptions("enterLanguage")
 
@@ -147,7 +147,7 @@ func TestNodeOptions(t *testing.T) {
 }
 
 func TestNextNode(t *testing.T) {
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	result := wf.NextNode("")
 
@@ -227,7 +227,7 @@ func TestNextNode(t *testing.T) {
 }
 
 func TestOptionValue(t *testing.T) {
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	wf.CurrentLanguage = "2"
 
@@ -263,7 +263,7 @@ func TestOptionValue(t *testing.T) {
 }
 
 func TestResolveData(t *testing.T) {
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	result := wf.ResolveData(map[string]any{
 		"language":      "1",
@@ -295,7 +295,7 @@ func TestResolveData(t *testing.T) {
 }
 
 func TestLoadLabel(t *testing.T) {
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	target := "Language"
 
@@ -307,7 +307,7 @@ func TestLoadLabel(t *testing.T) {
 }
 
 func TestGetLabel(t *testing.T) {
-	wf := parser.NewWorkflow(data)
+	wf := parser.NewWorkflow(data, nil)
 
 	node := wf.NextNode("")
 
@@ -361,7 +361,7 @@ func TestGetLabel(t *testing.T) {
 0. Tiyambirenso
 99. Basi
 `
-	
+
 	result = wf.GetLabel(node, wf.CurrentScreen)
 
 	if utils.CleanScript([]byte(target)) != utils.CleanScript([]byte(result)) {
