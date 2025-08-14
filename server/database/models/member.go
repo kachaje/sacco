@@ -84,8 +84,14 @@ func (m *Member) UpdateMember(data map[string]any, id int64) error {
 		values = append(values, value)
 	}
 
-	fmt.Println(strings.Join(fields, " "))
-	fmt.Println(values...)
+	values = append(values, id)
+
+	statement := fmt.Sprintf("UPDATE member SET %s WHERE id=?", strings.Join(fields, ", "))
+
+	_, err := m.db.Exec(statement, values...)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

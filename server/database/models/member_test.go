@@ -72,5 +72,59 @@ func TestAddMember(t *testing.T) {
 }
 
 func TestUpdateMember(t *testing.T) {
-	
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	m := models.NewMember(db.DB)
+
+	fields := []any{
+		"Mary",
+		"Banda",
+		"Female",
+	}
+
+	result, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender) VALUES (?, ?, ?)`, fields...)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data := map[string]any{
+		"firstName": "John",
+		"lastName":  "Bandawe",
+		"gender":    "Male",
+	}
+
+	err = m.UpdateMember(data, id)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	row := db.DB.QueryRow(`SELECT id, firstName, lastName, gender FROM member WHERE id=?`, id)
+
+	var firstName,
+		lastName,
+		gender string
+
+	err = row.Scan(&id, &firstName, &lastName, &gender)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if firstName != data["firstName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["firstName"], firstName)
+	}
+
+	if lastName != data["lastName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["lastName"], lastName)
+	}
+
+	if gender != data["gender"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["gender"], gender)
+	}
 }
