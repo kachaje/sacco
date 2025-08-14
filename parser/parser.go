@@ -58,26 +58,26 @@ func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string,
 	}
 
 	for key, value := range tree {
-		row, ok := value.(map[string]any)
-		if ok {
-			if row["inputIdentifier"] != nil {
-				id := fmt.Sprintf("%v", row["inputIdentifier"])
-
-				w.ScreenIdMap[id] = key
-
-				if row["order"] != nil {
-					i, err := strconv.Atoi(fmt.Sprintf("%v", row["order"]))
-
-					if err == nil {
-						w.ScreenOrder[i] = id
-					}
-				}
+		if key == "model" {
+			val, ok := value.(string)
+			if ok {
+				w.CurrentModel = val
 			}
+		} else {
+			row, ok := value.(map[string]any)
+			if ok {
+				if row["inputIdentifier"] != nil {
+					id := fmt.Sprintf("%v", row["inputIdentifier"])
 
-			if row["model"] != nil {
-				val, ok := row["model"].(string)
-				if ok {
-					w.CurrentModel = val
+					w.ScreenIdMap[id] = key
+
+					if row["order"] != nil {
+						i, err := strconv.Atoi(fmt.Sprintf("%v", row["order"]))
+
+						if err == nil {
+							w.ScreenOrder[i] = id
+						}
+					}
 				}
 			}
 		}
@@ -203,7 +203,9 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	case "0":
 		// Submit
 		if w.SubmitCallback != nil {
-			w.SubmitCallback(w.Data, &w.CurrentModel, &w.CurrentPhoneNumber)
+			data := w.ResolveData(w.Data)
+
+			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

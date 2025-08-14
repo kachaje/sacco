@@ -29,6 +29,7 @@ type Session struct {
 	Data              map[string]string
 	NewMemberWorkflow *parser.WorkFlow
 	LanguageWorkflow  *parser.WorkFlow
+	PreferredLanguage string
 }
 
 //go:embed index.html
@@ -76,35 +77,35 @@ func saveData(data map[string]any, model, phoneNumber *string) {
 	}
 }
 
-func savePreference(phoneNumber, key, value string) {
+func savePreference(phoneNumber, key, value string) error {
 	settingsFile := filepath.Join(preferencesFolder, phoneNumber)
+
+	data := map[string]any{}
 
 	_, err := os.Stat(settingsFile)
 	if !os.IsNotExist(err) {
 		content, err := os.ReadFile(settingsFile)
 		if err != nil {
 			log.Println(err)
-			return
+			return err
 		}
-
-		data := map[string]any{}
 
 		err = json.Unmarshal(content, &data)
 		if err != nil {
 			log.Println(err)
-			return
+			return err
 		}
-
-		data[key] = value
-
-		payload, err := json.MarshalIndent(data, "", "  ")
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		os.WriteFile(settingsFile, payload, 0644)
 	}
+
+	data[key] = value
+
+	payload, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return os.WriteFile(settingsFile, payload, 0644)
 }
 
 func checkPreferredLanguage(phoneNumber string) *string {
@@ -165,6 +166,11 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			LanguageWorkflow:  parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber),
 			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData, preferredLanguage, &phoneNumber),
 		}
+
+		if preferredLanguage != nil {
+			session.PreferredLanguage = *preferredLanguage
+		}
+
 		sessions[sessionID] = session
 	}
 	mu.Unlock()
@@ -172,6 +178,12 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	var response string
 
 rerunSwitch:
+	preferredLanguage = checkPreferredLanguage(phoneNumber)
+
+	if preferredLanguage != nil {
+		session.PreferredLanguage = *preferredLanguage
+	}
+
 	switch session.CurrentMenu {
 	case "main":
 		switch text {
@@ -205,7 +217,7 @@ rerunSwitch:
 			mu.Unlock()
 		}
 	case "language":
-		if text == "0" || text == "" {
+		if text == "" {
 			session.CurrentMenu = "main"
 			goto rerunSwitch
 		} else {
