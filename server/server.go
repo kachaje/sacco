@@ -25,11 +25,15 @@ import (
 )
 
 type Session struct {
-	CurrentMenu       string
-	Data              map[string]string
-	PIWorkflow        *parser.WorkFlow
-	LanguageWorkflow  *parser.WorkFlow
-	PreferredLanguage string
+	CurrentMenu           string
+	Data                  map[string]string
+	PIWorkflow            *parser.WorkFlow
+	LanguageWorkflow      *parser.WorkFlow
+	OccupationWorkflow    *parser.WorkFlow
+	ContactsWorkflow      *parser.WorkFlow
+	NomineeWorkflow       *parser.WorkFlow
+	BeneficiariesWorkflow *parser.WorkFlow
+	PreferredLanguage     string
 }
 
 //go:embed index.html
@@ -37,6 +41,18 @@ var indexHTML string
 
 //go:embed workflows/membership/personalInformation.yml
 var PITemplate string
+
+//go:embed workflows/membership/occupationalDetails.yml
+var occupationTemplate string
+
+//go:embed workflows/membership/contactDetails.yml
+var contactsTemplate string
+
+//go:embed workflows/membership/nomineeDetails.yml
+var nomineeTemplate string
+
+//go:embed workflows/membership/beneficiaries.yml
+var beneficiariesTemplate string
 
 //go:embed workflows/preferences/language.yml
 var languageTemplate string
@@ -46,6 +62,10 @@ var mu sync.Mutex
 var port int
 var personalInformationData map[string]any
 var languageData map[string]any
+var occupationData map[string]any
+var contactsData map[string]any
+var nomineeData map[string]any
+var beneficiariesData map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
 
@@ -61,6 +81,27 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	occupationData, err = utils.LoadYaml(occupationTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	contactsData, err = utils.LoadYaml(contactsTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	nomineeData, err = utils.LoadYaml(nomineeTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	beneficiariesData, err = utils.LoadYaml(beneficiariesTemplate)
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 func saveData(data map[string]any, model, phoneNumber *string) {
@@ -161,10 +202,20 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	session, exists := sessions[sessionID]
 	if !exists {
 		session = &Session{
-			CurrentMenu:      "main",
-			Data:             make(map[string]string),
+			CurrentMenu: "main",
+			Data:        make(map[string]string),
+
 			LanguageWorkflow: parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber),
-			PIWorkflow:       parser.NewWorkflow(personalInformationData, saveData, preferredLanguage, &phoneNumber),
+
+			PIWorkflow: parser.NewWorkflow(personalInformationData, saveData, preferredLanguage, &phoneNumber),
+
+			OccupationWorkflow: parser.NewWorkflow(occupationData, saveData, preferredLanguage, &phoneNumber),
+
+			ContactsWorkflow: parser.NewWorkflow(contactsData, saveData, preferredLanguage, &phoneNumber),
+
+			NomineeWorkflow: parser.NewWorkflow(nomineeData, saveData, preferredLanguage, &phoneNumber),
+
+			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, saveData, preferredLanguage, &phoneNumber),
 		}
 
 		if preferredLanguage != nil {
@@ -175,176 +226,183 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	mu.Unlock()
 
-	var response string
+	var runSwitch func(session *Session) string
 
-rerunSwitch:
-	preferredLanguage = checkPreferredLanguage(phoneNumber)
+	runSwitch = func(session *Session) string {
+		preferredLanguage := checkPreferredLanguage(phoneNumber)
 
-	if preferredLanguage != nil {
-		session.PreferredLanguage = *preferredLanguage
-	}
-
-	switch session.CurrentMenu {
-	case "main":
-		switch text {
-		case "", "0":
-			if preferredLanguage != nil && *preferredLanguage == "ny" {
-				response = "CON Takulandilani ku Kaso SACCO\n" +
-					"1. Membala Watsopano\n" +
-					"2. Tengani Ngongole\n" +
-					"3. Balansi\n" +
-					"4. Matumizidwe\n" +
-					"5. Chiyankhulo\n" +
-					"6. Malizani"
-			} else {
-				response = "CON Welcome to Kaso SACCO\n" +
-					"1. Membership Application\n" +
-					"2. Loan Application\n" +
-					"3. Check Balance\n" +
-					"4. Banking Details\n" +
-					"5. Preferred Language\n" +
-					"6. Exit"
-			}
-		case "1":
-			text = "000"
-			session.CurrentMenu = "registration"
-			goto rerunSwitch
-		case "2":
-			text = ""
-			session.CurrentMenu = "loan"
-			goto rerunSwitch
-		case "3":
-			text = ""
-			session.CurrentMenu = "balance"
-			goto rerunSwitch
-		case "4":
-			text = ""
-			session.CurrentMenu = "banking"
-			goto rerunSwitch
-		case "5":
-			session.CurrentMenu = "language"
-			goto rerunSwitch
-		case "6":
-			if preferredLanguage != nil && *preferredLanguage == "ny" {
-				response = "END Zikomo potidalila"
-			} else {
-				response = "END Thank you for using our service"
-			}
-			mu.Lock()
-			delete(sessions, sessionID)
-			mu.Unlock()
+		if preferredLanguage != nil {
+			session.PreferredLanguage = *preferredLanguage
 		}
-	case "language":
-		if text == "" {
-			session.CurrentMenu = "main"
-			goto rerunSwitch
-		} else {
-			response = session.LanguageWorkflow.NavNext(text)
 
-			if strings.TrimSpace(response) == "" {
-				session.CurrentMenu = "main"
-				text = ""
-				goto rerunSwitch
-			}
-		}
-	case "banking":
-		if text == "0" {
-			session.CurrentMenu = "main"
-			goto rerunSwitch
-		} else {
-			firstLine := "CON Banking Details\n"
-			lastLine := "0. Back to Main Menu"
-			name := "Name"
-			number := "Number"
-			branch := "Branch"
+		var response string
 
-			if preferredLanguage != nil && *preferredLanguage == "ny" {
-				firstLine = "CON Matumizidwe\n"
-				lastLine = "0. Bwererani Pofikira"
-				name = "Dzina"
-				number = "Nambala"
-				branch = "Buranchi"
-			}
-
+		switch session.CurrentMenu {
+		case "main":
 			switch text {
+			case "", "0":
+				if preferredLanguage != nil && *preferredLanguage == "ny" {
+					response = "CON Takulandilani ku Kaso SACCO\n" +
+						"1. Membala Watsopano\n" +
+						"2. Tengani Ngongole\n" +
+						"3. Balansi\n" +
+						"4. Matumizidwe\n" +
+						"5. Chiyankhulo\n" +
+						"6. Malizani"
+				} else {
+					response = "CON Welcome to Kaso SACCO\n" +
+						"1. Membership Application\n" +
+						"2. Loan Application\n" +
+						"3. Check Balance\n" +
+						"4. Banking Details\n" +
+						"5. Preferred Language\n" +
+						"6. Exit"
+				}
 			case "1":
-				response = "CON National Bank of Malawi\n" +
-					fmt.Sprintf("%8s: Kaso SACCO\n", name) +
-					fmt.Sprintf("%8s: 1006857589\n", number) +
-					fmt.Sprintf("%8s: Lilongwe\n", branch) +
-					lastLine
+				text = "000"
+				session.CurrentMenu = "registration"
+				return runSwitch(session)
 			case "2":
-				response = "CON Airtel Money\n" +
-					fmt.Sprintf("%8s: Kaso SACCO\n", name) +
-					fmt.Sprintf("%8s: 0985 242 629\n", number) +
-					lastLine
-			default:
-				response = firstLine +
-					"1. National Bank\n" +
-					"2. Airtel Money\n" +
-					lastLine
+				text = "000"
+				session.CurrentMenu = "loan"
+				return runSwitch(session)
+			case "3":
+				text = "000"
+				session.CurrentMenu = "balance"
+				return runSwitch(session)
+			case "4":
+				text = "000"
+				session.CurrentMenu = "banking"
+				return runSwitch(session)
+			case "5":
+				session.CurrentMenu = "language"
+				return runSwitch(session)
+			case "6":
+				if preferredLanguage != nil && *preferredLanguage == "ny" {
+					response = "END Zikomo potidalila"
+				} else {
+					response = "END Thank you for using our service"
+				}
+				mu.Lock()
+				delete(sessions, sessionID)
+				mu.Unlock()
 			}
-		}
-	case "registration":
-		switch text {
-		case "00":
-			response = session.PIWorkflow.NavNext(text)
-			session.CurrentMenu = "main"
-			text = "0"
-			goto rerunSwitch
-		case "1":
-			session.CurrentMenu = "registration.1"
-			goto rerunSwitch
-		default:
-			if preferredLanguage != nil && *preferredLanguage == "ny" {
-				response = "CON Sankhani Zochita\n" +
-					"1. Zokhudza Membala\n" +
-					"2. Zokhudza Ntchito\n" +
-					"3. Adiresi Yamembela\n" +
-					"4. Wachibale wa Membala\n" +
-					"5. Odzalandila\n" +
-					"\n" +
-					"00. Tiyambirenso"
+		case "language":
+			if text == "" {
+				session.CurrentMenu = "main"
+				return runSwitch(session)
 			} else {
-				response = "CON Choose Activity\n" +
-					"1. Add Member Details\n" +
-					"2. Add Occupation Details\n" +
-					"3. Add Contact Details\n" +
-					"4. Add Next of Kin Details\n" +
-					"5. Add Beneficiaries\n" +
-					"\n" +
-					"00. Main Menu"
+				response = session.LanguageWorkflow.NavNext(text)
+
+				if strings.TrimSpace(response) == "" {
+					session.CurrentMenu = "main"
+					text = ""
+					return runSwitch(session)
+				}
+			}
+		case "banking":
+			if text == "0" {
+				session.CurrentMenu = "main"
+				return runSwitch(session)
+			} else {
+				firstLine := "CON Banking Details\n"
+				lastLine := "0. Back to Main Menu"
+				name := "Name"
+				number := "Number"
+				branch := "Branch"
+
+				if preferredLanguage != nil && *preferredLanguage == "ny" {
+					firstLine = "CON Matumizidwe\n"
+					lastLine = "0. Bwererani Pofikira"
+					name = "Dzina"
+					number = "Nambala"
+					branch = "Buranchi"
+				}
+
+				switch text {
+				case "1":
+					response = "CON National Bank of Malawi\n" +
+						fmt.Sprintf("%8s: Kaso SACCO\n", name) +
+						fmt.Sprintf("%8s: 1006857589\n", number) +
+						fmt.Sprintf("%8s: Lilongwe\n", branch) +
+						lastLine
+				case "2":
+					response = "CON Airtel Money\n" +
+						fmt.Sprintf("%8s: Kaso SACCO\n", name) +
+						fmt.Sprintf("%8s: 0985 242 629\n", number) +
+						lastLine
+				default:
+					response = firstLine +
+						"1. National Bank\n" +
+						"2. Airtel Money\n" +
+						lastLine
+				}
+			}
+		case "registration":
+			switch text {
+			case "00":
+				session.PIWorkflow.NavNext(text)
+				session.CurrentMenu = "main"
+				text = "0"
+				return runSwitch(session)
+			case "1":
+				session.CurrentMenu = "registration.1"
+				return runSwitch(session)
+			default:
+				if preferredLanguage != nil && *preferredLanguage == "ny" {
+					response = "CON Sankhani Zochita\n" +
+						"1. Zokhudza Membala\n" +
+						"2. Zokhudza Ntchito\n" +
+						"3. Adiresi Yamembela\n" +
+						"4. Wachibale wa Membala\n" +
+						"5. Odzalandila\n" +
+						"\n" +
+						"00. Tiyambirenso"
+				} else {
+					response = "CON Choose Activity\n" +
+						"1. Add Member Details\n" +
+						"2. Add Occupation Details\n" +
+						"3. Add Contact Details\n" +
+						"4. Add Next of Kin Details\n" +
+						"5. Add Beneficiaries\n" +
+						"\n" +
+						"00. Main Menu"
+				}
+			}
+		case "registration.1":
+			response = session.PIWorkflow.NavNext(text)
+
+			if text == "00" {
+				session.CurrentMenu = "main"
+				text = "0"
+				return runSwitch(session)
+			} else if strings.TrimSpace(response) == "" {
+				session.CurrentMenu = "registration"
+				text = ""
+				return runSwitch(session)
+			}
+		case "loan":
+			if text == "0" {
+				session.CurrentMenu = "main"
+				return runSwitch(session)
+			} else {
+				response = "CON Loan Application\n" +
+					"0. Back to Main Menu"
+			}
+		case "balance":
+			if text == "0" {
+				session.CurrentMenu = "main"
+				return runSwitch(session)
+			} else {
+				response = "CON Check Balance\n" +
+					"0. Back to Main Menu"
 			}
 		}
-	case "registration.1":
-		response = session.PIWorkflow.NavNext(text)
 
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			goto rerunSwitch
-		} else if strings.TrimSpace(response) == "" {
-			session.CurrentMenu = "registration"
-			text = ""
-			goto rerunSwitch
-		}
-	case "loan":
-		if text == "0" {
-			session.CurrentMenu = "main"
-			goto rerunSwitch
-		} else {
-			response = "CON Loan Application\n" +
-				"0. Back to Main Menu"
-		}
-	case "balance":
-		if text == "0" {
-			session.CurrentMenu = "main"
-			goto rerunSwitch
-		} else {
-			response = "CON Check Balance\n" +
-				"0. Back to Main Menu"
-		}
+		return response
 	}
+
+	response := runSwitch(session)
 
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, response)
