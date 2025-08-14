@@ -44,7 +44,7 @@ func (d *Database) initDb() error {
 			lastName TEXT,
 			otherName TEXT,
 			gender TEXT,
-			title TEXT
+			title TEXT,
 			maritalStatus TEXT,
 			dateOfBirth TEXT,
 			nationalId TEXT,
