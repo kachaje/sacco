@@ -28,6 +28,7 @@ type Session struct {
 	CurrentMenu       string
 	Data              map[string]string
 	NewMemberWorkflow *parser.WorkFlow
+	LanguageWorkflow  *parser.WorkFlow
 }
 
 //go:embed index.html
@@ -36,10 +37,14 @@ var indexHTML string
 //go:embed workflows/newMember.yml
 var newMemberTemplate string
 
+//go:embed workflows/preferences/language.yml
+var languageTemplate string
+
 var sessions = make(map[string]*Session)
 var mu sync.Mutex
 var port int
 var newMemberData map[string]any
+var languageData map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
 
@@ -47,6 +52,11 @@ func init() {
 	var err error
 
 	newMemberData, err = utils.LoadYaml(newMemberTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	languageData, err = utils.LoadYaml(languageTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -152,6 +162,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		session = &Session{
 			CurrentMenu:       "main",
 			Data:              make(map[string]string),
+			LanguageWorkflow:  parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber),
 			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData, preferredLanguage, &phoneNumber),
 		}
 		sessions[sessionID] = session
@@ -170,7 +181,8 @@ rerunSwitch:
 				"2. Loan Application\n" +
 				"3. Check Balance\n" +
 				"4. Banking Details\n" +
-				"5. Exit"
+				"5. Preferred Language\n" +
+				"6. Exit"
 		case "1":
 			session.CurrentMenu = "registration"
 			goto rerunSwitch
@@ -184,10 +196,26 @@ rerunSwitch:
 			session.CurrentMenu = "banking"
 			goto rerunSwitch
 		case "5":
+			session.CurrentMenu = "language"
+			goto rerunSwitch
+		case "6":
 			response = "END Thank you for using our service"
 			mu.Lock()
 			delete(sessions, sessionID)
 			mu.Unlock()
+		}
+	case "language":
+		if text == "0" || text == "" {
+			session.CurrentMenu = "main"
+			goto rerunSwitch
+		} else {
+			response = session.LanguageWorkflow.NavNext(text)
+
+			if strings.TrimSpace(response) == "" {
+				session.CurrentMenu = "main"
+				text = ""
+				goto rerunSwitch
+			}
 		}
 	case "banking":
 		if text == "0" {
@@ -346,7 +374,7 @@ func Main() {
 
 	_, err = os.Stat(preferencesFolder)
 	if os.IsNotExist(err) {
-		os.MkdirAll(preferencesFolder, 0644)
+		os.MkdirAll(preferencesFolder, 0755)
 	}
 
 	http.HandleFunc("/ws", wsHandler)
