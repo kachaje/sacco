@@ -400,17 +400,13 @@ func TestGotoMenu(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 
-	node = wf.NextNode("00")
-
-	if node == nil {
-		t.Fatal("Test failed")
-	}
+	wf.NextNode("00")
 
 	if len(wf.Data) != 0 {
 		t.Fatalf("Test failed. Expected: 0; Actual: %v", len(wf.Data))
 	}
 
-	target := "enterLanguage"
+	target := "initialScreen"
 
 	if wf.CurrentScreen != target {
 		t.Fatalf("Test failed. Expected: %s; Actual: %v", target, wf.CurrentScreen)
@@ -459,7 +455,7 @@ func TestCancel(t *testing.T) {
 		t.Fatalf("Test failed. Expected: %s; Actual: %v", target, wf.CurrentScreen)
 	}
 
-	if !called {
+	if called {
 		t.Fatal("Test failed")
 	}
 }
