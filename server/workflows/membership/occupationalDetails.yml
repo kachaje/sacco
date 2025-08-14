@@ -1,0 +1,51 @@
+model: occupationalDetails
+
+initialScreen: enterEmployerName
+
+enterEmployerName:
+  order: 13
+  type: inputScreen
+  text:
+    en: Employer Name
+    ny: Kogwira Ntchito
+  nextScreen: enterNetPay
+  inputIdentifier: employerName
+
+enterNetPay:
+  order: 14
+  type: inputScreen
+  text:
+    en: Net Pay
+    ny: Mumalandila Zingati
+  nextScreen: enterJobTitle
+  inputIdentifier: netPay
+
+enterJobTitle:
+  order: 15
+  type: inputScreen
+  text:
+    en: Job Title
+    ny: Udindo Wanu
+  nextScreen: enterEmployerAddress
+  inputIdentifier: jobTitle
+
+enterEmployerAddress:
+  order: 16
+  type: inputScreen
+  text:
+    en: Employer Address
+    ny: Keyala Yakuntchito
+  nextScreen: enterHighestQualification
+  inputIdentifier: employerAddress
+
+enterHighestQualification:
+  order: 17
+  type: inputScreen
+  text:
+    en: Highest Qualification
+    ny: Mulingo Wamaphunziro Anu
+  inputIdentifier: highestQualification
+  nextScreen: formSummary
+
+formSummary:
+  type: quitScreen
