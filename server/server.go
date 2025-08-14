@@ -73,7 +73,7 @@ func saveData(data map[string]any, model, phoneNumber *string) {
 			}
 		}
 	default:
-		fmt.Println(data)
+		fmt.Println("##########", data)
 	}
 }
 

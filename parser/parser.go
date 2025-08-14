@@ -31,6 +31,8 @@ type WorkFlow struct {
 	ScreenIdMap        map[string]string
 	ScreenOrder        map[int]string
 	SubmitCallback     func(map[string]any, *string, *string)
+	History            map[int]string
+	HistoryIndex       int
 }
 
 func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string, *string), preferredLanguage, phoneNumber *string) *WorkFlow {
@@ -42,6 +44,8 @@ func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string,
 		ScreenIdMap:     map[string]string{},
 		ScreenOrder:     map[int]string{},
 		SubmitCallback:  callbackFunc,
+		History:         map[int]string{},
+		HistoryIndex:    0,
 	}
 
 	if phoneNumber != nil {
@@ -187,6 +191,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	var nextScreen string
 	var ok bool
 
+	defer func() {
+		w.History[w.HistoryIndex] = w.CurrentScreen
+	}()
+
 	switch input {
 	case "99":
 		// Cancel
@@ -194,6 +202,8 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.CurrentScreen = INITIAL_SCREEN
 		w.CurrentLanguage = LANG_EN
 		w.PreviousScreen = ""
+		w.History = map[int]string{}
+		w.HistoryIndex = 0
 
 		if w.SubmitCallback != nil {
 			w.SubmitCallback(nil, &w.CurrentModel, &w.CurrentPhoneNumber)
@@ -211,6 +221,8 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.CurrentScreen = INITIAL_SCREEN
 		w.CurrentLanguage = LANG_EN
 		w.PreviousScreen = ""
+		w.History = map[int]string{}
+		w.HistoryIndex = 0
 
 		w.Data = map[string]any{}
 
@@ -221,10 +233,24 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.CurrentScreen = INITIAL_SCREEN
 		w.CurrentLanguage = LANG_EN
 		w.PreviousScreen = ""
+		w.History = map[int]string{}
+		w.HistoryIndex = 0
 	case "98":
 		if w.PreviousScreen != "" {
 			nextScreen = w.PreviousScreen
-			w.PreviousScreen = w.CurrentScreen
+
+			if w.HistoryIndex > 0 {
+				w.HistoryIndex--
+
+				prevIndex := w.HistoryIndex - 1
+
+				if val, ok := w.History[prevIndex]; ok {
+					w.PreviousScreen = val
+				}
+			} else {
+				w.PreviousScreen = ""
+			}
+
 			w.CurrentScreen = nextScreen
 
 			node = w.GetNode(nextScreen)
@@ -267,6 +293,8 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 					w.CurrentScreen = nextRoute
 
 					node = w.GetNode(w.CurrentScreen)
+
+					w.HistoryIndex++
 
 					return node
 				}
@@ -319,6 +347,8 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 	w.PreviousScreen = w.CurrentScreen
 	w.CurrentScreen = nextScreen
+
+	w.HistoryIndex++
 
 	return node
 }
