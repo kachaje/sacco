@@ -168,4 +168,7 @@ enterUtilityBillNo:
     en: Utility Bill Number
     ny: Nambala ya Umboni
   inputIdentifier: utilityBillNumber
-  nextScreen: enterAskEmployed
+  nextScreen: formSummary
+
+formSummary:
+  type: quitScreen

@@ -1,0 +1,20 @@
+initialScreen: enterLanguage
+
+enterLanguage:
+  order: 0
+  type: inputScreen
+  text:
+    en: Language
+    ny: Chiyankhulo
+  options:
+    - position: 1
+      label:
+        all: English
+    - position: 2
+      label:
+        all: Chichewa
+  inputIdentifier: language
+  nextScreen: formSummary
+
+formSummary:
+  type: quitScreen
