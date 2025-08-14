@@ -55,10 +55,46 @@ func init() {
 func saveData(data map[string]any, model, phoneNumber *string) {
 	switch *model {
 	case "preferredLanguage":
-
+		if data["language"] != nil && phoneNumber != nil {
+			language, ok := data["language"].(string)
+			if ok {
+				savePreference(*phoneNumber, "language", language)
+			}
+		}
+	default:
+		fmt.Println(data)
 	}
+}
 
-	fmt.Println(data)
+func savePreference(phoneNumber, key, value string) {
+	settingsFile := filepath.Join(preferencesFolder, phoneNumber)
+
+	_, err := os.Stat(settingsFile)
+	if !os.IsNotExist(err) {
+		content, err := os.ReadFile(settingsFile)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		data := map[string]any{}
+
+		err = json.Unmarshal(content, &data)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		data[key] = value
+
+		payload, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		os.WriteFile(settingsFile, payload, 0644)
+	}
 }
 
 func checkPreferredLanguage(phoneNumber string) *string {
