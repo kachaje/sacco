@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="data:image/png; base64; " />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kaso SACCO</title>
     <style>
@@ -21,10 +22,8 @@
       }
       h1 {
         text-align: center;
-        border-bottom: 1px solid #303591;
         color: #303591;
         text-shadow: 2px 2px #ccc;
-        padding-bottom: 5px;
       }
       .messages {
         font-size: x-large;
@@ -42,20 +41,28 @@
         float: right;
         font-size: large;
       }
+      #wrapper {
+        display: flex;
+        overflow: auto;
+        height: calc(60vh);
+        min-width: calc(40vw);
+        flex-direction: column;
+        justify-content: start;
+        margin-bottom: 5px;
+        padding: 8px 20px;
+        border-radius: 8px;
+        border: 1px solid #303591;
+        box-shadow: 2px 2px #ccc;
+      }
     </style>
   </head>
   <body>
     <div id="main">
       <div id="content">
         <h1>Kaso SACCO</h1>
-        <pre id="messages" class="messages">
-Welcome to Kaso SACCO
-1. Membership Application
-2. Loan Application
-3. Check Balance
-4. Banking Details
-5. Exit</pre
-        >
+        <div id="wrapper">
+          <pre id="messages" class="messages"></pre>
+        </div>
         <input type="text" id="messageInput" />
         <button id="sendButton">Send</button>
       </div>

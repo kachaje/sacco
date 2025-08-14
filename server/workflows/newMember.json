@@ -440,8 +440,8 @@
     "order": 28,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 1 Name",
-      "ny": "Dzina Wolandila 1"
+      "en": "First Beneficiary Name",
+      "ny": "Dzina Wolandila Woyamba"
     },
     "nextScreen": "enterBeneficiary1Percent",
     "inputIdentifier": "beneficiary1Name"
@@ -450,8 +450,8 @@
     "order": 29,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 1 Percent",
-      "ny": "Mulingo Wolandila 1"
+      "en": "First Beneficiary Percent",
+      "ny": "Mulingo Wolandila Woyamba"
     },
     "nextScreen": "enterBeneficiary1Contact",
     "inputIdentifier": "beneficiary1Percent"
@@ -460,8 +460,8 @@
     "order": 30,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 1 Contact",
-      "ny": "Keyala Wolandila 1"
+      "en": "First Beneficiary Contact",
+      "ny": "Keyala Wolandila Woyamba"
     },
     "nextScreen": "enterAskBeneficiary2",
     "inputIdentifier": "beneficiary1Contact"
@@ -497,8 +497,8 @@
     "order": 32,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 2 Name",
-      "ny": "Dzina Wolandila 2"
+      "en": "Second Beneficiary Name",
+      "ny": "Dzina Wolandila Wachiwiri"
     },
     "nextScreen": "enterBeneficiary2Percent",
     "inputIdentifier": "beneficiary2Name"
@@ -507,8 +507,8 @@
     "order": 33,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 2 Percent",
-      "ny": "Mulingo Wolandila 2"
+      "en": "Second Beneficiary Percent",
+      "ny": "Mulingo Wolandila Wachiwiri"
     },
     "nextScreen": "enterBeneficiary2Contact",
     "inputIdentifier": "beneficiary2Percent"
@@ -517,8 +517,8 @@
     "order": 34,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 2 Contact",
-      "ny": "Keyala Wolandila 2"
+      "en": "Second Beneficiary Contact",
+      "ny": "Keyala Wolandila Wachiwiri"
     },
     "nextScreen": "enterAskBeneficiary3",
     "inputIdentifier": "beneficiary2Contact"
@@ -554,8 +554,8 @@
     "order": 36,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 3 Name",
-      "ny": "Dzina Wolandila 3"
+      "en": "Third Beneficiary Name",
+      "ny": "Dzina Wolandila Wachitatu"
     },
     "nextScreen": "enterBeneficiary3Percent",
     "inputIdentifier": "beneficiary3Name"
@@ -564,8 +564,8 @@
     "order": 37,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 3 Percent",
-      "ny": "Mulingo Wolandila 3"
+      "en": "Third Beneficiary Percent",
+      "ny": "Mulingo Wolandila Wachitatu"
     },
     "nextScreen": "enterBeneficiary3Contact",
     "inputIdentifier": "beneficiary3Percent"
@@ -574,8 +574,8 @@
     "order": 38,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 3 Contact",
-      "ny": "Keyala Wolandila 3"
+      "en": "Third Beneficiary Contact",
+      "ny": "Keyala Wolandila Wachitatu"
     },
     "nextScreen": "enterAskBeneficiary4",
     "inputIdentifier": "beneficiary3Contact"
@@ -611,8 +611,8 @@
     "order": 40,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 4 Name",
-      "ny": "Dzina Wolandila 4"
+      "en": "Fourth Beneficiary Name",
+      "ny": "Dzina Wolandila Wachinayi"
     },
     "nextScreen": "enterBeneficiary4Percent",
     "inputIdentifier": "beneficiary4Name"
@@ -621,8 +621,8 @@
     "order": 41,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 4 Percent",
-      "ny": "Mulingo Wolandila 4"
+      "en": "Fourth Beneficiary Percent",
+      "ny": "Mulingo Wolandila Wachinayi"
     },
     "nextScreen": "enterBeneficiary4Contact",
     "inputIdentifier": "beneficiary4Percent"
@@ -631,8 +631,8 @@
     "order": 42,
     "type": "inputScreen",
     "text": {
-      "en": "Beneficiary 4 Contact",
-      "ny": "Keyala Wolandila 4"
+      "en": "Fourth Beneficiary Contact",
+      "ny": "Keyala Wolandila Wachinayi"
     },
     "nextScreen": "formSummary",
     "inputIdentifier": "beneficiary4Contact"

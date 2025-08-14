@@ -3,7 +3,9 @@ initialScreen: enterLanguage
 enterLanguage:
   order: 0
   type: inputScreen
-  text: Language
+  text:
+    en: Language
+    ny: Chiyankhulo
   options:
     - position: 1
       label:
@@ -163,6 +165,13 @@ enterUtilityBillType:
   text:
     en: Utility Bill Type
     ny: Mtundu Waumboni
+  options:
+    - position: 1
+      label:
+        all: ESCOM
+    - position: 2
+      label:
+        all: Water Board
   inputIdentifier: utilityBillType
   nextScreen: enterUtilityBillNo
 
@@ -179,7 +188,7 @@ enterAskEmployed:
   order: 12
   type: inputScreen
   text:
-    en: Employed?
+    en: Are you Employed?
     ny: Muli Pantchito?
   options:
     - position: 1
@@ -290,6 +299,92 @@ enterDistrict:
   text:
     en: Home District
     ny: Boma Lakwanu
+  options:
+    - position: 1
+      label:
+        all: Dedza
+    - position: 2
+      label:
+        all: Dowa
+    - position: 3
+      label:
+        all: Kasungu
+    - position: 4
+      label:
+        all: Lilongwe
+    - position: 5
+      label:
+        all: Mchinji
+    - position: 6
+      label:
+        all: Nkhotakota
+    - position: 7
+      label:
+        all: Ntcheu
+    - position: 8
+      label:
+        all: Ntchisi
+    - position: 9
+      label:
+        all: Salima
+    - position: 10
+      label:
+        all: Chitipa
+    - position: 11
+      label:
+        all: Karonga
+    - position: 12
+      label:
+        all: Likoma
+    - position: 13
+      label:
+        all: Mzimba
+    - position: 14
+      label:
+        all: Nkhata Bay
+    - position: 15
+      label:
+        all: Rumphi
+    - position: 16
+      label:
+        all: Balaka
+    - position: 17
+      label:
+        all: Blantyre
+    - position: 18
+      label:
+        all: Chikwawa
+    - position: 19
+      label:
+        all: Chiradzulu
+    - position: 20
+      label:
+        all: Machinga
+    - position: 21
+      label:
+        all: Mangochi
+    - position: 22
+      label:
+        all: Mulanje
+    - position: 23
+      label:
+        all: Mwanza
+    - position: 24
+      label:
+        all: Nsanje
+    - position: 25
+      label:
+        all: Thyolo
+    - position: 26
+      label:
+        all: Phalombe
+    - position: 27
+      label:
+        all: Zomba
+    - position: 28
+      label:
+        all: Neno
+
   nextScreen: enterNextOfKin
   inputIdentifier: homeDistrict
 
@@ -343,8 +438,8 @@ enterBeneficiary1:
   order: 28
   type: inputScreen
   text:
-    en: Beneficiary 1 Name
-    ny: Dzina Wolandila 1
+    en: First Beneficiary Name
+    ny: Dzina Wolandila Woyamba
   nextScreen: enterBeneficiary1Percent
   inputIdentifier: beneficiary1Name
 
@@ -352,8 +447,8 @@ enterBeneficiary1Percent:
   order: 29
   type: inputScreen
   text:
-    en: Beneficiary 1 Percent
-    ny: Mulingo Wolandila 1
+    en: First Beneficiary Percent
+    ny: Mulingo Wolandila Woyamba
   nextScreen: enterBeneficiary1Contact
   inputIdentifier: beneficiary1Percent
 
@@ -361,8 +456,8 @@ enterBeneficiary1Contact:
   order: 30
   type: inputScreen
   text:
-    en: Beneficiary 1 Contact
-    ny: Keyala Wolandila 1
+    en: First Beneficiary Contact
+    ny: Keyala Wolandila Woyamba
   nextScreen: enterAskBeneficiary2
   inputIdentifier: beneficiary1Contact
 
@@ -389,8 +484,8 @@ enterBeneficiary2:
   order: 32
   type: inputScreen
   text:
-    en: Beneficiary 2 Name
-    ny: Dzina Wolandila 2
+    en: Second Beneficiary Name
+    ny: Dzina Wolandila Wachiwiri
   nextScreen: enterBeneficiary2Percent
   inputIdentifier: beneficiary2Name
 
@@ -398,8 +493,8 @@ enterBeneficiary2Percent:
   order: 33
   type: inputScreen
   text:
-    en: Beneficiary 2 Percent
-    ny: Mulingo Wolandila 2
+    en: Second Beneficiary Percent
+    ny: Mulingo Wolandila Wachiwiri
   nextScreen: enterBeneficiary2Contact
   inputIdentifier: beneficiary2Percent
 
@@ -407,8 +502,8 @@ enterBeneficiary2Contact:
   order: 34
   type: inputScreen
   text:
-    en: Beneficiary 2 Contact
-    ny: Keyala Wolandila 2
+    en: Second Beneficiary Contact
+    ny: Keyala Wolandila Wachiwiri
   nextScreen: enterAskBeneficiary3
   inputIdentifier: beneficiary2Contact
 
@@ -435,8 +530,8 @@ enterBeneficiary3:
   order: 36
   type: inputScreen
   text:
-    en: Beneficiary 3 Name
-    ny: Dzina Wolandila 3
+    en: Third Beneficiary Name
+    ny: Dzina Wolandila Wachitatu
   nextScreen: enterBeneficiary3Percent
   inputIdentifier: beneficiary3Name
 
@@ -444,8 +539,8 @@ enterBeneficiary3Percent:
   order: 37
   type: inputScreen
   text:
-    en: Beneficiary 3 Percent
-    ny: Mulingo Wolandila 3
+    en: Third Beneficiary Percent
+    ny: Mulingo Wolandila Wachitatu
   nextScreen: enterBeneficiary3Contact
   inputIdentifier: beneficiary3Percent
 
@@ -453,8 +548,8 @@ enterBeneficiary3Contact:
   order: 38
   type: inputScreen
   text:
-    en: Beneficiary 3 Contact
-    ny: Keyala Wolandila 3
+    en: Third Beneficiary Contact
+    ny: Keyala Wolandila Wachitatu
   nextScreen: enterAskBeneficiary4
   inputIdentifier: beneficiary3Contact
 
@@ -481,8 +576,8 @@ enterBeneficiary4:
   order: 40
   type: inputScreen
   text:
-    en: Beneficiary 4 Name
-    ny: Dzina Wolandila 4
+    en: Fourth Beneficiary Name
+    ny: Dzina Wolandila Wachinayi
   nextScreen: enterBeneficiary4Percent
   inputIdentifier: beneficiary4Name
 
@@ -490,8 +585,8 @@ enterBeneficiary4Percent:
   order: 41
   type: inputScreen
   text:
-    en: Beneficiary 4 Percent
-    ny: Mulingo Wolandila 4
+    en: Fourth Beneficiary Percent
+    ny: Mulingo Wolandila Wachinayi
   nextScreen: enterBeneficiary4Contact
   inputIdentifier: beneficiary4Percent
 
@@ -499,8 +594,8 @@ enterBeneficiary4Contact:
   order: 42
   type: inputScreen
   text:
-    en: Beneficiary 4 Contact
-    ny: Keyala Wolandila 4
+    en: Fourth Beneficiary Contact
+    ny: Keyala Wolandila Wachinayi
   nextScreen: formSummary
   inputIdentifier: beneficiary4Contact
 
