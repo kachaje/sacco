@@ -2,12 +2,15 @@ package server
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"regexp"
 	"sacco/parser"
 	"sacco/utils"
@@ -38,6 +41,8 @@ var mu sync.Mutex
 var port int
 var newMemberData map[string]any
 
+var preferencesFolder = filepath.Join(".", "settings")
+
 func init() {
 	var err error
 
@@ -51,6 +56,40 @@ func saveData(data map[string]any, model *string) {
 	fmt.Println(data)
 }
 
+func checkPreferredLanguage(phoneNumber string) *string {
+	settingsFile := filepath.Join(preferencesFolder, phoneNumber)
+
+	_, err := os.Stat(settingsFile)
+	if !os.IsNotExist(err) {
+		content, err := os.ReadFile(settingsFile)
+		if err != nil {
+			log.Println(err)
+			return nil
+		}
+
+		data := map[string]any{}
+
+		err = json.Unmarshal(content, &data)
+		if err != nil {
+			log.Println(err)
+			return nil
+		}
+
+		var preferredLanguage string
+
+		if data["language"] != nil {
+			val, ok := data["language"].(string)
+			if ok {
+				preferredLanguage = val
+			}
+		}
+
+		return &preferredLanguage
+	}
+
+	return nil
+}
+
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.FormValue("sessionId")
 	serviceCode := r.FormValue("serviceCode")
@@ -60,13 +99,15 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Received USSD request: SessionID=%s, ServiceCode=%s, PhoneNumber=%s, Text=%s",
 		sessionID, serviceCode, phoneNumber, text)
 
+	preferredLanguage := checkPreferredLanguage(phoneNumber)
+
 	mu.Lock()
 	session, exists := sessions[sessionID]
 	if !exists {
 		session = &Session{
 			CurrentMenu:       "main",
 			Data:              make(map[string]string),
-			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData),
+			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData, preferredLanguage),
 		}
 		sessions[sessionID] = session
 	}
@@ -256,6 +297,11 @@ func Main() {
 		if err != nil {
 			log.Panic(err)
 		}
+	}
+
+	_, err = os.Stat(preferencesFolder)
+	if os.IsNotExist(err) {
+		os.MkdirAll(preferencesFolder, 0644)
 	}
 
 	http.HandleFunc("/ws", wsHandler)

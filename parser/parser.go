@@ -32,7 +32,7 @@ type WorkFlow struct {
 	SubmitCallback  func(map[string]any, *string)
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string)) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string), preferredLanguage *string) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -41,6 +41,15 @@ func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string)
 		ScreenIdMap:     map[string]string{},
 		ScreenOrder:     map[int]string{},
 		SubmitCallback:  callbackFunc,
+	}
+
+	if preferredLanguage != nil {
+		switch *preferredLanguage {
+		case LANG_NY_LABEL:
+			w.CurrentLanguage = LANG_NY
+		default:
+			w.CurrentLanguage = LANG_EN
+		}
 	}
 
 	for key, value := range tree {
@@ -164,7 +173,6 @@ func (w *WorkFlow) CheckLanguage() {
 			default:
 				w.CurrentLanguage = LANG_EN
 			}
-
 		}
 	}
 }
