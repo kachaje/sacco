@@ -128,3 +128,44 @@ func TestUpdateMember(t *testing.T) {
 		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["gender"], gender)
 	}
 }
+
+func TestFetchMember(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	m := models.NewMember(db.DB)
+
+	fields := []any{
+		"Mary",
+		"Banda",
+		"Female",
+	}
+
+	result, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender) VALUES (?, ?, ?)`, fields...)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	member, err := m.FetchMember(id)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if member.FirstName != fields[0].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", fields[0], member.FirstName)
+	}
+
+	if member.LastName != fields[1].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", fields[1], member.LastName)
+	}
+
+	if member.Gender != fields[2].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", fields[2], member.Gender)
+	}
+}

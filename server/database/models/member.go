@@ -9,7 +9,7 @@ import (
 )
 
 type Member struct {
-	ID                int
+	ID                int64
 	FirstName         string
 	LastName          string
 	OtherName         string
@@ -94,4 +94,76 @@ func (m *Member) UpdateMember(data map[string]any, id int64) error {
 	}
 
 	return nil
+}
+
+func (m *Member) FetchMember(id int64) (*Member, error) {
+
+	row := m.db.QueryRow(`SELECT 
+		firstName,
+		lastName,
+		otherName,
+		gender,
+		title,
+		maritalStatus,
+		dateOfBirth,
+		nationalId,
+		utilityBillType,
+		utilityBillNumber
+	FROM member WHERE id=?`, id)
+
+	var firstName,
+		lastName,
+		otherName,
+		gender,
+		title,
+		maritalStatus,
+		dateOfBirth,
+		nationalId,
+		utilityBillType,
+		utilityBillNumber any
+
+	err := row.Scan(&firstName, &lastName, &otherName,
+		&gender, &title, &maritalStatus,
+		&dateOfBirth, &nationalId, &utilityBillType,
+		&utilityBillNumber)
+	if err != nil {
+		return nil, err
+	}
+
+	member := &Member{
+		ID: id,
+	}
+
+	if firstName != nil {
+		member.FirstName = fmt.Sprintf("%v", firstName)
+	}
+	if lastName != nil {
+		member.LastName = fmt.Sprintf("%v", lastName)
+	}
+	if otherName != nil {
+		member.OtherName = fmt.Sprintf("%v", otherName)
+	}
+	if gender != nil {
+		member.Gender = fmt.Sprintf("%v", gender)
+	}
+	if title != nil {
+		member.Title = fmt.Sprintf("%v", title)
+	}
+	if maritalStatus != nil {
+		member.MaritalStatus = fmt.Sprintf("%v", maritalStatus)
+	}
+	if dateOfBirth != nil {
+		member.DateOfBirth = fmt.Sprintf("%v", dateOfBirth)
+	}
+	if nationalId != nil {
+		member.NationalId = fmt.Sprintf("%v", nationalId)
+	}
+	if utilityBillType != nil {
+		member.UtilityBillType = fmt.Sprintf("%v", utilityBillType)
+	}
+	if utilityBillNumber != nil {
+		member.UtilityBillNumber = fmt.Sprintf("%v", utilityBillNumber)
+	}
+
+	return member, nil
 }
