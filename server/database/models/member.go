@@ -167,3 +167,73 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 
 	return member, nil
 }
+
+func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
+	results := []Member{}
+
+	rows, err := m.db.QueryContext(context.Background(), fmt.Sprintf("SELECT * FROM member %s", whereStatement))
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var id int64
+		var firstName,
+			lastName,
+			otherName,
+			gender,
+			title,
+			maritalStatus,
+			dateOfBirth,
+			nationalId,
+			utilityBillType,
+			utilityBillNumber any
+
+		err := rows.Scan(&id, &firstName, &lastName, &otherName,
+			&gender, &title, &maritalStatus,
+			&dateOfBirth, &nationalId, &utilityBillType,
+			&utilityBillNumber)
+		if err != nil {
+			return nil, err
+		}
+
+		member := Member{
+			ID: id,
+		}
+
+		if firstName != nil {
+			member.FirstName = fmt.Sprintf("%v", firstName)
+		}
+		if lastName != nil {
+			member.LastName = fmt.Sprintf("%v", lastName)
+		}
+		if otherName != nil {
+			member.OtherName = fmt.Sprintf("%v", otherName)
+		}
+		if gender != nil {
+			member.Gender = fmt.Sprintf("%v", gender)
+		}
+		if title != nil {
+			member.Title = fmt.Sprintf("%v", title)
+		}
+		if maritalStatus != nil {
+			member.MaritalStatus = fmt.Sprintf("%v", maritalStatus)
+		}
+		if dateOfBirth != nil {
+			member.DateOfBirth = fmt.Sprintf("%v", dateOfBirth)
+		}
+		if nationalId != nil {
+			member.NationalId = fmt.Sprintf("%v", nationalId)
+		}
+		if utilityBillType != nil {
+			member.UtilityBillType = fmt.Sprintf("%v", utilityBillType)
+		}
+		if utilityBillNumber != nil {
+			member.UtilityBillNumber = fmt.Sprintf("%v", utilityBillNumber)
+		}
+
+		results = append(results, member)
+	}
+
+	return results, nil
+}

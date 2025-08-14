@@ -169,3 +169,50 @@ func TestFetchMember(t *testing.T) {
 		t.Fatalf("Test failed. Expected: %s; Actual: %v", fields[2], member.Gender)
 	}
 }
+
+func TestFilterBy(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	m := models.NewMember(db.DB)
+
+	fields := [][]any{
+		{
+			"Mary",
+			"Banda",
+			"Female",
+		},
+		{
+			"John",
+			"Bongwe",
+			"Male",
+		},
+		{
+			"Paul",
+			"Bandawe",
+			"Male",
+		},
+		{
+			"Peter",
+			"Banda",
+			"Male",
+		},
+	}
+
+	for i := range fields {
+		_, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender) VALUES (?, ?, ?)`, fields[i]...)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	results, err := m.FilterBy(`WHERE lastName LIKE "Banda%" AND gender = "Male"`)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(results) != 2 {
+		t.Fatalf("Test failed. Expected: 2; Actual: %v", len(results))
+	}
+}
