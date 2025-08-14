@@ -203,7 +203,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	case "0":
 		// Submit
 		if w.SubmitCallback != nil {
-			data := w.ResolveData(w.Data)
+			data := w.ResolveData(w.Data, true)
 
 			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber)
 		}
@@ -323,8 +323,9 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	return node
 }
 
-func (w *WorkFlow) OptionValue(options []any, input string) string {
+func (w *WorkFlow) OptionValue(options []any, input string) (string, *string) {
 	var result string
+	var code string
 
 	for _, row := range options {
 		optVal, ok := row.(map[string]any)
@@ -334,6 +335,10 @@ func (w *WorkFlow) OptionValue(options []any, input string) string {
 			if position == input {
 				val, ok := optVal["label"].(map[string]any)
 				if ok {
+					if optVal["code"] != nil {
+						code = fmt.Sprintf("%v", optVal["code"])
+					}
+
 					if val["all"] != nil {
 						result = fmt.Sprintf("%v", val["all"])
 						break
@@ -346,10 +351,10 @@ func (w *WorkFlow) OptionValue(options []any, input string) string {
 		}
 	}
 
-	return result
+	return result, &code
 }
 
-func (w *WorkFlow) ResolveData(data map[string]any) map[string]any {
+func (w *WorkFlow) ResolveData(data map[string]any, preferCode bool) map[string]any {
 	result := map[string]any{}
 
 	for key, value := range data {
@@ -363,9 +368,13 @@ func (w *WorkFlow) ResolveData(data map[string]any) map[string]any {
 						opts, ok := val["options"].([]any)
 
 						if ok {
-							mappedValue := w.OptionValue(opts, fmt.Sprintf("%v", value))
+							mappedValue, code := w.OptionValue(opts, fmt.Sprintf("%v", value))
 
 							result[key] = mappedValue
+
+							if code != nil && *code != "" && preferCode {
+								result[key] = *code
+							}
 						}
 					} else {
 						result[key] = value
@@ -428,7 +437,7 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 		}
 
 		if nodeType == QUIT_SCREEN {
-			data := w.ResolveData(w.Data)
+			data := w.ResolveData(w.Data, false)
 
 			result := []string{}
 

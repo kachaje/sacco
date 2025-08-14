@@ -234,6 +234,7 @@ func TestOptionValue(t *testing.T) {
 	options := []any{
 		map[string]any{
 			"position": 1,
+			"code":     "y",
 			"label": map[string]any{
 				"en": "Yes",
 				"ny": "Inde",
@@ -249,13 +250,21 @@ func TestOptionValue(t *testing.T) {
 		},
 	}
 
-	result := wf.OptionValue(options, "2")
+	result, code := wf.OptionValue(options, "2")
 
 	if result != "No" {
 		t.Fatalf("Test failed. Expected: No; Actual: %v", result)
 	}
 
-	result = wf.OptionValue(options, "1")
+	if *code != "" {
+		t.Fatalf("Test failed. Got: %v", *code)
+	}
+
+	result, code = wf.OptionValue(options, "1")
+
+	if *code != "y" {
+		t.Fatalf("Test failed. Expected: y; Actual: %v", *code)
+	}
 
 	if result != "Yes" {
 		t.Fatalf("Test failed. Expected: Yes; Actual: %v", result)
@@ -272,7 +281,7 @@ func TestResolveData(t *testing.T) {
 		"askOtherName":  "2",
 		"dateOfBirth":   "1999-09-01",
 		"maritalStatus": "2",
-	})
+	}, false)
 
 	target := map[string]any{
 		"language":      "English",
