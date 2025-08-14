@@ -26,12 +26,13 @@ type WorkFlow struct {
 	NextScreen      string
 	PreviousScreen  string
 	CurrentLanguage string
+	CurrentModel    string
 	ScreenIdMap     map[string]string
 	ScreenOrder     map[int]string
-	SubmitCallback  func(map[string]any)
+	SubmitCallback  func(map[string]any, *string)
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any)) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string)) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -56,6 +57,13 @@ func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any)) *WorkFl
 					if err == nil {
 						w.ScreenOrder[i] = id
 					}
+				}
+			}
+
+			if row["model"] != nil {
+				val, ok := row["model"].(string)
+				if ok {
+					w.CurrentModel = val
 				}
 			}
 		}
@@ -175,14 +183,14 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.PreviousScreen = ""
 
 		if w.SubmitCallback != nil {
-			w.SubmitCallback(nil)
+			w.SubmitCallback(nil, &w.CurrentModel)
 		}
 
 		return nil
 	case "0":
 		// Submit
 		if w.SubmitCallback != nil {
-			w.SubmitCallback(w.Data)
+			w.SubmitCallback(w.Data, &w.CurrentModel)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

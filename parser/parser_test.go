@@ -411,7 +411,7 @@ func TestGotoMenu(t *testing.T) {
 func TestCancel(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m map[string]any) {
+	wf := parser.NewWorkflow(data, func(m map[string]any, model *string) {
 		if m != nil {
 			t.Fatalf("Test failed. Expected: nil; Actual: %v", m)
 		}
@@ -458,7 +458,7 @@ func TestCancel(t *testing.T) {
 func TestSubmit(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m map[string]any) {
+	wf := parser.NewWorkflow(data, func(m map[string]any, model *string) {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}
@@ -509,7 +509,7 @@ func TestSubmit(t *testing.T) {
 func TestNavNext(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m map[string]any) {
+	wf := parser.NewWorkflow(data, func(m map[string]any, model *string) {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}

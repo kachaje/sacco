@@ -47,7 +47,7 @@ func init() {
 	}
 }
 
-func saveData(data map[string]any) {
+func saveData(data map[string]any, model *string) {
 	fmt.Println(data)
 }
 
