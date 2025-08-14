@@ -19,7 +19,7 @@ func TestDatabase(t *testing.T) {
 		if os.IsNotExist(err) {
 			t.Fatal("Test failed")
 		} else {
-			// os.Remove("test.db")
+			os.Remove("test.db")
 		}
 	}()
 

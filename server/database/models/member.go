@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 )
 
 type Member struct {
@@ -29,17 +28,17 @@ func NewMember(db *sql.DB) *Member {
 	}
 }
 
-func (m *Member) AddMember(data map[string]any) (int, error) {
-	var id int
+func (m *Member) AddMember(data map[string]any) (int64, error) {
+	var id int64
 
 	payload, err := json.Marshal(data)
 	if err != nil {
-		return id, err
+		return 0, err
 	}
 
 	err = json.Unmarshal(payload, m)
 	if err != nil {
-		return id, err
+		return 0, err
 	}
 
 	result, err := m.db.ExecContext(
@@ -64,10 +63,12 @@ func (m *Member) AddMember(data map[string]any) (int, error) {
 		m.UtilityBillNumber,
 	)
 	if err != nil {
-		return id, err
+		return 0, err
 	}
 
-	fmt.Println(result)
+	if id, err = result.LastInsertId(); err != nil {
+		return 0, err
+	}
 
 	return id, nil
 }
