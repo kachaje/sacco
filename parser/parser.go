@@ -259,88 +259,98 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		}
 	}
 
-	if w.CurrentScreen == INITIAL_SCREEN {
-		nextScreen, ok = w.Tree[INITIAL_SCREEN].(string)
-		if ok {
+	if input == "01" {
+		node = w.GetNode(w.CurrentScreen)
+
+		if node["nextScreen"] != nil {
+			nextScreen = fmt.Sprintf("%v", node["nextScreen"])
+
 			node = w.GetNode(nextScreen)
 		}
 	} else {
-		node = w.GetNode(w.CurrentScreen)
-
-		if node["options"] != nil {
-			options := node["options"]
-
-			val, ok := options.([]any)
+		if w.CurrentScreen == INITIAL_SCREEN {
+			nextScreen, ok = w.Tree[INITIAL_SCREEN].(string)
 			if ok {
-				valid, nextRoute := w.InputIncluded(input, val)
-
-				if !valid {
-					return node
-				}
-
-				if nextRoute != "" {
-					if node["inputIdentifier"] != nil {
-						inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
-
-						w.Data[inputIdentifier] = input
-
-						if inputIdentifier == "language" {
-							w.CheckLanguage()
-						}
-					}
-
-					w.PreviousScreen = w.CurrentScreen
-					w.CurrentScreen = nextRoute
-
-					node = w.GetNode(w.CurrentScreen)
-
-					w.HistoryIndex++
-
-					return node
-				}
-			}
-
-			if node != nil && node["inputIdentifier"] != nil {
-				inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
-
-				w.Data[inputIdentifier] = input
-
-				if inputIdentifier == "language" {
-					w.CheckLanguage()
-				}
-			}
-
-			if node["nextScreen"] != nil {
-				nextScreen = fmt.Sprintf("%v", node["nextScreen"])
-
 				node = w.GetNode(nextScreen)
 			}
 		} else {
-			if node["validationRule"] != nil {
-				val, ok := node["validationRule"].(string)
-				if ok {
-					re := regexp.MustCompile(val)
+			node = w.GetNode(w.CurrentScreen)
 
-					if !re.MatchString(input) {
+			if node["options"] != nil {
+				options := node["options"]
+
+				val, ok := options.([]any)
+				if ok {
+					valid, nextRoute := w.InputIncluded(input, val)
+
+					if !valid {
+						return node
+					}
+
+					if nextRoute != "" {
+						if node["inputIdentifier"] != nil {
+							inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
+
+							w.Data[inputIdentifier] = input
+
+							if inputIdentifier == "language" {
+								w.CheckLanguage()
+							}
+						}
+
+						w.PreviousScreen = w.CurrentScreen
+						w.CurrentScreen = nextRoute
+
+						node = w.GetNode(w.CurrentScreen)
+
+						w.HistoryIndex++
+
 						return node
 					}
 				}
-			}
 
-			if node != nil && node["inputIdentifier"] != nil {
-				inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
+				if node != nil && node["inputIdentifier"] != nil {
+					inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
 
-				w.Data[inputIdentifier] = input
+					w.Data[inputIdentifier] = input
 
-				if inputIdentifier == "language" {
-					w.CheckLanguage()
+					if inputIdentifier == "language" {
+						w.CheckLanguage()
+					}
 				}
-			}
 
-			if node["nextScreen"] != nil {
-				nextScreen = fmt.Sprintf("%v", node["nextScreen"])
+				if node["nextScreen"] != nil {
+					nextScreen = fmt.Sprintf("%v", node["nextScreen"])
 
-				node = w.GetNode(nextScreen)
+					node = w.GetNode(nextScreen)
+				}
+			} else {
+				if node["validationRule"] != nil {
+					val, ok := node["validationRule"].(string)
+					if ok {
+						re := regexp.MustCompile(val)
+
+						if !re.MatchString(input) {
+							return node
+						}
+					}
+				}
+
+				if node != nil && node["inputIdentifier"] != nil {
+					inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
+
+					w.Data[inputIdentifier] = input
+
+					if inputIdentifier == "language" {
+						w.CheckLanguage()
+					}
+				}
+
+				if node["nextScreen"] != nil {
+					nextScreen = fmt.Sprintf("%v", node["nextScreen"])
+
+					node = w.GetNode(nextScreen)
+				}
 			}
 		}
 	}
@@ -515,12 +525,20 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 				startLabel = fmt.Sprintf("%s", w.Tree[INITIAL_SCREEN])
 			}
 
+			var id string
+
 			if node["inputIdentifier"] != nil {
-				id := fmt.Sprintf("%v", node["inputIdentifier"])
+				id = fmt.Sprintf("%v", node["inputIdentifier"])
 
 				dispLabel := w.LoadLabel(id)
 
-				title = fmt.Sprintf("%s: ", dispLabel)
+				var existingData string
+
+				if w.Data[id] != nil {
+					existingData = fmt.Sprintf("(%v)", w.Data[id])
+				}
+
+				title = fmt.Sprintf("%s: %s", dispLabel, existingData)
 			}
 
 			options := w.NodeOptions(input)
@@ -531,11 +549,19 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 					options = append(options, "98. Bwererani")
 				}
 
+				if id != "" && w.Data[id] != nil {
+					options = append(options, "01. Momwemo")
+				}
+
 				options = append(options, "99. Basi")
 			} else {
 				if input != startLabel {
 					options = append(options, "00. Main Menu")
 					options = append(options, "98. Back")
+				}
+
+				if id != "" && w.Data[id] != nil {
+					options = append(options, "01. Keep")
 				}
 
 				options = append(options, "99. Cancel")
