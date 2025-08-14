@@ -170,7 +170,7 @@ func TestFetchMember(t *testing.T) {
 	}
 }
 
-func TestFilterBy(t *testing.T) {
+func TestMemberFilterBy(t *testing.T) {
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
 	defer db.Close()
