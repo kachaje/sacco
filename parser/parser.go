@@ -45,7 +45,7 @@ func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string,
 		ScreenOrder:     map[int]string{},
 		SubmitCallback:  callbackFunc,
 		History:         map[int]string{},
-		HistoryIndex:    0,
+		HistoryIndex:    -1,
 	}
 
 	if phoneNumber != nil {
@@ -203,11 +203,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.CurrentLanguage = LANG_EN
 		w.PreviousScreen = ""
 		w.History = map[int]string{}
-		w.HistoryIndex = 0
-
-		if w.SubmitCallback != nil {
-			w.SubmitCallback(nil, &w.CurrentModel, &w.CurrentPhoneNumber)
-		}
+		w.HistoryIndex = -1
 
 		return nil
 	case "0":
@@ -222,7 +218,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.CurrentLanguage = LANG_EN
 		w.PreviousScreen = ""
 		w.History = map[int]string{}
-		w.HistoryIndex = 0
+		w.HistoryIndex = -1
 
 		w.Data = map[string]any{}
 
@@ -234,7 +230,9 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.CurrentLanguage = LANG_EN
 		w.PreviousScreen = ""
 		w.History = map[int]string{}
-		w.HistoryIndex = 0
+		w.HistoryIndex = -1
+
+		return nil
 	case "98":
 		if w.PreviousScreen != "" {
 			nextScreen = w.PreviousScreen

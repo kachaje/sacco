@@ -206,15 +206,19 @@ rerunSwitch:
 					"6. Exit"
 			}
 		case "1":
+			text = "000"
 			session.CurrentMenu = "registration"
 			goto rerunSwitch
 		case "2":
+			text = ""
 			session.CurrentMenu = "loan"
 			goto rerunSwitch
 		case "3":
+			text = ""
 			session.CurrentMenu = "balance"
 			goto rerunSwitch
 		case "4":
+			text = ""
 			session.CurrentMenu = "banking"
 			goto rerunSwitch
 		case "5":
@@ -282,17 +286,47 @@ rerunSwitch:
 			}
 		}
 	case "registration":
-		if text == "" {
-			session.CurrentMenu = "main"
-			goto rerunSwitch
-		} else {
+		switch text {
+		case "00":
 			response = session.PIWorkflow.NavNext(text)
-
-			if strings.TrimSpace(response) == "" {
-				session.CurrentMenu = "main"
-				text = ""
-				goto rerunSwitch
+			session.CurrentMenu = "main"
+			text = "0"
+			goto rerunSwitch
+		case "1":
+			session.CurrentMenu = "registration.1"
+			goto rerunSwitch
+		default:
+			if preferredLanguage != nil && *preferredLanguage == "ny" {
+				response = "CON Sankhani Zochita\n" +
+					"1. Zokhudza Membala\n" +
+					"2. Zokhudza Ntchito\n" +
+					"3. Adiresi Yamembela\n" +
+					"4. Wachibale wa Membala\n" +
+					"5. Odzalandila\n" +
+					"\n" +
+					"00. Tiyambirenso"
+			} else {
+				response = "CON Choose Activity\n" +
+					"1. Add Member Details\n" +
+					"2. Add Occupation Details\n" +
+					"3. Add Contact Details\n" +
+					"4. Add Next of Kin Details\n" +
+					"5. Add Beneficiaries\n" +
+					"\n" +
+					"00. Main Menu"
 			}
+		}
+	case "registration.1":
+		response = session.PIWorkflow.NavNext(text)
+
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			goto rerunSwitch
+		} else if strings.TrimSpace(response) == "" {
+			session.CurrentMenu = "registration"
+			text = ""
+			goto rerunSwitch
 		}
 	case "loan":
 		if text == "0" {
