@@ -188,13 +188,23 @@ rerunSwitch:
 	case "main":
 		switch text {
 		case "", "0":
-			response = "CON Welcome to Kaso SACCO\n" +
-				"1. Membership Application\n" +
-				"2. Loan Application\n" +
-				"3. Check Balance\n" +
-				"4. Banking Details\n" +
-				"5. Preferred Language\n" +
-				"6. Exit"
+			if preferredLanguage != nil && *preferredLanguage == "ny" {
+				response = "CON Takulandilani ku Kaso SACCO\n" +
+					"1. Membala Watsopano\n" +
+					"2. Tengani Ngongole\n" +
+					"3. Balansi\n" +
+					"4. Matumizidwe\n" +
+					"5. Chiyankhulo\n" +
+					"6. Malizani"
+			} else {
+				response = "CON Welcome to Kaso SACCO\n" +
+					"1. Membership Application\n" +
+					"2. Loan Application\n" +
+					"3. Check Balance\n" +
+					"4. Banking Details\n" +
+					"5. Preferred Language\n" +
+					"6. Exit"
+			}
 		case "1":
 			session.CurrentMenu = "registration"
 			goto rerunSwitch
@@ -211,7 +221,11 @@ rerunSwitch:
 			session.CurrentMenu = "language"
 			goto rerunSwitch
 		case "6":
-			response = "END Thank you for using our service"
+			if preferredLanguage != nil && *preferredLanguage == "ny" {
+				response = "END Zikomo potidalila"
+			} else {
+				response = "END Thank you for using our service"
+			}
 			mu.Lock()
 			delete(sessions, sessionID)
 			mu.Unlock()
@@ -234,23 +248,37 @@ rerunSwitch:
 			session.CurrentMenu = "main"
 			goto rerunSwitch
 		} else {
+			firstLine := "CON Banking Details\n"
+			lastLine := "0. Back to Main Menu"
+			name := "Name"
+			number := "Number"
+			branch := "Branch"
+
+			if preferredLanguage != nil && *preferredLanguage == "ny" {
+				firstLine = "CON Matumizidwe\n"
+				lastLine = "0. Bwererani Pofikira"
+				name = "Dzina"
+				number = "Nambala"
+				branch = "Buranchi"
+			}
+
 			switch text {
 			case "1":
 				response = "CON National Bank of Malawi\n" +
-					"Name: Kaso SACCO\n" +
-					"Number: 0985 242 629\n" +
-					"0. Back to Main Menu"
+					fmt.Sprintf("%8s: Kaso SACCO\n", name) +
+					fmt.Sprintf("%8s: 1006857589\n", number) +
+					fmt.Sprintf("%8s: Lilongwe\n", branch) +
+					lastLine
 			case "2":
 				response = "CON Airtel Money\n" +
-					"Name: Kaso SACCO\n" +
-					"Number: 1006857589\n" +
-					"Branch: Lilongwe\n" +
-					"0. Back to Main Menu"
+					fmt.Sprintf("%8s: Kaso SACCO\n", name) +
+					fmt.Sprintf("%8s: 0985 242 629\n", number) +
+					lastLine
 			default:
-				response = "CON Banking Details\n" +
+				response = firstLine +
 					"1. National Bank\n" +
 					"2. Airtel Money\n" +
-					"0. Back to Main Menu"
+					lastLine
 			}
 		}
 	case "registration":
