@@ -22,17 +22,18 @@ type WorkFlow struct {
 	Tree map[string]any
 	Data map[string]any
 
-	CurrentScreen   string
-	NextScreen      string
-	PreviousScreen  string
-	CurrentLanguage string
-	CurrentModel    string
-	ScreenIdMap     map[string]string
-	ScreenOrder     map[int]string
-	SubmitCallback  func(map[string]any, *string)
+	CurrentScreen      string
+	NextScreen         string
+	PreviousScreen     string
+	CurrentLanguage    string
+	CurrentPhoneNumber string
+	CurrentModel       string
+	ScreenIdMap        map[string]string
+	ScreenOrder        map[int]string
+	SubmitCallback     func(map[string]any, *string, *string)
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string), preferredLanguage *string) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string, *string), preferredLanguage, phoneNumber *string) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -41,6 +42,10 @@ func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string)
 		ScreenIdMap:     map[string]string{},
 		ScreenOrder:     map[int]string{},
 		SubmitCallback:  callbackFunc,
+	}
+
+	if phoneNumber != nil {
+		w.CurrentPhoneNumber = *phoneNumber
 	}
 
 	if preferredLanguage != nil {
@@ -191,14 +196,14 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.PreviousScreen = ""
 
 		if w.SubmitCallback != nil {
-			w.SubmitCallback(nil, &w.CurrentModel)
+			w.SubmitCallback(nil, &w.CurrentModel, &w.CurrentPhoneNumber)
 		}
 
 		return nil
 	case "0":
 		// Submit
 		if w.SubmitCallback != nil {
-			w.SubmitCallback(w.Data, &w.CurrentModel)
+			w.SubmitCallback(w.Data, &w.CurrentModel, &w.CurrentPhoneNumber)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

@@ -52,7 +52,12 @@ func init() {
 	}
 }
 
-func saveData(data map[string]any, model *string) {
+func saveData(data map[string]any, model, phoneNumber *string) {
+	switch *model {
+	case "preferredLanguage":
+
+	}
+
 	fmt.Println(data)
 }
 
@@ -96,6 +101,10 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	phoneNumber := r.FormValue("phoneNumber")
 	text := r.FormValue("text")
 
+	if phoneNumber == "" {
+		phoneNumber = "default"
+	}
+
 	log.Printf("Received USSD request: SessionID=%s, ServiceCode=%s, PhoneNumber=%s, Text=%s",
 		sessionID, serviceCode, phoneNumber, text)
 
@@ -107,7 +116,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		session = &Session{
 			CurrentMenu:       "main",
 			Data:              make(map[string]string),
-			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData, preferredLanguage),
+			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData, preferredLanguage, &phoneNumber),
 		}
 		sessions[sessionID] = session
 	}
