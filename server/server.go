@@ -27,7 +27,7 @@ import (
 type Session struct {
 	CurrentMenu       string
 	Data              map[string]string
-	NewMemberWorkflow *parser.WorkFlow
+	PIWorkflow        *parser.WorkFlow
 	LanguageWorkflow  *parser.WorkFlow
 	PreferredLanguage string
 }
@@ -35,8 +35,8 @@ type Session struct {
 //go:embed index.html
 var indexHTML string
 
-//go:embed workflows/newMember.yml
-var newMemberTemplate string
+//go:embed workflows/membership/personalInformation.yml
+var PITemplate string
 
 //go:embed workflows/preferences/language.yml
 var languageTemplate string
@@ -44,7 +44,7 @@ var languageTemplate string
 var sessions = make(map[string]*Session)
 var mu sync.Mutex
 var port int
-var newMemberData map[string]any
+var personalInformationData map[string]any
 var languageData map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
@@ -52,7 +52,7 @@ var preferencesFolder = filepath.Join(".", "settings")
 func init() {
 	var err error
 
-	newMemberData, err = utils.LoadYaml(newMemberTemplate)
+	personalInformationData, err = utils.LoadYaml(PITemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -161,10 +161,10 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	session, exists := sessions[sessionID]
 	if !exists {
 		session = &Session{
-			CurrentMenu:       "main",
-			Data:              make(map[string]string),
-			LanguageWorkflow:  parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber),
-			NewMemberWorkflow: parser.NewWorkflow(newMemberData, saveData, preferredLanguage, &phoneNumber),
+			CurrentMenu:      "main",
+			Data:             make(map[string]string),
+			LanguageWorkflow: parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber),
+			PIWorkflow:       parser.NewWorkflow(personalInformationData, saveData, preferredLanguage, &phoneNumber),
 		}
 
 		if preferredLanguage != nil {
@@ -286,7 +286,7 @@ rerunSwitch:
 			session.CurrentMenu = "main"
 			goto rerunSwitch
 		} else {
-			response = session.NewMemberWorkflow.NavNext(text)
+			response = session.PIWorkflow.NavNext(text)
 
 			if strings.TrimSpace(response) == "" {
 				session.CurrentMenu = "main"
