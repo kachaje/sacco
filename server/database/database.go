@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strings"
 
 	_ "modernc.org/sqlite"
 )
@@ -14,7 +15,11 @@ type Database struct {
 }
 
 func NewDatabase(dbname string) *Database {
-	db, err := sql.Open("sqlite", fmt.Sprintf("%s.db", dbname))
+	if dbname != ":memory:" && !strings.HasSuffix(dbname, ".db") {
+		dbname = fmt.Sprintf("%s.db", dbname)
+	}
+
+	db, err := sql.Open("sqlite", dbname)
 	if err != nil {
 		log.Fatal(err)
 	}

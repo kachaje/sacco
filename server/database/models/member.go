@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"strings"
 )
 
 type Member struct {
@@ -71,4 +73,19 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 	}
 
 	return id, nil
+}
+
+func (m *Member) UpdateMember(data map[string]any, id int64) error {
+	fields := []string{}
+	values := []any{}
+
+	for key, value := range data {
+		fields = append(fields, fmt.Sprintf("%s = ?", key))
+		values = append(values, value)
+	}
+
+	fmt.Println(strings.Join(fields, " "))
+	fmt.Println(values...)
+
+	return nil
 }

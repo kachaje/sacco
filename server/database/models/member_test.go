@@ -9,20 +9,9 @@ import (
 )
 
 func TestAddMember(t *testing.T) {
-	dbname := "addMember"
+	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
-	defer func() {
-		db.Close()
-
-		dbFile := fmt.Sprintf("%s.db", dbname)
-
-		_, err := os.Stat(dbFile)
-		if os.IsNotExist(err) {
-			t.Fatal("Test failed")
-		} else {
-			os.Remove(dbFile)
-		}
-	}()
+	defer db.Close()
 
 	m := models.NewMember(db.DB)
 
@@ -80,4 +69,8 @@ func TestAddMember(t *testing.T) {
 			utilityBillNumber,
 		)
 	}
+}
+
+func TestUpdateMember(t *testing.T) {
+	
 }
