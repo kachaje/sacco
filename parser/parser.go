@@ -542,26 +542,33 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 			}
 
 			options := w.NodeOptions(input)
+			options = append(options, "")
 
 			if w.CurrentLanguage == LANG_NY {
 				if input != startLabel {
 					options = append(options, "00. Tiyambirenso")
-					options = append(options, "98. Bwererani")
 				}
 
 				if id != "" && w.Data[id] != nil {
 					options = append(options, "01. Momwemo")
 				}
 
+				if input != startLabel {
+					options = append(options, "98. Bwererani")
+				}
+
 				options = append(options, "99. Basi")
 			} else {
 				if input != startLabel {
 					options = append(options, "00. Main Menu")
-					options = append(options, "98. Back")
 				}
 
 				if id != "" && w.Data[id] != nil {
 					options = append(options, "01. Keep")
+				}
+
+				if input != startLabel {
+					options = append(options, "98. Back")
 				}
 
 				options = append(options, "99. Cancel")
