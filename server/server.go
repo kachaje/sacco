@@ -282,7 +282,7 @@ rerunSwitch:
 			}
 		}
 	case "registration":
-		if text == "0" || text == "" {
+		if text == "" {
 			session.CurrentMenu = "main"
 			goto rerunSwitch
 		} else {
