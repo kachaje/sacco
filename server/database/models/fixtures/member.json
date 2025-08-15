@@ -50,9 +50,9 @@
   "nominee": {
     "id": 1,
     "memberId": 1,
-    "nextOfKinAddress": "Same as member",
-    "nextOfKinName": "John Banda",
-    "nextOfKinPhone": "0888888888"
+    "nomineeAddress": "Same as member",
+    "nomineeName": "John Banda",
+    "nomineePhone": "0888888888"
   },
   "occupationDetails": {
     "employerAddress": "Kanengo, Lilongwe",

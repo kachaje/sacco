@@ -9,7 +9,7 @@ enterNextOfKin:
     en: Name
     ny: Dzina
   nextScreen: enterNextOfKinPhone
-  inputIdentifier: nextOfKinName
+  inputIdentifier: nomineeName
 
 enterNextOfKinPhone:
   order: 25
@@ -18,7 +18,7 @@ enterNextOfKinPhone:
     en: Phone Number
     ny: Nambala Yafoni
   nextScreen: enterNextOfKinAddress
-  inputIdentifier: nextOfKinPhone
+  inputIdentifier: nomineePhone
 
 enterNextOfKinAddress:
   order: 26
@@ -26,7 +26,7 @@ enterNextOfKinAddress:
   text:
     en: Address
     ny: Adiresi
-  inputIdentifier: nextOfKinAddress
+  inputIdentifier: nomineeAddress
   nextScreen: formSummary
 
 formSummary:

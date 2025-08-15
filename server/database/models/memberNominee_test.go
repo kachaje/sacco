@@ -16,10 +16,10 @@ func TestAddMemberNominee(t *testing.T) {
 	m := models.NewMemberNominee(db.DB, nil)
 
 	data := map[string]any{
-		"memberId":         1,
-		"nextOfKinName":    "TEXT",
-		"nextOfKinPhone":   "TEXT",
-		"nextOfKinAddress": "TEXT",
+		"memberId":       1,
+		"nomineeName":    "TEXT",
+		"nomineePhone":   "TEXT",
+		"nomineeAddress": "TEXT",
 	}
 
 	id, err := m.AddMemberNominee(data)
@@ -30,16 +30,16 @@ func TestAddMemberNominee(t *testing.T) {
 	row := db.DB.QueryRow(`SELECT * FROM memberNominee WHERE id=?`, id)
 
 	var memberId int64
-	var nextOfKinName,
-		nextOfKinPhone,
-		nextOfKinAddress string
+	var nomineeName,
+		nomineePhone,
+		nomineeAddress string
 
 	err = row.Scan(
 		&id,
 		&memberId,
-		&nextOfKinName,
-		&nextOfKinPhone,
-		&nextOfKinAddress,
+		&nomineeName,
+		&nomineePhone,
+		&nomineeAddress,
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -49,9 +49,9 @@ func TestAddMemberNominee(t *testing.T) {
 		fmt.Println(
 			id,
 			memberId,
-			nextOfKinName,
-			nextOfKinPhone,
-			nextOfKinAddress,
+			nomineeName,
+			nomineePhone,
+			nomineeAddress,
 		)
 	}
 }
@@ -70,7 +70,7 @@ func TestUpdateMemberNominee(t *testing.T) {
 		"Degree",
 	}
 
-	result, err := db.DB.Exec(`INSERT INTO memberNominee (memberId, nextOfKinName, nextOfKinPhone, nextOfKinAddress) VALUES (?, ?, ?, ?)`, fields...)
+	result, err := db.DB.Exec(`INSERT INTO memberNominee (memberId, nomineeName, nomineePhone, nomineeAddress) VALUES (?, ?, ?, ?)`, fields...)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,9 +81,9 @@ func TestUpdateMemberNominee(t *testing.T) {
 	}
 
 	data := map[string]any{
-		"nextOfKinName":    "Sobo",
-		"nextOfKinPhone":   "Supervisor",
-		"nextOfKinAddress": "Diploma",
+		"nomineeName":    "Sobo",
+		"nomineePhone":   "Supervisor",
+		"nomineeAddress": "Diploma",
 	}
 
 	err = m.UpdateMemberNominee(data, id)
@@ -91,25 +91,25 @@ func TestUpdateMemberNominee(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	row := db.DB.QueryRow(`SELECT id, nextOfKinName, nextOfKinPhone, nextOfKinAddress FROM memberNominee WHERE id=?`, id)
+	row := db.DB.QueryRow(`SELECT id, nomineeName, nomineePhone, nomineeAddress FROM memberNominee WHERE id=?`, id)
 
-	var nextOfKinName, nextOfKinPhone, nextOfKinAddress string
+	var nomineeName, nomineePhone, nomineeAddress string
 
-	err = row.Scan(&id, &nextOfKinName, &nextOfKinPhone, &nextOfKinAddress)
+	err = row.Scan(&id, &nomineeName, &nomineePhone, &nomineeAddress)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if nextOfKinName != data["nextOfKinName"].(string) {
-		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["nextOfKinName"], nextOfKinName)
+	if nomineeName != data["nomineeName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["nomineeName"], nomineeName)
 	}
 
-	if nextOfKinPhone != data["nextOfKinPhone"].(string) {
-		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["nextOfKinPhone"], nextOfKinPhone)
+	if nomineePhone != data["nomineePhone"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["nomineePhone"], nomineePhone)
 	}
 
-	if nextOfKinAddress != data["nextOfKinAddress"].(string) {
-		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["nextOfKinAddress"], nextOfKinAddress)
+	if nomineeAddress != data["nomineeAddress"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["nomineeAddress"], nomineeAddress)
 	}
 }
 
@@ -127,7 +127,7 @@ func TestFetchMemberNominee(t *testing.T) {
 		"Degree",
 	}
 
-	result, err := db.DB.Exec(`INSERT INTO memberNominee (memberId, nextOfKinName, nextOfKinPhone, nextOfKinAddress) VALUES (?, ?, ?, ?)`, fields...)
+	result, err := db.DB.Exec(`INSERT INTO memberNominee (memberId, nomineeName, nomineePhone, nomineeAddress) VALUES (?, ?, ?, ?)`, fields...)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -190,13 +190,13 @@ func TestFilterMemberNomineeBy(t *testing.T) {
 	}
 
 	for i := range fields {
-		_, err := db.DB.Exec(`INSERT INTO memberNominee (memberId, nextOfKinName, nextOfKinPhone, nextOfKinAddress) VALUES (?, ?, ?, ?)`, fields[i]...)
+		_, err := db.DB.Exec(`INSERT INTO memberNominee (memberId, nomineeName, nomineePhone, nomineeAddress) VALUES (?, ?, ?, ?)`, fields[i]...)
 		if err != nil {
 			t.Fatal(err)
 		}
 	}
 
-	results, err := m.FilterBy(`WHERE nextOfKinPhone LIKE "Boss%" AND nextOfKinAddress = "Degree"`)
+	results, err := m.FilterBy(`WHERE nomineePhone LIKE "Boss%" AND nomineeAddress = "Degree"`)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -387,7 +387,7 @@
       "ny": "Dzina Lawachibale"
     },
     "nextScreen": "enterNextOfKinPhone",
-    "inputIdentifier": "nextOfKinName"
+    "inputIdentifier": "nomineeName"
   },
   "enterNextOfKinPhone": {
     "order": 25,
@@ -397,7 +397,7 @@
       "ny": "Foni ya Wachibale"
     },
     "nextScreen": "enterNextOfKinAddress",
-    "inputIdentifier": "nextOfKinPhone"
+    "inputIdentifier": "nomineePhone"
   },
   "enterNextOfKinAddress": {
     "order": 26,
@@ -407,7 +407,7 @@
       "ny": "Keyala ya Wachibale"
     },
     "nextScreen": "enterAskBeneficiaries",
-    "inputIdentifier": "nextOfKinAddress"
+    "inputIdentifier": "nomineeAddress"
   },
   "enterAskBeneficiaries": {
     "order": 27,

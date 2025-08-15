@@ -55,9 +55,9 @@ VALUES
 INSERT INTO
   memberNominee (
     memberId,
-    nextOfKinName,
-    nextOfKinPhone,
-    nextOfKinAddress
+    nomineeName,
+    nomineePhone,
+    nomineeAddress
   )
 VALUES
   (1, "John Banda", "0888888888", "Same as member");

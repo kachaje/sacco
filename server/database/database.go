@@ -60,7 +60,7 @@ func (d *Database) initDb() error {
 			firstName TEXT,
 			lastName TEXT,
 			otherName TEXT,
-			gender TEXT,
+			gender TEXT CHECK (gender IN ('Male', 'Female')),
 			title TEXT,
 			maritalStatus TEXT,
 			dateOfBirth TEXT,
@@ -87,9 +87,9 @@ func (d *Database) initDb() error {
 		CREATE TABLE IF NOT EXISTS memberNominee (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
-			nextOfKinName TEXT,
-			nextOfKinPhone TEXT,
-			nextOfKinAddress TEXT,
+			nomineeName TEXT,
+			nomineePhone TEXT,
+			nomineeAddress TEXT,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -157,6 +157,15 @@ func (d *Database) initDb() error {
 			otherCosts REAL,
 			totalCosts REAL,
 			netProfitLoss REAL,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS share (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberId INTEGER NOT NULL,
+			numberOfShares REAL,
+			pricePerShare REAL,
+			sharesType TEXT NOT NULL CHECK (sharesType IN ('Fixed', 'Redeemable')),
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);

@@ -11,9 +11,9 @@ import (
 type MemberNominee struct {
 	ID               int64  `json:"id"`
 	MemberId         int64  `json:"memberId"`
-	NextOfKinName    string `json:"nextOfKinName"`
-	NextOfKinPhone   string `json:"nextOfKinPhone"`
-	NextOfKinAddress string `json:"nextOfKinAddress"`
+	NextOfKinName    string `json:"nomineeName"`
+	NextOfKinPhone   string `json:"nomineePhone"`
+	NextOfKinAddress string `json:"nomineeAddress"`
 
 	db *sql.DB
 }
@@ -47,9 +47,9 @@ func (m *MemberNominee) AddMemberNominee(data map[string]any) (int64, error) {
 		context.Background(),
 		`INSERT INTO memberNominee (
 			memberId,
-			nextOfKinName,
-			nextOfKinPhone,
-			nextOfKinAddress
+			nomineeName,
+			nomineePhone,
+			nomineeAddress
 		) VALUES (
 		 	?, ?, ?, ?
 		)`,
@@ -92,21 +92,21 @@ func (m *MemberNominee) FetchMemberNominee(id int64) (*MemberNominee, error) {
 
 	row := m.db.QueryRow(`SELECT 
 		memberId,
-		nextOfKinName,
-		nextOfKinPhone,
-		nextOfKinAddress
+		nomineeName,
+		nomineePhone,
+		nomineeAddress
 	FROM memberNominee WHERE id=?`, id)
 
 	var memberId int64
-	var nextOfKinName,
-		nextOfKinPhone,
-		nextOfKinAddress any
+	var nomineeName,
+		nomineePhone,
+		nomineeAddress any
 
 	err := row.Scan(
 		&memberId,
-		&nextOfKinName,
-		&nextOfKinPhone,
-		&nextOfKinAddress,
+		&nomineeName,
+		&nomineePhone,
+		&nomineeAddress,
 	)
 	if err != nil {
 		return nil, err
@@ -117,14 +117,14 @@ func (m *MemberNominee) FetchMemberNominee(id int64) (*MemberNominee, error) {
 		MemberId: memberId,
 	}
 
-	if nextOfKinName != nil {
-		memberNominee.NextOfKinName = fmt.Sprintf("%v", nextOfKinName)
+	if nomineeName != nil {
+		memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
 	}
-	if nextOfKinPhone != nil {
-		memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nextOfKinPhone)
+	if nomineePhone != nil {
+		memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
 	}
-	if nextOfKinAddress != nil {
-		memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nextOfKinAddress)
+	if nomineeAddress != nil {
+		memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
 	}
 
 	return memberNominee, nil
@@ -141,16 +141,16 @@ func (m *MemberNominee) FilterBy(whereStatement string) ([]MemberNominee, error)
 	for rows.Next() {
 		var id int64
 		var memberId int64
-		var nextOfKinName,
-			nextOfKinPhone,
-			nextOfKinAddress any
+		var nomineeName,
+			nomineePhone,
+			nomineeAddress any
 
 		err := rows.Scan(
 			&id,
 			&memberId,
-			&nextOfKinName,
-			&nextOfKinPhone,
-			&nextOfKinAddress,
+			&nomineeName,
+			&nomineePhone,
+			&nomineeAddress,
 		)
 		if err != nil {
 			return nil, err
@@ -161,14 +161,14 @@ func (m *MemberNominee) FilterBy(whereStatement string) ([]MemberNominee, error)
 			MemberId: memberId,
 		}
 
-		if nextOfKinName != nil {
-			memberNominee.NextOfKinName = fmt.Sprintf("%v", nextOfKinName)
+		if nomineeName != nil {
+			memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
 		}
-		if nextOfKinPhone != nil {
-			memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nextOfKinPhone)
+		if nomineePhone != nil {
+			memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
 		}
-		if nextOfKinAddress != nil {
-			memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nextOfKinAddress)
+		if nomineeAddress != nil {
+			memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
 		}
 
 		results = append(results, memberNominee)

@@ -395,7 +395,7 @@ enterNextOfKin:
     en: Next Of Kin Name
     ny: Dzina Lawachibale
   nextScreen: enterNextOfKinPhone
-  inputIdentifier: nextOfKinName
+  inputIdentifier: nomineeName
 
 enterNextOfKinPhone:
   order: 25
@@ -404,7 +404,7 @@ enterNextOfKinPhone:
     en: Next Of Kin Phone
     ny: Foni ya Wachibale
   nextScreen: enterNextOfKinAddress
-  inputIdentifier: nextOfKinPhone
+  inputIdentifier: nomineePhone
 
 enterNextOfKinAddress:
   order: 26
@@ -413,7 +413,7 @@ enterNextOfKinAddress:
     en: Next Of Kin Address
     ny: Keyala ya Wachibale
   nextScreen: enterAskBeneficiaries
-  inputIdentifier: nextOfKinAddress
+  inputIdentifier: nomineeAddress
 
 enterAskBeneficiaries:
   order: 27
