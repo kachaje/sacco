@@ -245,7 +245,7 @@ func TestMemberDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var id int64 = 10
+	var id int64 = 1
 
 	result, err := m.MemberDetails(id)
 	if err != nil {

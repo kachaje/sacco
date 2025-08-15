@@ -16,7 +16,7 @@ INSERT INTO
   )
 VALUES
   (
-    10,
+    1,
     "Mary",
     "Banda",
     "",
@@ -43,7 +43,7 @@ INSERT INTO
   )
 VALUES
   (
-    10,
+    1,
     "P.O. Box 1000, Lilongwe",
     "Area 2, Lilongwe",
     "09999999999",
@@ -60,7 +60,7 @@ INSERT INTO
     nextOfKinAddress
   )
 VALUES
-  (10, "John Banda", "0888888888", "Same as member");
+  (1, "John Banda", "0888888888", "Same as member");
 
 INSERT INTO
   memberOccupation (
@@ -73,7 +73,7 @@ INSERT INTO
   )
 VALUES
   (
-    10,
+    1,
     "Sunseed Oil",
     72000,
     "Driver",
@@ -84,7 +84,7 @@ VALUES
 INSERT INTO
   memberBeneficiary (memberId, name, percentage, contact)
 VALUES
-  (10, "Benefator 1", 10, "P.O. Box 1"),
-  (10, "Benefator 2", 8, "P.O. Box 2"),
-  (10, "Benefator 3", 5, "P.O. Box 3"),
-  (10, "Benefator 4", 2, "P.O. Box 4");
+  (1, "Benefator 1", 10, "P.O. Box 1"),
+  (1, "Benefator 2", 8, "P.O. Box 2"),
+  (1, "Benefator 3", 5, "P.O. Box 3"),
+  (1, "Benefator 4", 2, "P.O. Box 4");

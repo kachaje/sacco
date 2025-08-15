@@ -3,28 +3,28 @@
     {
       "contact": "P.O. Box 1",
       "id": 1,
-      "memberId": 10,
+      "memberId": 1,
       "name": "Benefator 1",
       "percentage": 10
     },
     {
       "contact": "P.O. Box 2",
       "id": 2,
-      "memberId": 10,
+      "memberId": 1,
       "name": "Benefator 2",
       "percentage": 8
     },
     {
       "contact": "P.O. Box 3",
       "id": 3,
-      "memberId": 10,
+      "memberId": 1,
       "name": "Benefator 3",
       "percentage": 5
     },
     {
       "contact": "P.O. Box 4",
       "id": 4,
-      "memberId": 10,
+      "memberId": 1,
       "name": "Benefator 4",
       "percentage": 2
     }
@@ -34,7 +34,7 @@
     "homeTA": "Kyungu",
     "homeVillage": "Songwe",
     "id": 1,
-    "memberId": 10,
+    "memberId": 1,
     "phoneNumber": "09999999999",
     "postalAddress": "P.O. Box 1000, Lilongwe",
     "residentialAddress": "Area 2, Lilongwe"
@@ -43,13 +43,13 @@
   "fileNumber": "",
   "firstName": "Mary",
   "gender": "Female",
-  "id": 10,
+  "id": 1,
   "lastName": "Banda",
   "maritalStatus": "Single",
   "nationalId": "DHFYR8475",
   "nominee": {
     "id": 1,
-    "memberId": 10,
+    "memberId": 1,
     "nextOfKinAddress": "Same as member",
     "nextOfKinName": "John Banda",
     "nextOfKinPhone": "0888888888"
@@ -60,7 +60,7 @@
     "highestQualification": "Secondary",
     "id": 1,
     "jobTitle": "Driver",
-    "memberId": 10,
+    "memberId": 1,
     "netPay": 72000
   },
   "oldFileNumber": "",
