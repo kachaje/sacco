@@ -16,6 +16,7 @@ import (
 	"sacco/server/database"
 	"sacco/server/menus"
 	"sacco/utils"
+	"strconv"
 	"sync"
 
 	_ "embed"
@@ -207,23 +208,56 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 		}
 
 	case "beneficiaries":
-		val, ok := data.([]map[string]any)
+		rawData, ok := data.(map[string]any)
 		if ok {
-			if menus.Sessions[*sessionId].MemberId != nil {
-				for i := range val {
-					val[i]["memberId"] = *menus.Sessions[*sessionId].MemberId
+			records := []map[string]any{}
+
+			for i := range 4 {
+				var name, contact string
+				var percentage float64
+
+				index := i + 1
+
+				nameLabel := fmt.Sprintf("beneficiary%vName", index)
+				percentLabel := fmt.Sprintf("beneficiary%vPercent", index)
+				contactLabel := fmt.Sprintf("beneficiary%vContact", index)
+
+				if rawData[nameLabel] == nil {
+					break
 				}
 
-				_, err := db.AddMember(nil, nil, nil, nil, val, menus.Sessions[*sessionId].MemberId)
-				if err != nil {
+				name = fmt.Sprintf("%v", rawData[nameLabel])
+				contact = fmt.Sprintf("%v", rawData[contactLabel])
+
+				v, err := strconv.ParseFloat(fmt.Sprintf("%v", rawData[percentLabel]), 64)
+				if err == nil {
+					percentage = v
+				} else {
 					log.Println(err)
-					return
 				}
+
+				row := map[string]any{
+					"name":       name,
+					"percentage": percentage,
+					"contact":    contact,
+				}
+
+				if menus.Sessions[*sessionId].MemberId != nil {
+					row["memberId"] = *menus.Sessions[*sessionId].MemberId
+				}
+
+				records = append(records, row)
+			}
+
+			_, err := db.AddMember(nil, nil, nil, nil, records, menus.Sessions[*sessionId].MemberId)
+			if err != nil {
+				log.Println(err)
+				return
 			}
 
 			filename := filepath.Join(sessionFolder, "beneficiaries.json")
 
-			cacheFile(filename, val)
+			cacheFile(filename, records)
 
 			menus.Sessions[*sessionId].BeneficiariesAdded = true
 		}
