@@ -117,6 +117,32 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 				}
 
 				id = *mid
+
+				if len(contactsData) > 0 {
+					contactsData["memberId"] = id
+
+					cacheFile(contactsFile, contactsData)
+				}
+
+				if len(nomineeData) > 0 {
+					nomineeData["memberId"] = id
+
+					cacheFile(nomineeFile, nomineeData)
+				}
+
+				if len(occupationData) > 0 {
+					occupationData["memberId"] = id
+
+					cacheFile(occupationFile, occupationData)
+				}
+
+				if len(beneficiariesData) > 0 {
+					for i := range beneficiariesData {
+						beneficiariesData[i]["memberId"] = id
+					}
+
+					cacheFile(beneficiariesFile, beneficiariesData)
+				}
 			} else {
 				id, err = db.Member.AddMember(memberData)
 				if err != nil {
