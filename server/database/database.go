@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"sacco/server/database/models"
 	"strings"
 
 	_ "modernc.org/sqlite"
@@ -12,6 +13,7 @@ import (
 type Database struct {
 	DbName string
 	DB     *sql.DB
+	Member *models.Member
 }
 
 func NewDatabase(dbname string) *Database {
@@ -33,6 +35,8 @@ func NewDatabase(dbname string) *Database {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	instance.Member = models.NewMember(db)
 
 	return instance
 }
