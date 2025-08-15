@@ -32,6 +32,46 @@ enterLoanType:
         en: Personal
         ny: Yamunthu
       code: PERSONAL
-    - posit
+    - position: 2
+      label:
+        en: Business
+        ny: Bizinesi
+      code: BUSINESS
+    - position: 3
+      label:
+        en: Agricultural
+        ny: Yaulimi
+      code: AGRICULTURAL
+    - position: 4
+      label:
+        en: Emergency
+        ny: Yapangozi
   inputIdentifier: loanType
-  nextScreen: enterLoanType
+  nextScreen: enterLoanAmount
+
+enterLoanAmount:
+  order: 3
+  type: inputScreen
+  text:
+    en: Loan Amount
+    ny: Kuchuluka Kwake
+  inputIdentifier: loanAmount
+  nextScreen: enterPurposeOfLoan
+
+enterPurposeOfLoan:
+  order: 4
+  type: inputScreen
+  text:
+    en: Loan Purpose
+    ny: Cholinga Changongole
+  inputIdentifier: loanPurpose
+  nextScreen: enterRepaymentPeriod
+
+enterRepaymentPeriod:
+  order: 5
+  type: inputScreen
+  text:
+    en: Repayment Months
+    ny: Miyezi Yobweza
+  inputIdentifier: repaymentPeriod
+  nextScreen: 
