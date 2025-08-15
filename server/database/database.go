@@ -102,3 +102,7 @@ func (d *Database) initDb() error {
 	}
 	return nil
 }
+
+func (d *Database) AddMember(data map[string]any) (int64, error) {
+	return d.Member.AddMember(data)
+}
