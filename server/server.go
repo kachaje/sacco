@@ -124,6 +124,7 @@ func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 				savePreference(*phoneNumber, "language", language)
 			}
 		}
+
 	case "memberDetails":
 		id, err := db.Member.AddMember(data)
 		if err != nil {
@@ -136,6 +137,21 @@ func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 		filename := filepath.Join(sessionFolder, "memberDetails.json")
 
 		data["id"] = id
+
+		cacheFile(filename, data)
+
+	case "contactDetails":
+		if menus.Sessions[*sessionId].MemberId != nil {
+			data["memberId"] = *menus.Sessions[*sessionId].MemberId
+
+			_, err := db.AddMember(nil, data, nil, nil, nil, menus.Sessions[*sessionId].MemberId)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+		}
+
+		filename := filepath.Join(sessionFolder, "contactDetails.json")
 
 		cacheFile(filename, data)
 	default:

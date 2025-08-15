@@ -24,6 +24,11 @@ type Session struct {
 	MemberId              *int64
 	SessionId             string
 	PhoneNumber           string
+
+	ContactsAdded      bool
+	NomineeAdded       bool
+	OccupationAdded    bool
+	BeneficiariesAdded bool
 }
 
 var Sessions = make(map[string]*Session)
@@ -185,27 +190,63 @@ func MainMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder 
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
 		default:
 			memberAdded := ""
+			occupationAdded := ""
+			contactAdded := ""
+			nomineeAdded := ""
+			beneficiariesAdded := ""
 
 			if session.MemberId != nil {
-				memberAdded = "&#10003;"
+				if phoneNumber == "default" {
+					memberAdded = "&#10003;"
+				} else {
+					memberAdded = "(*)"
+				}
+			}
+			if session.OccupationAdded {
+				if phoneNumber == "default" {
+					occupationAdded = "&#10003;"
+				} else {
+					occupationAdded = "(*)"
+				}
+			}
+			if session.ContactsAdded {
+				if phoneNumber == "default" {
+					contactAdded = "&#10003;"
+				} else {
+					contactAdded = "(*)"
+				}
+			}
+			if session.NomineeAdded {
+				if phoneNumber == "default" {
+					nomineeAdded = "&#10003;"
+				} else {
+					nomineeAdded = "(*)"
+				}
+			}
+			if session.BeneficiariesAdded {
+				if phoneNumber == "default" {
+					beneficiariesAdded = "&#10003;"
+				} else {
+					beneficiariesAdded = "(*)"
+				}
 			}
 
 			if preferredLanguage != nil && *preferredLanguage == "ny" {
 				response = "CON Sankhani Zochita\n" +
 					fmt.Sprintf("1. Zokhudza Membala %s\n", memberAdded) +
-					"2. Zokhudza Ntchito\n" +
-					"3. Adiresi Yamembela\n" +
-					"4. Wachibale wa Membala\n" +
-					"5. Odzalandila\n" +
+					fmt.Sprintf("2. Zokhudza Ntchito %s\n", occupationAdded) +
+					fmt.Sprintf("3. Adiresi Yamembela\n %s", contactAdded) +
+					fmt.Sprintf("4. Wachibale wa Membala %s\n", nomineeAdded) +
+					fmt.Sprintf("5. Odzalandila %s\n", beneficiariesAdded) +
 					"\n" +
 					"00. Tiyambirenso"
 			} else {
 				response = "CON Choose Activity\n" +
 					fmt.Sprintf("1. Add Member Details %s\n", memberAdded) +
-					"2. Add Occupation Details\n" +
-					"3. Add Contact Details\n" +
-					"4. Add Next of Kin Details\n" +
-					"5. Add Beneficiaries\n" +
+					fmt.Sprintf("2. Add Occupation Details %s\n", occupationAdded) +
+					fmt.Sprintf("3. Add Contact Details %s\n", contactAdded) +
+					fmt.Sprintf("4. Add Next of Kin Details %s\n", nomineeAdded) +
+					fmt.Sprintf("5. Add Beneficiaries %s\n", beneficiariesAdded) +
 					"\n" +
 					"00. Main Menu"
 			}
