@@ -6,8 +6,8 @@ enterBeneficiary1:
   order: 28
   type: inputScreen
   text:
-    en: First Beneficiary Name
-    ny: Dzina Wolandila Woyamba
+    en: Name
+    ny: Dzina
   nextScreen: enterBeneficiary1Percent
   inputIdentifier: beneficiary1Name
 
@@ -15,8 +15,8 @@ enterBeneficiary1Percent:
   order: 29
   type: inputScreen
   text:
-    en: First Beneficiary Percent
-    ny: Mulingo Wolandila Woyamba
+    en: Percent
+    ny: Mulingo
   nextScreen: enterBeneficiary1Contact
   inputIdentifier: beneficiary1Percent
 
@@ -24,8 +24,8 @@ enterBeneficiary1Contact:
   order: 30
   type: inputScreen
   text:
-    en: First Beneficiary Contact
-    ny: Keyala Wolandila Woyamba
+    en: Contact
+    ny: Keyala
   nextScreen: enterAskBeneficiary2
   inputIdentifier: beneficiary1Contact
 
@@ -47,13 +47,14 @@ enterAskBeneficiary2:
         ny: Ayi
       nextScreen: formSummary
   inputIdentifier: askBeneficiary2
+  skipSummary: true
 
 enterBeneficiary2:
   order: 32
   type: inputScreen
   text:
-    en: Second Beneficiary Name
-    ny: Dzina Wolandila Wachiwiri
+    en: Name
+    ny: Dzina
   nextScreen: enterBeneficiary2Percent
   inputIdentifier: beneficiary2Name
 
@@ -61,8 +62,8 @@ enterBeneficiary2Percent:
   order: 33
   type: inputScreen
   text:
-    en: Second Beneficiary Percent
-    ny: Mulingo Wolandila Wachiwiri
+    en: Percent
+    ny: Mulingo
   nextScreen: enterBeneficiary2Contact
   inputIdentifier: beneficiary2Percent
 
@@ -70,8 +71,8 @@ enterBeneficiary2Contact:
   order: 34
   type: inputScreen
   text:
-    en: Second Beneficiary Contact
-    ny: Keyala Wolandila Wachiwiri
+    en: Contact
+    ny: Keyala
   nextScreen: enterAskBeneficiary3
   inputIdentifier: beneficiary2Contact
 
@@ -93,13 +94,14 @@ enterAskBeneficiary3:
         ny: Ayi
       nextScreen: formSummary
   inputIdentifier: askBeneficiary3
+  skipSummary: true
 
 enterBeneficiary3:
   order: 36
   type: inputScreen
   text:
-    en: Third Beneficiary Name
-    ny: Dzina Wolandila Wachitatu
+    en: Name
+    ny: Dzina
   nextScreen: enterBeneficiary3Percent
   inputIdentifier: beneficiary3Name
 
@@ -107,8 +109,8 @@ enterBeneficiary3Percent:
   order: 37
   type: inputScreen
   text:
-    en: Third Beneficiary Percent
-    ny: Mulingo Wolandila Wachitatu
+    en: Percent
+    ny: Mulingo
   nextScreen: enterBeneficiary3Contact
   inputIdentifier: beneficiary3Percent
 
@@ -116,8 +118,8 @@ enterBeneficiary3Contact:
   order: 38
   type: inputScreen
   text:
-    en: Third Beneficiary Contact
-    ny: Keyala Wolandila Wachitatu
+    en: Contact
+    ny: Keyala
   nextScreen: enterAskBeneficiary4
   inputIdentifier: beneficiary3Contact
 
@@ -139,13 +141,14 @@ enterAskBeneficiary4:
         ny: Ayi
       nextScreen: formSummary
   inputIdentifier: askBeneficiary4
+  skipSummary: true
 
 enterBeneficiary4:
   order: 40
   type: inputScreen
   text:
-    en: Fourth Beneficiary Name
-    ny: Dzina Wolandila Wachinayi
+    en: Name
+    ny: Dzina
   nextScreen: enterBeneficiary4Percent
   inputIdentifier: beneficiary4Name
 
@@ -153,8 +156,8 @@ enterBeneficiary4Percent:
   order: 41
   type: inputScreen
   text:
-    en: Fourth Beneficiary Percent
-    ny: Mulingo Wolandila Wachinayi
+    en: Percent
+    ny: Mulingo
   nextScreen: enterBeneficiary4Contact
   inputIdentifier: beneficiary4Percent
 
@@ -162,8 +165,8 @@ enterBeneficiary4Contact:
   order: 42
   type: inputScreen
   text:
-    en: Fourth Beneficiary Contact
-    ny: Keyala Wolandila Wachinayi
+    en: Contact
+    ny: Keyala
   nextScreen: formSummary
   inputIdentifier: beneficiary4Contact
 
