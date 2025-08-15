@@ -21,6 +21,9 @@ type Session struct {
 	NomineeWorkflow       *parser.WorkFlow
 	BeneficiariesWorkflow *parser.WorkFlow
 	PreferredLanguage     string
+	MemberId              *int64
+	SessionId             string
+	PhoneNumber           string
 }
 
 var Sessions = make(map[string]*Session)

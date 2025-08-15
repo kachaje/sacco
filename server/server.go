@@ -157,6 +157,8 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		session = &menus.Session{
 			CurrentMenu: "main",
 			Data:        make(map[string]string),
+			SessionId:   sessionID,
+			PhoneNumber: phoneNumber,
 
 			LanguageWorkflow: parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber),
 
