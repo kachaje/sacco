@@ -272,10 +272,12 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 				records = append(records, row)
 			}
 
-			_, err := db.AddMember(nil, nil, nil, nil, records, menus.Sessions[*sessionId].MemberId)
-			if err != nil {
-				log.Println(err)
-				return
+			if menus.Sessions[*sessionId].MemberId != nil {
+				_, err := db.AddMember(nil, nil, nil, nil, records, menus.Sessions[*sessionId].MemberId)
+				if err != nil {
+					log.Println(err)
+					return
+				}
 			}
 
 			filename := filepath.Join(sessionFolder, "beneficiaries.json")
