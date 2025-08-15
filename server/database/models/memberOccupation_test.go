@@ -29,7 +29,15 @@ func TestAddMemberOccupation(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	row := db.DB.QueryRow(`SELECT * FROM memberOccupation WHERE id=?`, id)
+	row := db.DB.QueryRow(`SELECT
+		id,
+		memberId,
+		employerName,
+		netPay,
+		jobTitle,
+		employerAddress,
+		highestQualification
+	FROM memberOccupation WHERE id=?`, id)
 
 	var memberId int64
 	var netPay float64

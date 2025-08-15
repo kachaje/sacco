@@ -27,7 +27,13 @@ func TestAddMemberNominee(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	row := db.DB.QueryRow(`SELECT * FROM memberNominee WHERE id=?`, id)
+	row := db.DB.QueryRow(`SELECT
+		id,
+		memberId,
+		nomineeName,
+		nomineePhone,
+		nomineeAddress
+	FROM memberNominee WHERE id=?`, id)
 
 	var memberId int64
 	var nomineeName,

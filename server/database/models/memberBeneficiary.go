@@ -133,7 +133,15 @@ func (m *MemberBeneficiary) FetchMemberBeneficiary(id int64) (*MemberBeneficiary
 func (m *MemberBeneficiary) FilterBy(whereStatement string) ([]MemberBeneficiary, error) {
 	results := []MemberBeneficiary{}
 
-	rows, err := m.db.QueryContext(context.Background(), fmt.Sprintf("SELECT * FROM memberBeneficiary %s", whereStatement))
+	rows, err := m.db.QueryContext(
+		context.Background(), 
+		fmt.Sprintf(`SELECT
+			id,
+			memberId,
+			name,
+			percentage,
+			contact
+		FROM memberBeneficiary %s`, whereStatement))
 	if err != nil {
 		return nil, err
 	}

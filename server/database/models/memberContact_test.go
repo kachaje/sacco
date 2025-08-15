@@ -30,7 +30,16 @@ func TestAddMemberContact(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	row := db.DB.QueryRow(`SELECT * FROM memberContact WHERE id=?`, id)
+	row := db.DB.QueryRow(`SELECT
+		id,
+		memberId,
+		postalAddress,
+		residentialAddress,
+		phoneNumber,
+		homeVillage,
+		homeTA,
+		homeDistrict
+	FROM memberContact WHERE id=?`, id)
 
 	var memberId int64
 	var postalAddress,

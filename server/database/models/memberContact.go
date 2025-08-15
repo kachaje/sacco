@@ -157,7 +157,20 @@ func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
 func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error) {
 	results := []MemberContact{}
 
-	rows, err := m.db.QueryContext(context.Background(), fmt.Sprintf("SELECT * FROM memberContact %s", whereStatement))
+	rows, err := m.db.QueryContext(
+		context.Background(),
+		fmt.Sprintf(`SELECT 
+				id, 
+				memberId,
+				postalAddress,
+				residentialAddress,
+				phoneNumber,
+				homeVillage,
+				homeTA,
+				homeDistrict 
+			FROM memberContact %s`,
+			whereStatement,
+		))
 	if err != nil {
 		return nil, err
 	}

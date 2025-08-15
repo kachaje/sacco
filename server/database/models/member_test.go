@@ -22,7 +22,7 @@ func TestAddMember(t *testing.T) {
 		"firstName":         "TEXT",
 		"lastName":          "TEXT",
 		"otherName":         "TEXT",
-		"gender":            "TEXT",
+		"gender":            "Female",
 		"title":             "TEXT",
 		"maritalStatus":     "TEXT",
 		"dateOfBirth":       "TEXT",
@@ -38,7 +38,21 @@ func TestAddMember(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	row := db.DB.QueryRow(`SELECT * FROM member WHERE id=?`, id)
+	row := db.DB.QueryRow(`SELECT
+		id,
+		firstName,
+		lastName,
+		otherName,
+		gender,
+		title,
+		maritalStatus,
+		dateOfBirth,
+		nationalId,
+		utilityBillType,
+		utilityBillNumber,
+		fileNumber,
+		oldFileNumber
+	FROM member WHERE id=?`, id)
 
 	var firstName,
 		lastName,

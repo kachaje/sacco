@@ -27,7 +27,13 @@ func TestAddMemberBeneficiary(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	row := db.DB.QueryRow(`SELECT * FROM memberBeneficiary WHERE id=?`, id)
+	row := db.DB.QueryRow(`SELECT
+		id,
+		memberId,
+		name,
+		percentage,
+		contact
+	FROM memberBeneficiary WHERE id=?`, id)
 
 	var memberId int64
 	var percentage float64
