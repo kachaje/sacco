@@ -6,7 +6,7 @@ enterNextOfKin:
   order: 24
   type: inputScreen
   text:
-    en: Next Of Kin Name
+    en: Name
     ny: Dzina Lawachibale
   nextScreen: enterNextOfKinPhone
   inputIdentifier: nextOfKinName
@@ -15,7 +15,7 @@ enterNextOfKinPhone:
   order: 25
   type: inputScreen
   text:
-    en: Next Of Kin Phone
+    en: Phone
     ny: Foni ya Wachibale
   nextScreen: enterNextOfKinAddress
   inputIdentifier: nextOfKinPhone
@@ -24,7 +24,7 @@ enterNextOfKinAddress:
   order: 26
   type: inputScreen
   text:
-    en: Next Of Kin Address
+    en: Address
     ny: Keyala ya Wachibale
   inputIdentifier: nextOfKinAddress
   nextScreen: formSummary
