@@ -68,7 +68,9 @@ func (d *Database) initDb() error {
 			utilityBillType TEXT,
 			utilityBillNumber TEXT,
 			fileNumber TEXT,
-			oldFileNumber TEXT
+			oldFileNumber TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
 		CREATE TABLE IF NOT EXISTS memberContact (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,14 +80,18 @@ func (d *Database) initDb() error {
 			phoneNumber TEXT,
 			homeVillage TEXT,
 			homeTA TEXT,
-			homeDistrict TEXT
+			homeDistrict TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
 		CREATE TABLE IF NOT EXISTS memberNominee (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			nextOfKinName TEXT,
 			nextOfKinPhone TEXT,
-			nextOfKinAddress TEXT
+			nextOfKinAddress TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
 		CREATE TABLE IF NOT EXISTS memberOccupation (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -97,14 +103,62 @@ func (d *Database) initDb() error {
 			periodEmployed REAL,
 			grossPay REAL,
 			netPay REAL,
-			highestQualification TEXT
+			highestQualification TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
 		CREATE TABLE IF NOT EXISTS memberBeneficiary (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			name TEXT,
 			percentage REAL,
-			contact TEXT
+			contact TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS memberBusiness (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberId INTEGER NOT NULL,
+			numberOfBusinessYears REAL,
+			typeOfBusiness TEXT,
+			nameOfBusiness TEXT,
+			tradingArea TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS memberLastYearBusinessHistory (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberBusinessId INTEGER NOT NULL,
+			totalIncome REAL,
+			totalCostOfGoods REAL,
+			employeesWages REAL,
+			ownSalary REAL,
+			transport REAL,
+			loanInterest REAL,
+			utilities REAL,
+			rentals REAL,
+			otherCosts REAL,
+			totalCosts REAL,
+			netProfitLoss REAL,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS memberNextYearBusinessProjection (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberBusinessId INTEGER NOT NULL,
+			totalIncome REAL,
+			totalCostOfGoods REAL,
+			employeesWages REAL,
+			ownSalary REAL,
+			transport REAL,
+			loanInterest REAL,
+			utilities REAL,
+			rentals REAL,
+			otherCosts REAL,
+			totalCosts REAL,
+			netProfitLoss REAL,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
 	`
 	_, err := d.DB.Exec(sqlStmt)
