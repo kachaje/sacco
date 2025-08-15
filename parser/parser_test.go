@@ -416,7 +416,7 @@ func TestGotoMenu(t *testing.T) {
 func TestCancel(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m map[string]any, model, phoneNumber, sessionId *string) {
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId *string) {
 		if m != nil {
 			t.Fatalf("Test failed. Expected: nil; Actual: %v", m)
 		}
@@ -463,16 +463,19 @@ func TestCancel(t *testing.T) {
 func TestSubmit(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m map[string]any, model, phoneNumber, sessionId *string) {
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId *string) {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}
 
-		if len(m) != 6 {
-			t.Fatalf("Test failed. Expected: 6; Actual: %v", len(m))
-		}
+		val, ok := m.(map[string]any)
+		if ok {
+			if len(val) != 6 {
+				t.Fatalf("Test failed. Expected: 6; Actual: %v", len(val))
+			}
 
-		called = true
+			called = true
+		}
 	}, nil, nil, nil)
 
 	wf.Data = map[string]any{
@@ -514,16 +517,19 @@ func TestSubmit(t *testing.T) {
 func TestNavNext(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m map[string]any, model, phoneNumber, sessionId *string) {
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId *string) {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}
 
-		if len(m) != 6 {
-			t.Fatalf("Test failed. Expected: 6; Actual: %v", len(m))
-		}
+		val, ok := m.(map[string]any)
+		if ok {
+			if len(val) != 6 {
+				t.Fatalf("Test failed. Expected: 6; Actual: %v", len(val))
+			}
 
-		called = true
+			called = true
+		}
 	}, nil, nil, nil)
 
 	target := `Language: 

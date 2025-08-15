@@ -31,12 +31,12 @@ type WorkFlow struct {
 	CurrentSessionId   string
 	ScreenIdMap        map[string]string
 	ScreenOrder        map[int]string
-	SubmitCallback     func(map[string]any, *string, *string, *string)
+	SubmitCallback     func(any, *string, *string, *string)
 	History            map[int]string
 	HistoryIndex       int
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string, *string, *string), preferredLanguage, phoneNumber, sessionId *string) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *string), preferredLanguage, phoneNumber, sessionId *string) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},

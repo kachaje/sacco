@@ -108,7 +108,7 @@ func cacheFile(filename string, data map[string]any) {
 	}
 }
 
-func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
+func saveData(data any, model, phoneNumber, sessionId *string) {
 	sessionFolder := filepath.Join(cacheFolder, *phoneNumber, *sessionId)
 
 	_, err := os.Stat(sessionFolder)
@@ -118,42 +118,54 @@ func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 
 	switch *model {
 	case "preferredLanguage":
-		if data["language"] != nil && phoneNumber != nil {
-			language, ok := data["language"].(string)
-			if ok {
-				savePreference(*phoneNumber, "language", language)
+		val, ok := data.(map[string]any)
+		if ok {
+			if val["language"] != nil && phoneNumber != nil {
+				language, ok := val["language"].(string)
+				if ok {
+					savePreference(*phoneNumber, "language", language)
+				}
 			}
 		}
 
 	case "memberDetails":
-		id, err := db.Member.AddMember(data)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		menus.Sessions[*sessionId].MemberId = &id
-
-		filename := filepath.Join(sessionFolder, "memberDetails.json")
-
-		data["id"] = id
-
-		cacheFile(filename, data)
-
-	case "contactDetails":
-		if menus.Sessions[*sessionId].MemberId != nil {
-			data["memberId"] = *menus.Sessions[*sessionId].MemberId
-
-			_, err := db.AddMember(nil, data, nil, nil, nil, menus.Sessions[*sessionId].MemberId)
+		val, ok := data.(map[string]any)
+		if ok {
+			id, err := db.Member.AddMember(val)
 			if err != nil {
 				log.Println(err)
 				return
 			}
+
+			menus.Sessions[*sessionId].MemberId = &id
+
+			filename := filepath.Join(sessionFolder, "memberDetails.json")
+
+			val["id"] = id
+
+			cacheFile(filename, val)
 		}
 
-		filename := filepath.Join(sessionFolder, "contactDetails.json")
+	case "contactDetails":
+		val, ok := data.(map[string]any)
+		if ok {
+			if menus.Sessions[*sessionId].MemberId != nil {
+				val["memberId"] = *menus.Sessions[*sessionId].MemberId
 
-		cacheFile(filename, data)
+				_, err := db.AddMember(nil, val, nil, nil, nil, menus.Sessions[*sessionId].MemberId)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+			}
+
+			filename := filepath.Join(sessionFolder, "contactDetails.json")
+
+			cacheFile(filename, val)
+
+			menus.Sessions[*sessionId].ContactsAdded = true
+		}
+
 	default:
 		fmt.Println("##########", *phoneNumber, *sessionId, data)
 	}
