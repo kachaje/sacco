@@ -11,9 +11,27 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 		session.CurrentMenu = "main"
 		text = "0"
 		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+
 	case "1":
 		session.CurrentMenu = "registration.1"
 		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+
+	case "2":
+		session.CurrentMenu = "registration.2"
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+
+	case "3":
+		session.CurrentMenu = "registration.3"
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+
+	case "4":
+		session.CurrentMenu = "registration.4"
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+
+	case "5":
+		session.CurrentMenu = "registration.5"
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+
 	default:
 		memberAdded := ""
 		occupationAdded := ""

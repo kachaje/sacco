@@ -193,6 +193,59 @@ func MainMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder 
 			text = ""
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
 		}
+
+	case "registration.2":
+		response = session.OccupationWorkflow.NavNext(text)
+
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		} else if strings.TrimSpace(response) == "" {
+			session.CurrentMenu = "registration"
+			text = ""
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		}
+
+	case "registration.3":
+		response = session.ContactsWorkflow.NavNext(text)
+
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		} else if strings.TrimSpace(response) == "" {
+			session.CurrentMenu = "registration"
+			text = ""
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		}
+
+	case "registration.4":
+		response = session.NomineeWorkflow.NavNext(text)
+
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		} else if strings.TrimSpace(response) == "" {
+			session.CurrentMenu = "registration"
+			text = ""
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		}
+
+	case "registration.5":
+		response = session.BeneficiariesWorkflow.NavNext(text)
+
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		} else if strings.TrimSpace(response) == "" {
+			session.CurrentMenu = "registration"
+			text = ""
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		}
+
 	case "loan":
 		if text == "0" {
 			session.CurrentMenu = "main"
@@ -201,6 +254,7 @@ func MainMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder 
 			response = "CON Loan Application\n" +
 				"0. Back to Main Menu"
 		}
+
 	case "balance":
 		if text == "0" {
 			session.CurrentMenu = "main"
