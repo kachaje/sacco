@@ -55,6 +55,7 @@ var nomineeData map[string]any
 var beneficiariesData map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
+var cacheFolder = filepath.Join(".", "data", "cache")
 
 func init() {
 	var err error
@@ -92,6 +93,13 @@ func init() {
 }
 
 func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
+	sessionFolder := filepath.Join(cacheFolder, *phoneNumber, *sessionId)
+
+	_, err := os.Stat(sessionFolder)
+	if os.IsNotExist(err) {
+		os.MkdirAll(sessionFolder, 0755)
+	}
+
 	switch *model {
 	case "preferredLanguage":
 		if data["language"] != nil && phoneNumber != nil {
@@ -101,7 +109,7 @@ func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 			}
 		}
 	default:
-		fmt.Println("##########", data)
+		fmt.Println("##########", *phoneNumber, *sessionId, data)
 	}
 }
 
@@ -286,6 +294,11 @@ func Main() {
 	_, err = os.Stat(preferencesFolder)
 	if os.IsNotExist(err) {
 		os.MkdirAll(preferencesFolder, 0755)
+	}
+
+	_, err = os.Stat(cacheFolder)
+	if os.IsNotExist(err) {
+		os.MkdirAll(cacheFolder, 0755)
 	}
 
 	http.HandleFunc("/ws", wsHandler)
