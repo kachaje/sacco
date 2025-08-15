@@ -7,7 +7,7 @@ enterNextOfKin:
   type: inputScreen
   text:
     en: Name
-    ny: Dzina Lawachibale
+    ny: Dzina
   nextScreen: enterNextOfKinPhone
   inputIdentifier: nextOfKinName
 
@@ -15,8 +15,8 @@ enterNextOfKinPhone:
   order: 25
   type: inputScreen
   text:
-    en: Phone
-    ny: Foni ya Wachibale
+    en: Phone Number
+    ny: Nambala Yafoni
   nextScreen: enterNextOfKinAddress
   inputIdentifier: nextOfKinPhone
 
@@ -25,7 +25,7 @@ enterNextOfKinAddress:
   type: inputScreen
   text:
     en: Address
-    ny: Keyala ya Wachibale
+    ny: Adiresi
   inputIdentifier: nextOfKinAddress
   nextScreen: formSummary
 

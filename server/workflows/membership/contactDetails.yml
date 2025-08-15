@@ -6,8 +6,8 @@ enterPostalAddress:
   order: 18
   type: inputScreen
   text:
-    en: Your Postal Address
-    ny: Adiresi Yanu
+    en: Postal Address
+    ny: Adiresi
   nextScreen: enterResidentialAddress
   inputIdentifier: postalAddress
 
