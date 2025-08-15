@@ -91,9 +91,12 @@ func (d *Database) initDb() error {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			employerName TEXT,
-			netPay REAL,
-			jobTitle TEXT,
 			employerAddress TEXT,
+			employerPhone TEXT,
+			jobTitle TEXT,
+			periodEmployed REAL,
+			grossPay REAL,
+			netPay REAL,
 			highestQualification TEXT
 		);
 		CREATE TABLE IF NOT EXISTS memberBeneficiary (
