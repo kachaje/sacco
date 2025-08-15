@@ -28,14 +28,15 @@ type WorkFlow struct {
 	CurrentLanguage    string
 	CurrentPhoneNumber string
 	CurrentModel       string
+	CurrentSessionId   string
 	ScreenIdMap        map[string]string
 	ScreenOrder        map[int]string
-	SubmitCallback     func(map[string]any, *string, *string)
+	SubmitCallback     func(map[string]any, *string, *string, *string)
 	History            map[int]string
 	HistoryIndex       int
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string, *string), preferredLanguage, phoneNumber *string) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string, *string, *string), preferredLanguage, phoneNumber, sessionId *string) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -48,6 +49,9 @@ func NewWorkflow(tree map[string]any, callbackFunc func(map[string]any, *string,
 		HistoryIndex:    -1,
 	}
 
+	if sessionId != nil {
+		w.CurrentSessionId = *sessionId
+	}
 	if phoneNumber != nil {
 		w.CurrentPhoneNumber = *phoneNumber
 	}
@@ -211,7 +215,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		if w.SubmitCallback != nil {
 			data := w.ResolveData(w.Data, true)
 
-			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber)
+			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

@@ -91,7 +91,7 @@ func init() {
 
 }
 
-func saveData(data map[string]any, model, phoneNumber *string) {
+func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 	switch *model {
 	case "preferredLanguage":
 		if data["language"] != nil && phoneNumber != nil {
@@ -160,17 +160,17 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			SessionId:   sessionID,
 			PhoneNumber: phoneNumber,
 
-			LanguageWorkflow: parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber),
+			LanguageWorkflow: parser.NewWorkflow(languageData, saveData, preferredLanguage, &phoneNumber, &sessionID),
 
-			PIWorkflow: parser.NewWorkflow(personalInformationData, saveData, preferredLanguage, &phoneNumber),
+			PIWorkflow: parser.NewWorkflow(personalInformationData, saveData, preferredLanguage, &phoneNumber, &sessionID),
 
-			OccupationWorkflow: parser.NewWorkflow(occupationData, saveData, preferredLanguage, &phoneNumber),
+			OccupationWorkflow: parser.NewWorkflow(occupationData, saveData, preferredLanguage, &phoneNumber, &sessionID),
 
-			ContactsWorkflow: parser.NewWorkflow(contactsData, saveData, preferredLanguage, &phoneNumber),
+			ContactsWorkflow: parser.NewWorkflow(contactsData, saveData, preferredLanguage, &phoneNumber, &sessionID),
 
-			NomineeWorkflow: parser.NewWorkflow(nomineeData, saveData, preferredLanguage, &phoneNumber),
+			NomineeWorkflow: parser.NewWorkflow(nomineeData, saveData, preferredLanguage, &phoneNumber, &sessionID),
 
-			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, saveData, preferredLanguage, &phoneNumber),
+			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, saveData, preferredLanguage, &phoneNumber, &sessionID),
 		}
 
 		if preferredLanguage != nil {
