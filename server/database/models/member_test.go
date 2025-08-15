@@ -1,8 +1,10 @@
 package models_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sacco/server/database"
 	"sacco/server/database/models"
 	"testing"
@@ -221,4 +223,35 @@ func TestMemberFilterBy(t *testing.T) {
 	if len(results) != 2 {
 		t.Fatalf("Test failed. Expected: 2; Actual: %v", len(results))
 	}
+}
+
+func TestMemberDetails(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	m := models.NewMember(db.DB)
+
+	content, err := os.ReadFile(filepath.Join(".", "fixtures", "member.sql"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sqlStatement := string(content)
+
+	_, err = db.DB.Exec(sqlStatement)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var id int64 = 10
+
+	result, err := m.MemberDetails(id)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	payload, _ := json.MarshalIndent(result, "", "  ")
+
+	fmt.Println(string(payload))
 }

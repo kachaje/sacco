@@ -9,19 +9,24 @@ import (
 )
 
 type Member struct {
-	ID                int64
-	FirstName         string
-	LastName          string
-	OtherName         string
-	Gender            string
-	Title             string
-	MaritalStatus     string
-	DateOfBirth       string
-	NationalId        string
-	UtilityBillType   string
-	UtilityBillNumber string
-	FileNumber        string
-	OldFileNumber     string
+	ID                int64  `json:"id"`
+	FirstName         string `json:"firstName"`
+	LastName          string `json:"lastName"`
+	OtherName         string `json:"otherName"`
+	Gender            string `json:"gender"`
+	Title             string `json:"title"`
+	MaritalStatus     string `json:"maritalStatus"`
+	DateOfBirth       string `json:"dateOfBirth"`
+	NationalId        string `json:"nationalId"`
+	UtilityBillType   string `json:"utilityBillType"`
+	UtilityBillNumber string `json:"utilityBillNumber"`
+	FileNumber        string `json:"fileNumber"`
+	OldFileNumber     string `json:"oldFileNumber"`
+
+	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
+	ContactDetails    MemberContact       `json:"contactDetails"`
+	Nominee           MemberNominee       `json:"nominee"`
+	OccupationDetails MemberOccupation    `json:"occupationDetails"`
 
 	db *sql.DB
 }
@@ -30,6 +35,49 @@ func NewMember(db *sql.DB) *Member {
 	return &Member{
 		db: db,
 	}
+}
+
+func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
+	fullRecord := map[string]any{}
+
+	member, err := m.FetchMember(memberId)
+	if err != nil {
+		return nil, err
+	}
+
+	c := NewMemberContact(m.db, &memberId)
+
+	contactDetails, err := c.FilterBy(fmt.Sprintf(`WHERE memberId = %d`, memberId))
+	if err != nil {
+		return nil, err
+	}
+
+	if len(contactDetails) > 0 {
+		member.ContactDetails = contactDetails[0]
+	}
+
+	n := NewMemberNominee(m.db, &memberId)
+
+	nominee, err := n.FilterBy(fmt.Sprintf(`WHERE memberId = %d`, memberId))
+	if err != nil {
+		return nil, err
+	}
+
+	if len(nominee) > 0 {
+		member.Nominee = nominee[0]
+	}
+
+	payload, err := json.Marshal(member)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(payload, &fullRecord)
+	if err != nil {
+		return nil, err
+	}
+
+	return fullRecord, nil
 }
 
 func (m *Member) AddMember(data map[string]any) (int64, error) {
