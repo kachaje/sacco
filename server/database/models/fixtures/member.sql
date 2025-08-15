@@ -61,3 +61,22 @@ INSERT INTO
   )
 VALUES
   (10, "John Banda", "0888888888", "Same as member");
+
+INSERT INTO
+  memberOccupation (
+    memberId,
+    employerName,
+    netPay,
+    jobTitle,
+    employerAddress,
+    highestQualification
+  )
+VALUES
+  (
+    10,
+    "Sunseed Oil",
+    72000,
+    "Driver",
+    "Kanengo, Lilongwe",
+    "Secondary"
+  );

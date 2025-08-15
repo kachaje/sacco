@@ -44,6 +44,23 @@ enterHighestQualification:
   text:
     en: Highest Qualification
     ny: Mulingo Wamaphunziro Anu
+  options:
+    - position: 1
+      label:
+        en: Tertiary
+        ny: Koleji
+    - position: 2
+      label:
+        en: Secondary
+        ny: Sekondale
+    - position: 3
+      label:
+        en: Primary
+        ny: Pulayimale
+    - position: 4
+      label:
+        en: None
+        ny: Sanaphunizire
   inputIdentifier: highestQualification
   nextScreen: formSummary
 
