@@ -497,7 +497,7 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 
 			sort.Ints(indices)
 
-			for i := range indices {
+			for _, i := range indices {
 				key := w.ScreenOrder[i]
 
 				if data[key] != nil {
