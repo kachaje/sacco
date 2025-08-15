@@ -1,0 +1,37 @@
+model: loanApplication
+
+initialScreen: enterMemberIdNo
+
+enterMemberIdNo:
+  order: 0
+  type: inputScreen
+  text:
+    en: Member ID Number
+    ny: Nambala Yamembala
+  inputIdentifier: memberIdNumber
+  nextScreen: enterEmploymentNumber
+
+enterEmploymentNumber:
+  order: 1
+  type: inputScreen
+  text:
+    en: Employment Number
+    ny: Nambala Yakuntchito
+  inputIdentifier: employeeNumber
+  nextScreen: enterLoanType
+
+enterLoanType:
+  order: 2
+  type: inputScreen
+  text:
+    en: Loan Type
+    ny: Mtundu Wangongole
+  options:
+    - position: 1
+      label:
+        en: Personal
+        ny: Yamunthu
+      code: PERSONAL
+    - posit
+  inputIdentifier: loanType
+  nextScreen: enterLoanType
