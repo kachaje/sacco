@@ -11,9 +11,13 @@ import (
 )
 
 type Database struct {
-	DbName string
-	DB     *sql.DB
-	Member *models.Member
+	DbName            string
+	DB                *sql.DB
+	Member            *models.Member
+	MemberContact     *models.MemberContact
+	MemberBeneficiary *models.MemberBeneficiary
+	MemberOccupation  *models.MemberOccupation
+	MemberNominee     *models.MemberNominee
 }
 
 func NewDatabase(dbname string) *Database {
@@ -37,6 +41,10 @@ func NewDatabase(dbname string) *Database {
 	}
 
 	instance.Member = models.NewMember(db)
+	instance.MemberContact = models.NewMemberContact(db, nil)
+	instance.MemberBeneficiary = models.NewMemberBeneficiary(db, nil)
+	instance.MemberOccupation = models.NewMemberOccupation(db, nil)
+	instance.MemberNominee = models.NewMemberNominee(db, nil)
 
 	return instance
 }
@@ -103,6 +111,61 @@ func (d *Database) initDb() error {
 	return nil
 }
 
-func (d *Database) AddMember(data map[string]any) (int64, error) {
-	return d.Member.AddMember(data)
+func (d *Database) AddMember(
+	memberData, contactData,
+	nomineeData, occupationData map[string]any,
+	beneficiariesData []map[string]any,
+	existingMemberId *int64,
+) (*int64, error) {
+	var memberId int64
+	var err error
+
+	if existingMemberId == nil {
+		id, err := d.Member.AddMember(memberData)
+		if err != nil {
+			return nil, err
+		}
+
+		memberId = id
+	} else {
+		memberId = *existingMemberId
+	}
+
+	if contactData != nil {
+		contactData["memberId"] = memberId
+
+		_, err = d.MemberContact.AddMemberContact(contactData)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if nomineeData != nil {
+		nomineeData["memberId"] = memberId
+
+		_, err = d.MemberNominee.AddMemberNominee(nomineeData)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if occupationData != nil {
+		occupationData["memberId"] = memberId
+
+		_, err = d.MemberOccupation.AddMemberOccupation(occupationData)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	for _, beneficiaryData := range beneficiariesData {
+		beneficiaryData["memberId"] = memberId
+
+		_, err = d.MemberBeneficiary.AddMemberBeneficiary(beneficiaryData)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &memberId, nil
 }
