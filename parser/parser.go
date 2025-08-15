@@ -80,6 +80,13 @@ func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *
 					w.ScreenIdMap[id] = key
 
 					if row["order"] != nil {
+						if row["skipSummary"] != nil {
+							val, ok := row["skipSummary"].(bool)
+							if ok && val {
+								continue
+							}
+						}
+
 						i, err := strconv.Atoi(fmt.Sprintf("%v", row["order"]))
 
 						if err == nil {
