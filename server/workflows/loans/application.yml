@@ -46,6 +46,7 @@ enterLoanType:
       label:
         en: Emergency
         ny: Yapangozi
+      code: EMERGENCY
   inputIdentifier: loanType
   nextScreen: enterLoanAmount
 

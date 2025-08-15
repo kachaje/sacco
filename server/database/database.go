@@ -165,7 +165,56 @@ func (d *Database) initDb() error {
 			memberId INTEGER NOT NULL,
 			numberOfShares REAL,
 			pricePerShare REAL,
-			sharesType TEXT NOT NULL CHECK (sharesType IN ('Fixed', 'Redeemable')),
+			sharesType TEXT NOT NULL CHECK (sharesType IN ('FIXED', 'REDEEMABLE')),
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS loan (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberId INTEGER NOT NULL,
+			employeeNumber TEXT,
+			loanAmount REAL,
+			repaymentPeriod REAL,
+			loanPurpose TEXT,
+			loanStatus TEXT NOT NULL CHECK (loanStatus IN ('PENDING', 'APPROVED', 'REJECTED')),
+			loanType TEXT NOT NULL CHECK (loanType IN ('PERSONAL', 'BUSINESS', 'AGRICULTURAL', 'EMERGENCY')),
+			amountRecommended REAL,
+			approvedBy TEXT,
+			approvalDate TEXT,
+			amountApproved REAL,
+			verifiedBy TEXT,
+			dateVerified TEXT,
+			denialOrPartialReason TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS loanLiability (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberId INTEGER NOT NULL,
+			loanId INTEGER NOT NULL,
+			description TEXT,
+			value REAL,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS loanSecurity (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberId INTEGER NOT NULL,
+			loanId INTEGER NOT NULL,
+			description TEXT,
+			value REAL,
+			serialNumber TEXT,
+			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+		);
+		CREATE TABLE IF NOT EXISTS loanWitness (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			memberId INTEGER NOT NULL,
+			loanId INTEGER NOT NULL,
+			name TEXT,
+			telephone TEXT,
+			address TEXT,
+			date TEXT,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
