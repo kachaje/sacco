@@ -9,11 +9,11 @@ import (
 )
 
 type MemberNominee struct {
-	ID               int64
-	MemberId         int64
-	NextOfKinName    string
-	NextOfKinPhone   string
-	NextOfKinAddress string
+	ID               int64  `json:"id"`
+	MemberId         int64  `json:"memberId"`
+	NextOfKinName    string `json:"nextOfKinName"`
+	NextOfKinPhone   string `json:"nextOfKinPhone"`
+	NextOfKinAddress string `json:"nextOfKinAddress"`
 
 	db *sql.DB
 }

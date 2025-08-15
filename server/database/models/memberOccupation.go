@@ -9,13 +9,13 @@ import (
 )
 
 type MemberOccupation struct {
-	ID                   int64
-	MemberId             int64
-	EmployerName         string
-	NetPay               float64
-	JobTitle             string
-	EmployerAddress      string
-	HighestQualification string
+	ID                   int64   `json:"id"`
+	MemberId             int64   `json:"memberId"`
+	EmployerName         string  `json:"employerName"`
+	NetPay               float64 `json:"netPay"`
+	JobTitle             string  `json:"jobTitle"`
+	EmployerAddress      string  `json:"employerAddress"`
+	HighestQualification string  `json:"highestQualification"`
 
 	db *sql.DB
 }

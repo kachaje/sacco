@@ -9,11 +9,11 @@ import (
 )
 
 type MemberBeneficiary struct {
-	ID         int64
-	MemberId   int64
-	Name       string
-	Percentage float64
-	Contact    string
+	ID         int64   `json:"id"`
+	MemberId   int64   `json:"memberId"`
+	Name       string  `json:"name"`
+	Percentage float64 `json:"percentage"`
+	Contact    string  `json:"contact"`
 
 	db *sql.DB
 }

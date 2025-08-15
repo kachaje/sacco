@@ -80,3 +80,11 @@ VALUES
     "Kanengo, Lilongwe",
     "Secondary"
   );
+
+INSERT INTO
+  memberBeneficiary (memberId, name, percentage, contact)
+VALUES
+  (10, "Benefator 1", 10, "P.O. Box 1"),
+  (10, "Benefator 2", 8, "P.O. Box 2"),
+  (10, "Benefator 3", 5, "P.O. Box 3"),
+  (10, "Benefator 4", 2, "P.O. Box 4");

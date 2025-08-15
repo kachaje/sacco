@@ -45,9 +45,11 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 		return nil, err
 	}
 
+	filter := fmt.Sprintf(`WHERE memberId = %d`, memberId)
+
 	c := NewMemberContact(m.db, &memberId)
 
-	contactDetails, err := c.FilterBy(fmt.Sprintf(`WHERE memberId = %d`, memberId))
+	contactDetails, err := c.FilterBy(filter)
 	if err != nil {
 		return nil, err
 	}
@@ -58,13 +60,35 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	n := NewMemberNominee(m.db, &memberId)
 
-	nominee, err := n.FilterBy(fmt.Sprintf(`WHERE memberId = %d`, memberId))
+	nominee, err := n.FilterBy(filter)
 	if err != nil {
 		return nil, err
 	}
 
 	if len(nominee) > 0 {
 		member.Nominee = nominee[0]
+	}
+
+	o := NewMemberOccupation(m.db, &memberId)
+
+	occupation, err := o.FilterBy(filter)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(occupation) > 0 {
+		member.OccupationDetails = occupation[0]
+	}
+
+	b := NewMemberBeneficiary(m.db, &memberId)
+
+	beneficiaries, err := b.FilterBy(filter)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(beneficiaries) > 0 {
+		member.Beneficiaries = beneficiaries
 	}
 
 	payload, err := json.Marshal(member)

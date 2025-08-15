@@ -9,14 +9,14 @@ import (
 )
 
 type MemberContact struct {
-	ID                 int64
-	MemberId           int64
-	PostalAddress      string
-	ResidentialAddress string
-	PhoneNumber        string
-	HomeVillage        string
-	HomeTA             string
-	HomeDistrict       string
+	ID                 int64  `json:"id"`
+	MemberId           int64  `json:"memberId"`
+	PostalAddress      string `json:"postalAddress"`
+	ResidentialAddress string `json:"residentialAddress"`
+	PhoneNumber        string `json:"phoneNumber"`
+	HomeVillage        string `json:"homeVillage"`
+	HomeTA             string `json:"homeTA"`
+	HomeDistrict       string `json:"homeDistrict"`
 
 	db *sql.DB
 }
