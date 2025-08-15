@@ -6,6 +6,6 @@ if [[ "$1" == "-b" ]]; then
 
 elif [[ "$1" == "-c" ]]; then
 
-    rm -rf settings/ **/**/settings/ **/**/data/
+    rm -rf settings/ **/**/settings/ **/**/data/ **/**/*.db
 
 fi

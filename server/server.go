@@ -95,6 +95,19 @@ func init() {
 
 }
 
+func cacheFile(filename string, data map[string]any) {
+	payload, err := json.MarshalIndent(data, "", "  ")
+	if err == nil {
+		err = os.WriteFile(filename, payload, 0644)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	} else {
+		log.Println(err)
+	}
+}
+
 func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 	sessionFolder := filepath.Join(cacheFolder, *phoneNumber, *sessionId)
 
@@ -114,11 +127,17 @@ func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 	case "memberDetails":
 		id, err := db.Member.AddMember(data)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 			return
 		}
 
 		menus.Sessions[*sessionId].MemberId = &id
+
+		filename := filepath.Join(sessionFolder, "memberDetails.json")
+
+		data["id"] = id
+
+		cacheFile(filename, data)
 	default:
 		fmt.Println("##########", *phoneNumber, *sessionId, data)
 	}

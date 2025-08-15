@@ -184,9 +184,15 @@ func MainMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder 
 			session.CurrentMenu = "registration.1"
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
 		default:
+			memberAdded := ""
+
+			if session.MemberId != nil {
+				memberAdded = "&#10003;"
+			}
+
 			if preferredLanguage != nil && *preferredLanguage == "ny" {
 				response = "CON Sankhani Zochita\n" +
-					"1. Zokhudza Membala\n" +
+					fmt.Sprintf("1. Zokhudza Membala %s\n", memberAdded) +
 					"2. Zokhudza Ntchito\n" +
 					"3. Adiresi Yamembela\n" +
 					"4. Wachibale wa Membala\n" +
@@ -195,7 +201,7 @@ func MainMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder 
 					"00. Tiyambirenso"
 			} else {
 				response = "CON Choose Activity\n" +
-					"1. Add Member Details\n" +
+					fmt.Sprintf("1. Add Member Details %s\n", memberAdded) +
 					"2. Add Occupation Details\n" +
 					"3. Add Contact Details\n" +
 					"4. Add Next of Kin Details\n" +
