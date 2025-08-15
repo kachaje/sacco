@@ -3,25 +3,52 @@ model: occupationalDetails
 initialScreen: enterEmployerName
 
 enterEmployerName:
-  order: 13
+  order: 1
   type: inputScreen
   text:
     en: Employer Name
     ny: Kogwira Ntchito
-  nextScreen: enterNetPay
+  nextScreen: enterGrossPay
   inputIdentifier: employerName
 
+enterEmployerAddress:
+  order: 2
+  type: inputScreen
+  text:
+    en: Employer Address
+    ny: Keyala Yakuntchito
+  nextScreen: enterEmployerPhone
+  inputIdentifier: employerAddress
+
+enterEmployerPhone:
+  order: 3
+  type: inputScreen
+  text:
+    en: Employer Phone
+    ny: Foni Yakuntchito
+  nextScreen: enterPeriodEmployed
+  inputIdentifier: employerPhone
+
+enterGrossPay:
+  order: 4
+  type: inputScreen
+  text:
+    en: Gross Income
+    ny: Zolandila ndi Msonkho
+  nextScreen: enterNetPay
+  inputIdentifier: grossPay
+
 enterNetPay:
-  order: 14
+  order: 5
   type: inputScreen
   text:
     en: Net Pay
-    ny: Mumalandila Zingati
+    ny: Malipilo Akachotsa Msonkho
   nextScreen: enterJobTitle
   inputIdentifier: netPay
 
 enterJobTitle:
-  order: 15
+  order: 6
   type: inputScreen
   text:
     en: Job Title
@@ -29,17 +56,17 @@ enterJobTitle:
   nextScreen: enterEmployerAddress
   inputIdentifier: jobTitle
 
-enterEmployerAddress:
-  order: 16
+enterPeriodEmployed:
+  order: 7
   type: inputScreen
   text:
-    en: Employer Address
-    ny: Keyala Yakuntchito
+    en: Period Employed
+    ny: Zaka Pantchitoyo
   nextScreen: enterHighestQualification
-  inputIdentifier: employerAddress
+  inputIdentifier: periodEmployed
 
 enterHighestQualification:
-  order: 17
+  order: 8
   type: inputScreen
   text:
     en: Highest Qualification
