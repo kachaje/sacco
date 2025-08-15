@@ -95,7 +95,7 @@ func init() {
 
 }
 
-func cacheFile(filename string, data map[string]any) {
+func cacheFile(filename string, data any) {
 	payload, err := json.MarshalIndent(data, "", "  ")
 	if err == nil {
 		err = os.WriteFile(filename, payload, 0644)
@@ -164,6 +164,68 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			cacheFile(filename, val)
 
 			menus.Sessions[*sessionId].ContactsAdded = true
+		}
+
+	case "nomineeDetails":
+		val, ok := data.(map[string]any)
+		if ok {
+			if menus.Sessions[*sessionId].MemberId != nil {
+				val["memberId"] = *menus.Sessions[*sessionId].MemberId
+
+				_, err := db.AddMember(nil, nil, val, nil, nil, menus.Sessions[*sessionId].MemberId)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+			}
+
+			filename := filepath.Join(sessionFolder, "nomineeDetails.json")
+
+			cacheFile(filename, val)
+
+			menus.Sessions[*sessionId].NomineeAdded = true
+		}
+
+	case "occupationalDetails":
+		val, ok := data.(map[string]any)
+		if ok {
+			if menus.Sessions[*sessionId].MemberId != nil {
+				val["memberId"] = *menus.Sessions[*sessionId].MemberId
+
+				_, err := db.AddMember(nil, nil, nil, val, nil, menus.Sessions[*sessionId].MemberId)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+			}
+
+			filename := filepath.Join(sessionFolder, "occupationalDetails.json")
+
+			cacheFile(filename, val)
+
+			menus.Sessions[*sessionId].OccupationAdded = true
+		}
+
+	case "beneficiaries":
+		val, ok := data.([]map[string]any)
+		if ok {
+			if menus.Sessions[*sessionId].MemberId != nil {
+				for i := range val {
+					val[i]["memberId"] = *menus.Sessions[*sessionId].MemberId
+				}
+
+				_, err := db.AddMember(nil, nil, nil, nil, val, menus.Sessions[*sessionId].MemberId)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+			}
+
+			filename := filepath.Join(sessionFolder, "beneficiaries.json")
+
+			cacheFile(filename, val)
+
+			menus.Sessions[*sessionId].BeneficiariesAdded = true
 		}
 
 	default:
