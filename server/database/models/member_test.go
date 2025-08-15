@@ -26,6 +26,8 @@ func TestAddMember(t *testing.T) {
 		"nationalId":        "TEXT",
 		"utilityBillType":   "TEXT",
 		"utilityBillNumber": "TEXT",
+		"fileNumber":        "TEXT",
+		"oldFileNumber":     "TEXT",
 	}
 
 	id, err := m.AddMember(data)
@@ -44,12 +46,14 @@ func TestAddMember(t *testing.T) {
 		dateOfBirth,
 		nationalId,
 		utilityBillType,
-		utilityBillNumber string
+		utilityBillNumber,
+		fileNumber,
+		oldFileNumber string
 
 	err = row.Scan(&id, &firstName, &lastName, &otherName,
 		&gender, &title, &maritalStatus,
 		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber)
+		&utilityBillNumber, &fileNumber, &oldFileNumber)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,6 +71,8 @@ func TestAddMember(t *testing.T) {
 			nationalId,
 			utilityBillType,
 			utilityBillNumber,
+			fileNumber,
+			oldFileNumber,
 		)
 	}
 }

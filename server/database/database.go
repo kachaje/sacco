@@ -54,7 +54,9 @@ func (d *Database) initDb() error {
 			dateOfBirth TEXT,
 			nationalId TEXT,
 			utilityBillType TEXT,
-			utilityBillNumber TEXT
+			utilityBillNumber TEXT,
+			fileNumber TEXT,
+			oldFileNumber TEXT
 		);
 		CREATE TABLE IF NOT EXISTS memberContact (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,

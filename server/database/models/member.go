@@ -20,6 +20,8 @@ type Member struct {
 	NationalId        string
 	UtilityBillType   string
 	UtilityBillNumber string
+	FileNumber        string
+	OldFileNumber     string
 
 	db *sql.DB
 }
@@ -55,14 +57,16 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 			dateOfBirth,
 			nationalId,
 			utilityBillType,
-			utilityBillNumber
+			utilityBillNumber,
+			fileNumber,
+			oldFileNumber
 		) VALUES (
-		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 		)`,
 		m.FirstName, m.LastName, m.OtherName,
 		m.Gender, m.Title, m.MaritalStatus,
 		m.DateOfBirth, m.NationalId, m.UtilityBillType,
-		m.UtilityBillNumber,
+		m.UtilityBillNumber, m.FileNumber, m.OldFileNumber,
 	)
 	if err != nil {
 		return 0, err
@@ -108,7 +112,9 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		dateOfBirth,
 		nationalId,
 		utilityBillType,
-		utilityBillNumber
+		utilityBillNumber,
+		fileNumber,
+		oldFileNumber
 	FROM member WHERE id=?`, id)
 
 	var firstName,
@@ -120,12 +126,14 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		dateOfBirth,
 		nationalId,
 		utilityBillType,
-		utilityBillNumber any
+		utilityBillNumber,
+		fileNumber,
+		oldFileNumber any
 
 	err := row.Scan(&firstName, &lastName, &otherName,
 		&gender, &title, &maritalStatus,
 		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber)
+		&utilityBillNumber, &fileNumber, &oldFileNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -164,6 +172,12 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 	if utilityBillNumber != nil {
 		member.UtilityBillNumber = fmt.Sprintf("%v", utilityBillNumber)
 	}
+	if fileNumber != nil {
+		member.FileNumber = fmt.Sprintf("%v", fileNumber)
+	}
+	if oldFileNumber != nil {
+		member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
+	}
 
 	return member, nil
 }
@@ -187,12 +201,14 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 			dateOfBirth,
 			nationalId,
 			utilityBillType,
-			utilityBillNumber any
+			utilityBillNumber,
+			fileNumber,
+			oldFileNumber any
 
 		err := rows.Scan(&id, &firstName, &lastName, &otherName,
 			&gender, &title, &maritalStatus,
 			&dateOfBirth, &nationalId, &utilityBillType,
-			&utilityBillNumber)
+			&utilityBillNumber, &fileNumber, &oldFileNumber)
 		if err != nil {
 			return nil, err
 		}
@@ -230,6 +246,12 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 		}
 		if utilityBillNumber != nil {
 			member.UtilityBillNumber = fmt.Sprintf("%v", utilityBillNumber)
+		}
+		if fileNumber != nil {
+			member.FileNumber = fmt.Sprintf("%v", fileNumber)
+		}
+		if oldFileNumber != nil {
+			member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
 		}
 
 		results = append(results, member)
