@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"sacco/server/database"
 	"sacco/server/database/models"
+	"sacco/utils"
 	"testing"
 )
 
@@ -253,5 +254,12 @@ func TestMemberDetails(t *testing.T) {
 
 	payload, _ := json.MarshalIndent(result, "", "  ")
 
-	fmt.Println(string(payload))
+	target, err := os.ReadFile(filepath.Join(".", "fixtures", "member.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if utils.CleanScript(payload) != utils.CleanScript(target) {
+		t.Fatal("Test failed")
+	}
 }
