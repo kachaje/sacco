@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sacco/parser"
+	"sacco/server/database"
 	"sacco/server/menus"
 	"sacco/utils"
 	"sync"
@@ -56,6 +57,8 @@ var beneficiariesData map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
 var cacheFolder = filepath.Join(".", "data", "cache")
+
+var db *database.Database
 
 func init() {
 	var err error
@@ -108,6 +111,14 @@ func saveData(data map[string]any, model, phoneNumber, sessionId *string) {
 				savePreference(*phoneNumber, "language", language)
 			}
 		}
+	case "memberDetails":
+		id, err := db.Member.AddMember(data)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		menus.Sessions[*sessionId].MemberId = &id
 	default:
 		fmt.Println("##########", *phoneNumber, *sessionId, data)
 	}
@@ -279,8 +290,10 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 func Main() {
 	var err error
+	var dbname string = ":memory:"
 
 	flag.IntVar(&port, "p", port, "server port")
+	flag.StringVar(&dbname, "n", dbname, "database name")
 
 	flag.Parse()
 
@@ -300,6 +313,8 @@ func Main() {
 	if os.IsNotExist(err) {
 		os.MkdirAll(cacheFolder, 0755)
 	}
+
+	db = database.NewDatabase(dbname)
 
 	http.HandleFunc("/ws", wsHandler)
 
