@@ -20,10 +20,16 @@ type MemberOccupation struct {
 	db *sql.DB
 }
 
-func NewMemberOccupation(db *sql.DB) *MemberOccupation {
-	return &MemberOccupation{
+func NewMemberOccupation(db *sql.DB, memberId *int64) *MemberOccupation {
+	m := &MemberOccupation{
 		db: db,
 	}
+
+	if memberId != nil {
+		m.MemberId = *memberId
+	}
+
+	return m
 }
 
 func (m *MemberOccupation) AddMemberOccupation(data map[string]any) (int64, error) {

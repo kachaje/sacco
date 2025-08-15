@@ -21,10 +21,16 @@ type MemberContact struct {
 	db *sql.DB
 }
 
-func NewMemberContact(db *sql.DB) *MemberContact {
-	return &MemberContact{
+func NewMemberContact(db *sql.DB, memberId *int64) *MemberContact {
+	m := &MemberContact{
 		db: db,
 	}
+
+	if memberId != nil {
+		m.MemberId = *memberId
+	}
+
+	return m
 }
 
 func (m *MemberContact) AddMemberContact(data map[string]any) (int64, error) {

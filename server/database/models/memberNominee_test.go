@@ -13,7 +13,7 @@ func TestAddMemberNominee(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberNominee(db.DB)
+	m := models.NewMemberNominee(db.DB, nil)
 
 	data := map[string]any{
 		"memberId":         1,
@@ -61,7 +61,7 @@ func TestUpdateMemberNominee(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberNominee(db.DB)
+	m := models.NewMemberNominee(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -118,7 +118,7 @@ func TestFetchMemberNominee(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberNominee(db.DB)
+	m := models.NewMemberNominee(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -160,7 +160,7 @@ func TestFilterMemberNomineeBy(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberNominee(db.DB)
+	m := models.NewMemberNominee(db.DB, nil)
 
 	fields := [][]any{
 		{

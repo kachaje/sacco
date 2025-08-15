@@ -13,7 +13,7 @@ func TestAddMemberBeneficiary(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberBeneficiary(db.DB)
+	m := models.NewMemberBeneficiary(db.DB, nil)
 
 	data := map[string]any{
 		"memberId":   1,
@@ -60,7 +60,7 @@ func TestUpdateMemberBeneficiary(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberBeneficiary(db.DB)
+	m := models.NewMemberBeneficiary(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -118,7 +118,7 @@ func TestFetchMemberBeneficiary(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberBeneficiary(db.DB)
+	m := models.NewMemberBeneficiary(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -160,7 +160,7 @@ func TestFilterMemberBeneficiaryBy(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberBeneficiary(db.DB)
+	m := models.NewMemberBeneficiary(db.DB, nil)
 
 	fields := [][]any{
 		{

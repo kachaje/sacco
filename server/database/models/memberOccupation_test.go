@@ -13,7 +13,7 @@ func TestAddMemberOccupation(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberOccupation(db.DB)
+	m := models.NewMemberOccupation(db.DB, nil)
 
 	data := map[string]any{
 		"memberId":             1,
@@ -69,7 +69,7 @@ func TestUpdateMemberOccupation(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberOccupation(db.DB)
+	m := models.NewMemberOccupation(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -126,7 +126,7 @@ func TestFetchMemberOccupation(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberOccupation(db.DB)
+	m := models.NewMemberOccupation(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -168,7 +168,7 @@ func TestFilterMemberOccupationBy(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberOccupation(db.DB)
+	m := models.NewMemberOccupation(db.DB, nil)
 
 	fields := [][]any{
 		{

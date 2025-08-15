@@ -18,10 +18,16 @@ type MemberBeneficiary struct {
 	db *sql.DB
 }
 
-func NewMemberBeneficiary(db *sql.DB) *MemberBeneficiary {
-	return &MemberBeneficiary{
+func NewMemberBeneficiary(db *sql.DB, memberId *int64) *MemberBeneficiary {
+	m := &MemberBeneficiary{
 		db: db,
 	}
+
+	if memberId != nil {
+		m.MemberId = *memberId
+	}
+
+	return m
 }
 
 func (m *MemberBeneficiary) AddMemberBeneficiary(data map[string]any) (int64, error) {

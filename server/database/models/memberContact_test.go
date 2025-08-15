@@ -13,7 +13,7 @@ func TestAddMemberContact(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberContact(db.DB)
+	m := models.NewMemberContact(db.DB, nil)
 
 	data := map[string]any{
 		"memberId":           1,
@@ -73,7 +73,7 @@ func TestUpdateMemberContact(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberContact(db.DB)
+	m := models.NewMemberContact(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -130,7 +130,7 @@ func TestFetchMemberContact(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberContact(db.DB)
+	m := models.NewMemberContact(db.DB, nil)
 
 	fields := []any{
 		1,
@@ -172,7 +172,7 @@ func TestFilterMemberContactBy(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer db.Close()
 
-	m := models.NewMemberContact(db.DB)
+	m := models.NewMemberContact(db.DB, nil)
 
 	fields := [][]any{
 		{

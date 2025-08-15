@@ -18,10 +18,16 @@ type MemberNominee struct {
 	db *sql.DB
 }
 
-func NewMemberNominee(db *sql.DB) *MemberNominee {
-	return &MemberNominee{
+func NewMemberNominee(db *sql.DB, memberId *int64) *MemberNominee {
+	m := &MemberNominee{
 		db: db,
 	}
+
+	if memberId != nil {
+		m.MemberId = *memberId
+	}
+
+	return m
 }
 
 func (m *MemberNominee) AddMemberNominee(data map[string]any) (int64, error) {
