@@ -177,6 +177,16 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 	case "occupationalDetails":
 		val, ok := data.(map[string]any)
 		if ok {
+			if val["netPay"] != nil {
+				nv, ok := val["netPay"].(string)
+				if ok {
+					real, err := strconv.ParseFloat(nv, 64)
+					if err == nil {
+						val["netPay"] = real
+					}
+				}
+			}
+
 			if menus.Sessions[*sessionId].MemberId != nil {
 				val["memberId"] = *menus.Sessions[*sessionId].MemberId
 
