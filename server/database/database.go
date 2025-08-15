@@ -121,12 +121,14 @@ func (d *Database) AddMember(
 	var err error
 
 	if existingMemberId == nil {
-		id, err := d.Member.AddMember(memberData)
-		if err != nil {
-			return nil, err
-		}
+		if memberData != nil {
+			id, err := d.Member.AddMember(memberData)
+			if err != nil {
+				return nil, err
+			}
 
-		memberId = id
+			memberId = id
+		}
 	} else {
 		memberId = *existingMemberId
 	}
