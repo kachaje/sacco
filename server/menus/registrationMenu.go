@@ -1,6 +1,9 @@
 package menus
 
-import "fmt"
+import (
+	"fmt"
+	"slices"
+)
 
 func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder string, preferredLanguage *string) string {
 	var response string
@@ -14,6 +17,23 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 
 	case "1":
 		session.CurrentMenu = "registration.1"
+		if session.ActiveMemberData != nil {
+			data := map[string]any{}
+
+			targetKeys := []string{
+				"dateOfBirth", "firstName", "gender", "lastName",
+				"maritalStatus", "nationalId", "otherName", "title",
+				"utilityBillNumber", "utilityBillType", "id",
+			}
+			for key, value := range session.ActiveMemberData {
+				if slices.Contains(targetKeys, key) {
+					data[key] = fmt.Sprintf("%v", value)
+				}
+			}
+
+			session.PIWorkflow.Data = data
+		}
+
 		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
 
 	case "2":
