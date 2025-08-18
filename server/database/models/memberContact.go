@@ -132,23 +132,53 @@ func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
 		MemberId: memberId,
 	}
 
+	atLeastOneFieldAdded := false
+
 	if postalAddress != nil {
-		memberContact.PostalAddress = fmt.Sprintf("%v", postalAddress)
+		value := fmt.Sprintf("%v", postalAddress)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberContact.PostalAddress = value
+		}
 	}
 	if residentialAddress != nil {
-		memberContact.ResidentialAddress = fmt.Sprintf("%v", residentialAddress)
+		value := fmt.Sprintf("%v", residentialAddress)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberContact.ResidentialAddress = fmt.Sprintf("%v", residentialAddress)
+		}
 	}
 	if phoneNumber != nil {
-		memberContact.PhoneNumber = fmt.Sprintf("%v", phoneNumber)
+		value := fmt.Sprintf("%v", phoneNumber)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberContact.PhoneNumber = fmt.Sprintf("%v", phoneNumber)
+		}
 	}
 	if homeVillage != nil {
-		memberContact.HomeVillage = fmt.Sprintf("%v", homeVillage)
+		value := fmt.Sprintf("%v", homeVillage)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberContact.HomeVillage = fmt.Sprintf("%v", homeVillage)
+		}
 	}
 	if homeTA != nil {
-		memberContact.HomeTA = fmt.Sprintf("%v", homeTA)
+		value := fmt.Sprintf("%v", homeTA)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberContact.HomeTA = fmt.Sprintf("%v", homeTA)
+		}
 	}
 	if homeDistrict != nil {
-		memberContact.HomeDistrict = fmt.Sprintf("%v", homeDistrict)
+		value := fmt.Sprintf("%v", homeDistrict)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberContact.HomeDistrict = fmt.Sprintf("%v", homeDistrict)
+		}
+	}
+
+	if !atLeastOneFieldAdded {
+		return nil, nil
 	}
 
 	return memberContact, nil
@@ -204,23 +234,53 @@ func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error)
 			MemberId: memberId,
 		}
 
+		atLeastOneFieldAdded := false
+
 		if postalAddress != nil {
-			memberContact.PostalAddress = fmt.Sprintf("%v", postalAddress)
+			value := fmt.Sprintf("%v", postalAddress)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberContact.PostalAddress = value
+			}
 		}
 		if residentialAddress != nil {
-			memberContact.ResidentialAddress = fmt.Sprintf("%v", residentialAddress)
+			value := fmt.Sprintf("%v", residentialAddress)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberContact.ResidentialAddress = fmt.Sprintf("%v", residentialAddress)
+			}
 		}
 		if phoneNumber != nil {
-			memberContact.PhoneNumber = fmt.Sprintf("%v", phoneNumber)
+			value := fmt.Sprintf("%v", phoneNumber)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberContact.PhoneNumber = fmt.Sprintf("%v", phoneNumber)
+			}
 		}
 		if homeVillage != nil {
-			memberContact.HomeVillage = fmt.Sprintf("%v", homeVillage)
+			value := fmt.Sprintf("%v", homeVillage)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberContact.HomeVillage = fmt.Sprintf("%v", homeVillage)
+			}
 		}
 		if homeTA != nil {
-			memberContact.HomeTA = fmt.Sprintf("%v", homeTA)
+			value := fmt.Sprintf("%v", homeTA)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberContact.HomeTA = fmt.Sprintf("%v", homeTA)
+			}
 		}
 		if homeDistrict != nil {
-			memberContact.HomeDistrict = fmt.Sprintf("%v", homeDistrict)
+			value := fmt.Sprintf("%v", homeDistrict)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberContact.HomeDistrict = fmt.Sprintf("%v", homeDistrict)
+			}
+		}
+
+		if !atLeastOneFieldAdded {
+			continue
 		}
 
 		results = append(results, memberContact)

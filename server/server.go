@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -15,6 +16,7 @@ import (
 	"sacco/server/database"
 	"sacco/server/menus"
 	"sacco/utils"
+	"strconv"
 	"sync"
 
 	_ "embed"
@@ -96,17 +98,41 @@ func init() {
 
 func UpdateSessionFlags(session *menus.Session) error {
 	if session.ActiveMemberData != nil {
+		payload, _ := json.MarshalIndent(session.ActiveMemberData, "", "  ")
+
+		fmt.Println(string(payload))
+
 		if session.ActiveMemberData["beneficiaries"] != nil {
-			session.BeneficiariesAdded = true
+			val, ok := session.ActiveMemberData["beneficiaries"].([]any)
+			if ok && len(val) > 0 {
+				session.BeneficiariesAdded = true
+			}
 		}
 		if session.ActiveMemberData["contactDetails"] != nil {
-			session.ContactsAdded = true
+			val, ok := session.ActiveMemberData["contactDetails"].(map[string]any)
+			if ok && len(val) > 0 {
+				session.ContactsAdded = true
+			}
 		}
 		if session.ActiveMemberData["nominee"] != nil {
-			session.NomineeAdded = true
+			val, ok := session.ActiveMemberData["nominee"].(map[string]any)
+			if ok && len(val) > 0 {
+				session.NomineeAdded = true
+			}
 		}
 		if session.ActiveMemberData["occupationDetails"] != nil {
-			session.OccupationAdded = true
+			val, ok := session.ActiveMemberData["occupationDetails"].(map[string]any)
+			if ok && len(val) > 0 {
+				session.OccupationAdded = true
+			}
+		}
+		if session.ActiveMemberData["id"] != nil {
+			val := fmt.Sprintf("%v", session.ActiveMemberData["id"])
+
+			id, err := strconv.ParseInt(val, 10, 64)
+			if err == nil {
+				session.MemberId = &id
+			}
 		}
 	}
 
