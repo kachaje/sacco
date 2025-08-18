@@ -23,7 +23,16 @@ func CacheFile(filename string, data any) {
 	}
 }
 
-func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string) {
+func SaveData(
+	data any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string,
+	saveFunc func(
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		[]map[string]any,
+		*int64,
+	) (*int64, error)) {
 	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
@@ -122,7 +131,12 @@ func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFo
 					os.Remove(beneficiariesFile)
 				}
 
-				mid, err := db.AddMember(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
+				if saveFunc == nil {
+					log.Println("Missing saveFunc")
+					return
+				}
+
+				mid, err := saveFunc(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
 				if err != nil {
 					log.Println(err)
 					return
@@ -158,7 +172,12 @@ func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFo
 					}
 				}
 			} else {
-				mid, err := db.AddMember(memberData, nil, nil, nil, nil, nil)
+				if saveFunc == nil {
+					log.Println("Missing saveFunc")
+					return
+				}
+
+				mid, err := saveFunc(memberData, nil, nil, nil, nil, nil)
 				if err != nil {
 					log.Println(err)
 					return
@@ -186,7 +205,12 @@ func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFo
 			if menus.Sessions[*sessionId].MemberId != nil {
 				val["memberId"] = *menus.Sessions[*sessionId].MemberId
 
-				_, err := db.AddMember(nil, val, nil, nil, nil, menus.Sessions[*sessionId].MemberId)
+				if saveFunc == nil {
+					log.Println("Missing saveFunc")
+					return
+				}
+
+				_, err := saveFunc(nil, val, nil, nil, nil, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
 					log.Println(err)
 					return
@@ -206,7 +230,12 @@ func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFo
 			if menus.Sessions[*sessionId].MemberId != nil {
 				val["memberId"] = *menus.Sessions[*sessionId].MemberId
 
-				_, err := db.AddMember(nil, nil, val, nil, nil, menus.Sessions[*sessionId].MemberId)
+				if saveFunc == nil {
+					log.Println("Missing saveFunc")
+					return
+				}
+
+				_, err := saveFunc(nil, nil, val, nil, nil, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
 					log.Println(err)
 					return
@@ -238,7 +267,12 @@ func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFo
 			if menus.Sessions[*sessionId].MemberId != nil {
 				val["memberId"] = *menus.Sessions[*sessionId].MemberId
 
-				_, err := db.AddMember(nil, nil, nil, val, nil, menus.Sessions[*sessionId].MemberId)
+				if saveFunc == nil {
+					log.Println("Missing saveFunc")
+					return
+				}
+
+				_, err := saveFunc(nil, nil, nil, val, nil, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
 					log.Println(err)
 					return
@@ -295,7 +329,12 @@ func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFo
 			}
 
 			if menus.Sessions[*sessionId].MemberId != nil {
-				_, err := db.AddMember(nil, nil, nil, nil, records, menus.Sessions[*sessionId].MemberId)
+				if saveFunc == nil {
+					log.Println("Missing saveFunc")
+					return
+				}
+
+				_, err := saveFunc(nil, nil, nil, nil, records, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
 					log.Println(err)
 					return

@@ -29,7 +29,7 @@ func init() {
 }
 
 func TestGetNode(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	result := wf.GetNode("enterLanguage")
 
@@ -66,7 +66,7 @@ func TestInputIncluded(t *testing.T) {
 		},
 	}
 
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	defaultRoute := "enterAskOtherName"
 
@@ -103,7 +103,7 @@ func TestInputIncluded(t *testing.T) {
 }
 
 func TestNodeOptions(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	result := wf.NodeOptions("enterLanguage")
 
@@ -147,7 +147,7 @@ func TestNodeOptions(t *testing.T) {
 }
 
 func TestNextNode(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	result := wf.NextNode("")
 
@@ -227,7 +227,7 @@ func TestNextNode(t *testing.T) {
 }
 
 func TestOptionValue(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	wf.CurrentLanguage = "2"
 
@@ -272,7 +272,7 @@ func TestOptionValue(t *testing.T) {
 }
 
 func TestResolveData(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	result := wf.ResolveData(map[string]any{
 		"language":      "1",
@@ -304,7 +304,7 @@ func TestResolveData(t *testing.T) {
 }
 
 func TestLoadLabel(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	target := "Language"
 
@@ -316,7 +316,7 @@ func TestLoadLabel(t *testing.T) {
 }
 
 func TestGetLabel(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	node := wf.NextNode("")
 
@@ -383,7 +383,7 @@ Actual: %v`, target, result)
 }
 
 func TestGotoMenu(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	wf.Data = map[string]any{
 		"language":      "1",
@@ -416,13 +416,20 @@ func TestGotoMenu(t *testing.T) {
 func TestCancel(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string) {
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		[]map[string]any,
+		*int64,
+	) (*int64, error)) {
 		if m != nil {
 			t.Fatalf("Test failed. Expected: nil; Actual: %v", m)
 		}
 
 		called = true
-	}, nil, nil, nil, nil, nil)
+	}, nil, nil, nil, nil, nil, nil)
 
 	wf.Data = map[string]any{
 		"language":      "1",
@@ -463,7 +470,14 @@ func TestCancel(t *testing.T) {
 func TestSubmit(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string) {
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		[]map[string]any,
+		*int64,
+	) (*int64, error)) {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}
@@ -476,7 +490,7 @@ func TestSubmit(t *testing.T) {
 
 			called = true
 		}
-	}, nil, nil, nil, nil, nil)
+	}, nil, nil, nil, nil, nil, nil)
 
 	wf.Data = map[string]any{
 		"language":      "1",
@@ -517,7 +531,14 @@ func TestSubmit(t *testing.T) {
 func TestNavNext(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string) {
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		[]map[string]any,
+		*int64,
+	) (*int64, error)) {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}
@@ -530,7 +551,7 @@ func TestNavNext(t *testing.T) {
 
 			called = true
 		}
-	}, nil, nil, nil, nil, nil)
+	}, nil, nil, nil, nil, nil, nil)
 
 	target := `Language: 
 1. English
@@ -691,7 +712,7 @@ Actual: %s`, target, result)
 }
 
 func TestNavMain(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	wf.NavNext("")
 
@@ -713,7 +734,7 @@ func TestNavMain(t *testing.T) {
 }
 
 func TestBack(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil)
 
 	wf.NavNext("")
 

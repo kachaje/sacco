@@ -31,14 +31,43 @@ type WorkFlow struct {
 	CurrentSessionId   string
 	ScreenIdMap        map[string]string
 	ScreenOrder        map[int]string
-	SubmitCallback     func(any, *string, *string, *string, *string, *string)
-	History            map[int]string
-	HistoryIndex       int
-	CacheFolder        string
-	PreferenceFolder   string
+	SubmitCallback     func(any, *string, *string, *string, *string, *string, func(
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		[]map[string]any,
+		*int64,
+	) (*int64, error))
+	History          map[int]string
+	HistoryIndex     int
+	CacheFolder      string
+	PreferenceFolder string
+	SaveFunc         func(
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		map[string]any,
+		[]map[string]any,
+		*int64,
+	) (*int64, error)
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *string, *string, *string), preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *string, *string, *string, func(
+	map[string]any,
+	map[string]any,
+	map[string]any,
+	map[string]any,
+	[]map[string]any,
+	*int64,
+) (*int64, error)), preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+	map[string]any,
+	map[string]any,
+	map[string]any,
+	map[string]any,
+	[]map[string]any,
+	*int64,
+) (*int64, error)) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -51,6 +80,9 @@ func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *
 		HistoryIndex:    -1,
 	}
 
+	if saveFunc != nil {
+		w.SaveFunc = saveFunc
+	}
 	if cacheFolder != nil {
 		w.CacheFolder = *cacheFolder
 	}
@@ -234,7 +266,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				data["id"] = w.Data["id"]
 			}
 
-			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder)
+			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder, w.SaveFunc)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN
