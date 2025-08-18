@@ -16,6 +16,7 @@ import (
 	"sacco/server/menus"
 	"sacco/utils"
 	"strconv"
+	"strings"
 	"sync"
 
 	_ "embed"
@@ -187,7 +188,9 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 
 				UpdateSessionFlags(session)
 			} else {
-				log.Println(err)
+				if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {
+					log.Println(err)
+				}
 			}
 		}()
 	}
