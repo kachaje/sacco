@@ -287,3 +287,19 @@ func (d *Database) AddMember(
 
 	return &memberId, nil
 }
+
+func (d *Database) MemberByDefaultPhoneNumber(phoneNumber string) (map[string]any, error) {
+	fullRecord := map[string]any{}
+
+	member, err := d.Member.FetchMemberByPhoneNumber(phoneNumber)
+	if err != nil {
+		return nil, err
+	}
+
+	fullRecord, err = d.Member.MemberDetails(member.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return fullRecord, nil
+}
