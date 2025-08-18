@@ -148,11 +148,13 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					cacheFile(beneficiariesFile, beneficiariesData)
 				}
 			} else {
-				id, err = db.Member.AddMember(memberData)
+				mid, err := db.AddMember(memberData, nil, nil, nil, nil, nil)
 				if err != nil {
 					log.Println(err)
 					return
 				}
+
+				id = *mid
 			}
 
 			menus.Sessions[*sessionId].MemberId = &id

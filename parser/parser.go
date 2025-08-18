@@ -222,6 +222,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		if w.SubmitCallback != nil {
 			data := w.ResolveData(w.Data, true)
 
+			if w.Data["id"] != nil {
+				data["id"] = w.Data["id"]
+			}
+
 			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId)
 		}
 

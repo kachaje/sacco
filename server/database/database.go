@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"sacco/server/database/models"
@@ -236,6 +237,10 @@ func (d *Database) AddMember(
 ) (*int64, error) {
 	var memberId int64
 	var err error
+
+	payload, _ := json.MarshalIndent(memberData, "", "  ")
+
+	fmt.Println(string(payload))
 
 	if memberData["id"] != nil {
 		val := fmt.Sprintf("%v", memberData["id"])
