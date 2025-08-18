@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -29,12 +30,19 @@ type Member struct {
 	Nominee           *MemberNominee      `json:"nominee"`
 	OccupationDetails *MemberOccupation   `json:"occupationDetails"`
 
-	db *sql.DB
+	validFields []string
+	db          *sql.DB
 }
 
 func NewMember(db *sql.DB) *Member {
 	return &Member{
 		db: db,
+		validFields: []string{
+			"id", "firstName", "lastName", "otherName", "gender",
+			"title", "maritalStatus", "dateOfBirth", "nationalId",
+			"utilityBillType", "utilityBillNumber", "fileNumber",
+			"oldFileNumber", "defaultPhoneNumber",
+		},
 	}
 }
 
@@ -159,13 +167,13 @@ func (m *Member) UpdateMember(data map[string]any, id int64) error {
 	values := []any{}
 
 	for key, value := range data {
-		fields = append(fields, fmt.Sprintf("%s = ?", key))
-		values = append(values, value)
+		if slices.Contains(m.validFields, key) {
+			fields = append(fields, fmt.Sprintf("%s = ?", key))
+			values = append(values, value)
+		}
 	}
 
 	values = append(values, id)
-
-	fmt.Println("##########", fields, values)
 
 	statement := fmt.Sprintf("UPDATE member SET %s WHERE id=?", strings.Join(fields, ", "))
 
