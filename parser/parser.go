@@ -38,7 +38,7 @@ type WorkFlow struct {
 		map[string]any,
 		[]map[string]any,
 		*int64,
-	) (*int64, error))
+	) (*int64, error)) error
 	History          map[int]string
 	HistoryIndex     int
 	CacheFolder      string
@@ -60,7 +60,7 @@ func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *
 	map[string]any,
 	[]map[string]any,
 	*int64,
-) (*int64, error)), preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+) (*int64, error)) error, preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
 	map[string]any,
 	map[string]any,
 	map[string]any,

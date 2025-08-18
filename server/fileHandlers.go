@@ -32,7 +32,7 @@ func SaveData(
 		map[string]any,
 		[]map[string]any,
 		*int64,
-	) (*int64, error)) {
+	) (*int64, error)) error {
 	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
@@ -132,14 +132,12 @@ func SaveData(
 				}
 
 				if saveFunc == nil {
-					log.Println("Missing saveFunc")
-					return
+					return fmt.Errorf("missing saveFunc")
 				}
 
 				mid, err := saveFunc(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
 				if err != nil {
-					log.Println(err)
-					return
+					return err
 				}
 
 				id = *mid
@@ -173,14 +171,12 @@ func SaveData(
 				}
 			} else {
 				if saveFunc == nil {
-					log.Println("Missing saveFunc")
-					return
+					return fmt.Errorf("missing saveFunc")
 				}
 
 				mid, err := saveFunc(memberData, nil, nil, nil, nil, nil)
 				if err != nil {
-					log.Println(err)
-					return
+					return err
 				}
 
 				id = *mid
@@ -207,13 +203,12 @@ func SaveData(
 
 				if saveFunc == nil {
 					log.Println("Missing saveFunc")
-					return
+					return fmt.Errorf("missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, val, nil, nil, nil, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
-					log.Println(err)
-					return
+					return err
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "contactDetails.json")
@@ -232,13 +227,12 @@ func SaveData(
 
 				if saveFunc == nil {
 					log.Println("Missing saveFunc")
-					return
+					return fmt.Errorf("missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, nil, val, nil, nil, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
-					log.Println(err)
-					return
+					return err
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "nomineeDetails.json")
@@ -268,14 +262,12 @@ func SaveData(
 				val["memberId"] = *menus.Sessions[*sessionId].MemberId
 
 				if saveFunc == nil {
-					log.Println("Missing saveFunc")
-					return
+					return fmt.Errorf("missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, nil, nil, val, nil, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
-					log.Println(err)
-					return
+					return err
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "occupationDetails.json")
@@ -330,14 +322,12 @@ func SaveData(
 
 			if menus.Sessions[*sessionId].MemberId != nil {
 				if saveFunc == nil {
-					log.Println("Missing saveFunc")
-					return
+					return fmt.Errorf("missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, nil, nil, nil, records, menus.Sessions[*sessionId].MemberId)
 				if err != nil {
-					log.Println(err)
-					return
+					return err
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "beneficiaries.json")
@@ -351,6 +341,8 @@ func SaveData(
 	default:
 		fmt.Println("##########", *phoneNumber, *sessionId, data)
 	}
+
+	return nil
 }
 
 func SavePreference(phoneNumber, key, value, preferencesFolder string) error {

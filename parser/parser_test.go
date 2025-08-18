@@ -423,12 +423,13 @@ func TestCancel(t *testing.T) {
 		map[string]any,
 		[]map[string]any,
 		*int64,
-	) (*int64, error)) {
+	) (*int64, error)) error {
 		if m != nil {
 			t.Fatalf("Test failed. Expected: nil; Actual: %v", m)
 		}
 
 		called = true
+		return nil
 	}, nil, nil, nil, nil, nil, nil)
 
 	wf.Data = map[string]any{
@@ -477,7 +478,7 @@ func TestSubmit(t *testing.T) {
 		map[string]any,
 		[]map[string]any,
 		*int64,
-	) (*int64, error)) {
+	) (*int64, error)) error {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}
@@ -490,6 +491,7 @@ func TestSubmit(t *testing.T) {
 
 			called = true
 		}
+		return nil
 	}, nil, nil, nil, nil, nil, nil)
 
 	wf.Data = map[string]any{
@@ -538,7 +540,7 @@ func TestNavNext(t *testing.T) {
 		map[string]any,
 		[]map[string]any,
 		*int64,
-	) (*int64, error)) {
+	) (*int64, error)) error {
 		if m == nil {
 			t.Fatalf("Test failed")
 		}
@@ -551,6 +553,7 @@ func TestNavNext(t *testing.T) {
 
 			called = true
 		}
+		return nil
 	}, nil, nil, nil, nil, nil, nil)
 
 	target := `Language: 

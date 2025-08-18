@@ -4,6 +4,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sacco/server"
+	"sacco/server/menus"
 	"testing"
 )
 
@@ -31,5 +33,36 @@ func TestSaveData(t *testing.T) {
 		if err != nil {
 			continue
 		}
+	}
+
+	session := &menus.Session{
+		ContactsAdded: true,
+	}
+
+	sessionId := "sample"
+
+	sessions := map[string]*menus.Session{
+		sessionId: session,
+	}
+
+	saveFunc := func(
+		a map[string]any,
+		b map[string]any,
+		c map[string]any,
+		d map[string]any,
+		e []map[string]any,
+		f *int64,
+	) (*int64, error) {
+		_ = sessions
+
+		return nil, nil
+	}
+
+	data := map[string]any{}
+	model := "memberDetails"
+
+	err := server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc)
+	if err != nil {
+		t.Fatal(err)
 	}
 }
