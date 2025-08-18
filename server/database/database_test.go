@@ -117,3 +117,37 @@ func TestDatabaseAddMember(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 }
+
+func TestMemberByDefaultPhoneNumber(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	content, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.sql"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sqlStatement := string(content)
+
+	_, err = db.DB.Exec(sqlStatement)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result, err := db.MemberByDefaultPhoneNumber("09999999999")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	payload, _ := json.MarshalIndent(result, "", "  ")
+
+	target, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if utils.CleanScript(payload) != utils.CleanScript(target) {
+		t.Fatal("Test failed")
+	}
+}
