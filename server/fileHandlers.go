@@ -163,6 +163,8 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 
 			memberData["id"] = id
 
+			menus.Sessions[*sessionId].ActiveMemberData = memberData
+
 			cacheFile(filename, memberData)
 		}
 
