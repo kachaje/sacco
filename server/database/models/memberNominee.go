@@ -117,14 +117,32 @@ func (m *MemberNominee) FetchMemberNominee(id int64) (*MemberNominee, error) {
 		MemberId: memberId,
 	}
 
+	atLeastOneFieldAdded := false
+
 	if nomineeName != nil {
-		memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
+		value := fmt.Sprintf("%v", nomineeName)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
+		}
 	}
 	if nomineePhone != nil {
-		memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
+		value := fmt.Sprintf("%v", nomineePhone)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
+		}
 	}
 	if nomineeAddress != nil {
-		memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
+		value := fmt.Sprintf("%v", nomineeAddress)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
+		}
+	}
+
+	if !atLeastOneFieldAdded {
+		return nil, nil
 	}
 
 	return memberNominee, nil
@@ -169,14 +187,32 @@ func (m *MemberNominee) FilterBy(whereStatement string) ([]MemberNominee, error)
 			MemberId: memberId,
 		}
 
+		atLeastOneFieldAdded := false
+
 		if nomineeName != nil {
-			memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
+			value := fmt.Sprintf("%v", nomineeName)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
+			}
 		}
 		if nomineePhone != nil {
-			memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
+			value := fmt.Sprintf("%v", nomineePhone)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
+			}
 		}
 		if nomineeAddress != nil {
-			memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
+			value := fmt.Sprintf("%v", nomineeAddress)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
+			}
+		}
+
+		if !atLeastOneFieldAdded {
+			continue
 		}
 
 		results = append(results, memberNominee)
