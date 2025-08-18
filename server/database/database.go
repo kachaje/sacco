@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"sacco/server/database/models"
+	"strconv"
 	"strings"
 
 	_ "modernc.org/sqlite"
@@ -236,6 +237,15 @@ func (d *Database) AddMember(
 	var memberId int64
 	var err error
 
+	if memberData["id"] != nil {
+		val := fmt.Sprintf("%v", memberData["id"])
+
+		v, err := strconv.ParseInt(val, 10, 64)
+		if err == nil {
+			existingMemberId = &v
+		}
+	}
+
 	if existingMemberId == nil {
 		if memberData != nil {
 			id, err := d.Member.AddMember(memberData)
@@ -247,6 +257,11 @@ func (d *Database) AddMember(
 		}
 	} else {
 		memberId = *existingMemberId
+
+		err = d.Member.UpdateMember(memberData, *existingMemberId)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if contactData != nil {
