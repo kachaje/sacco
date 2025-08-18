@@ -1,0 +1,5 @@
+exec server -p 8989 &
+stdin input.txt
+
+
+-- input.txt --

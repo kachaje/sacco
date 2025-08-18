@@ -7,7 +7,21 @@ import (
 	"sacco/server"
 	"sacco/server/menus"
 	"testing"
+
+	"github.com/rogpeppe/go-internal/testscript"
 )
+
+func TestMain(m *testing.M) {
+	testscript.Main(m, map[string]func(){
+		"server": server.Main,
+	})
+}
+
+func TestMemberApplication(t *testing.T) {
+	testscript.Run(t, testscript.Params{
+		Dir: "testdata/memberApplication",
+	})
+}
 
 func TestUpdateSessionFlags(t *testing.T) {
 	content, err := os.ReadFile(filepath.Join(".", "database", "models", "fixtures", "member.json"))
