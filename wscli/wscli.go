@@ -9,7 +9,9 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"sacco/utils"
 	"slices"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -41,6 +43,11 @@ func Main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	err := utils.WaitForPort("localhost", fmt.Sprint(port), 30*time.Second, 2*time.Second, false)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	client, _, err := websocket.DefaultDialer.Dial(fmt.Sprintf("ws://localhost:%d/ws?phoneNumber=%s", port, phoneNumber), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -54,7 +61,7 @@ func Main() {
 			return
 		default:
 			clearScreen()
-			
+
 			fmt.Println("")
 
 			_, message, err := client.ReadMessage()
