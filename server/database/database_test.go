@@ -100,6 +100,7 @@ func TestDatabaseAddMember(t *testing.T) {
 			t.Fatal("Test failed. Failed to convert map")
 		}
 	}
+	delete(data, "id")
 
 	id, err := db.AddMember(data, contactDetails, nominee, occupationDetails, beneficiaries, nil)
 	if err != nil {
