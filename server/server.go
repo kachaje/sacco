@@ -260,7 +260,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 
-	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, response)

@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder string, preferredLanguage *string) string {
+func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
 	var response string
 
 	switch text {
@@ -13,7 +13,7 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 		session.PIWorkflow.NavNext(text)
 		session.CurrentMenu = "main"
 		text = "0"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	case "1":
 		session.CurrentMenu = "registration.1"
@@ -34,27 +34,27 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 			session.PIWorkflow.Data = data
 		}
 
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	case "2":
 		session.CurrentMenu = "registration.2"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	case "3":
 		session.CurrentMenu = "registration.3"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	case "4":
 		session.CurrentMenu = "registration.4"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	case "5":
 		session.CurrentMenu = "registration.5"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	case "6":
 		session.CurrentMenu = "registration.6"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	default:
 		memberAdded := ""
