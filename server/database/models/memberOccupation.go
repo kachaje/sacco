@@ -128,20 +128,46 @@ func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, e
 		MemberId: memberId,
 	}
 
+	atLeastOneFieldAdded := false
+
 	if employerName != nil {
-		memberOccupation.EmployerName = fmt.Sprintf("%v", employerName)
+		value := fmt.Sprintf("%v", employerName)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberOccupation.EmployerName = fmt.Sprintf("%v", employerName)
+		}
 	}
 	if netPay != nil {
-		memberOccupation.NetPay = netPay.(float64)
+		value := netPay.(float64)
+		if value != 0 {
+			atLeastOneFieldAdded = true
+			memberOccupation.NetPay = value
+		}
 	}
 	if jobTitle != nil {
-		memberOccupation.JobTitle = fmt.Sprintf("%v", jobTitle)
+		value := fmt.Sprintf("%v", jobTitle)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberOccupation.JobTitle = fmt.Sprintf("%v", jobTitle)
+		}
 	}
 	if employerAddress != nil {
-		memberOccupation.EmployerAddress = fmt.Sprintf("%v", employerAddress)
+		value := fmt.Sprintf("%v", employerAddress)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberOccupation.EmployerAddress = fmt.Sprintf("%v", employerAddress)
+		}
 	}
 	if highestQualification != nil {
-		memberOccupation.HighestQualification = fmt.Sprintf("%v", highestQualification)
+		value := fmt.Sprintf("%v", highestQualification)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberOccupation.HighestQualification = fmt.Sprintf("%v", highestQualification)
+		}
+	}
+
+	if !atLeastOneFieldAdded {
+		return nil, nil
 	}
 
 	return memberOccupation, nil
@@ -192,20 +218,46 @@ func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, 
 			MemberId: memberId,
 		}
 
+		atLeastOneFieldAdded := false
+
 		if employerName != nil {
-			memberOccupation.EmployerName = fmt.Sprintf("%v", employerName)
+			value := fmt.Sprintf("%v", employerName)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberOccupation.EmployerName = fmt.Sprintf("%v", employerName)
+			}
 		}
 		if netPay != nil {
-			memberOccupation.NetPay = netPay.(float64)
+			value := netPay.(float64)
+			if value != 0 {
+				atLeastOneFieldAdded = true
+				memberOccupation.NetPay = value
+			}
 		}
 		if jobTitle != nil {
-			memberOccupation.JobTitle = fmt.Sprintf("%v", jobTitle)
+			value := fmt.Sprintf("%v", jobTitle)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberOccupation.JobTitle = fmt.Sprintf("%v", jobTitle)
+			}
 		}
 		if employerAddress != nil {
-			memberOccupation.EmployerAddress = fmt.Sprintf("%v", employerAddress)
+			value := fmt.Sprintf("%v", employerAddress)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberOccupation.EmployerAddress = fmt.Sprintf("%v", employerAddress)
+			}
 		}
 		if highestQualification != nil {
-			memberOccupation.HighestQualification = fmt.Sprintf("%v", highestQualification)
+			value := fmt.Sprintf("%v", highestQualification)
+			if value != "" {
+				atLeastOneFieldAdded = true
+				memberOccupation.HighestQualification = fmt.Sprintf("%v", highestQualification)
+			}
+		}
+
+		if !atLeastOneFieldAdded {
+			continue
 		}
 
 		results = append(results, memberOccupation)
