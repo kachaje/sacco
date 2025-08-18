@@ -29,6 +29,7 @@ type Session struct {
 	NomineeAdded       bool
 	OccupationAdded    bool
 	BeneficiariesAdded bool
+	ActiveMemberData   map[string]any
 }
 
 var Sessions = make(map[string]*Session)

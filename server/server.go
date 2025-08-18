@@ -139,6 +139,17 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	mu.Unlock()
 
+	if phoneNumber != "default" {
+		go func() {
+			data, err := db.MemberByDefaultPhoneNumber(phoneNumber)
+			if err == nil {
+				session.ActiveMemberData = data
+			} else {
+				log.Println(err)
+			}
+		}()
+	}
+
 	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
 
 	w.Header().Set("Content-Type", "text/plain")
