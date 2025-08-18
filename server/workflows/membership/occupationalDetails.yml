@@ -60,8 +60,8 @@ enterPeriodEmployed:
   order: 7
   type: inputScreen
   text:
-    en: Period Employed
-    ny: Zaka Pantchitoyo
+    en: Period Employed (months)
+    ny: Miyezi Pantchitoyo
   nextScreen: enterHighestQualification
   inputIdentifier: periodEmployed
 
