@@ -49,6 +49,10 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			var id int64
 			var err error
 
+			if *phoneNumber != "default" {
+				memberData["defaultPhoneNumber"] = *phoneNumber
+			}
+
 			if menus.Sessions[*sessionId].ContactsAdded ||
 				menus.Sessions[*sessionId].BeneficiariesAdded ||
 				menus.Sessions[*sessionId].NomineeAdded ||

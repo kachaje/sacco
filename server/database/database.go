@@ -69,6 +69,7 @@ func (d *Database) initDb() error {
 			utilityBillNumber TEXT,
 			fileNumber TEXT,
 			oldFileNumber TEXT,
+			defaultPhoneNumber TEXT,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
