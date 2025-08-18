@@ -203,6 +203,8 @@ func SaveData(
 
 			sessions[*sessionId].ActiveMemberData = memberData
 
+			sessions[*sessionId].UpdateSessionFlags()
+
 			if os.Getenv("DEBUG") == "true" {
 				filename := filepath.Join(sessionFolder, "memberDetails.json")
 

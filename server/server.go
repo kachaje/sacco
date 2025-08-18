@@ -2,7 +2,6 @@ package server
 
 import (
 	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -16,7 +15,6 @@ import (
 	"sacco/server/database"
 	"sacco/server/menus"
 	"sacco/utils"
-	"strconv"
 	"strings"
 	"sync"
 
@@ -97,107 +95,6 @@ func init() {
 
 }
 
-func UpdateSessionFlags(session *parser.Session) error {
-	if session.ActiveMemberData != nil {
-		if session.ActiveMemberData["beneficiaries"] != nil {
-			val, ok := session.ActiveMemberData["beneficiaries"].([]any)
-			if ok && len(val) > 0 {
-				session.BeneficiariesAdded = true
-			} else {
-				val, ok := session.ActiveMemberData["beneficiaries"].([]map[string]any)
-				if ok && len(val) > 0 {
-					session.BeneficiariesAdded = true
-				}
-			}
-		}
-		if session.ActiveMemberData["contactDetails"] != nil {
-			val, ok := session.ActiveMemberData["contactDetails"].(map[string]any)
-			if ok && len(val) > 0 {
-				session.ContactsAdded = true
-			}
-		}
-		if session.ActiveMemberData["nomineeDetails"] != nil {
-			val, ok := session.ActiveMemberData["nomineeDetails"].(map[string]any)
-			if ok && len(val) > 0 {
-				session.NomineeAdded = true
-			}
-		}
-		if session.ActiveMemberData["occupationDetails"] != nil {
-			val, ok := session.ActiveMemberData["occupationDetails"].(map[string]any)
-			if ok && len(val) > 0 {
-				session.OccupationAdded = true
-			}
-		}
-		if session.ActiveMemberData["id"] != nil {
-			val := fmt.Sprintf("%v", session.ActiveMemberData["id"])
-
-			id, err := strconv.ParseInt(val, 10, 64)
-			if err == nil {
-				session.MemberId = &id
-			}
-		}
-	}
-
-	return nil
-}
-
-func LoadMemberCache(session *parser.Session, phoneNumber, cacheFolder string) error {
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	_, err := os.Stat(sessionFolder)
-	if os.IsNotExist(err) {
-		return err
-	}
-
-	memberData := map[string]any{}
-
-	for _, key := range []string{"contactDetails", "nomineeDetails", "occupationDetails", "beneficiaries"} {
-		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
-
-		_, err := os.Stat(filename)
-		if os.IsNotExist(err) {
-			continue
-		}
-
-		content, err := os.ReadFile(filename)
-		if err != nil {
-			continue
-		}
-
-		if key == "beneficiaries" {
-			data := []map[string]any{}
-			err = json.Unmarshal(content, &data)
-			if err != nil {
-				continue
-			}
-
-			memberData[key] = data
-		} else {
-			data := map[string]any{}
-			err = json.Unmarshal(content, &data)
-			if err != nil {
-				continue
-			}
-
-			memberData[key] = data
-		}
-	}
-
-	if len(memberData) > 0 {
-		session.ActiveMemberData = memberData
-
-		if os.Getenv("DEBUG") == "true" {
-			payload, _ := json.MarshalIndent(memberData, "", "  ")
-
-			fmt.Println(string(payload))
-		}
-
-		UpdateSessionFlags(session)
-	}
-
-	return nil
-}
-
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.FormValue("sessionId")
 	serviceCode := r.FormValue("serviceCode")
@@ -249,13 +146,13 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			if err == nil {
 				session.ActiveMemberData = data
 
-				UpdateSessionFlags(session)
+				session.UpdateSessionFlags()
 			} else {
 				if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {
 					log.Println(err)
 				}
 
-				LoadMemberCache(session, phoneNumber, cacheFolder)
+				session.LoadMemberCache(phoneNumber, cacheFolder)
 			}
 		}()
 	}

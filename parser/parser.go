@@ -18,27 +18,6 @@ const (
 	LANG_NY_LABEL  = "ny"
 )
 
-type Session struct {
-	CurrentMenu           string
-	Data                  map[string]string
-	PIWorkflow            *WorkFlow
-	LanguageWorkflow      *WorkFlow
-	OccupationWorkflow    *WorkFlow
-	ContactsWorkflow      *WorkFlow
-	NomineeWorkflow       *WorkFlow
-	BeneficiariesWorkflow *WorkFlow
-	PreferredLanguage     string
-	MemberId              *int64
-	SessionId             string
-	PhoneNumber           string
-
-	ContactsAdded      bool
-	NomineeAdded       bool
-	OccupationAdded    bool
-	BeneficiariesAdded bool
-	ActiveMemberData   map[string]any
-}
-
 type WorkFlow struct {
 	Tree map[string]any
 	Data map[string]any
