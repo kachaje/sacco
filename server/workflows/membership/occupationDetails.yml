@@ -1,4 +1,4 @@
-model: occupationalDetails
+model: occupationDetails
 
 initialScreen: enterEmployerName
 

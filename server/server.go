@@ -33,7 +33,7 @@ var indexHTML string
 //go:embed workflows/membership/personalInformation.yml
 var PITemplate string
 
-//go:embed workflows/membership/occupationalDetails.yml
+//go:embed workflows/membership/occupationDetails.yml
 var occupationTemplate string
 
 //go:embed workflows/membership/contactDetails.yml
@@ -103,6 +103,11 @@ func UpdateSessionFlags(session *menus.Session) error {
 			val, ok := session.ActiveMemberData["beneficiaries"].([]any)
 			if ok && len(val) > 0 {
 				session.BeneficiariesAdded = true
+			} else {
+				val, ok := session.ActiveMemberData["beneficiaries"].([]map[string]any)
+				if ok && len(val) > 0 {
+					session.BeneficiariesAdded = true
+				}
 			}
 		}
 		if session.ActiveMemberData["contactDetails"] != nil {
@@ -146,7 +151,7 @@ func LoadMemberCache(session *menus.Session, phoneNumber, cacheFolder string) er
 
 	memberData := map[string]any{}
 
-	for _, key := range []string{"contactDetails", "nomineeDetails", "occupationalDetails", "beneficiaries"} {
+	for _, key := range []string{"contactDetails", "nomineeDetails", "occupationDetails", "beneficiaries"} {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
 
 		_, err := os.Stat(filename)
@@ -180,6 +185,12 @@ func LoadMemberCache(session *menus.Session, phoneNumber, cacheFolder string) er
 
 	if len(memberData) > 0 {
 		session.ActiveMemberData = memberData
+
+		if os.Getenv("DEBUG") == "true" {
+			payload, _ := json.MarshalIndent(memberData, "", "  ")
+
+			fmt.Println(string(payload))
+		}
 
 		UpdateSessionFlags(session)
 	}

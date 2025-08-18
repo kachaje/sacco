@@ -63,11 +63,11 @@ func TestLoadMemberCache(t *testing.T) {
 		t.Fatalf("Test failed. Expected: true; Actual: %v", session.NomineeAdded)
 	}
 
-	if !session.OccupationAdded {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.OccupationAdded)
-	}
-
 	if !session.BeneficiariesAdded {
 		t.Fatalf("Test failed. Expected: true; Actual: %v", session.BeneficiariesAdded)
+	}
+
+	if !session.OccupationAdded {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.OccupationAdded)
 	}
 }

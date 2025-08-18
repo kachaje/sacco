@@ -92,7 +92,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					os.Remove(nomineeFile)
 				}
 
-				occupationFile := filepath.Join(sessionFolder, "occupationalDetails.json")
+				occupationFile := filepath.Join(sessionFolder, "occupationDetails.json")
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(occupationFile)
 					if err != nil {
@@ -220,15 +220,17 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			menus.Sessions[*sessionId].NomineeAdded = true
 		}
 
-	case "occupationalDetails":
+	case "occupationDetails":
 		val, ok := data.(map[string]any)
 		if ok {
-			if val["netPay"] != nil {
-				nv, ok := val["netPay"].(string)
-				if ok {
-					real, err := strconv.ParseFloat(nv, 64)
-					if err == nil {
-						val["netPay"] = real
+			for _, key := range []string{"netPay", "grossPay"} {
+				if val[key] != nil {
+					nv, ok := val[key].(string)
+					if ok {
+						real, err := strconv.ParseFloat(nv, 64)
+						if err == nil {
+							val[key] = real
+						}
 					}
 				}
 			}
@@ -242,7 +244,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					return
 				}
 			} else {
-				filename := filepath.Join(sessionFolder, "occupationalDetails.json")
+				filename := filepath.Join(sessionFolder, "occupationDetails.json")
 
 				cacheFile(filename, val)
 			}
