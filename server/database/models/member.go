@@ -9,19 +9,20 @@ import (
 )
 
 type Member struct {
-	ID                int64  `json:"id"`
-	FirstName         string `json:"firstName"`
-	LastName          string `json:"lastName"`
-	OtherName         string `json:"otherName"`
-	Gender            string `json:"gender"`
-	Title             string `json:"title"`
-	MaritalStatus     string `json:"maritalStatus"`
-	DateOfBirth       string `json:"dateOfBirth"`
-	NationalId        string `json:"nationalId"`
-	UtilityBillType   string `json:"utilityBillType"`
-	UtilityBillNumber string `json:"utilityBillNumber"`
-	FileNumber        string `json:"fileNumber"`
-	OldFileNumber     string `json:"oldFileNumber"`
+	ID                 int64  `json:"id"`
+	FirstName          string `json:"firstName"`
+	LastName           string `json:"lastName"`
+	OtherName          string `json:"otherName"`
+	Gender             string `json:"gender"`
+	Title              string `json:"title"`
+	MaritalStatus      string `json:"maritalStatus"`
+	DateOfBirth        string `json:"dateOfBirth"`
+	NationalId         string `json:"nationalId"`
+	UtilityBillType    string `json:"utilityBillType"`
+	UtilityBillNumber  string `json:"utilityBillNumber"`
+	FileNumber         string `json:"fileNumber"`
+	OldFileNumber      string `json:"oldFileNumber"`
+	DefaultPhoneNumber string `json:"defaultPhoneNumber"`
 
 	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
 	ContactDetails    MemberContact       `json:"contactDetails"`
@@ -131,14 +132,16 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 			utilityBillType,
 			utilityBillNumber,
 			fileNumber,
-			oldFileNumber
+			oldFileNumber,
+			defaultPhoneNumber
 		) VALUES (
-		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 		)`,
 		m.FirstName, m.LastName, m.OtherName,
 		m.Gender, m.Title, m.MaritalStatus,
 		m.DateOfBirth, m.NationalId, m.UtilityBillType,
 		m.UtilityBillNumber, m.FileNumber, m.OldFileNumber,
+		m.DefaultPhoneNumber,
 	)
 	if err != nil {
 		return 0, err
@@ -186,7 +189,8 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		utilityBillType,
 		utilityBillNumber,
 		fileNumber,
-		oldFileNumber
+		oldFileNumber,
+		defaultPhoneNumber
 	FROM member WHERE id=?`, id)
 
 	var firstName,
@@ -200,12 +204,14 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		utilityBillType,
 		utilityBillNumber,
 		fileNumber,
-		oldFileNumber any
+		oldFileNumber,
+		defaultPhoneNumber any
 
 	err := row.Scan(&firstName, &lastName, &otherName,
 		&gender, &title, &maritalStatus,
 		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber, &fileNumber, &oldFileNumber)
+		&utilityBillNumber, &fileNumber, &oldFileNumber,
+		&defaultPhoneNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -250,6 +256,9 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 	if oldFileNumber != nil {
 		member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
 	}
+	if defaultPhoneNumber != nil {
+		member.DefaultPhoneNumber = fmt.Sprintf("%v", defaultPhoneNumber)
+	}
 
 	return member, nil
 }
@@ -272,7 +281,8 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 				utilityBillType,
 				utilityBillNumber,
 				fileNumber,
-				oldFileNumber
+				oldFileNumber,
+				defaultPhoneNumber
 			FROM member %s`,
 			whereStatement,
 		))
@@ -293,12 +303,14 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 			utilityBillType,
 			utilityBillNumber,
 			fileNumber,
-			oldFileNumber any
+			oldFileNumber,
+			defaultPhoneNumber any
 
 		err := rows.Scan(&id, &firstName, &lastName, &otherName,
 			&gender, &title, &maritalStatus,
 			&dateOfBirth, &nationalId, &utilityBillType,
-			&utilityBillNumber, &fileNumber, &oldFileNumber)
+			&utilityBillNumber, &fileNumber, &oldFileNumber,
+			&defaultPhoneNumber)
 		if err != nil {
 			return nil, err
 		}
@@ -343,6 +355,9 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 		if oldFileNumber != nil {
 			member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
 		}
+		if defaultPhoneNumber != nil {
+			member.DefaultPhoneNumber = fmt.Sprintf("%v", defaultPhoneNumber)
+		}
 
 		results = append(results, member)
 	}
@@ -365,7 +380,8 @@ func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
 		utilityBillType,
 		utilityBillNumber,
 		fileNumber,
-		oldFileNumber
+		oldFileNumber,
+		defaultPhoneNumber
 	FROM member WHERE defaultPhoneNumber=?`, phoneNumber)
 
 	var id int64
@@ -380,12 +396,13 @@ func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
 		utilityBillType,
 		utilityBillNumber,
 		fileNumber,
-		oldFileNumber any
+		oldFileNumber,
+		defaultPhoneNumber any
 
 	err := row.Scan(&id, &firstName, &lastName, &otherName,
 		&gender, &title, &maritalStatus,
 		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber, &fileNumber, &oldFileNumber)
+		&utilityBillNumber, &fileNumber, &oldFileNumber, &defaultPhoneNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -429,6 +446,9 @@ func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
 	}
 	if oldFileNumber != nil {
 		member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
+	}
+	if defaultPhoneNumber != nil {
+		member.DefaultPhoneNumber = fmt.Sprintf("%v", defaultPhoneNumber)
 	}
 
 	return member, nil

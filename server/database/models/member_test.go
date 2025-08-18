@@ -19,18 +19,19 @@ func TestAddMember(t *testing.T) {
 	m := models.NewMember(db.DB)
 
 	data := map[string]any{
-		"firstName":         "TEXT",
-		"lastName":          "TEXT",
-		"otherName":         "TEXT",
-		"gender":            "Female",
-		"title":             "TEXT",
-		"maritalStatus":     "TEXT",
-		"dateOfBirth":       "TEXT",
-		"nationalId":        "TEXT",
-		"utilityBillType":   "TEXT",
-		"utilityBillNumber": "TEXT",
-		"fileNumber":        "TEXT",
-		"oldFileNumber":     "TEXT",
+		"firstName":          "TEXT",
+		"lastName":           "TEXT",
+		"otherName":          "TEXT",
+		"gender":             "Female",
+		"title":              "TEXT",
+		"maritalStatus":      "TEXT",
+		"dateOfBirth":        "TEXT",
+		"nationalId":         "TEXT",
+		"utilityBillType":    "TEXT",
+		"utilityBillNumber":  "TEXT",
+		"fileNumber":         "TEXT",
+		"oldFileNumber":      "TEXT",
+		"defaultPhoneNumber": "TEXT",
 	}
 
 	id, err := m.AddMember(data)
@@ -51,7 +52,8 @@ func TestAddMember(t *testing.T) {
 		utilityBillType,
 		utilityBillNumber,
 		fileNumber,
-		oldFileNumber
+		oldFileNumber,
+		defaultPhoneNumber
 	FROM member WHERE id=?`, id)
 
 	var firstName,
@@ -65,12 +67,14 @@ func TestAddMember(t *testing.T) {
 		utilityBillType,
 		utilityBillNumber,
 		fileNumber,
-		oldFileNumber string
+		oldFileNumber,
+		defaultPhoneNumber string
 
 	err = row.Scan(&id, &firstName, &lastName, &otherName,
 		&gender, &title, &maritalStatus,
 		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber, &fileNumber, &oldFileNumber)
+		&utilityBillNumber, &fileNumber, &oldFileNumber, 
+		&defaultPhoneNumber)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -90,6 +94,7 @@ func TestAddMember(t *testing.T) {
 			utilityBillNumber,
 			fileNumber,
 			oldFileNumber,
+			defaultPhoneNumber,
 		)
 	}
 }

@@ -151,7 +151,7 @@ func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, 
 	results := []MemberOccupation{}
 
 	rows, err := m.db.QueryContext(
-		context.Background(), 
+		context.Background(),
 		fmt.Sprintf(`SELECT
 			id,
 			memberId,

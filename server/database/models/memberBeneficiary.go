@@ -134,7 +134,7 @@ func (m *MemberBeneficiary) FilterBy(whereStatement string) ([]MemberBeneficiary
 	results := []MemberBeneficiary{}
 
 	rows, err := m.db.QueryContext(
-		context.Background(), 
+		context.Background(),
 		fmt.Sprintf(`SELECT
 			id,
 			memberId,

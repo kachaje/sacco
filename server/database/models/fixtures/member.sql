@@ -12,7 +12,8 @@ INSERT INTO
     utilityBillType,
     utilityBillNumber,
     fileNumber,
-    oldFileNumber
+    oldFileNumber,
+    defaultPhoneNumber
   )
 VALUES
   (
@@ -28,7 +29,8 @@ VALUES
     "ESCOM",
     "29383746",
     "",
-    ""
+    "",
+    "09999999999"
   );
 
 INSERT INTO
