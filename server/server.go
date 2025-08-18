@@ -94,6 +94,25 @@ func init() {
 
 }
 
+func UpdateSessionFlags(session *menus.Session) error {
+	if session.ActiveMemberData != nil {
+		if session.ActiveMemberData["beneficiaries"] != nil {
+			session.BeneficiariesAdded = true
+		}
+		if session.ActiveMemberData["contactDetails"] != nil {
+			session.ContactsAdded = true
+		}
+		if session.ActiveMemberData["nominee"] != nil {
+			session.NomineeAdded = true
+		}
+		if session.ActiveMemberData["occupationDetails"] != nil {
+			session.OccupationAdded = true
+		}
+	}
+
+	return nil
+}
+
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.FormValue("sessionId")
 	serviceCode := r.FormValue("serviceCode")
@@ -144,6 +163,8 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			data, err := db.MemberByDefaultPhoneNumber(phoneNumber)
 			if err == nil {
 				session.ActiveMemberData = data
+
+				UpdateSessionFlags(session)
 			} else {
 				log.Println(err)
 			}
