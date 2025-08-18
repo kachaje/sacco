@@ -109,7 +109,7 @@ func (m *MemberNominee) FetchMemberNominee(id int64) (*MemberNominee, error) {
 		&nomineeAddress,
 	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("memberNominee.FilterMemberNominee.1: %s", err.Error())
 	}
 
 	memberNominee := &MemberNominee{
@@ -161,7 +161,7 @@ func (m *MemberNominee) FilterBy(whereStatement string) ([]MemberNominee, error)
 			nomineeAddress
 		FROM memberNominee %s`, whereStatement))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("memberNominee.FilterBy.1: %s", err.Error())
 	}
 
 	for rows.Next() {
@@ -179,7 +179,7 @@ func (m *MemberNominee) FilterBy(whereStatement string) ([]MemberNominee, error)
 			&nomineeAddress,
 		)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("memberNominee.FilterBy.2: %s", err.Error())
 		}
 
 		memberNominee := MemberNominee{

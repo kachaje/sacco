@@ -51,7 +51,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	member, err := m.FetchMember(memberId)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.MemberDetails.1: %s", err.Error())
 	}
 
 	filter := fmt.Sprintf(`WHERE memberId = %d`, memberId)
@@ -60,7 +60,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	contactDetails, err := c.FilterBy(filter)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.MemberDetails.2: %s", err.Error())
 	}
 
 	if len(contactDetails) > 0 {
@@ -71,7 +71,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	nominee, err := n.FilterBy(filter)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.MemberDetails.3: %s", err.Error())
 	}
 
 	if len(nominee) > 0 {
@@ -82,7 +82,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	occupation, err := o.FilterBy(filter)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.MemberDetails.4: %s", err.Error())
 	}
 
 	if len(occupation) > 0 {
@@ -93,7 +93,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	beneficiaries, err := b.FilterBy(filter)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.MemberDetails.5: %s", err.Error())
 	}
 
 	if len(beneficiaries) > 0 {
@@ -102,12 +102,12 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	payload, err := json.Marshal(member)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.MemberDetails.6: %s", err.Error())
 	}
 
 	err = json.Unmarshal(payload, &fullRecord)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.MemberDetails.7: %s", err.Error())
 	}
 
 	return fullRecord, nil
@@ -223,7 +223,7 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		&utilityBillNumber, &fileNumber, &oldFileNumber,
 		&defaultPhoneNumber)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.FetchMember.1: %s", err.Error())
 	}
 
 	member := &Member{
@@ -297,7 +297,7 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 			whereStatement,
 		))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.FilterBy.1: %s", err.Error())
 	}
 
 	for rows.Next() {
@@ -322,7 +322,7 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 			&utilityBillNumber, &fileNumber, &oldFileNumber,
 			&defaultPhoneNumber)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("member.FilterBy.2: %s", err.Error())
 		}
 
 		member := Member{
@@ -414,7 +414,7 @@ func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
 		&dateOfBirth, &nationalId, &utilityBillType,
 		&utilityBillNumber, &fileNumber, &oldFileNumber, &defaultPhoneNumber)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("member.FetchMemberByPhoneNumber.1: %s", err.Error())
 	}
 
 	member := &Member{

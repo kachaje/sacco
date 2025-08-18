@@ -124,7 +124,7 @@ func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
 		&homeDistrict,
 	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("memberContact.FilterMemberContact.1: %s", err.Error())
 	}
 
 	memberContact := &MemberContact{
@@ -202,7 +202,7 @@ func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error)
 			whereStatement,
 		))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("memberContact.FilterBy.1: %s", err.Error())
 	}
 
 	for rows.Next() {
@@ -226,7 +226,7 @@ func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error)
 			&homeDistrict,
 		)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("memberContact.FilterBy.2: %s", err.Error())
 		}
 
 		memberContact := MemberContact{

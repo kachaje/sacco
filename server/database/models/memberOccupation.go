@@ -120,7 +120,7 @@ func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, e
 		&highestQualification,
 	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("memberOccupation.FetchMemberOccupation.1: %s", err.Error())
 	}
 
 	memberOccupation := &MemberOccupation{
@@ -188,7 +188,7 @@ func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, 
 			highestQualification
 		FROM memberOccupation %s`, whereStatement))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("memberOccupation.FetchBy.1: %s", err.Error())
 	}
 
 	for rows.Next() {
@@ -210,7 +210,7 @@ func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, 
 			&highestQualification,
 		)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("memberOccupation.FetchBy.1: %s", err.Error())
 		}
 
 		memberOccupation := MemberOccupation{

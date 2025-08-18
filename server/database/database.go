@@ -250,7 +250,7 @@ func (d *Database) AddMember(
 		if memberData != nil {
 			id, err := d.Member.AddMember(memberData)
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf("database.AddMember.1: %s", err.Error())
 			}
 
 			memberId = id
@@ -260,7 +260,7 @@ func (d *Database) AddMember(
 
 		err = d.Member.UpdateMember(memberData, *existingMemberId)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("database.AddMember.2: %s", err.Error())
 		}
 	}
 
@@ -269,7 +269,7 @@ func (d *Database) AddMember(
 
 		_, err = d.MemberContact.AddMemberContact(contactData)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("database.AddMember.3: %s", err.Error())
 		}
 	}
 
@@ -278,7 +278,7 @@ func (d *Database) AddMember(
 
 		_, err = d.MemberNominee.AddMemberNominee(nomineeData)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("database.AddMember.4: %s", err.Error())
 		}
 	}
 
@@ -287,7 +287,7 @@ func (d *Database) AddMember(
 
 		_, err = d.MemberOccupation.AddMemberOccupation(occupationData)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("database.AddMember.5: %s", err.Error())
 		}
 	}
 
@@ -296,7 +296,7 @@ func (d *Database) AddMember(
 
 		_, err = d.MemberBeneficiary.AddMemberBeneficiary(beneficiaryData)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("database.AddMember.6: %s", err.Error())
 		}
 	}
 
@@ -306,12 +306,12 @@ func (d *Database) AddMember(
 func (d *Database) MemberByDefaultPhoneNumber(phoneNumber string) (map[string]any, error) {
 	member, err := d.Member.FetchMemberByPhoneNumber(phoneNumber)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database.MemberByDefaultPhoneNumber.1: %s", err.Error())
 	}
 
 	fullRecord, err := d.Member.MemberDetails(member.ID)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("database.MemberByDefaultPhoneNumber.2: %s", err.Error())
 	}
 
 	return fullRecord, nil
