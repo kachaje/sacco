@@ -419,7 +419,11 @@ func (w *WorkFlow) ResolveData(data map[string]any, preferCode bool) map[string]
 						if ok {
 							mappedValue, code := w.OptionValue(opts, fmt.Sprintf("%v", value))
 
-							result[key] = mappedValue
+							if mappedValue != "" {
+								result[key] = mappedValue
+							} else {
+								result[key] = value
+							}
 
 							if code != nil && *code != "" && preferCode {
 								result[key] = *code
@@ -543,7 +547,7 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 
 				var existingData string
 
-				if w.Data[id] != nil {
+				if w.Data[id] != nil && fmt.Sprintf("%v", w.Data[id]) != "" {
 					existingData = fmt.Sprintf("(%v)", w.Data[id])
 				}
 
