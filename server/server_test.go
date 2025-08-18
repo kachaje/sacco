@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"sacco/server"
 	"sacco/server/menus"
+	"sacco/wscli"
 	"testing"
 
 	"github.com/rogpeppe/go-internal/testscript"
@@ -14,6 +15,7 @@ import (
 func TestMain(m *testing.M) {
 	testscript.Main(m, map[string]func(){
 		"server": server.Main,
+		"wscli":  wscli.Main,
 	})
 }
 

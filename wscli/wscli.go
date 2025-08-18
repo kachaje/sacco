@@ -54,6 +54,8 @@ func Main() {
 			return
 		default:
 			clearScreen()
+			
+			fmt.Println("")
 
 			_, message, err := client.ReadMessage()
 			if err != nil {
