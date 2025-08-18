@@ -73,7 +73,7 @@ func TestAddMember(t *testing.T) {
 	err = row.Scan(&id, &firstName, &lastName, &otherName,
 		&gender, &title, &maritalStatus,
 		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber, &fileNumber, &oldFileNumber, 
+		&utilityBillNumber, &fileNumber, &oldFileNumber,
 		&defaultPhoneNumber)
 	if err != nil {
 		t.Fatal(err)

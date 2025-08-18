@@ -9,8 +9,8 @@ import (
 )
 
 type MemberContact struct {
-	ID                 int64  `json:"id"`
-	MemberId           int64  `json:"memberId"`
+	ID                 *int64 `json:"id"`
+	MemberId           *int64 `json:"memberId"`
 	PostalAddress      string `json:"postalAddress"`
 	ResidentialAddress string `json:"residentialAddress"`
 	PhoneNumber        string `json:"phoneNumber"`
@@ -27,7 +27,7 @@ func NewMemberContact(db *sql.DB, memberId *int64) *MemberContact {
 	}
 
 	if memberId != nil {
-		m.MemberId = *memberId
+		m.MemberId = memberId
 	}
 
 	return m
@@ -59,7 +59,7 @@ func (m *MemberContact) AddMemberContact(data map[string]any) (int64, error) {
 		) VALUES (
 		 	?, ?, ?, ?, ?, ?, ?
 		)`,
-		m.MemberId, m.PostalAddress, m.ResidentialAddress,
+		*m.MemberId, m.PostalAddress, m.ResidentialAddress,
 		m.PhoneNumber, m.HomeVillage, m.HomeTA, m.HomeDistrict,
 	)
 	if err != nil {
@@ -128,8 +128,8 @@ func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
 	}
 
 	memberContact := &MemberContact{
-		ID:       id,
-		MemberId: memberId,
+		ID:       &id,
+		MemberId: &memberId,
 	}
 
 	atLeastOneFieldAdded := false
@@ -230,8 +230,8 @@ func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error)
 		}
 
 		memberContact := MemberContact{
-			ID:       id,
-			MemberId: memberId,
+			ID:       &id,
+			MemberId: &memberId,
 		}
 
 		atLeastOneFieldAdded := false

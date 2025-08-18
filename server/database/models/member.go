@@ -25,9 +25,9 @@ type Member struct {
 	DefaultPhoneNumber string `json:"defaultPhoneNumber"`
 
 	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
-	ContactDetails    MemberContact       `json:"contactDetails"`
-	Nominee           MemberNominee       `json:"nominee"`
-	OccupationDetails MemberOccupation    `json:"occupationDetails"`
+	ContactDetails    *MemberContact      `json:"contactDetails"`
+	Nominee           *MemberNominee      `json:"nominee"`
+	OccupationDetails *MemberOccupation   `json:"occupationDetails"`
 
 	db *sql.DB
 }
@@ -56,7 +56,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 	}
 
 	if len(contactDetails) > 0 {
-		member.ContactDetails = contactDetails[0]
+		member.ContactDetails = &contactDetails[0]
 	}
 
 	n := NewMemberNominee(m.db, &memberId)
@@ -67,7 +67,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 	}
 
 	if len(nominee) > 0 {
-		member.Nominee = nominee[0]
+		member.Nominee = &nominee[0]
 	}
 
 	o := NewMemberOccupation(m.db, &memberId)
@@ -78,7 +78,7 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 	}
 
 	if len(occupation) > 0 {
-		member.OccupationDetails = occupation[0]
+		member.OccupationDetails = &occupation[0]
 	}
 
 	b := NewMemberBeneficiary(m.db, &memberId)

@@ -2,7 +2,6 @@ package server
 
 import (
 	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -98,10 +97,6 @@ func init() {
 
 func UpdateSessionFlags(session *menus.Session) error {
 	if session.ActiveMemberData != nil {
-		payload, _ := json.MarshalIndent(session.ActiveMemberData, "", "  ")
-
-		fmt.Println(string(payload))
-
 		if session.ActiveMemberData["beneficiaries"] != nil {
 			val, ok := session.ActiveMemberData["beneficiaries"].([]any)
 			if ok && len(val) > 0 {
