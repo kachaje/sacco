@@ -246,6 +246,23 @@ func MainMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder 
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
 		}
 
+	case "registration.6":
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+		} else {
+			if preferredLanguage != nil && *preferredLanguage == "ny" {
+				response = "CON Zambiri za Membala\n" +
+					"\n" +
+					"00. Tiyambirenso"
+			} else {
+				response = "CON Member Details\n" +
+					"\n" +
+					"00. Main Menu"
+			}
+		}
+
 	case "loan":
 		if text == "0" {
 			session.CurrentMenu = "main"

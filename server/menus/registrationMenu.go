@@ -32,6 +32,10 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 		session.CurrentMenu = "registration.5"
 		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
 
+	case "6":
+		session.CurrentMenu = "registration.6"
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder)
+
 	default:
 		memberAdded := ""
 		occupationAdded := ""
@@ -82,6 +86,7 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 				fmt.Sprintf("3. Adiresi Yamembela\n %s", contactAdded) +
 				fmt.Sprintf("4. Wachibale wa Membala %s\n", nomineeAdded) +
 				fmt.Sprintf("5. Odzalandila %s\n", beneficiariesAdded) +
+				"6. Onani Zonse Zamembala\n" +
 				"\n" +
 				"00. Tiyambirenso"
 		} else {
@@ -91,6 +96,7 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 				fmt.Sprintf("3. Add Contact Details %s\n", contactAdded) +
 				fmt.Sprintf("4. Add Next of Kin Details %s\n", nomineeAdded) +
 				fmt.Sprintf("5. Add Beneficiaries %s\n", beneficiariesAdded) +
+				"6. View Member Details\n" +
 				"\n" +
 				"00. Main Menu"
 		}
