@@ -31,12 +31,14 @@ type WorkFlow struct {
 	CurrentSessionId   string
 	ScreenIdMap        map[string]string
 	ScreenOrder        map[int]string
-	SubmitCallback     func(any, *string, *string, *string)
+	SubmitCallback     func(any, *string, *string, *string, *string, *string)
 	History            map[int]string
 	HistoryIndex       int
+	CacheFolder        string
+	PreferenceFolder   string
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *string), preferredLanguage, phoneNumber, sessionId *string) *WorkFlow {
+func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *string, *string, *string), preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string) *WorkFlow {
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -49,6 +51,12 @@ func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *
 		HistoryIndex:    -1,
 	}
 
+	if cacheFolder != nil {
+		w.CacheFolder = *cacheFolder
+	}
+	if preferenceFolder != nil {
+		w.PreferenceFolder = *preferenceFolder
+	}
 	if sessionId != nil {
 		w.CurrentSessionId = *sessionId
 	}
@@ -226,7 +234,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				data["id"] = w.Data["id"]
 			}
 
-			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId)
+			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

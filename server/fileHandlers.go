@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func cacheFile(filename string, data any) {
+func CacheFile(filename string, data any) {
 	payload, err := json.MarshalIndent(data, "", "  ")
 	if err == nil {
 		err = os.WriteFile(filename, payload, 0644)
@@ -23,8 +23,8 @@ func cacheFile(filename string, data any) {
 	}
 }
 
-func saveData(data any, model, phoneNumber, sessionId *string) {
-	sessionFolder := filepath.Join(cacheFolder, *phoneNumber)
+func SaveData(data any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string) {
+	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
 	if os.IsNotExist(err) {
@@ -38,7 +38,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			if val["language"] != nil && phoneNumber != nil {
 				language, ok := val["language"].(string)
 				if ok {
-					savePreference(*phoneNumber, "language", language)
+					SavePreference(*phoneNumber, "language", language, *preferenceFolder)
 				}
 			}
 		}
@@ -134,19 +134,19 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					if len(contactsData) > 0 {
 						contactsData["memberId"] = id
 
-						cacheFile(contactsFile, contactsData)
+						CacheFile(contactsFile, contactsData)
 					}
 
 					if len(nomineeData) > 0 {
 						nomineeData["memberId"] = id
 
-						cacheFile(nomineeFile, nomineeData)
+						CacheFile(nomineeFile, nomineeData)
 					}
 
 					if len(occupationData) > 0 {
 						occupationData["memberId"] = id
 
-						cacheFile(occupationFile, occupationData)
+						CacheFile(occupationFile, occupationData)
 					}
 
 					if len(beneficiariesData) > 0 {
@@ -154,7 +154,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 							beneficiariesData[i]["memberId"] = id
 						}
 
-						cacheFile(beneficiariesFile, beneficiariesData)
+						CacheFile(beneficiariesFile, beneficiariesData)
 					}
 				}
 			} else {
@@ -176,7 +176,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			if os.Getenv("DEBUG") == "true" {
 				filename := filepath.Join(sessionFolder, "memberDetails.json")
 
-				cacheFile(filename, memberData)
+				CacheFile(filename, memberData)
 			}
 		}
 
@@ -194,7 +194,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			} else {
 				filename := filepath.Join(sessionFolder, "contactDetails.json")
 
-				cacheFile(filename, val)
+				CacheFile(filename, val)
 			}
 
 			menus.Sessions[*sessionId].ContactsAdded = true
@@ -214,7 +214,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			} else {
 				filename := filepath.Join(sessionFolder, "nomineeDetails.json")
 
-				cacheFile(filename, val)
+				CacheFile(filename, val)
 			}
 
 			menus.Sessions[*sessionId].NomineeAdded = true
@@ -246,7 +246,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			} else {
 				filename := filepath.Join(sessionFolder, "occupationDetails.json")
 
-				cacheFile(filename, val)
+				CacheFile(filename, val)
 			}
 
 			menus.Sessions[*sessionId].OccupationAdded = true
@@ -303,7 +303,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 			} else {
 				filename := filepath.Join(sessionFolder, "beneficiaries.json")
 
-				cacheFile(filename, records)
+				CacheFile(filename, records)
 			}
 
 			menus.Sessions[*sessionId].BeneficiariesAdded = true
@@ -314,7 +314,7 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 	}
 }
 
-func savePreference(phoneNumber, key, value string) error {
+func SavePreference(phoneNumber, key, value, preferencesFolder string) error {
 	settingsFile := filepath.Join(preferencesFolder, phoneNumber)
 
 	data := map[string]any{}
