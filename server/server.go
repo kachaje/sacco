@@ -157,10 +157,9 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	fmt.Println(r.Method)
-
 	phoneNumber := r.URL.Query().Get("phoneNumber")
 	serviceCode := r.URL.Query().Get("serviceCode")
+	sessionId := r.URL.Query().Get("sessionId")
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -171,7 +170,9 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Client connected")
 
-	sessionId := uuid.NewString()
+	if sessionId == "" {
+		sessionId = uuid.NewString()
+	}
 
 	var text string
 

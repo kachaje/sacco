@@ -75,4 +75,4 @@ enterRepaymentPeriod:
     en: Repayment Months
     ny: Miyezi Yobweza
   inputIdentifier: repaymentPeriod
-  nextScreen: 
+  nextScreen:
