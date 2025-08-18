@@ -83,10 +83,10 @@ func TestDatabaseAddMember(t *testing.T) {
 		}
 	}
 	{
-		val, ok := data["nominee"].(map[string]any)
+		val, ok := data["nomineeDetails"].(map[string]any)
 		if ok {
 			nominee = val
-			delete(data, "nominee")
+			delete(data, "nomineeDetails")
 		} else {
 			t.Fatal("Test failed. Failed to convert map")
 		}

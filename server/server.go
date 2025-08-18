@@ -110,8 +110,8 @@ func UpdateSessionFlags(session *menus.Session) error {
 				session.ContactsAdded = true
 			}
 		}
-		if session.ActiveMemberData["nominee"] != nil {
-			val, ok := session.ActiveMemberData["nominee"].(map[string]any)
+		if session.ActiveMemberData["nomineeDetails"] != nil {
+			val, ok := session.ActiveMemberData["nomineeDetails"].(map[string]any)
 			if ok && len(val) > 0 {
 				session.NomineeAdded = true
 			}
@@ -133,6 +133,29 @@ func UpdateSessionFlags(session *menus.Session) error {
 	}
 
 	return nil
+}
+
+func LoadMemberCache(session *menus.Session, phoneNumber string) {
+	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
+
+	_, err := os.Stat(sessionFolder)
+	if !os.IsNotExist(err) {
+		return
+	}
+
+	data := map[string]any{}
+
+	for _, key := range []string{"contactDetails", "nomineeDetails", "occupationalDetails", "beneficiaries"} {
+		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
+
+		_, err := os.Stat(filename)
+		if !os.IsNotExist(err) {
+			continue
+		}
+
+	}
+
+	session.ActiveMemberData = data
 }
 
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
@@ -191,6 +214,8 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 				if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {
 					log.Println(err)
 				}
+
+				LoadMemberCache(session, phoneNumber)
 			}
 		}()
 	}

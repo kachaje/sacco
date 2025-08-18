@@ -27,7 +27,7 @@ type Member struct {
 
 	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
 	ContactDetails    *MemberContact      `json:"contactDetails"`
-	Nominee           *MemberNominee      `json:"nominee"`
+	Nominee           *MemberNominee      `json:"nomineeDetails"`
 	OccupationDetails *MemberOccupation   `json:"occupationDetails"`
 
 	validFields []string

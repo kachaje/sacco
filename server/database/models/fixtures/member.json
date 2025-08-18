@@ -48,7 +48,7 @@
   "lastName": "Banda",
   "maritalStatus": "Single",
   "nationalId": "DHFYR8475",
-  "nominee": {
+  "nomineeDetails": {
     "id": 1,
     "memberId": 1,
     "nomineeAddress": "Same as member",

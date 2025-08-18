@@ -24,7 +24,7 @@ func cacheFile(filename string, data any) {
 }
 
 func saveData(data any, model, phoneNumber, sessionId *string) {
-	sessionFolder := filepath.Join(cacheFolder, *phoneNumber, *sessionId)
+	sessionFolder := filepath.Join(cacheFolder, *phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
 	if os.IsNotExist(err) {
