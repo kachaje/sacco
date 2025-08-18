@@ -111,11 +111,11 @@ func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preference
 				"00. Tiyambirenso"
 		} else {
 			response = "CON Choose Activity\n" +
-				fmt.Sprintf("1. Add Member Details %s\n", memberAdded) +
-				fmt.Sprintf("2. Add Occupation Details %s\n", occupationAdded) +
-				fmt.Sprintf("3. Add Contact Details %s\n", contactAdded) +
-				fmt.Sprintf("4. Add Next of Kin Details %s\n", nomineeAdded) +
-				fmt.Sprintf("5. Add Beneficiaries %s\n", beneficiariesAdded) +
+				fmt.Sprintf("1. Member Details %s\n", memberAdded) +
+				fmt.Sprintf("2. Occupation Details %s\n", occupationAdded) +
+				fmt.Sprintf("3. Contact Details %s\n", contactAdded) +
+				fmt.Sprintf("4. Next of Kin Details %s\n", nomineeAdded) +
+				fmt.Sprintf("5. Beneficiaries %s\n", beneficiariesAdded) +
 				"6. View Member Details\n" +
 				"\n" +
 				"00. Main Menu"
