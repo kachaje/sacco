@@ -140,7 +140,7 @@ func LoadMemberCache(session *menus.Session, phoneNumber, cacheFolder string) er
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
-	if !os.IsNotExist(err) {
+	if os.IsNotExist(err) {
 		return err
 	}
 
@@ -150,7 +150,7 @@ func LoadMemberCache(session *menus.Session, phoneNumber, cacheFolder string) er
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
 
 		_, err := os.Stat(filename)
-		if !os.IsNotExist(err) {
+		if os.IsNotExist(err) {
 			continue
 		}
 

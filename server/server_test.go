@@ -54,4 +54,20 @@ func TestLoadMemberCache(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	if !session.ContactsAdded {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.ContactsAdded)
+	}
+
+	if !session.NomineeAdded {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.NomineeAdded)
+	}
+
+	if !session.OccupationAdded {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.OccupationAdded)
+	}
+
+	if !session.BeneficiariesAdded {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.BeneficiariesAdded)
+	}
 }
