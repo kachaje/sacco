@@ -73,6 +73,8 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 							log.Println(err)
 						}
 					}
+
+					os.Remove(contactsFile)
 				}
 
 				nomineeFile := filepath.Join(sessionFolder, "nomineeDetails.json")
@@ -86,6 +88,8 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 							log.Println(err)
 						}
 					}
+
+					os.Remove(nomineeFile)
 				}
 
 				occupationFile := filepath.Join(sessionFolder, "occupationalDetails.json")
@@ -99,6 +103,8 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 							log.Println(err)
 						}
 					}
+
+					os.Remove(occupationFile)
 				}
 
 				beneficiariesFile := filepath.Join(sessionFolder, "beneficiaries.json")
@@ -112,6 +118,8 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 							log.Println(err)
 						}
 					}
+
+					os.Remove(beneficiariesFile)
 				}
 
 				mid, err := db.AddMember(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
@@ -122,30 +130,32 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 
 				id = *mid
 
-				if len(contactsData) > 0 {
-					contactsData["memberId"] = id
+				if os.Getenv("DEBUG") == "true" {
+					if len(contactsData) > 0 {
+						contactsData["memberId"] = id
 
-					cacheFile(contactsFile, contactsData)
-				}
-
-				if len(nomineeData) > 0 {
-					nomineeData["memberId"] = id
-
-					cacheFile(nomineeFile, nomineeData)
-				}
-
-				if len(occupationData) > 0 {
-					occupationData["memberId"] = id
-
-					cacheFile(occupationFile, occupationData)
-				}
-
-				if len(beneficiariesData) > 0 {
-					for i := range beneficiariesData {
-						beneficiariesData[i]["memberId"] = id
+						cacheFile(contactsFile, contactsData)
 					}
 
-					cacheFile(beneficiariesFile, beneficiariesData)
+					if len(nomineeData) > 0 {
+						nomineeData["memberId"] = id
+
+						cacheFile(nomineeFile, nomineeData)
+					}
+
+					if len(occupationData) > 0 {
+						occupationData["memberId"] = id
+
+						cacheFile(occupationFile, occupationData)
+					}
+
+					if len(beneficiariesData) > 0 {
+						for i := range beneficiariesData {
+							beneficiariesData[i]["memberId"] = id
+						}
+
+						cacheFile(beneficiariesFile, beneficiariesData)
+					}
 				}
 			} else {
 				mid, err := db.AddMember(memberData, nil, nil, nil, nil, nil)
@@ -159,13 +169,15 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 
 			menus.Sessions[*sessionId].MemberId = &id
 
-			filename := filepath.Join(sessionFolder, "memberDetails.json")
-
 			memberData["id"] = id
 
 			menus.Sessions[*sessionId].ActiveMemberData = memberData
 
-			cacheFile(filename, memberData)
+			if os.Getenv("DEBUG") == "true" {
+				filename := filepath.Join(sessionFolder, "memberDetails.json")
+
+				cacheFile(filename, memberData)
+			}
 		}
 
 	case "contactDetails":
@@ -179,11 +191,11 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					log.Println(err)
 					return
 				}
+			} else {
+				filename := filepath.Join(sessionFolder, "contactDetails.json")
+
+				cacheFile(filename, val)
 			}
-
-			filename := filepath.Join(sessionFolder, "contactDetails.json")
-
-			cacheFile(filename, val)
 
 			menus.Sessions[*sessionId].ContactsAdded = true
 		}
@@ -199,11 +211,11 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					log.Println(err)
 					return
 				}
+			} else {
+				filename := filepath.Join(sessionFolder, "nomineeDetails.json")
+
+				cacheFile(filename, val)
 			}
-
-			filename := filepath.Join(sessionFolder, "nomineeDetails.json")
-
-			cacheFile(filename, val)
 
 			menus.Sessions[*sessionId].NomineeAdded = true
 		}
@@ -229,11 +241,11 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					log.Println(err)
 					return
 				}
+			} else {
+				filename := filepath.Join(sessionFolder, "occupationalDetails.json")
+
+				cacheFile(filename, val)
 			}
-
-			filename := filepath.Join(sessionFolder, "occupationalDetails.json")
-
-			cacheFile(filename, val)
 
 			menus.Sessions[*sessionId].OccupationAdded = true
 		}
@@ -286,11 +298,11 @@ func saveData(data any, model, phoneNumber, sessionId *string) {
 					log.Println(err)
 					return
 				}
+			} else {
+				filename := filepath.Join(sessionFolder, "beneficiaries.json")
+
+				cacheFile(filename, records)
 			}
-
-			filename := filepath.Join(sessionFolder, "beneficiaries.json")
-
-			cacheFile(filename, records)
 
 			menus.Sessions[*sessionId].BeneficiariesAdded = true
 		}
