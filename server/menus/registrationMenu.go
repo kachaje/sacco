@@ -2,10 +2,11 @@ package menus
 
 import (
 	"fmt"
+	"sacco/parser"
 	"slices"
 )
 
-func RegistrationMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
 	var response string
 
 	switch text {

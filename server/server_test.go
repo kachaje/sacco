@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"sacco/parser"
 	"sacco/server"
-	"sacco/server/menus"
 	"sacco/wscli"
 	"testing"
 
@@ -38,7 +38,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	session := &menus.Session{}
+	session := &parser.Session{}
 	session.ActiveMemberData = data
 
 	err = server.UpdateSessionFlags(session)
@@ -48,7 +48,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 }
 
 func TestLoadMemberCache(t *testing.T) {
-	session := &menus.Session{}
+	session := &parser.Session{}
 
 	err := server.LoadMemberCache(session, "0999888777", filepath.Join(".", "database", "models", "fixtures", "cache"))
 	if err != nil {

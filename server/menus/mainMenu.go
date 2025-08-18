@@ -11,28 +11,7 @@ import (
 	"sync"
 )
 
-type Session struct {
-	CurrentMenu           string
-	Data                  map[string]string
-	PIWorkflow            *parser.WorkFlow
-	LanguageWorkflow      *parser.WorkFlow
-	OccupationWorkflow    *parser.WorkFlow
-	ContactsWorkflow      *parser.WorkFlow
-	NomineeWorkflow       *parser.WorkFlow
-	BeneficiariesWorkflow *parser.WorkFlow
-	PreferredLanguage     string
-	MemberId              *int64
-	SessionId             string
-	PhoneNumber           string
-
-	ContactsAdded      bool
-	NomineeAdded       bool
-	OccupationAdded    bool
-	BeneficiariesAdded bool
-	ActiveMemberData   map[string]any
-}
-
-var Sessions = make(map[string]*Session)
+var Sessions = make(map[string]*parser.Session)
 var mu sync.Mutex
 
 func CheckPreferredLanguage(phoneNumber, preferencesFolder string) *string {
@@ -69,7 +48,7 @@ func CheckPreferredLanguage(phoneNumber, preferencesFolder string) *string {
 	return nil
 }
 
-func MainMenu(session *Session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder string) string {
+func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder string) string {
 	preferredLanguage := CheckPreferredLanguage(phoneNumber, preferencesFolder)
 
 	if preferredLanguage != nil {

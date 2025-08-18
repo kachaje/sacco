@@ -97,7 +97,7 @@ func init() {
 
 }
 
-func UpdateSessionFlags(session *menus.Session) error {
+func UpdateSessionFlags(session *parser.Session) error {
 	if session.ActiveMemberData != nil {
 		if session.ActiveMemberData["beneficiaries"] != nil {
 			val, ok := session.ActiveMemberData["beneficiaries"].([]any)
@@ -141,7 +141,7 @@ func UpdateSessionFlags(session *menus.Session) error {
 	return nil
 }
 
-func LoadMemberCache(session *menus.Session, phoneNumber, cacheFolder string) error {
+func LoadMemberCache(session *parser.Session, phoneNumber, cacheFolder string) error {
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
@@ -216,23 +216,23 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	session, exists := menus.Sessions[sessionID]
 	if !exists {
-		session = &menus.Session{
+		session = &parser.Session{
 			CurrentMenu: "main",
 			Data:        make(map[string]string),
 			SessionId:   sessionID,
 			PhoneNumber: phoneNumber,
 
-			LanguageWorkflow: parser.NewWorkflow(languageData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember),
+			LanguageWorkflow: parser.NewWorkflow(languageData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
 
-			PIWorkflow: parser.NewWorkflow(personalInformationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember),
+			PIWorkflow: parser.NewWorkflow(personalInformationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
 
-			OccupationWorkflow: parser.NewWorkflow(occupationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember),
+			OccupationWorkflow: parser.NewWorkflow(occupationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
 
-			ContactsWorkflow: parser.NewWorkflow(contactsData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember),
+			ContactsWorkflow: parser.NewWorkflow(contactsData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
 
-			NomineeWorkflow: parser.NewWorkflow(nomineeData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember),
+			NomineeWorkflow: parser.NewWorkflow(nomineeData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
 
-			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember),
+			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
 		}
 
 		if preferredLanguage != nil {

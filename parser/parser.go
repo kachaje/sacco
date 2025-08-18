@@ -18,6 +18,27 @@ const (
 	LANG_NY_LABEL  = "ny"
 )
 
+type Session struct {
+	CurrentMenu           string
+	Data                  map[string]string
+	PIWorkflow            *WorkFlow
+	LanguageWorkflow      *WorkFlow
+	OccupationWorkflow    *WorkFlow
+	ContactsWorkflow      *WorkFlow
+	NomineeWorkflow       *WorkFlow
+	BeneficiariesWorkflow *WorkFlow
+	PreferredLanguage     string
+	MemberId              *int64
+	SessionId             string
+	PhoneNumber           string
+
+	ContactsAdded      bool
+	NomineeAdded       bool
+	OccupationAdded    bool
+	BeneficiariesAdded bool
+	ActiveMemberData   map[string]any
+}
+
 type WorkFlow struct {
 	Tree map[string]any
 	Data map[string]any
@@ -31,43 +52,57 @@ type WorkFlow struct {
 	CurrentSessionId   string
 	ScreenIdMap        map[string]string
 	ScreenOrder        map[int]string
-	SubmitCallback     func(any, *string, *string, *string, *string, *string, func(
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		[]map[string]any,
-		*int64,
-	) (*int64, error)) error
+	SubmitCallback     func(
+		d any, m *string, p *string, s *string, c *string, f *string,
+		addFn func(
+			a map[string]any,
+			b map[string]any,
+			c map[string]any,
+			d map[string]any,
+			e []map[string]any,
+			f *int64,
+		) (*int64, error),
+		ss map[string]*Session,
+	) error
 	History          map[int]string
 	HistoryIndex     int
 	CacheFolder      string
 	PreferenceFolder string
-	SaveFunc         func(
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		[]map[string]any,
-		*int64,
+	AddFunc          func(
+		a map[string]any,
+		b map[string]any,
+		c map[string]any,
+		d map[string]any,
+		e []map[string]any,
+		f *int64,
 	) (*int64, error)
+
+	Sessions map[string]*Session
 }
 
-func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *string, *string, *string, func(
-	map[string]any,
-	map[string]any,
-	map[string]any,
-	map[string]any,
-	[]map[string]any,
-	*int64,
-) (*int64, error)) error, preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
-	map[string]any,
-	map[string]any,
-	map[string]any,
-	map[string]any,
-	[]map[string]any,
-	*int64,
-) (*int64, error)) *WorkFlow {
+func NewWorkflow(
+	tree map[string]any,
+	callbackFunc func(
+		any, *string, *string, *string, *string, *string,
+		func(
+			map[string]any,
+			map[string]any,
+			map[string]any,
+			map[string]any,
+			[]map[string]any,
+			*int64,
+		) (*int64, error),
+		map[string]*Session,
+	) error,
+	preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, addFunc func(
+		a map[string]any,
+		b map[string]any,
+		c map[string]any,
+		d map[string]any,
+		e []map[string]any,
+		f *int64,
+	) (*int64, error), sessions map[string]*Session) *WorkFlow {
+
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
@@ -80,8 +115,11 @@ func NewWorkflow(tree map[string]any, callbackFunc func(any, *string, *string, *
 		HistoryIndex:    -1,
 	}
 
-	if saveFunc != nil {
-		w.SaveFunc = saveFunc
+	if sessions != nil {
+		w.Sessions = sessions
+	}
+	if addFunc != nil {
+		w.AddFunc = addFunc
 	}
 	if cacheFolder != nil {
 		w.CacheFolder = *cacheFolder
@@ -266,7 +304,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				data["id"] = w.Data["id"]
 			}
 
-			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder, w.SaveFunc)
+			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"sacco/server/menus"
+	"sacco/parser"
 	"strconv"
 )
 
@@ -26,13 +26,13 @@ func CacheFile(filename string, data any) {
 func SaveData(
 	data any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string,
 	saveFunc func(
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		[]map[string]any,
-		*int64,
-	) (*int64, error)) error {
+		a map[string]any,
+		b map[string]any,
+		c map[string]any,
+		d map[string]any,
+		e []map[string]any,
+		f *int64,
+	) (*int64, error), sessions map[string]*parser.Session) error {
 	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
@@ -62,10 +62,11 @@ func SaveData(
 				memberData["defaultPhoneNumber"] = *phoneNumber
 			}
 
-			if menus.Sessions[*sessionId].ContactsAdded ||
-				menus.Sessions[*sessionId].BeneficiariesAdded ||
-				menus.Sessions[*sessionId].NomineeAdded ||
-				menus.Sessions[*sessionId].OccupationAdded {
+			if sessions[*sessionId].ContactsAdded ||
+				sessions[*sessionId].BeneficiariesAdded ||
+				sessions[*sessionId].NomineeAdded ||
+				sessions[*sessionId].OccupationAdded {
+
 				var contactsData, nomineeData, occupationData map[string]any
 				var beneficiariesData []map[string]any
 
@@ -142,30 +143,44 @@ func SaveData(
 
 				id = *mid
 
-				if os.Getenv("DEBUG") == "true" {
-					if len(contactsData) > 0 {
-						contactsData["memberId"] = id
+				if len(contactsData) > 0 {
+					contactsData["memberId"] = id
 
+					memberData["contactDetails"] = contactsData
+
+					if os.Getenv("DEBUG") == "true" {
 						CacheFile(contactsFile, contactsData)
 					}
+				}
 
-					if len(nomineeData) > 0 {
-						nomineeData["memberId"] = id
+				if len(nomineeData) > 0 {
+					nomineeData["memberId"] = id
 
+					memberData["nomineeDetails"] = nomineeData
+
+					if os.Getenv("DEBUG") == "true" {
 						CacheFile(nomineeFile, nomineeData)
 					}
+				}
 
-					if len(occupationData) > 0 {
-						occupationData["memberId"] = id
+				if len(occupationData) > 0 {
+					occupationData["memberId"] = id
 
+					memberData["occupationDetails"] = occupationData
+
+					if os.Getenv("DEBUG") == "true" {
 						CacheFile(occupationFile, occupationData)
 					}
+				}
 
-					if len(beneficiariesData) > 0 {
-						for i := range beneficiariesData {
-							beneficiariesData[i]["memberId"] = id
-						}
+				if len(beneficiariesData) > 0 {
+					for i := range beneficiariesData {
+						beneficiariesData[i]["memberId"] = id
+					}
 
+					memberData["beneficiaries"] = beneficiariesData
+
+					if os.Getenv("DEBUG") == "true" {
 						CacheFile(beneficiariesFile, beneficiariesData)
 					}
 				}
@@ -182,11 +197,11 @@ func SaveData(
 				id = *mid
 			}
 
-			menus.Sessions[*sessionId].MemberId = &id
+			sessions[*sessionId].MemberId = &id
 
 			memberData["id"] = id
 
-			menus.Sessions[*sessionId].ActiveMemberData = memberData
+			sessions[*sessionId].ActiveMemberData = memberData
 
 			if os.Getenv("DEBUG") == "true" {
 				filename := filepath.Join(sessionFolder, "memberDetails.json")
@@ -198,15 +213,15 @@ func SaveData(
 	case "contactDetails":
 		val, ok := data.(map[string]any)
 		if ok {
-			if menus.Sessions[*sessionId].MemberId != nil {
-				val["memberId"] = *menus.Sessions[*sessionId].MemberId
+			if sessions[*sessionId].MemberId != nil {
+				val["memberId"] = *sessions[*sessionId].MemberId
 
 				if saveFunc == nil {
 					log.Println("Missing saveFunc")
 					return fmt.Errorf("missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, val, nil, nil, nil, menus.Sessions[*sessionId].MemberId)
+				_, err := saveFunc(nil, val, nil, nil, nil, sessions[*sessionId].MemberId)
 				if err != nil {
 					return err
 				}
@@ -216,21 +231,21 @@ func SaveData(
 				CacheFile(filename, val)
 			}
 
-			menus.Sessions[*sessionId].ContactsAdded = true
+			sessions[*sessionId].ContactsAdded = true
 		}
 
 	case "nomineeDetails":
 		val, ok := data.(map[string]any)
 		if ok {
-			if menus.Sessions[*sessionId].MemberId != nil {
-				val["memberId"] = *menus.Sessions[*sessionId].MemberId
+			if sessions[*sessionId].MemberId != nil {
+				val["memberId"] = *sessions[*sessionId].MemberId
 
 				if saveFunc == nil {
 					log.Println("Missing saveFunc")
 					return fmt.Errorf("missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, nil, val, nil, nil, menus.Sessions[*sessionId].MemberId)
+				_, err := saveFunc(nil, nil, val, nil, nil, sessions[*sessionId].MemberId)
 				if err != nil {
 					return err
 				}
@@ -240,7 +255,7 @@ func SaveData(
 				CacheFile(filename, val)
 			}
 
-			menus.Sessions[*sessionId].NomineeAdded = true
+			sessions[*sessionId].NomineeAdded = true
 		}
 
 	case "occupationDetails":
@@ -258,14 +273,14 @@ func SaveData(
 				}
 			}
 
-			if menus.Sessions[*sessionId].MemberId != nil {
-				val["memberId"] = *menus.Sessions[*sessionId].MemberId
+			if sessions[*sessionId].MemberId != nil {
+				val["memberId"] = *sessions[*sessionId].MemberId
 
 				if saveFunc == nil {
 					return fmt.Errorf("missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, nil, nil, val, nil, menus.Sessions[*sessionId].MemberId)
+				_, err := saveFunc(nil, nil, nil, val, nil, sessions[*sessionId].MemberId)
 				if err != nil {
 					return err
 				}
@@ -275,7 +290,7 @@ func SaveData(
 				CacheFile(filename, val)
 			}
 
-			menus.Sessions[*sessionId].OccupationAdded = true
+			sessions[*sessionId].OccupationAdded = true
 		}
 
 	case "beneficiaries":
@@ -313,19 +328,19 @@ func SaveData(
 					"contact":    contact,
 				}
 
-				if menus.Sessions[*sessionId].MemberId != nil {
-					row["memberId"] = *menus.Sessions[*sessionId].MemberId
+				if sessions[*sessionId].MemberId != nil {
+					row["memberId"] = *sessions[*sessionId].MemberId
 				}
 
 				records = append(records, row)
 			}
 
-			if menus.Sessions[*sessionId].MemberId != nil {
+			if sessions[*sessionId].MemberId != nil {
 				if saveFunc == nil {
 					return fmt.Errorf("missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, nil, nil, nil, records, menus.Sessions[*sessionId].MemberId)
+				_, err := saveFunc(nil, nil, nil, nil, records, sessions[*sessionId].MemberId)
 				if err != nil {
 					return err
 				}
@@ -335,7 +350,7 @@ func SaveData(
 				CacheFile(filename, records)
 			}
 
-			menus.Sessions[*sessionId].BeneficiariesAdded = true
+			sessions[*sessionId].BeneficiariesAdded = true
 		}
 
 	default:
