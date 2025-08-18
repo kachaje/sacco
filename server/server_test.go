@@ -46,3 +46,12 @@ func TestUpdateSessionFlags(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestLoadMemberCache(t *testing.T) {
+	session := &menus.Session{}
+
+	err := server.LoadMemberCache(session, "0999888777", filepath.Join(".", "database", "models", "fixtures", "cache"))
+	if err != nil {
+		t.Fatal(err)
+	}
+}

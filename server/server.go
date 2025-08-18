@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -135,15 +136,15 @@ func UpdateSessionFlags(session *menus.Session) error {
 	return nil
 }
 
-func LoadMemberCache(session *menus.Session, phoneNumber string) {
+func LoadMemberCache(session *menus.Session, phoneNumber, cacheFolder string) error {
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
 	if !os.IsNotExist(err) {
-		return
+		return err
 	}
 
-	data := map[string]any{}
+	memberData := map[string]any{}
 
 	for _, key := range []string{"contactDetails", "nomineeDetails", "occupationalDetails", "beneficiaries"} {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
@@ -153,9 +154,37 @@ func LoadMemberCache(session *menus.Session, phoneNumber string) {
 			continue
 		}
 
+		content, err := os.ReadFile(filename)
+		if err != nil {
+			continue
+		}
+
+		if key == "beneficiaries" {
+			data := []map[string]any{}
+			err = json.Unmarshal(content, &data)
+			if err != nil {
+				continue
+			}
+
+			memberData[key] = data
+		} else {
+			data := map[string]any{}
+			err = json.Unmarshal(content, &data)
+			if err != nil {
+				continue
+			}
+
+			memberData[key] = data
+		}
 	}
 
-	session.ActiveMemberData = data
+	if len(memberData) > 0 {
+		session.ActiveMemberData = memberData
+
+		UpdateSessionFlags(session)
+	}
+
+	return nil
 }
 
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
@@ -215,7 +244,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 					log.Println(err)
 				}
 
-				LoadMemberCache(session, phoneNumber)
+				LoadMemberCache(session, phoneNumber, cacheFolder)
 			}
 		}()
 	}
