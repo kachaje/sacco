@@ -275,7 +275,7 @@ func SaveData(
 	case "occupationDetails":
 		val, ok := data.(map[string]any)
 		if ok {
-			for _, key := range []string{"netPay", "grossPay"} {
+			for _, key := range []string{"netPay", "grossPay", "periodEmployed"} {
 				if val[key] != nil {
 					nv, ok := val[key].(string)
 					if ok {
