@@ -2,6 +2,7 @@ package menus_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -49,4 +50,22 @@ func TestLoadTemplateData(t *testing.T) {
 	if !reflect.DeepEqual(targetData, result) {
 		t.Fatal("Test failed")
 	}
+}
+
+func TestTabulateData(t *testing.T) {
+	data := map[string]any{}
+
+	content, err := os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.template.output.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = json.Unmarshal(content, &data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := menus.TabulateData(data)
+
+	fmt.Println(result)
 }
