@@ -33,11 +33,15 @@ func SaveData(
 		e []map[string]any,
 		f *int64,
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
-	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
+	var sessionFolder string
 
-	_, err := os.Stat(sessionFolder)
-	if os.IsNotExist(err) {
-		os.MkdirAll(sessionFolder, 0755)
+	if cacheFolder != nil {
+		sessionFolder = filepath.Join(*cacheFolder, *phoneNumber)
+
+		_, err := os.Stat(sessionFolder)
+		if os.IsNotExist(err) {
+			os.MkdirAll(sessionFolder, 0755)
+		}
 	}
 
 	switch *model {
@@ -58,7 +62,7 @@ func SaveData(
 			var id int64
 			var err error
 
-			if *phoneNumber != "default" {
+			if phoneNumber != nil && *phoneNumber != "default" {
 				memberData["defaultPhoneNumber"] = *phoneNumber
 			}
 

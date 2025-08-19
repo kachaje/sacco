@@ -2,8 +2,10 @@ package database_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"sacco/server"
 	"sacco/server/database"
 	"sacco/utils"
 	"slices"
@@ -151,4 +153,88 @@ func TestMemberByDefaultPhoneNumber(t *testing.T) {
 	if utils.CleanScript(payload) != utils.CleanScript(target) {
 		t.Fatal("Test failed")
 	}
+}
+
+func TestMemberBeneficiaries(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	content, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.sql"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sqlStatement := string(content)
+
+	_, err = db.DB.Exec(sqlStatement)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result, err := db.MemberByDefaultPhoneNumber("09999999999")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	beneficiaries := []map[string]any{}
+
+	val, ok := result["beneficiaries"].([]any)
+	if ok {
+		for _, row := range val {
+			v, ok := row.(map[string]any)
+			if ok {
+				beneficiaries = append(beneficiaries, v)
+			}
+		}
+	}
+
+	payload, _ := json.MarshalIndent(beneficiaries, "", "  ")
+
+	fmt.Println(string(payload))
+
+	update := []map[string]any{
+		{
+			"contact":    "P.O. Box 1234",
+			"id":         1,
+			"memberId":   1,
+			"name":       "Benefator 1",
+			"percentage": 5,
+		},
+		{
+			"contact":    "P.O. Box 5678",
+			"id":         2,
+			"memberId":   1,
+			"name":       "Benefator 2",
+			"percentage": 2,
+		},
+	}
+
+	model := "beneficiaries"
+
+	err = server.SaveData(update, &model, nil, nil, nil, nil, db.AddMember, nil, result)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result, err = db.MemberByDefaultPhoneNumber("09999999999")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	beneficiaries = []map[string]any{}
+
+	val, ok = result["beneficiaries"].([]any)
+	if ok {
+		for _, row := range val {
+			v, ok := row.(map[string]any)
+			if ok {
+				beneficiaries = append(beneficiaries, v)
+			}
+		}
+	}
+
+	payload, _ = json.MarshalIndent(beneficiaries, "", "  ")
+
+	fmt.Println(string(payload))
 }
