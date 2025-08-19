@@ -83,8 +83,6 @@ func SaveData(
 							log.Println(err)
 						}
 					}
-
-					os.Remove(contactsFile)
 				}
 
 				nomineeFile := filepath.Join(sessionFolder, "nomineeDetails.json")
@@ -100,8 +98,6 @@ func SaveData(
 							log.Println(err)
 						}
 					}
-
-					os.Remove(nomineeFile)
 				}
 
 				occupationFile := filepath.Join(sessionFolder, "occupationDetails.json")
@@ -117,8 +113,6 @@ func SaveData(
 							log.Println(err)
 						}
 					}
-
-					os.Remove(occupationFile)
 				}
 
 				beneficiariesFile := filepath.Join(sessionFolder, "beneficiaries.json")
@@ -134,8 +128,6 @@ func SaveData(
 							log.Println(err)
 						}
 					}
-
-					os.Remove(beneficiariesFile)
 				}
 
 				if saveFunc == nil {
@@ -156,6 +148,8 @@ func SaveData(
 
 					if os.Getenv("DEBUG") == "true" {
 						CacheFile(contactsFile, contactsData)
+					} else {
+						os.Remove(contactsFile)
 					}
 				}
 
@@ -166,6 +160,8 @@ func SaveData(
 
 					if os.Getenv("DEBUG") == "true" {
 						CacheFile(nomineeFile, nomineeData)
+					} else {
+						os.Remove(nomineeFile)
 					}
 				}
 
@@ -176,6 +172,8 @@ func SaveData(
 
 					if os.Getenv("DEBUG") == "true" {
 						CacheFile(occupationFile, occupationData)
+					} else {
+						os.Remove(occupationFile)
 					}
 				}
 
@@ -188,6 +186,8 @@ func SaveData(
 
 					if os.Getenv("DEBUG") == "true" {
 						CacheFile(beneficiariesFile, beneficiariesData)
+					} else {
+						os.Remove(beneficiariesFile)
 					}
 				}
 			} else {
@@ -209,7 +209,11 @@ func SaveData(
 
 			sessions[*sessionId].ActiveMemberData = memberData
 
-			sessions[*sessionId].UpdateSessionFlags()
+			payload, _ := json.MarshalIndent(memberData, "", "  ")
+
+			fmt.Println(string(payload))
+
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 
 			if os.Getenv("DEBUG") == "true" {
 				filename := filepath.Join(sessionFolder, "memberDetails.json")
@@ -239,7 +243,7 @@ func SaveData(
 				CacheFile(filename, val)
 			}
 
-			sessions[*sessionId].ContactsAdded = true
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	case "nomineeDetails":
@@ -263,7 +267,7 @@ func SaveData(
 				CacheFile(filename, val)
 			}
 
-			sessions[*sessionId].NomineeAdded = true
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	case "occupationDetails":
@@ -298,7 +302,7 @@ func SaveData(
 				CacheFile(filename, val)
 			}
 
-			sessions[*sessionId].OccupationAdded = true
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	case "beneficiaries":
@@ -358,7 +362,7 @@ func SaveData(
 				CacheFile(filename, records)
 			}
 
-			sessions[*sessionId].BeneficiariesAdded = true
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	default:
