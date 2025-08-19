@@ -188,9 +188,171 @@ func (m *Member) UpdateMember(data map[string]any, id int64) error {
 	return nil
 }
 
+func (m *Member) loadRow(row any) (*Member, bool, error) {
+	var id int64
+	var firstName,
+		lastName,
+		otherName,
+		gender,
+		title,
+		maritalStatus,
+		dateOfBirth,
+		nationalId,
+		utilityBillType,
+		utilityBillNumber,
+		fileNumber,
+		oldFileNumber,
+		defaultPhoneNumber any
+	var err error
+
+	val, ok := row.(*sql.Row)
+	if ok {
+		err = val.Scan(
+			&id,
+			&firstName,
+			&lastName,
+			&otherName,
+			&gender,
+			&title,
+			&maritalStatus,
+			&dateOfBirth,
+			&nationalId,
+			&utilityBillType,
+			&utilityBillNumber,
+			&fileNumber,
+			&oldFileNumber,
+			&defaultPhoneNumber,
+		)
+	} else {
+		val, ok := row.(*sql.Rows)
+		if ok {
+			err = val.Scan(
+				&id,
+				&firstName,
+				&lastName,
+				&otherName,
+				&gender,
+				&title,
+				&maritalStatus,
+				&dateOfBirth,
+				&nationalId,
+				&utilityBillType,
+				&utilityBillNumber,
+				&fileNumber,
+				&oldFileNumber,
+				&defaultPhoneNumber,
+			)
+		}
+	}
+	if err != nil {
+		return nil, false, fmt.Errorf("member.loadRow.1: %s", err.Error())
+	}
+
+	record := Member{
+		ID: id,
+	}
+
+	atLeastOneFieldAdded := false
+
+	if firstName != nil {
+		value := fmt.Sprintf("%v", firstName)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.FirstName = value
+		}
+	}
+	if lastName != nil {
+		value := fmt.Sprintf("%v", lastName)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.LastName = value
+		}
+	}
+	if otherName != nil {
+		value := fmt.Sprintf("%v", otherName)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.OtherName = value
+		}
+	}
+	if gender != nil {
+		value := fmt.Sprintf("%v", gender)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.Gender = value
+		}
+	}
+	if title != nil {
+		value := fmt.Sprintf("%v", title)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.Title = value
+		}
+	}
+	if maritalStatus != nil {
+		value := fmt.Sprintf("%v", maritalStatus)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.MaritalStatus = value
+		}
+	}
+	if dateOfBirth != nil {
+		value := fmt.Sprintf("%v", dateOfBirth)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.DateOfBirth = value
+		}
+	}
+	if nationalId != nil {
+		value := fmt.Sprintf("%v", nationalId)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.NationalId = value
+		}
+	}
+	if utilityBillType != nil {
+		value := fmt.Sprintf("%v", utilityBillType)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.UtilityBillType = value
+		}
+	}
+	if utilityBillNumber != nil {
+		value := fmt.Sprintf("%v", utilityBillNumber)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.UtilityBillNumber = value
+		}
+	}
+	if fileNumber != nil {
+		value := fmt.Sprintf("%v", fileNumber)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.FileNumber = value
+		}
+	}
+	if oldFileNumber != nil {
+		value := fmt.Sprintf("%v", oldFileNumber)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.OldFileNumber = value
+		}
+	}
+	if defaultPhoneNumber != nil {
+		value := fmt.Sprintf("%v", defaultPhoneNumber)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.DefaultPhoneNumber = value
+		}
+	}
+
+	return &record, atLeastOneFieldAdded, nil
+}
+
 func (m *Member) FetchMember(id int64) (*Member, error) {
 
 	row := m.db.QueryRow(`SELECT 
+		id,
 		firstName,
 		lastName,
 		otherName,
@@ -206,74 +368,16 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		defaultPhoneNumber
 	FROM member WHERE id=? AND active=1`, id)
 
-	var firstName,
-		lastName,
-		otherName,
-		gender,
-		title,
-		maritalStatus,
-		dateOfBirth,
-		nationalId,
-		utilityBillType,
-		utilityBillNumber,
-		fileNumber,
-		oldFileNumber,
-		defaultPhoneNumber any
-
-	err := row.Scan(&firstName, &lastName, &otherName,
-		&gender, &title, &maritalStatus,
-		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber, &fileNumber, &oldFileNumber,
-		&defaultPhoneNumber)
+	record, found, err := m.loadRow(row)
 	if err != nil {
 		return nil, fmt.Errorf("member.FetchMember.1: %s", err.Error())
 	}
 
-	member := &Member{
-		ID: id,
+	if !found {
+		return nil, nil
 	}
 
-	if firstName != nil {
-		member.FirstName = fmt.Sprintf("%v", firstName)
-	}
-	if lastName != nil {
-		member.LastName = fmt.Sprintf("%v", lastName)
-	}
-	if otherName != nil {
-		member.OtherName = fmt.Sprintf("%v", otherName)
-	}
-	if gender != nil {
-		member.Gender = fmt.Sprintf("%v", gender)
-	}
-	if title != nil {
-		member.Title = fmt.Sprintf("%v", title)
-	}
-	if maritalStatus != nil {
-		member.MaritalStatus = fmt.Sprintf("%v", maritalStatus)
-	}
-	if dateOfBirth != nil {
-		member.DateOfBirth = fmt.Sprintf("%v", dateOfBirth)
-	}
-	if nationalId != nil {
-		member.NationalId = fmt.Sprintf("%v", nationalId)
-	}
-	if utilityBillType != nil {
-		member.UtilityBillType = fmt.Sprintf("%v", utilityBillType)
-	}
-	if utilityBillNumber != nil {
-		member.UtilityBillNumber = fmt.Sprintf("%v", utilityBillNumber)
-	}
-	if fileNumber != nil {
-		member.FileNumber = fmt.Sprintf("%v", fileNumber)
-	}
-	if oldFileNumber != nil {
-		member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
-	}
-	if defaultPhoneNumber != nil {
-		member.DefaultPhoneNumber = fmt.Sprintf("%v", defaultPhoneNumber)
-	}
-
-	return member, nil
+	return record, nil
 }
 
 func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
@@ -308,75 +412,16 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 	}
 
 	for rows.Next() {
-		var id int64
-		var firstName,
-			lastName,
-			otherName,
-			gender,
-			title,
-			maritalStatus,
-			dateOfBirth,
-			nationalId,
-			utilityBillType,
-			utilityBillNumber,
-			fileNumber,
-			oldFileNumber,
-			defaultPhoneNumber any
-
-		err := rows.Scan(&id, &firstName, &lastName, &otherName,
-			&gender, &title, &maritalStatus,
-			&dateOfBirth, &nationalId, &utilityBillType,
-			&utilityBillNumber, &fileNumber, &oldFileNumber,
-			&defaultPhoneNumber)
+		record, found, err := m.loadRow(rows)
 		if err != nil {
-			return nil, fmt.Errorf("member.FilterBy.2: %s", err.Error())
+			return nil, fmt.Errorf("member.FilterBy.1: %s", err.Error())
 		}
 
-		member := Member{
-			ID: id,
+		if !found {
+			return nil, nil
 		}
 
-		if firstName != nil {
-			member.FirstName = fmt.Sprintf("%v", firstName)
-		}
-		if lastName != nil {
-			member.LastName = fmt.Sprintf("%v", lastName)
-		}
-		if otherName != nil {
-			member.OtherName = fmt.Sprintf("%v", otherName)
-		}
-		if gender != nil {
-			member.Gender = fmt.Sprintf("%v", gender)
-		}
-		if title != nil {
-			member.Title = fmt.Sprintf("%v", title)
-		}
-		if maritalStatus != nil {
-			member.MaritalStatus = fmt.Sprintf("%v", maritalStatus)
-		}
-		if dateOfBirth != nil {
-			member.DateOfBirth = fmt.Sprintf("%v", dateOfBirth)
-		}
-		if nationalId != nil {
-			member.NationalId = fmt.Sprintf("%v", nationalId)
-		}
-		if utilityBillType != nil {
-			member.UtilityBillType = fmt.Sprintf("%v", utilityBillType)
-		}
-		if utilityBillNumber != nil {
-			member.UtilityBillNumber = fmt.Sprintf("%v", utilityBillNumber)
-		}
-		if fileNumber != nil {
-			member.FileNumber = fmt.Sprintf("%v", fileNumber)
-		}
-		if oldFileNumber != nil {
-			member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
-		}
-		if defaultPhoneNumber != nil {
-			member.DefaultPhoneNumber = fmt.Sprintf("%v", defaultPhoneNumber)
-		}
-
-		results = append(results, member)
+		results = append(results, *record)
 	}
 
 	return results, nil
@@ -405,27 +450,9 @@ RETRY:
 		defaultPhoneNumber
 	FROM member WHERE defaultPhoneNumber=? AND active=1`, phoneNumber)
 
-	var id int64
-	var firstName,
-		lastName,
-		otherName,
-		gender,
-		title,
-		maritalStatus,
-		dateOfBirth,
-		nationalId,
-		utilityBillType,
-		utilityBillNumber,
-		fileNumber,
-		oldFileNumber,
-		defaultPhoneNumber any
-
-	err := row.Scan(&id, &firstName, &lastName, &otherName,
-		&gender, &title, &maritalStatus,
-		&dateOfBirth, &nationalId, &utilityBillType,
-		&utilityBillNumber, &fileNumber, &oldFileNumber, &defaultPhoneNumber)
+	record, found, err := m.loadRow(row)
 	if err != nil {
-		if regexp.MustCompile("SQL logic error: no such table: member").MatchString(err.Error()) {
+		if regexp.MustCompile("SQL logic error: no such table").MatchString(err.Error()) {
 			if retries < 3 {
 				retries++
 
@@ -437,49 +464,9 @@ RETRY:
 		return nil, fmt.Errorf("member.FetchMemberByPhoneNumber.1: %s", err.Error())
 	}
 
-	member := &Member{
-		ID: id,
+	if !found {
+		return nil, nil
 	}
 
-	if firstName != nil {
-		member.FirstName = fmt.Sprintf("%v", firstName)
-	}
-	if lastName != nil {
-		member.LastName = fmt.Sprintf("%v", lastName)
-	}
-	if otherName != nil {
-		member.OtherName = fmt.Sprintf("%v", otherName)
-	}
-	if gender != nil {
-		member.Gender = fmt.Sprintf("%v", gender)
-	}
-	if title != nil {
-		member.Title = fmt.Sprintf("%v", title)
-	}
-	if maritalStatus != nil {
-		member.MaritalStatus = fmt.Sprintf("%v", maritalStatus)
-	}
-	if dateOfBirth != nil {
-		member.DateOfBirth = fmt.Sprintf("%v", dateOfBirth)
-	}
-	if nationalId != nil {
-		member.NationalId = fmt.Sprintf("%v", nationalId)
-	}
-	if utilityBillType != nil {
-		member.UtilityBillType = fmt.Sprintf("%v", utilityBillType)
-	}
-	if utilityBillNumber != nil {
-		member.UtilityBillNumber = fmt.Sprintf("%v", utilityBillNumber)
-	}
-	if fileNumber != nil {
-		member.FileNumber = fmt.Sprintf("%v", fileNumber)
-	}
-	if oldFileNumber != nil {
-		member.OldFileNumber = fmt.Sprintf("%v", oldFileNumber)
-	}
-	if defaultPhoneNumber != nil {
-		member.DefaultPhoneNumber = fmt.Sprintf("%v", defaultPhoneNumber)
-	}
-
-	return member, nil
+	return record, nil
 }
