@@ -1,194 +1,195 @@
 {
   "A. PERSONAL INFORMATION": {
-    "lastName": {
-      "order": 1,
-      "label": "Surname",
-      "value": "Banda"
-    },
-    "firstName": {
-      "order": 2,
-      "label": "First Name",
-      "value": "Mary"
-    },
-    "otherName": {
-      "order": 3,
-      "label": "Other Name(s)"
-    },
-    "gender": {
-      "order": 4,
-      "label": "Gender",
-      "value": "Female"
-    },
-    "title": {
-      "order": 5,
-      "label": "Title",
-      "value": "Miss"
-    },
-    "maritalStatus": {
-      "order": 6,
-      "label": "Marital Status",
-      "value": "Single"
-    },
     "dateOfBirth": {
-      "order": 7,
       "label": "Date of Birth",
+      "order": 7,
       "value": "1999-09-01"
     },
+    "firstName": {
+      "label": "First Name",
+      "order": 2,
+      "value": "Mary"
+    },
+    "gender": {
+      "label": "Gender",
+      "order": 4,
+      "value": "Female"
+    },
+    "lastName": {
+      "label": "Surname",
+      "order": 1,
+      "value": "Banda"
+    },
+    "maritalStatus": {
+      "label": "Marital Status",
+      "order": 6,
+      "value": "Single"
+    },
     "nationalId": {
-      "order": 8,
       "label": "National ID",
+      "order": 8,
       "value": "DHFYR8475"
     },
+    "otherName": {
+      "label": "Other Name(s)",
+      "order": 3
+    },
+    "title": {
+      "label": "Title",
+      "order": 5,
+      "value": "Miss"
+    },
     "utilityBillNumber": {
-      "order": 9,
       "label": "Utility Bill No",
+      "order": 9,
       "value": "29383746"
     },
     "utilityBillType": {
-      "order": 10,
       "label": "Utility Bill Type",
+      "order": 10,
       "value": "ESCOM"
     }
   },
   "B. OCCUPATION DETAILS": {
-    "employerName": {
-      "order": 1,
-      "label": "Name of Employer",
-      "value": "Sunseed Oil"
-    },
-    "netPay": {
-      "order": 2,
-      "label": "Net Pay",
-      "value": 72000
-    },
-    "jobTitle": {
-      "order": 3,
-      "label": "Job Title",
-      "value": "Driver"
-    },
     "employerAddress": {
-      "order": 4,
       "label": "Employer Address",
+      "order": 4,
       "value": "Kanengo, Lilongwe"
     },
+    "employerName": {
+      "label": "Name of Employer",
+      "order": 1,
+      "value": "Sunseed Oil"
+    },
     "highestQualification": {
-      "order": 5,
       "label": "Highest Qualification",
+      "order": 5,
       "value": "Secondary"
+    },
+    "jobTitle": {
+      "label": "Job Title",
+      "order": 3,
+      "value": "Driver"
+    },
+    "netPay": {
+      "label": "Net Pay",
+      "order": 2,
+      "value": 72000
     }
   },
   "C. CONTACT DETAILS": {
+    "email": {
+      "label": "Email",
+      "order": 4
+    },
+    "homeDistrict": {
+      "label": "District",
+      "order": 7,
+      "value": "Karonga"
+    },
+    "homeTA": {
+      "label": "Traditional Authority",
+      "order": 6,
+      "value": "Kyungu"
+    },
+    "homeVillage": {
+      "label": "Village",
+      "order": 5,
+      "value": "Songwe"
+    },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "order": 3,
+      "value": "09999999999"
+    },
     "postalAddress": {
-      "order": 1,
       "label": "Postal Address",
+      "order": 1,
       "value": "P.O. Box 1000, Lilongwe"
     },
     "residentialAddress": {
-      "order": 2,
       "label": "Residential Address",
+      "order": 2,
       "value": "Area 2, Lilongwe"
-    },
-    "phoneNumber": {
-      "order": 3,
-      "label": "Phone Number",
-      "value": "09999999999"
-    },
-    "email": {
-      "order": 4,
-      "label": "Email"
-    },
-    "homeVillage": {
-      "order": 5,
-      "label": "Village",
-      "value": "Songwe"
-    },
-    "homeTA": {
-      "order": 6,
-      "label": "Traditional Authority",
-      "value": "Kyungu"
-    },
-    "homeDistrict": {
-      "order": 7,
-      "label": "District"
     }
   },
   "D. NOMINEE (NEXT OF KIN) DETAILS": {
+    "nomineeAddress": {
+      "label": "Postal Address/Email",
+      "order": 3,
+      "value": "Same as member"
+    },
     "nomineeName": {
-      "order": 1,
       "label": "Name",
+      "order": 1,
       "value": "John Banda"
     },
     "nomineePhone": {
-      "order": 2,
       "label": "Cell Phone Number",
+      "order": 2,
       "value": "0888888888"
-    },
-    "nomineeAddress": {
-      "order": 3,
-      "label": "Postal Address/Email",
-      "value": "Same as member"
     }
   },
   "E. BENEFICIARIES DETAILS": {
-    "name1": {
-      "order": 1,
-      "label": "Beneficiary Name",
-      "value": "Benefactor 1"
-    },
-    "percentage1": {
-      "order": 2,
-      "label": "Percentage",
-      "value": 10
-    },
     "contact1": {
-      "order": 3,
       "label": "Contact",
+      "order": 3,
       "value": "P.O. Box 1"
     },
-    "name2": {
-      "order": 4,
-      "label": "Beneficiary Name",
-      "value": "Benefactor 2"
-    },
-    "percentage2": {
-      "order": 5,
-      "label": "Percentage",
-      "value": 8
-    },
     "contact2": {
-      "order": 6,
       "label": "Contact",
+      "order": 6,
       "value": "P.O. Box 2"
     },
-    "name3": {
-      "order": 7,
-      "label": "Beneficiary Name",
-      "value": "Benefactor 3"
-    },
-    "percentage3": {
-      "order": 8,
-      "label": "Percentage",
-      "value": 5
-    },
     "contact3": {
-      "order": 9,
       "label": "Contact",
+      "order": 9,
       "value": "P.O. Box 3"
     },
+    "contact4": {
+      "label": "Contact",
+      "order": 12,
+      "value": "P.O. Box 4"
+    },
+    "name1": {
+      "label": "Name of Beneficiary",
+      "order": 1,
+      "value": "Benefator 1"
+    },
+    "name2": {
+      "label": "Name of Beneficiary",
+      "order": 4,
+      "value": "Benefator 2"
+    },
+    "name3": {
+      "label": "Name of Beneficiary",
+      "order": 7,
+      "value": "Benefator 3"
+    },
     "name4": {
+      "label": "Name of Beneficiary",
       "order": 10,
-      "label": "Beneficiary Name",
-      "value": "Benefactor 4"
+      "value": "Benefator 4"
+    },
+    "percentage1": {
+      "label": "Percentage",
+      "order": 2,
+      "value": 10
+    },
+    "percentage2": {
+      "label": "Percentage",
+      "order": 5,
+      "value": 8
+    },
+    "percentage3": {
+      "label": "Percentage",
+      "order": 8,
+      "value": 5
     },
     "percentage4": {
-      "order": 11,
       "label": "Percentage",
+      "order": 11,
       "value": 2
-    },
-    "contact4": {
-      "order": 12,
-      "label": "Contact",
-      "value": "P.O. Box 4"
     }
   }
 }
