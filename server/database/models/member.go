@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"regexp"
 	"slices"
 	"strings"
@@ -427,6 +428,9 @@ RETRY:
 		if regexp.MustCompile("SQL logic error: no such table: member").MatchString(err.Error()) {
 			if retries < 3 {
 				retries++
+
+				log.Printf("member.FetchMemberByPhoneNumber.retry: %d\n", retries)
+
 				goto RETRY
 			}
 		}
