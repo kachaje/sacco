@@ -283,27 +283,57 @@ func (d *Database) AddMember(
 	if contactData != nil {
 		contactData["memberId"] = memberId
 
-		_, err = d.MemberContact.AddMemberContact(contactData)
-		if err != nil {
-			return nil, fmt.Errorf("database.AddMember.3: %s", err.Error())
+		if contactData["id"] != nil {
+			id, ok := contactData["id"].(int64)
+			if ok {
+				err = d.MemberContact.UpdateMemberContact(contactData, id)
+				if err != nil {
+					return nil, fmt.Errorf("database.AddMember.4a: %s", err.Error())
+				}
+			}
+		} else {
+			_, err = d.MemberContact.AddMemberContact(contactData)
+			if err != nil {
+				return nil, fmt.Errorf("database.AddMember.3: %s", err.Error())
+			}
 		}
 	}
 
 	if nomineeData != nil {
 		nomineeData["memberId"] = memberId
 
-		_, err = d.MemberNominee.AddMemberNominee(nomineeData)
-		if err != nil {
-			return nil, fmt.Errorf("database.AddMember.4: %s", err.Error())
+		if nomineeData["id"] != nil {
+			id, ok := nomineeData["id"].(int64)
+			if ok {
+				err = d.MemberNominee.UpdateMemberNominee(nomineeData, id)
+				if err != nil {
+					return nil, fmt.Errorf("database.AddMember.4a: %s", err.Error())
+				}
+			}
+		} else {
+			_, err = d.MemberNominee.AddMemberNominee(nomineeData)
+			if err != nil {
+				return nil, fmt.Errorf("database.AddMember.4b: %s", err.Error())
+			}
 		}
 	}
 
 	if occupationData != nil {
 		occupationData["memberId"] = memberId
 
-		_, err = d.MemberOccupation.AddMemberOccupation(occupationData)
-		if err != nil {
-			return nil, fmt.Errorf("database.AddMember.5: %s", err.Error())
+		if occupationData["id"] != nil {
+			id, ok := occupationData["id"].(int64)
+			if ok {
+				err = d.MemberOccupation.UpdateMemberOccupation(occupationData, id)
+				if err != nil {
+					return nil, fmt.Errorf("database.AddMember.5a: %s", err.Error())
+				}
+			}
+		} else {
+			_, err = d.MemberOccupation.AddMemberOccupation(occupationData)
+			if err != nil {
+				return nil, fmt.Errorf("database.AddMember.5b: %s", err.Error())
+			}
 		}
 	}
 
@@ -315,13 +345,13 @@ func (d *Database) AddMember(
 			if ok {
 				err = d.MemberBeneficiary.UpdateMemberBeneficiary(beneficiaryData, id)
 				if err != nil {
-					return nil, fmt.Errorf("database.AddMember.6: %s", err.Error())
+					return nil, fmt.Errorf("database.AddMember.6a: %s", err.Error())
 				}
 			}
 		} else {
 			_, err = d.MemberBeneficiary.AddMemberBeneficiary(beneficiaryData)
 			if err != nil {
-				return nil, fmt.Errorf("database.AddMember.7: %s", err.Error())
+				return nil, fmt.Errorf("database.AddMember.6b: %s", err.Error())
 			}
 		}
 	}
