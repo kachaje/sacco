@@ -17,9 +17,7 @@ func TestSaveData(t *testing.T) {
 	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
 
 	defer func() {
-		if false {
-			os.RemoveAll(filepath.Join(".", "tmp"))
-		}
+		os.RemoveAll(filepath.Join(".", "tmp"))
 	}()
 
 	for _, file := range []string{
