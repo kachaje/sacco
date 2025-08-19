@@ -2,11 +2,13 @@
   "A. PERSONAL INFORMATION": {
     "lastName": {
       "order": 1,
-      "label": "Surname"
+      "label": "Surname",
+      "value": "Banda"
     },
     "firstName": {
       "order": 2,
-      "label": "First Name"
+      "label": "First Name",
+      "value": "Mary"
     },
     "otherName": {
       "order": 3,
@@ -14,53 +16,179 @@
     },
     "gender": {
       "order": 4,
-      "label": "Gender"
+      "label": "Gender",
+      "value": "Female"
     },
     "title": {
       "order": 5,
-      "label": "Title"
+      "label": "Title",
+      "value": "Miss"
     },
     "maritalStatus": {
       "order": 6,
-      "title": "Marital Status"
+      "title": "Marital Status",
+      "value": "Single"
     },
     "dateOfBirth": {
       "order": 7,
-      "label": "Date of Birth"
+      "label": "Date of Birth",
+      "value": "1999-09-01"
     },
     "nationalId": {
       "order": 8,
-      "label": "National ID"
+      "label": "National ID",
+      "value": "DHFYR8475"
     },
     "utilityBillNumber": {
       "order": 9,
-      "label": "Utility Bill No"
+      "label": "Utility Bill No",
+      "value": "29383746"
     },
     "utilityBillType": {
       "order": 10,
-      "label": "Utility Bill Type"
+      "label": "Utility Bill Type",
+      "value": "ESCOM"
     }
   },
   "B. OCCUPATION DETAILS": {
     "employerName": {
       "order": 1,
-      "label": "Name of Employer"
+      "label": "Name of Employer",
+      "value": "Sunseed Oil"
     },
     "netPay": {
       "order": 2,
-      "label": "Net Pay"
+      "label": "Net Pay",
+      "value": 72000
     },
     "jobTitle": {
       "order": 3,
-      "label": "Job Title"
+      "label": "Job Title",
+      "value": "Driver"
     },
     "employerAddress": {
       "order": 4,
-      "label": "Employer Address"
+      "label": "Employer Address",
+      "value": "Kanengo, Lilongwe"
     },
     "highestQualification": {
       "order": 5,
-      "label": "Highest Qualification"
+      "label": "Highest Qualification",
+      "value": "Secondary"
+    }
+  },
+  "C. CONTACT DETAILS": {
+    "postalAddress": {
+      "order": 1,
+      "label": "Postal Address",
+      "value": "P.O. Box 1000, Lilongwe"
+    },
+    "residentialAddress": {
+      "order": 2,
+      "label": "Residential Address",
+      "value": "Area 2, Lilongwe"
+    },
+    "phoneNumber": {
+      "order": 3,
+      "label": "Phone Number",
+      "value": "09999999999"
+    },
+    "email": {
+      "order": 4,
+      "label": "Email"
+    },
+    "homeVillage": {
+      "order": 5,
+      "label": "Village",
+      "value": "Songwe"
+    },
+    "homeTA": {
+      "order": 6,
+      "label": "Traditional Authority",
+      "value": "Kyungu"
+    },
+    "homeDistrict": {
+      "order": 7,
+      "label": "District"
+    }
+  },
+  "D. NOMINEE (NEXT OF KIN) DETAILS": {
+    "nomineeName": {
+      "order": 1,
+      "label": "Name",
+      "value": "John Banda"
+    },
+    "nomineePhone": {
+      "order": 2,
+      "label": "Cell Phone Number",
+      "value": "0888888888"
+    },
+    "nomineeAddress": {
+      "order": 3,
+      "label": "Postal Address/Email",
+      "value": "Same as member"
+    }
+  },
+  "E. BENEFICIARIES DETAILS": {
+    "name1": {
+      "order": 1,
+      "label": "Beneficiary Name",
+      "value": "Benefactor 1"
+    },
+    "percentage1": {
+      "order": 2,
+      "label": "Percentage",
+      "value": 10
+    },
+    "contact1": {
+      "order": 3,
+      "label": "Contact",
+      "value": "P.O. Box 1"
+    },
+    "name2": {
+      "order": 4,
+      "label": "Beneficiary Name",
+      "value": "Benefactor 2"
+    },
+    "percentage2": {
+      "order": 5,
+      "label": "Percentage",
+      "value": 8
+    },
+    "contact2": {
+      "order": 6,
+      "label": "Contact",
+      "value": "P.O. Box 2"
+    },
+    "name3": {
+      "order": 7,
+      "label": "Beneficiary Name",
+      "value": "Benefactor 3"
+    },
+    "percentage3": {
+      "order": 8,
+      "label": "Percentage",
+      "value": 5
+    },
+    "contact3": {
+      "order": 9,
+      "label": "Contact",
+      "value": "P.O. Box 3"
+    },
+    "name4": {
+      "order": 10,
+      "label": "Beneficiary Name",
+      "value": "Benefactor 4"
+    },
+    "percentage4": {
+      "order": 11,
+      "label": "Percentage",
+      "value": 2
+    },
+    "contact4": {
+      "order": 12,
+      "label": "Contact",
+      "value": "P.O. Box 4"
     }
   }
 }
