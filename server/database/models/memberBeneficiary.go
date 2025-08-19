@@ -44,7 +44,8 @@ func (m *MemberBeneficiary) AddMemberBeneficiary(data map[string]any) (int64, er
 		return 0, err
 	}
 
-	result, err := m.db.ExecContext(
+	result, err := QueryWithRetry(
+		m.db,
 		context.Background(),
 		`INSERT INTO memberBeneficiary (
 			memberId,
@@ -81,7 +82,11 @@ func (m *MemberBeneficiary) UpdateMemberBeneficiary(data map[string]any, id int6
 
 	statement := fmt.Sprintf("UPDATE memberBeneficiary SET %s WHERE id=?", strings.Join(fields, ", "))
 
-	_, err := m.db.Exec(statement, values...)
+	_, err := QueryWithRetry(
+		m.db,
+		context.Background(),
+		statement, values...,
+	)
 	if err != nil {
 		return err
 	}

@@ -47,7 +47,8 @@ func (m *MemberContact) AddMemberContact(data map[string]any) (int64, error) {
 		return 0, err
 	}
 
-	result, err := m.db.ExecContext(
+	result, err := QueryWithRetry(
+		m.db,
 		context.Background(),
 		`INSERT INTO memberContact (
 			memberId,
@@ -87,7 +88,11 @@ func (m *MemberContact) UpdateMemberContact(data map[string]any, id int64) error
 
 	statement := fmt.Sprintf("UPDATE memberContact SET %s WHERE id=?", strings.Join(fields, ", "))
 
-	_, err := m.db.Exec(statement, values...)
+	_, err := QueryWithRetry(
+		m.db,
+		context.Background(),
+		statement, values...,
+	)
 	if err != nil {
 		return err
 	}
