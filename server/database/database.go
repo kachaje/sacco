@@ -7,7 +7,6 @@ import (
 	"sacco/server/database/models"
 	"strconv"
 	"strings"
-	"time"
 
 	_ "modernc.org/sqlite"
 )
@@ -239,8 +238,6 @@ func (d *Database) initDb() error {
 	if err != nil {
 		return err
 	}
-
-	time.Sleep(1 * time.Second)
 
 	return nil
 }

@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"slices"
 	"strings"
+	"time"
 )
 
 type Member struct {
@@ -381,6 +382,10 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 }
 
 func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
+	retries := 0
+
+RETRY:
+	time.Sleep(time.Duration(retries) * time.Second)
 
 	row := m.db.QueryRow(`SELECT 
 		id,
@@ -419,6 +424,12 @@ func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
 		&dateOfBirth, &nationalId, &utilityBillType,
 		&utilityBillNumber, &fileNumber, &oldFileNumber, &defaultPhoneNumber)
 	if err != nil {
+		if regexp.MustCompile("SQL logic error: no such table: member").MatchString(err.Error()) {
+			if retries < 3 {
+				retries++
+				goto RETRY
+			}
+		}
 		return nil, fmt.Errorf("member.FetchMemberByPhoneNumber.1: %s", err.Error())
 	}
 
