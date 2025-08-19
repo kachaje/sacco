@@ -95,18 +95,8 @@ func (m *MemberContact) UpdateMemberContact(data map[string]any, id int64) error
 	return nil
 }
 
-func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
-
-	row := m.db.QueryRow(`SELECT 
-		memberId,
-		postalAddress,
-		residentialAddress,
-		phoneNumber,
-		homeVillage,
-		homeTA,
-		homeDistrict
-	FROM memberContact WHERE id=? AND active=1`, id)
-
+func (m *MemberContact) loadRow(row any) (*MemberContact, bool, error) {
+	var id int64
 	var memberId int64
 	var postalAddress,
 		residentialAddress,
@@ -114,21 +104,40 @@ func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
 		homeVillage,
 		homeTA,
 		homeDistrict any
+	var err error
 
-	err := row.Scan(
-		&memberId,
-		&postalAddress,
-		&residentialAddress,
-		&phoneNumber,
-		&homeVillage,
-		&homeTA,
-		&homeDistrict,
-	)
+	val, ok := row.(*sql.Row)
+	if ok {
+		err = val.Scan(
+			&id,
+			&memberId,
+			&postalAddress,
+			&residentialAddress,
+			&phoneNumber,
+			&homeVillage,
+			&homeTA,
+			&homeDistrict,
+		)
+	} else {
+		val, ok := row.(*sql.Rows)
+		if ok {
+			err = val.Scan(
+				&id,
+				&memberId,
+				&postalAddress,
+				&residentialAddress,
+				&phoneNumber,
+				&homeVillage,
+				&homeTA,
+				&homeDistrict,
+			)
+		}
+	}
 	if err != nil {
-		return nil, fmt.Errorf("memberContact.FilterMemberContact.1: %s", err.Error())
+		return nil, false, fmt.Errorf("memberContact.loadRow.1: %s", err.Error())
 	}
 
-	memberContact := &MemberContact{
+	record := MemberContact{
 		ID:       &id,
 		MemberId: &memberId,
 	}
@@ -139,50 +148,71 @@ func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
 		value := fmt.Sprintf("%v", postalAddress)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberContact.PostalAddress = value
+			record.PostalAddress = value
 		}
 	}
 	if residentialAddress != nil {
 		value := fmt.Sprintf("%v", residentialAddress)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberContact.ResidentialAddress = fmt.Sprintf("%v", residentialAddress)
+			record.ResidentialAddress = value
 		}
 	}
 	if phoneNumber != nil {
 		value := fmt.Sprintf("%v", phoneNumber)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberContact.PhoneNumber = fmt.Sprintf("%v", phoneNumber)
+			record.PhoneNumber = value
 		}
 	}
 	if homeVillage != nil {
 		value := fmt.Sprintf("%v", homeVillage)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberContact.HomeVillage = fmt.Sprintf("%v", homeVillage)
+			record.HomeVillage = value
 		}
 	}
 	if homeTA != nil {
 		value := fmt.Sprintf("%v", homeTA)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberContact.HomeTA = fmt.Sprintf("%v", homeTA)
+			record.HomeTA = value
 		}
 	}
 	if homeDistrict != nil {
 		value := fmt.Sprintf("%v", homeDistrict)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberContact.HomeDistrict = fmt.Sprintf("%v", homeDistrict)
+			record.HomeDistrict = value
 		}
 	}
 
-	if !atLeastOneFieldAdded {
+	return &record, atLeastOneFieldAdded, nil
+}
+
+func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
+
+	row := m.db.QueryRow(`SELECT 
+		id,
+		memberId,
+		postalAddress,
+		residentialAddress,
+		phoneNumber,
+		homeVillage,
+		homeTA,
+		homeDistrict
+	FROM memberContact WHERE id=? AND active=1`, id)
+
+	record, found, err := m.loadRow(row)
+	if err != nil {
+		return nil, fmt.Errorf("memberContact.FetchMemberContact.1: %s", err.Error())
+	}
+
+	if !found {
 		return nil, nil
 	}
 
-	return memberContact, nil
+	return record, nil
 }
 
 func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error) {
@@ -211,84 +241,16 @@ func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error)
 	}
 
 	for rows.Next() {
-		var id int64
-		var memberId int64
-		var postalAddress,
-			residentialAddress,
-			phoneNumber,
-			homeVillage,
-			homeTA,
-			homeDistrict any
-
-		err := rows.Scan(
-			&id,
-			&memberId,
-			&postalAddress,
-			&residentialAddress,
-			&phoneNumber,
-			&homeVillage,
-			&homeTA,
-			&homeDistrict,
-		)
+		record, found, err := m.loadRow(rows)
 		if err != nil {
-			return nil, fmt.Errorf("memberContact.FilterBy.2: %s", err.Error())
+			return nil, fmt.Errorf("memberContact.FetchMemberContact.1: %s", err.Error())
 		}
 
-		memberContact := MemberContact{
-			ID:       &id,
-			MemberId: &memberId,
-		}
-
-		atLeastOneFieldAdded := false
-
-		if postalAddress != nil {
-			value := fmt.Sprintf("%v", postalAddress)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberContact.PostalAddress = value
-			}
-		}
-		if residentialAddress != nil {
-			value := fmt.Sprintf("%v", residentialAddress)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberContact.ResidentialAddress = fmt.Sprintf("%v", residentialAddress)
-			}
-		}
-		if phoneNumber != nil {
-			value := fmt.Sprintf("%v", phoneNumber)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberContact.PhoneNumber = fmt.Sprintf("%v", phoneNumber)
-			}
-		}
-		if homeVillage != nil {
-			value := fmt.Sprintf("%v", homeVillage)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberContact.HomeVillage = fmt.Sprintf("%v", homeVillage)
-			}
-		}
-		if homeTA != nil {
-			value := fmt.Sprintf("%v", homeTA)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberContact.HomeTA = fmt.Sprintf("%v", homeTA)
-			}
-		}
-		if homeDistrict != nil {
-			value := fmt.Sprintf("%v", homeDistrict)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberContact.HomeDistrict = fmt.Sprintf("%v", homeDistrict)
-			}
-		}
-
-		if !atLeastOneFieldAdded {
+		if !found {
 			continue
 		}
 
-		results = append(results, memberContact)
+		results = append(results, *record)
 	}
 
 	return results, nil
