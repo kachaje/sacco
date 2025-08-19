@@ -128,6 +128,16 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 			val, ok := session.ActiveMemberData["beneficiaries"].([]map[string]any)
 			if ok {
 				beneficiaries = val
+			} else {
+				val, ok := session.ActiveMemberData["beneficiaries"].([]any)
+				if ok {
+					for _, row := range val {
+						v, ok := row.(map[string]any)
+						if ok {
+							beneficiaries = append(beneficiaries, v)
+						}
+					}
+				}
 			}
 
 			{
