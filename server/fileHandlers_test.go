@@ -75,7 +75,7 @@ func TestSaveDataAll(t *testing.T) {
 
 	model := "memberDetails"
 
-	err := server.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions)
+	err := server.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -99,7 +99,7 @@ func TestSaveDataAll(t *testing.T) {
 		"utilityBillType":    "ESCOM",
 	}
 
-	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions)
+	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -182,7 +182,7 @@ func TestSaveDataOne(t *testing.T) {
 
 	model := "memberDetails"
 
-	err := server.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions)
+	err := server.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -206,7 +206,7 @@ func TestSaveDataOne(t *testing.T) {
 		"utilityBillType":    "ESCOM",
 	}
 
-	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions)
+	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

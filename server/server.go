@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -119,17 +120,17 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			SessionId:   sessionID,
 			PhoneNumber: phoneNumber,
 
-			LanguageWorkflow: parser.NewWorkflow(languageData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
+			LanguageWorkflow: parser.NewWorkflow(languageData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			PIWorkflow: parser.NewWorkflow(personalInformationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
+			PIWorkflow: parser.NewWorkflow(personalInformationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			OccupationWorkflow: parser.NewWorkflow(occupationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
+			OccupationWorkflow: parser.NewWorkflow(occupationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			ContactsWorkflow: parser.NewWorkflow(contactsData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
+			ContactsWorkflow: parser.NewWorkflow(contactsData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			NomineeWorkflow: parser.NewWorkflow(nomineeData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
+			NomineeWorkflow: parser.NewWorkflow(nomineeData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions),
+			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 		}
 
 		if preferredLanguage != nil {
@@ -145,6 +146,10 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			data, err := db.MemberByDefaultPhoneNumber(phoneNumber)
 			if err == nil {
 				session.ActiveMemberData = data
+
+				payload, _ := json.MarshalIndent(data, "", "  ")
+
+				fmt.Println(string(payload))
 
 				session.UpdateSessionFlags()
 			} else {

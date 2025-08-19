@@ -42,6 +42,7 @@ type WorkFlow struct {
 			f *int64,
 		) (*int64, error),
 		ss map[string]*Session,
+		refData map[string]any,
 	) error
 	History          map[int]string
 	HistoryIndex     int
@@ -72,6 +73,7 @@ func NewWorkflow(
 			*int64,
 		) (*int64, error),
 		map[string]*Session,
+		map[string]any,
 	) error,
 	preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, addFunc func(
 		a map[string]any,
@@ -80,7 +82,7 @@ func NewWorkflow(
 		d map[string]any,
 		e []map[string]any,
 		f *int64,
-	) (*int64, error), sessions map[string]*Session) *WorkFlow {
+	) (*int64, error), sessions map[string]*Session, refData map[string]any) *WorkFlow {
 
 	w := &WorkFlow{
 		Tree:            tree,
@@ -283,7 +285,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				data["id"] = w.Data["id"]
 			}
 
-			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions)
+			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

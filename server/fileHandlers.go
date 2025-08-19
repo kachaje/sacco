@@ -32,7 +32,7 @@ func SaveData(
 		d map[string]any,
 		e []map[string]any,
 		f *int64,
-	) (*int64, error), sessions map[string]*parser.Session) error {
+	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
 	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
@@ -363,6 +363,10 @@ func SaveData(
 
 				records = append(records, row)
 			}
+
+			payload, _ := json.MarshalIndent(records, "", "  ")
+
+			fmt.Println(string(payload))
 
 			if sessions[*sessionId].MemberId != nil {
 				if saveFunc == nil {
