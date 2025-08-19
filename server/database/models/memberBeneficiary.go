@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -95,7 +96,7 @@ func (m *MemberBeneficiary) FetchMemberBeneficiary(id int64) (*MemberBeneficiary
 		name,
 		percentage,
 		contact
-	FROM memberBeneficiary WHERE id=?`, id)
+	FROM memberBeneficiary WHERE id=? AND active=1`, id)
 
 	var memberId int64
 	var name,
@@ -132,6 +133,10 @@ func (m *MemberBeneficiary) FetchMemberBeneficiary(id int64) (*MemberBeneficiary
 
 func (m *MemberBeneficiary) FilterBy(whereStatement string) ([]MemberBeneficiary, error) {
 	results := []MemberBeneficiary{}
+
+	if !regexp.MustCompile("active").MatchString(whereStatement) {
+		whereStatement = fmt.Sprintf("%s AND active=1", whereStatement)
+	}
 
 	rows, err := m.db.QueryContext(
 		context.Background(),

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"slices"
 	"strings"
 )
@@ -201,7 +202,7 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		fileNumber,
 		oldFileNumber,
 		defaultPhoneNumber
-	FROM member WHERE id=?`, id)
+	FROM member WHERE id=? AND active=1`, id)
 
 	var firstName,
 		lastName,
@@ -275,6 +276,10 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 
 func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 	results := []Member{}
+
+	if !regexp.MustCompile("active").MatchString(whereStatement) {
+		whereStatement = fmt.Sprintf("%s AND active=1", whereStatement)
+	}
 
 	rows, err := m.db.QueryContext(
 		context.Background(),
@@ -392,7 +397,7 @@ func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
 		fileNumber,
 		oldFileNumber,
 		defaultPhoneNumber
-	FROM member WHERE defaultPhoneNumber=?`, phoneNumber)
+	FROM member WHERE defaultPhoneNumber=? AND active=1`, phoneNumber)
 
 	var id int64
 	var firstName,
