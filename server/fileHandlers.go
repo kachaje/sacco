@@ -76,11 +76,11 @@ func SaveData(
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(contactsFile)
 					if err != nil {
-						log.Println(err)
+						log.Printf("server.SaveData.memberDetails.1:%s\n", err.Error())
 					} else {
 						err = json.Unmarshal(content, &contactsData)
 						if err != nil {
-							log.Println(err)
+							log.Printf("server.SaveData.memberDetails.2:%s\n", err.Error())
 						}
 					}
 				}
@@ -91,11 +91,11 @@ func SaveData(
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(nomineeFile)
 					if err != nil {
-						log.Println(err)
+						log.Printf("server.SaveData.memberDetails.3:%s\n", err.Error())
 					} else {
 						err = json.Unmarshal(content, &nomineeData)
 						if err != nil {
-							log.Println(err)
+							log.Printf("server.SaveData.memberDetails.4:%s\n", err.Error())
 						}
 					}
 				}
@@ -106,11 +106,11 @@ func SaveData(
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(occupationFile)
 					if err != nil {
-						log.Println(err)
+						log.Printf("server.SaveData.memberDetails.5:%s\n", err.Error())
 					} else {
 						err = json.Unmarshal(content, &occupationData)
 						if err != nil {
-							log.Println(err)
+							log.Printf("server.SaveData.memberDetails.6:%s\n", err.Error())
 						}
 					}
 				}
@@ -121,17 +121,17 @@ func SaveData(
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(beneficiariesFile)
 					if err != nil {
-						log.Println(err)
+						log.Printf("server.SaveData.memberDetails.7:%s\n", err.Error())
 					} else {
 						err = json.Unmarshal(content, &beneficiariesData)
 						if err != nil {
-							log.Println(err)
+							log.Printf("server.SaveData.memberDetails.8:%s\n", err.Error())
 						}
 					}
 				}
 
 				if saveFunc == nil {
-					return fmt.Errorf("missing saveFunc")
+					return fmt.Errorf("server.SaveData.memberDetails.9:missing saveFunc")
 				}
 
 				mid, err := saveFunc(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
@@ -193,13 +193,13 @@ func SaveData(
 				}
 			} else {
 				if saveFunc == nil {
-					return fmt.Errorf("missing saveFunc")
+					return fmt.Errorf("server.SaveData.memberDetails.10:missing saveFunc")
 				}
 
 				mid, err := saveFunc(memberData, nil, nil, nil, nil, nil)
 				if err != nil {
 					log.Println(err)
-					return err
+					return fmt.Errorf("server.SaveData.memberDetails.11:%s", err.Error())
 				}
 
 				id = *mid
@@ -211,13 +211,13 @@ func SaveData(
 
 			sessions[*sessionId].ActiveMemberData = memberData
 
-			payload, _ := json.MarshalIndent(memberData, "", "  ")
-
-			fmt.Println(string(payload))
-
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 
 			if os.Getenv("DEBUG") == "true" {
+				payload, _ := json.MarshalIndent(memberData, "", "  ")
+
+				fmt.Println(string(payload))
+
 				filename := filepath.Join(sessionFolder, "memberDetails.json")
 
 				CacheFile(filename, memberData)
@@ -232,12 +232,12 @@ func SaveData(
 
 				if saveFunc == nil {
 					log.Println("Missing saveFunc")
-					return fmt.Errorf("missing saveFunc")
+					return fmt.Errorf("server.SaveData.contactDetails.1:missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, val, nil, nil, nil, sessions[*sessionId].MemberId)
 				if err != nil {
-					return err
+					return fmt.Errorf("server.SaveData.contactDetails.2:%s", err.Error())
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "contactDetails.json")
@@ -256,12 +256,12 @@ func SaveData(
 
 				if saveFunc == nil {
 					log.Println("Missing saveFunc")
-					return fmt.Errorf("missing saveFunc")
+					return fmt.Errorf("server.SaveData.nomineeDetails.1:missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, nil, val, nil, nil, sessions[*sessionId].MemberId)
 				if err != nil {
-					return err
+					return fmt.Errorf("server.SaveData.nomineeDetails.2:%s", err.Error())
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "nomineeDetails.json")
@@ -291,12 +291,12 @@ func SaveData(
 				val["memberId"] = *sessions[*sessionId].MemberId
 
 				if saveFunc == nil {
-					return fmt.Errorf("missing saveFunc")
+					return fmt.Errorf("server.SaveData.occupationDetails.1:missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, nil, nil, val, nil, sessions[*sessionId].MemberId)
 				if err != nil {
-					return err
+					return fmt.Errorf("server.SaveData.occupationDetails.2:%s", err.Error())
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "occupationDetails.json")
@@ -315,12 +315,14 @@ func SaveData(
 			for i := range 4 {
 				var name, contact string
 				var percentage float64
+				var id int64
 
 				index := i + 1
 
 				nameLabel := fmt.Sprintf("name%v", index)
 				percentLabel := fmt.Sprintf("percentage%v", index)
 				contactLabel := fmt.Sprintf("contact%v", index)
+				idLabel := fmt.Sprintf("id%v", index)
 
 				if rawData[nameLabel] == nil {
 					break
@@ -333,13 +335,26 @@ func SaveData(
 				if err == nil {
 					percentage = v
 				} else {
-					log.Println(err)
+					log.Printf("server.SaveData.beneficiaries.1:%s", err.Error())
+				}
+
+				if rawData[idLabel] != nil {
+					v, err := strconv.ParseInt(fmt.Sprintf("%v", rawData[idLabel]), 10, 64)
+					if err == nil {
+						id = v
+					} else {
+						log.Printf("server.SaveData.beneficiaries.2:%s", err.Error())
+					}
 				}
 
 				row := map[string]any{
 					"name":       name,
 					"percentage": percentage,
 					"contact":    contact,
+				}
+
+				if id != 0 {
+					row["id"] = id
 				}
 
 				if sessions[*sessionId].MemberId != nil {
@@ -351,12 +366,12 @@ func SaveData(
 
 			if sessions[*sessionId].MemberId != nil {
 				if saveFunc == nil {
-					return fmt.Errorf("missing saveFunc")
+					return fmt.Errorf("server.SaveData.beneficiaries.3:missing saveFunc")
 				}
 
 				_, err := saveFunc(nil, nil, nil, nil, records, sessions[*sessionId].MemberId)
 				if err != nil {
-					return err
+					return fmt.Errorf("server.SaveData.beneficiaries.4:%s", err.Error())
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "beneficiaries.json")
