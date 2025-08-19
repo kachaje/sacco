@@ -318,9 +318,9 @@ func SaveData(
 
 				index := i + 1
 
-				nameLabel := fmt.Sprintf("beneficiary%vName", index)
-				percentLabel := fmt.Sprintf("beneficiary%vPercent", index)
-				contactLabel := fmt.Sprintf("beneficiary%vContact", index)
+				nameLabel := fmt.Sprintf("name%v", index)
+				percentLabel := fmt.Sprintf("percentage%v", index)
+				contactLabel := fmt.Sprintf("contact%v", index)
 
 				if rawData[nameLabel] == nil {
 					break

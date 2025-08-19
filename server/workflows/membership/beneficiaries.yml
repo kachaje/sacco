@@ -9,7 +9,7 @@ enterBeneficiary1:
     en: Name
     ny: Dzina
   nextScreen: enterBeneficiary1Percent
-  inputIdentifier: beneficiary1Name
+  inputIdentifier: name1
 
 enterBeneficiary1Percent:
   order: 29
@@ -18,7 +18,7 @@ enterBeneficiary1Percent:
     en: Percent
     ny: Mulingo
   nextScreen: enterBeneficiary1Contact
-  inputIdentifier: beneficiary1Percent
+  inputIdentifier: percentage1
 
 enterBeneficiary1Contact:
   order: 30
@@ -27,7 +27,7 @@ enterBeneficiary1Contact:
     en: Contact
     ny: Keyala
   nextScreen: enterAskBeneficiary2
-  inputIdentifier: beneficiary1Contact
+  inputIdentifier: contact1
 
 enterAskBeneficiary2:
   order: 31
@@ -56,7 +56,7 @@ enterBeneficiary2:
     en: Name
     ny: Dzina
   nextScreen: enterBeneficiary2Percent
-  inputIdentifier: beneficiary2Name
+  inputIdentifier: name2
 
 enterBeneficiary2Percent:
   order: 33
@@ -65,7 +65,7 @@ enterBeneficiary2Percent:
     en: Percent
     ny: Mulingo
   nextScreen: enterBeneficiary2Contact
-  inputIdentifier: beneficiary2Percent
+  inputIdentifier: percentage2
 
 enterBeneficiary2Contact:
   order: 34
@@ -74,7 +74,7 @@ enterBeneficiary2Contact:
     en: Contact
     ny: Keyala
   nextScreen: enterAskBeneficiary3
-  inputIdentifier: beneficiary2Contact
+  inputIdentifier: contact2
 
 enterAskBeneficiary3:
   order: 35
@@ -103,7 +103,7 @@ enterBeneficiary3:
     en: Name
     ny: Dzina
   nextScreen: enterBeneficiary3Percent
-  inputIdentifier: beneficiary3Name
+  inputIdentifier: name3
 
 enterBeneficiary3Percent:
   order: 37
@@ -112,7 +112,7 @@ enterBeneficiary3Percent:
     en: Percent
     ny: Mulingo
   nextScreen: enterBeneficiary3Contact
-  inputIdentifier: beneficiary3Percent
+  inputIdentifier: percentage3
 
 enterBeneficiary3Contact:
   order: 38
@@ -121,7 +121,7 @@ enterBeneficiary3Contact:
     en: Contact
     ny: Keyala
   nextScreen: enterAskBeneficiary4
-  inputIdentifier: beneficiary3Contact
+  inputIdentifier: contact3
 
 enterAskBeneficiary4:
   order: 39
@@ -150,7 +150,7 @@ enterBeneficiary4:
     en: Name
     ny: Dzina
   nextScreen: enterBeneficiary4Percent
-  inputIdentifier: beneficiary4Name
+  inputIdentifier: name4
 
 enterBeneficiary4Percent:
   order: 41
@@ -159,7 +159,7 @@ enterBeneficiary4Percent:
     en: Percent
     ny: Mulingo
   nextScreen: enterBeneficiary4Contact
-  inputIdentifier: beneficiary4Percent
+  inputIdentifier: percentage4
 
 enterBeneficiary4Contact:
   order: 42
@@ -168,7 +168,7 @@ enterBeneficiary4Contact:
     en: Contact
     ny: Keyala
   nextScreen: formSummary
-  inputIdentifier: beneficiary4Contact
+  inputIdentifier: contact4
 
 formSummary:
   type: quitScreen
