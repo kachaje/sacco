@@ -285,7 +285,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 				data["id"] = w.Data["id"]
 			}
 
-			w.SubmitCallback(data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId, &w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data)
+			w.SubmitCallback(
+				data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId,
+				&w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data,
+			)
 		}
 
 		w.CurrentScreen = INITIAL_SCREEN

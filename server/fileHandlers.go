@@ -338,8 +338,8 @@ func SaveData(
 					log.Printf("server.SaveData.beneficiaries.1:%s", err.Error())
 				}
 
-				if rawData[idLabel] != nil {
-					v, err := strconv.ParseInt(fmt.Sprintf("%v", rawData[idLabel]), 10, 64)
+				if refData != nil && refData[idLabel] != nil {
+					v, err := strconv.ParseInt(fmt.Sprintf("%v", refData[idLabel]), 10, 64)
 					if err == nil {
 						id = v
 					} else {
@@ -364,9 +364,11 @@ func SaveData(
 				records = append(records, row)
 			}
 
-			payload, _ := json.MarshalIndent(records, "", "  ")
+			if os.Getenv("DEBUG") == "true" {
+				payload, _ := json.MarshalIndent(records, "", "  ")
 
-			fmt.Println(string(payload))
+				fmt.Println(string(payload))
+			}
 
 			if sessions[*sessionId].MemberId != nil {
 				if saveFunc == nil {

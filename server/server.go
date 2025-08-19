@@ -2,7 +2,6 @@ package server
 
 import (
 	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -146,10 +145,6 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			data, err := db.MemberByDefaultPhoneNumber(phoneNumber)
 			if err == nil {
 				session.ActiveMemberData = data
-
-				payload, _ := json.MarshalIndent(data, "", "  ")
-
-				fmt.Println(string(payload))
 
 				session.UpdateSessionFlags()
 			} else {
