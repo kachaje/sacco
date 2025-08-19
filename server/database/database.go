@@ -81,6 +81,7 @@ func (d *Database) initDb() error {
 			postalAddress TEXT,
 			residentialAddress TEXT,
 			phoneNumber TEXT,
+			email TEXT,
 			homeVillage TEXT,
 			homeTA TEXT,
 			homeDistrict TEXT,
