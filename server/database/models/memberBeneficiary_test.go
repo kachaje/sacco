@@ -133,7 +133,9 @@ func TestFetchMemberBeneficiary(t *testing.T) {
 		"Degree",
 	}
 
-	result, err := db.DB.Exec(`INSERT INTO memberBeneficiary (memberId, name, percentage, contact) VALUES (?, ?, ?, ?)`, fields...)
+	result, err := db.DB.Exec(`INSERT INTO memberBeneficiary (memberId, name, percentage, contact) VALUES (?, ?, ?, ?)`,
+		fields[0], fields[1], fields[2], fields[3],
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
