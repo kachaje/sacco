@@ -136,6 +136,7 @@ func SaveData(
 
 				mid, err := saveFunc(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
 				if err != nil {
+					log.Println(err)
 					return err
 				}
 
@@ -197,6 +198,7 @@ func SaveData(
 
 				mid, err := saveFunc(memberData, nil, nil, nil, nil, nil)
 				if err != nil {
+					log.Println(err)
 					return err
 				}
 
