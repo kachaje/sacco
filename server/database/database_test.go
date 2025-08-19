@@ -79,6 +79,7 @@ func TestDatabaseAddMember(t *testing.T) {
 	{
 		val, ok := data["contactDetails"].(map[string]any)
 		if ok {
+			delete(val, "id")
 			contactDetails = val
 			delete(data, "contactDetails")
 		} else {
@@ -88,6 +89,7 @@ func TestDatabaseAddMember(t *testing.T) {
 	{
 		val, ok := data["nomineeDetails"].(map[string]any)
 		if ok {
+			delete(val, "id")
 			nominee = val
 			delete(data, "nomineeDetails")
 		} else {
@@ -97,6 +99,7 @@ func TestDatabaseAddMember(t *testing.T) {
 	{
 		val, ok := data["occupationDetails"].(map[string]any)
 		if ok {
+			delete(val, "id")
 			occupationDetails = val
 			delete(data, "occupationDetails")
 		} else {
