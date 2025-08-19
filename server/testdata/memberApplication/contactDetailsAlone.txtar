@@ -1,0 +1,27 @@
+exec server -p 8992 2>&1 >/dev/null &
+stdin input.txt
+exec wscli -p 8992 -n 0888999780
+stdout 'Welcome to Kaso SACCO'
+stdout 'Choose Activity'
+stdout 'Postal Address:'
+stdout 'Residential Address:'
+stdout 'Phone Number:'
+stdout 'Home Village:'
+stdout 'Home T/A:'
+stdout 'Home District:'
+stdout '- Home District: Lilongwe'
+stdout '3\. Contact Details \(\*\)'
+stdout 'Welcome to Kaso SACCO'
+
+-- input.txt --
+1
+3
+P.O. Box 1
+Area 49
+0999888777
+Chawantha
+Kalolo
+4
+0
+00
+6
