@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -20,12 +21,18 @@ type MemberOccupation struct {
 	NetPay               float64 `json:"netPay"`
 	HighestQualification string  `json:"highestQualification"`
 
-	db *sql.DB
+	validFields []string
+	db          *sql.DB
 }
 
 func NewMemberOccupation(db *sql.DB, memberId *int64) *MemberOccupation {
 	m := &MemberOccupation{
 		db: db,
+		validFields: []string{
+			"id", "memberId", "employerName", "employerAddress",
+			"employerPhone", "jobTitle", "periodEmployed",
+			"grossPay", "netPay", "highestQualification",
+		},
 	}
 
 	if memberId != nil {
@@ -83,8 +90,10 @@ func (m *MemberOccupation) UpdateMemberOccupation(data map[string]any, id int64)
 	values := []any{}
 
 	for key, value := range data {
-		fields = append(fields, fmt.Sprintf("%s = ?", key))
-		values = append(values, value)
+		if slices.Contains(m.validFields, key) {
+			fields = append(fields, fmt.Sprintf("%s = ?", key))
+			values = append(values, value)
+		}
 	}
 
 	values = append(values, id)
