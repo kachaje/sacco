@@ -18,9 +18,12 @@ func TestAddMemberOccupation(t *testing.T) {
 	data := map[string]any{
 		"memberId":             1,
 		"employerName":         "TEXT",
-		"netPay":               100,
-		"jobTitle":             "TEXT",
 		"employerAddress":      "TEXT",
+		"employerPhone":        "TEXT",
+		"jobTitle":             "TEXT",
+		"periodEmployed":       36,
+		"grossPay":             100,
+		"netPay":               90,
 		"highestQualification": "TEXT",
 	}
 
@@ -33,15 +36,19 @@ func TestAddMemberOccupation(t *testing.T) {
 		id,
 		memberId,
 		employerName,
-		netPay,
-		jobTitle,
 		employerAddress,
+		employerPhone,
+		jobTitle,
+		periodEmployed,
+		grossPay,
+		netPay,
 		highestQualification
 	FROM memberOccupation WHERE id=?`, id)
 
 	var memberId int64
-	var netPay float64
+	var netPay, grossPay, periodEmployed float64
 	var employerName,
+		employerPhone,
 		jobTitle,
 		employerAddress,
 		highestQualification string
@@ -50,9 +57,12 @@ func TestAddMemberOccupation(t *testing.T) {
 		&id,
 		&memberId,
 		&employerName,
-		&netPay,
-		&jobTitle,
 		&employerAddress,
+		&employerPhone,
+		&jobTitle,
+		&periodEmployed,
+		&grossPay,
+		&netPay,
 		&highestQualification,
 	)
 	if err != nil {
@@ -64,9 +74,12 @@ func TestAddMemberOccupation(t *testing.T) {
 			id,
 			memberId,
 			employerName,
-			netPay,
-			jobTitle,
 			employerAddress,
+			employerPhone,
+			jobTitle,
+			periodEmployed,
+			grossPay,
+			netPay,
 			highestQualification,
 		)
 	}

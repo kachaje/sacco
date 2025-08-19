@@ -12,9 +12,12 @@ type MemberOccupation struct {
 	ID                   int64   `json:"id"`
 	MemberId             int64   `json:"memberId"`
 	EmployerName         string  `json:"employerName"`
-	NetPay               float64 `json:"netPay"`
-	JobTitle             string  `json:"jobTitle"`
 	EmployerAddress      string  `json:"employerAddress"`
+	EmployerPhone        string  `json:"employerPhone"`
+	JobTitle             string  `json:"jobTitle"`
+	PeriodEmployed       float64 `json:"periodEmployed"`
+	GrossPay             float64 `json:"grossPay"`
+	NetPay               float64 `json:"netPay"`
 	HighestQualification string  `json:"highestQualification"`
 
 	db *sql.DB
@@ -50,16 +53,19 @@ func (m *MemberOccupation) AddMemberOccupation(data map[string]any) (int64, erro
 		`INSERT INTO memberOccupation (
 			memberId,
 			employerName,
-			netPay,
-			jobTitle,
 			employerAddress,
+			employerPhone,
+			jobTitle,
+			periodEmployed,
+			grossPay,
+			netPay,
 			highestQualification
 		) VALUES (
-		 	?, ?, ?, ?, ?, ?
+		 	?, ?, ?, ?, ?, ?, ?, ?, ?
 		)`,
-		m.MemberId, m.EmployerName, m.NetPay,
-		m.JobTitle, m.EmployerAddress,
-		m.HighestQualification,
+		m.MemberId, m.EmployerName, m.EmployerAddress,
+		m.EmployerPhone, m.JobTitle, m.PeriodEmployed,
+		m.GrossPay, m.NetPay, m.HighestQualification,
 	)
 	if err != nil {
 		return 0, err
@@ -94,36 +100,80 @@ func (m *MemberOccupation) UpdateMemberOccupation(data map[string]any, id int64)
 }
 
 func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, error) {
-
 	row := m.db.QueryRow(`SELECT 
+		id,
 		memberId,
 		employerName,
-		netPay,
-		jobTitle,
 		employerAddress,
+		employerPhone,
+		jobTitle,
+		periodEmployed,
+		grossPay,
+		netPay,
 		highestQualification
 	FROM memberOccupation WHERE id=?`, id)
 
-	var memberId int64
-	var employerName,
-		netPay,
-		jobTitle,
-		employerAddress,
-		highestQualification any
-
-	err := row.Scan(
-		&memberId,
-		&employerName,
-		&netPay,
-		&jobTitle,
-		&employerAddress,
-		&highestQualification,
-	)
+	memberOccupation, atLeastOneFieldAdded, err := m.loadRow(row)
 	if err != nil {
 		return nil, fmt.Errorf("memberOccupation.FetchMemberOccupation.1: %s", err.Error())
 	}
 
-	memberOccupation := &MemberOccupation{
+	if !atLeastOneFieldAdded {
+		return nil, nil
+	}
+
+	return memberOccupation, nil
+}
+
+func (m *MemberOccupation) loadRow(row any) (*MemberOccupation, bool, error) {
+	var id int64
+	var memberId int64
+	var employerName,
+		employerAddress,
+		employerPhone,
+		jobTitle,
+		periodEmployed,
+		grossPay,
+		netPay,
+		highestQualification any
+	var err error
+
+	val, ok := row.(*sql.Row)
+	if ok {
+		err = val.Scan(
+			&id,
+			&memberId,
+			&employerName,
+			&employerAddress,
+			&employerPhone,
+			&jobTitle,
+			&periodEmployed,
+			&grossPay,
+			&netPay,
+			&highestQualification,
+		)
+	} else {
+		val, ok := row.(*sql.Rows)
+		if ok {
+			err = val.Scan(
+				&id,
+				&memberId,
+				&employerName,
+				&employerAddress,
+				&employerPhone,
+				&jobTitle,
+				&periodEmployed,
+				&grossPay,
+				&netPay,
+				&highestQualification,
+			)
+		}
+	}
+	if err != nil {
+		return nil, false, fmt.Errorf("memberOccupation.loadRow.1: %s", err.Error())
+	}
+
+	memberOccupation := MemberOccupation{
 		ID:       id,
 		MemberId: memberId,
 	}
@@ -137,11 +187,18 @@ func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, e
 			memberOccupation.EmployerName = fmt.Sprintf("%v", employerName)
 		}
 	}
-	if netPay != nil {
-		value := netPay.(float64)
-		if value != 0 {
+	if employerAddress != nil {
+		value := fmt.Sprintf("%v", employerAddress)
+		if value != "" {
 			atLeastOneFieldAdded = true
-			memberOccupation.NetPay = value
+			memberOccupation.EmployerAddress = fmt.Sprintf("%v", employerAddress)
+		}
+	}
+	if employerPhone != nil {
+		value := fmt.Sprintf("%v", employerPhone)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			memberOccupation.EmployerPhone = fmt.Sprintf("%v", employerPhone)
 		}
 	}
 	if jobTitle != nil {
@@ -151,11 +208,25 @@ func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, e
 			memberOccupation.JobTitle = fmt.Sprintf("%v", jobTitle)
 		}
 	}
-	if employerAddress != nil {
-		value := fmt.Sprintf("%v", employerAddress)
-		if value != "" {
+	if periodEmployed != nil {
+		value := periodEmployed.(float64)
+		if value != 0 {
 			atLeastOneFieldAdded = true
-			memberOccupation.EmployerAddress = fmt.Sprintf("%v", employerAddress)
+			memberOccupation.PeriodEmployed = value
+		}
+	}
+	if grossPay != nil {
+		value := grossPay.(float64)
+		if value != 0 {
+			atLeastOneFieldAdded = true
+			memberOccupation.GrossPay = value
+		}
+	}
+	if netPay != nil {
+		value := netPay.(float64)
+		if value != 0 {
+			atLeastOneFieldAdded = true
+			memberOccupation.NetPay = value
 		}
 	}
 	if highestQualification != nil {
@@ -166,11 +237,7 @@ func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, e
 		}
 	}
 
-	if !atLeastOneFieldAdded {
-		return nil, nil
-	}
-
-	return memberOccupation, nil
+	return &memberOccupation, atLeastOneFieldAdded, nil
 }
 
 func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, error) {
@@ -182,9 +249,12 @@ func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, 
 			id,
 			memberId,
 			employerName,
-			netPay,
-			jobTitle,
 			employerAddress,
+			employerPhone,
+			jobTitle,
+			periodEmployed,
+			grossPay,
+			netPay,
 			highestQualification
 		FROM memberOccupation %s`, whereStatement))
 	if err != nil {
@@ -192,75 +262,16 @@ func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, 
 	}
 
 	for rows.Next() {
-		var id int64
-		var memberId int64
-		var employerName,
-			netPay,
-			jobTitle,
-			employerAddress,
-			highestQualification any
-
-		err := rows.Scan(
-			&id,
-			&memberId,
-			&employerName,
-			&netPay,
-			&jobTitle,
-			&employerAddress,
-			&highestQualification,
-		)
+		memberOccupation, atLeastOneFieldAdded, err := m.loadRow(rows)
 		if err != nil {
 			return nil, fmt.Errorf("memberOccupation.FetchBy.1: %s", err.Error())
-		}
-
-		memberOccupation := MemberOccupation{
-			ID:       id,
-			MemberId: memberId,
-		}
-
-		atLeastOneFieldAdded := false
-
-		if employerName != nil {
-			value := fmt.Sprintf("%v", employerName)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberOccupation.EmployerName = fmt.Sprintf("%v", employerName)
-			}
-		}
-		if netPay != nil {
-			value := netPay.(float64)
-			if value != 0 {
-				atLeastOneFieldAdded = true
-				memberOccupation.NetPay = value
-			}
-		}
-		if jobTitle != nil {
-			value := fmt.Sprintf("%v", jobTitle)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberOccupation.JobTitle = fmt.Sprintf("%v", jobTitle)
-			}
-		}
-		if employerAddress != nil {
-			value := fmt.Sprintf("%v", employerAddress)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberOccupation.EmployerAddress = fmt.Sprintf("%v", employerAddress)
-			}
-		}
-		if highestQualification != nil {
-			value := fmt.Sprintf("%v", highestQualification)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberOccupation.HighestQualification = fmt.Sprintf("%v", highestQualification)
-			}
 		}
 
 		if !atLeastOneFieldAdded {
 			continue
 		}
 
-		results = append(results, memberOccupation)
+		results = append(results, *memberOccupation)
 	}
 
 	return results, nil

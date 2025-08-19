@@ -58,11 +58,14 @@
   "occupationDetails": {
     "employerAddress": "Kanengo, Lilongwe",
     "employerName": "Sunseed Oil",
+    "employerPhone": "",
+    "grossPay": 0,
     "highestQualification": "Secondary",
     "id": 1,
     "jobTitle": "Driver",
     "memberId": 1,
-    "netPay": 72000
+    "netPay": 72000,
+    "periodEmployed": 0
   },
   "oldFileNumber": "",
   "otherName": "",
