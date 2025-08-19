@@ -71,6 +71,7 @@ func (d *Database) initDb() error {
 			fileNumber TEXT,
 			oldFileNumber TEXT,
 			defaultPhoneNumber TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -83,6 +84,7 @@ func (d *Database) initDb() error {
 			homeVillage TEXT,
 			homeTA TEXT,
 			homeDistrict TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -92,6 +94,7 @@ func (d *Database) initDb() error {
 			nomineeName TEXT,
 			nomineePhone TEXT,
 			nomineeAddress TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -106,6 +109,7 @@ func (d *Database) initDb() error {
 			grossPay REAL,
 			netPay REAL,
 			highestQualification TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -115,6 +119,7 @@ func (d *Database) initDb() error {
 			name TEXT,
 			percentage REAL,
 			contact TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -125,6 +130,7 @@ func (d *Database) initDb() error {
 			typeOfBusiness TEXT,
 			nameOfBusiness TEXT,
 			tradingArea TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -142,6 +148,7 @@ func (d *Database) initDb() error {
 			otherCosts REAL,
 			totalCosts REAL,
 			netProfitLoss REAL,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -159,6 +166,7 @@ func (d *Database) initDb() error {
 			otherCosts REAL,
 			totalCosts REAL,
 			netProfitLoss REAL,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -168,6 +176,7 @@ func (d *Database) initDb() error {
 			numberOfShares REAL,
 			pricePerShare REAL,
 			sharesType TEXT NOT NULL CHECK (sharesType IN ('FIXED', 'REDEEMABLE')),
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -187,6 +196,7 @@ func (d *Database) initDb() error {
 			verifiedBy TEXT,
 			dateVerified TEXT,
 			denialOrPartialReason TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -196,6 +206,7 @@ func (d *Database) initDb() error {
 			loanId INTEGER NOT NULL,
 			description TEXT,
 			value REAL,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -206,6 +217,7 @@ func (d *Database) initDb() error {
 			description TEXT,
 			value REAL,
 			serialNumber TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
@@ -217,6 +229,7 @@ func (d *Database) initDb() error {
 			telephone TEXT,
 			address TEXT,
 			date TEXT,
+			active INTEGER DEFAULT 1,
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
