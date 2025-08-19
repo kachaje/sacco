@@ -89,31 +89,40 @@ func (m *MemberNominee) UpdateMemberNominee(data map[string]any, id int64) error
 	return nil
 }
 
-func (m *MemberNominee) FetchMemberNominee(id int64) (*MemberNominee, error) {
-
-	row := m.db.QueryRow(`SELECT 
-		memberId,
-		nomineeName,
-		nomineePhone,
-		nomineeAddress
-	FROM memberNominee WHERE id=? AND active=1`, id)
-
+func (m *MemberNominee) loadRow(row any) (*MemberNominee, bool, error) {
+	var id int64
 	var memberId int64
 	var nomineeName,
 		nomineePhone,
 		nomineeAddress any
+	var err error
 
-	err := row.Scan(
-		&memberId,
-		&nomineeName,
-		&nomineePhone,
-		&nomineeAddress,
-	)
+	val, ok := row.(*sql.Row)
+	if ok {
+		err = val.Scan(
+			&id,
+			&memberId,
+			&nomineeName,
+			&nomineePhone,
+			&nomineeAddress,
+		)
+	} else {
+		val, ok := row.(*sql.Rows)
+		if ok {
+			err = val.Scan(
+				&id,
+				&memberId,
+				&nomineeName,
+				&nomineePhone,
+				&nomineeAddress,
+			)
+		}
+	}
 	if err != nil {
-		return nil, fmt.Errorf("memberNominee.FilterMemberNominee.1: %s", err.Error())
+		return nil, false, fmt.Errorf("memberNominee.loadRow.1: %s", err.Error())
 	}
 
-	memberNominee := &MemberNominee{
+	record := MemberNominee{
 		ID:       id,
 		MemberId: memberId,
 	}
@@ -124,29 +133,46 @@ func (m *MemberNominee) FetchMemberNominee(id int64) (*MemberNominee, error) {
 		value := fmt.Sprintf("%v", nomineeName)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
+			record.NextOfKinName = value
 		}
 	}
 	if nomineePhone != nil {
 		value := fmt.Sprintf("%v", nomineePhone)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
+			record.NextOfKinPhone = value
 		}
 	}
 	if nomineeAddress != nil {
 		value := fmt.Sprintf("%v", nomineeAddress)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
+			record.NextOfKinAddress = value
 		}
 	}
 
-	if !atLeastOneFieldAdded {
+	return &record, atLeastOneFieldAdded, nil
+}
+
+func (m *MemberNominee) FetchMemberNominee(id int64) (*MemberNominee, error) {
+	row := m.db.QueryRow(`SELECT 
+		id,
+		memberId,
+		nomineeName,
+		nomineePhone,
+		nomineeAddress
+	FROM memberNominee WHERE id=? AND active=1`, id)
+
+	record, found, err := m.loadRow(row)
+	if err != nil {
+		return nil, fmt.Errorf("memberNominee.FetchMemberNominee.1: %s", err.Error())
+	}
+
+	if !found {
 		return nil, nil
 	}
 
-	return memberNominee, nil
+	return record, nil
 }
 
 func (m *MemberNominee) FilterBy(whereStatement string) ([]MemberNominee, error) {
@@ -170,57 +196,16 @@ func (m *MemberNominee) FilterBy(whereStatement string) ([]MemberNominee, error)
 	}
 
 	for rows.Next() {
-		var id int64
-		var memberId int64
-		var nomineeName,
-			nomineePhone,
-			nomineeAddress any
-
-		err := rows.Scan(
-			&id,
-			&memberId,
-			&nomineeName,
-			&nomineePhone,
-			&nomineeAddress,
-		)
+		record, found, err := m.loadRow(rows)
 		if err != nil {
-			return nil, fmt.Errorf("memberNominee.FilterBy.2: %s", err.Error())
+			return nil, fmt.Errorf("memberNominee.FetchMemberNominee.1: %s", err.Error())
 		}
 
-		memberNominee := MemberNominee{
-			ID:       id,
-			MemberId: memberId,
+		if !found {
+			return nil, nil
 		}
 
-		atLeastOneFieldAdded := false
-
-		if nomineeName != nil {
-			value := fmt.Sprintf("%v", nomineeName)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberNominee.NextOfKinName = fmt.Sprintf("%v", nomineeName)
-			}
-		}
-		if nomineePhone != nil {
-			value := fmt.Sprintf("%v", nomineePhone)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberNominee.NextOfKinPhone = fmt.Sprintf("%v", nomineePhone)
-			}
-		}
-		if nomineeAddress != nil {
-			value := fmt.Sprintf("%v", nomineeAddress)
-			if value != "" {
-				atLeastOneFieldAdded = true
-				memberNominee.NextOfKinAddress = fmt.Sprintf("%v", nomineeAddress)
-			}
-		}
-
-		if !atLeastOneFieldAdded {
-			continue
-		}
-
-		results = append(results, memberNominee)
+		results = append(results, *record)
 	}
 
 	return results, nil
