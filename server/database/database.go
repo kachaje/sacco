@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
 	"sacco/server/database/models"
@@ -273,9 +272,11 @@ func (d *Database) AddMember(
 	} else {
 		memberId = *existingMemberId
 
-		err = d.Member.UpdateMember(memberData, *existingMemberId)
-		if err != nil {
-			return nil, fmt.Errorf("database.AddMember.2: %s", err.Error())
+		if memberData != nil {
+			err = d.Member.UpdateMember(memberData, *existingMemberId)
+			if err != nil {
+				return nil, fmt.Errorf("database.AddMember.2: %s", err.Error())
+			}
 		}
 	}
 
@@ -308,10 +309,6 @@ func (d *Database) AddMember(
 
 	for _, beneficiaryData := range beneficiariesData {
 		beneficiaryData["memberId"] = memberId
-
-		payload, _ := json.MarshalIndent(beneficiaryData, "", "  ")
-
-		fmt.Println(string(payload))
 
 		if beneficiaryData["id"] != nil {
 			id, ok := beneficiaryData["id"].(int64)

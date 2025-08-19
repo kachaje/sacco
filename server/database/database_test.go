@@ -67,6 +67,7 @@ func TestDatabaseAddMember(t *testing.T) {
 			for i := range val {
 				vl, ok := val[i].(map[string]any)
 				if ok {
+					delete(vl, "id")
 					beneficiaries = append(beneficiaries, vl)
 				}
 			}
@@ -177,42 +178,44 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	beneficiaries := []map[string]any{}
+	beneficiaries := map[string]any{}
 
 	val, ok := result["beneficiaries"].([]any)
 	if ok {
-		for _, row := range val {
+		for i, row := range val {
 			v, ok := row.(map[string]any)
 			if ok {
-				beneficiaries = append(beneficiaries, v)
+				for key, value := range v {
+					keyLabel := fmt.Sprintf("%s%d", key, i+1)
+
+					beneficiaries[keyLabel] = value
+				}
 			}
 		}
 	}
 
-	payload, _ := json.MarshalIndent(beneficiaries, "", "  ")
+	if os.Getenv("DEBUG") == "true" {
+		payload, _ := json.MarshalIndent(beneficiaries, "", "  ")
 
-	fmt.Println(string(payload))
+		fmt.Println(string(payload))
+	}
 
-	update := []map[string]any{
-		{
-			"contact":    "P.O. Box 1234",
-			"id":         1,
-			"memberId":   1,
-			"name":       "Benefator 1",
-			"percentage": 5,
-		},
-		{
-			"contact":    "P.O. Box 5678",
-			"id":         2,
-			"memberId":   1,
-			"name":       "Benefator 2",
-			"percentage": 2,
-		},
+	update := map[string]any{
+		"contact1":    "P.O. Box 1234",
+		"id1":         1,
+		"memberId1":   1,
+		"name1":       "Benefator 1",
+		"percentage1": 35,
+		"contact2":    "P.O. Box 5678",
+		"id2":         2,
+		"memberId2":   1,
+		"name2":       "Benefator 2",
+		"percentage2": 25,
 	}
 
 	model := "beneficiaries"
 
-	err = server.SaveData(update, &model, nil, nil, nil, nil, db.AddMember, nil, result)
+	err = server.SaveData(update, &model, nil, nil, nil, nil, db.AddMember, nil, beneficiaries)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -222,19 +225,27 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	beneficiaries = []map[string]any{}
+	{
+		beneficiaries := []map[string]any{}
 
-	val, ok = result["beneficiaries"].([]any)
-	if ok {
-		for _, row := range val {
-			v, ok := row.(map[string]any)
-			if ok {
-				beneficiaries = append(beneficiaries, v)
+		val, ok = result["beneficiaries"].([]any)
+		if ok {
+			for _, row := range val {
+				v, ok := row.(map[string]any)
+				if ok {
+					beneficiaries = append(beneficiaries, v)
+				}
 			}
 		}
+
+		if os.Getenv("DEBUG") == "true" {
+			payload, _ := json.MarshalIndent(beneficiaries, "", "  ")
+
+			fmt.Println(string(payload))
+		}
+
+		if len(beneficiaries) != 2 {
+			t.Fatalf("Test failed. Expected: 2; Actual: %v", len(beneficiaries))
+		}
 	}
-
-	payload, _ = json.MarshalIndent(beneficiaries, "", "  ")
-
-	fmt.Println(string(payload))
 }

@@ -314,6 +314,8 @@ func SaveData(
 	case "beneficiaries":
 		rawData, ok := data.(map[string]any)
 		if ok {
+			var memberId int64
+
 			records := []map[string]any{}
 
 			for i := range 4 {
@@ -327,20 +329,9 @@ func SaveData(
 				percentLabel := fmt.Sprintf("percentage%v", index)
 				contactLabel := fmt.Sprintf("contact%v", index)
 				idLabel := fmt.Sprintf("id%v", index)
+				memberIdLabel := fmt.Sprintf("memberId%v", index)
 
-				if rawData[nameLabel] == nil {
-					break
-				}
-
-				name = fmt.Sprintf("%v", rawData[nameLabel])
-				contact = fmt.Sprintf("%v", rawData[contactLabel])
-
-				v, err := strconv.ParseFloat(fmt.Sprintf("%v", rawData[percentLabel]), 64)
-				if err == nil {
-					percentage = v
-				} else {
-					log.Printf("server.SaveData.beneficiaries.1:%s", err.Error())
-				}
+				var row map[string]any
 
 				if refData != nil && refData[idLabel] != nil {
 					v, err := strconv.ParseInt(fmt.Sprintf("%v", refData[idLabel]), 10, 64)
@@ -351,18 +342,47 @@ func SaveData(
 					}
 				}
 
-				row := map[string]any{
-					"name":       name,
-					"percentage": percentage,
-					"contact":    contact,
+				if refData != nil && refData[memberIdLabel] != nil {
+					v, err := strconv.ParseInt(fmt.Sprintf("%v", refData[memberIdLabel]), 10, 64)
+					if err == nil {
+						memberId = v
+					} else {
+						log.Printf("server.SaveData.beneficiaries.3:%s", err.Error())
+					}
+				}
+
+				if rawData[nameLabel] == nil {
+					row = map[string]any{
+						"active": 0,
+					}
+				} else {
+					name = fmt.Sprintf("%v", rawData[nameLabel])
+					contact = fmt.Sprintf("%v", rawData[contactLabel])
+
+					v, err := strconv.ParseFloat(fmt.Sprintf("%v", rawData[percentLabel]), 64)
+					if err == nil {
+						percentage = v
+					} else {
+						log.Printf("server.SaveData.beneficiaries.1:%s", err.Error())
+					}
+
+					row = map[string]any{
+						"name":       name,
+						"percentage": percentage,
+						"contact":    contact,
+					}
 				}
 
 				if id != 0 {
 					row["id"] = id
 				}
 
-				if sessions[*sessionId].MemberId != nil {
+				if sessions != nil && sessions[*sessionId].MemberId != nil {
 					row["memberId"] = *sessions[*sessionId].MemberId
+
+					memberId = *sessions[*sessionId].MemberId
+				} else if memberId != 0 {
+					row["memberId"] = memberId
 				}
 
 				records = append(records, row)
@@ -374,14 +394,14 @@ func SaveData(
 				fmt.Println(string(payload))
 			}
 
-			if sessions[*sessionId].MemberId != nil {
+			if memberId != 0 {
 				if saveFunc == nil {
-					return fmt.Errorf("server.SaveData.beneficiaries.3:missing saveFunc")
+					return fmt.Errorf("server.SaveData.beneficiaries.4:missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, nil, nil, nil, records, sessions[*sessionId].MemberId)
+				_, err := saveFunc(nil, nil, nil, nil, records, &memberId)
 				if err != nil {
-					return fmt.Errorf("server.SaveData.beneficiaries.4:%s", err.Error())
+					return fmt.Errorf("server.SaveData.beneficiaries.5:%s", err.Error())
 				}
 			} else {
 				filename := filepath.Join(sessionFolder, "beneficiaries.json")
@@ -389,7 +409,9 @@ func SaveData(
 				CacheFile(filename, records)
 			}
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+			if phoneNumber != nil && cacheFolder != nil && sessions != nil && sessionId != nil {
+				sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+			}
 		}
 
 	default:
