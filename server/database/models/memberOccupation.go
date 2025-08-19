@@ -99,32 +99,6 @@ func (m *MemberOccupation) UpdateMemberOccupation(data map[string]any, id int64)
 	return nil
 }
 
-func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, error) {
-	row := m.db.QueryRow(`SELECT 
-		id,
-		memberId,
-		employerName,
-		employerAddress,
-		employerPhone,
-		jobTitle,
-		periodEmployed,
-		grossPay,
-		netPay,
-		highestQualification
-	FROM memberOccupation WHERE id=?`, id)
-
-	memberOccupation, atLeastOneFieldAdded, err := m.loadRow(row)
-	if err != nil {
-		return nil, fmt.Errorf("memberOccupation.FetchMemberOccupation.1: %s", err.Error())
-	}
-
-	if !atLeastOneFieldAdded {
-		return nil, nil
-	}
-
-	return memberOccupation, nil
-}
-
 func (m *MemberOccupation) loadRow(row any) (*MemberOccupation, bool, error) {
 	var id int64
 	var memberId int64
@@ -238,6 +212,32 @@ func (m *MemberOccupation) loadRow(row any) (*MemberOccupation, bool, error) {
 	}
 
 	return &memberOccupation, atLeastOneFieldAdded, nil
+}
+
+func (m *MemberOccupation) FetchMemberOccupation(id int64) (*MemberOccupation, error) {
+	row := m.db.QueryRow(`SELECT 
+		id,
+		memberId,
+		employerName,
+		employerAddress,
+		employerPhone,
+		jobTitle,
+		periodEmployed,
+		grossPay,
+		netPay,
+		highestQualification
+	FROM memberOccupation WHERE id=?`, id)
+
+	memberOccupation, atLeastOneFieldAdded, err := m.loadRow(row)
+	if err != nil {
+		return nil, fmt.Errorf("memberOccupation.FetchMemberOccupation.1: %s", err.Error())
+	}
+
+	if !atLeastOneFieldAdded {
+		return nil, nil
+	}
+
+	return memberOccupation, nil
 }
 
 func (m *MemberOccupation) FilterBy(whereStatement string) ([]MemberOccupation, error) {
