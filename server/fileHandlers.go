@@ -88,6 +88,8 @@ func SaveData(
 				}
 
 				nomineeFile := filepath.Join(sessionFolder, "nomineeDetails.json")
+
+				_, err = os.Stat(nomineeFile)
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(nomineeFile)
 					if err != nil {
@@ -103,6 +105,8 @@ func SaveData(
 				}
 
 				occupationFile := filepath.Join(sessionFolder, "occupationDetails.json")
+
+				_, err = os.Stat(occupationFile)
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(occupationFile)
 					if err != nil {
@@ -118,6 +122,8 @@ func SaveData(
 				}
 
 				beneficiariesFile := filepath.Join(sessionFolder, "beneficiaries.json")
+
+				_, err = os.Stat(beneficiariesFile)
 				if !os.IsNotExist(err) {
 					content, err := os.ReadFile(beneficiariesFile)
 					if err != nil {

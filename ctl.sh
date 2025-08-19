@@ -10,6 +10,6 @@ elif [[ "$1" == "-bc" ]]; then
 
 elif [[ "$1" == "-c" ]]; then
 
-    rm -rf settings/ **/**/settings/ **/**/data/ **/**/*.db **/tmp/
+    rm -rf settings/ **/**/settings/ **/**/data/ **/**/*.db **/tmp*/
 
 fi
