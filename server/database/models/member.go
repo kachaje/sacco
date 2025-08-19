@@ -51,9 +51,22 @@ func NewMember(db *sql.DB) *Member {
 
 func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 	fullRecord := map[string]any{}
+	retries := 0
+
+RETRY:
+	time.Sleep(time.Duration(retries) * time.Second)
 
 	member, err := m.FetchMember(memberId)
 	if err != nil {
+		if regexp.MustCompile("SQL logic error: no such table").MatchString(err.Error()) {
+			if retries < 3 {
+				retries++
+
+				log.Printf("member.MemberDetails.retry: %d\n", retries)
+
+				goto RETRY
+			}
+		}
 		return nil, fmt.Errorf("member.MemberDetails.1: %s", err.Error())
 	}
 
@@ -129,6 +142,11 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 		return 0, err
 	}
 
+	retries := 0
+
+RETRY:
+	time.Sleep(time.Duration(retries) * time.Second)
+
 	result, err := m.db.ExecContext(
 		context.Background(),
 		`INSERT INTO member (
@@ -155,7 +173,16 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 		m.DefaultPhoneNumber,
 	)
 	if err != nil {
-		return 0, err
+		if regexp.MustCompile("SQL logic error: no such table").MatchString(err.Error()) {
+			if retries < 3 {
+				retries++
+
+				log.Printf("member.AddMember.retry: %d\n", retries)
+
+				goto RETRY
+			}
+		}
+		return 0, fmt.Errorf("member.AddMember.1: %s", err.Error())
 	}
 
 	if id, err = result.LastInsertId(); err != nil {
