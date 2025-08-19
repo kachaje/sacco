@@ -1,0 +1,54 @@
+exec server -p 8990 2>&1 >/dev/null &
+stdin input.txt
+exec wscli -p 8990 -n 0888999778
+stdout 'Welcome to Kaso SACCO'
+stdout 'Choose Activity'
+stdout 'Employer Name:'
+stdout 'Gross Income:'
+stdout 'Net Pay:'
+stdout 'Job Title:'
+stdout 'Employer Address:'
+stdout 'Employer Phone:'
+stdout 'Period Employed \(months\):'
+stdout 'Highest Qualification:'
+stdout 'Summary'
+stdout 'Choose Activity'
+stdout 'Welcome to Kaso SACCO'
+stdout 'Choose Activity'
+stdout 'Employer Name: \(SOBO\)'
+stdout 'Gross Income: \(100000\)'
+stdout 'Net Pay: \(90000\)'
+stdout 'Job Title: \(Driver\)'
+stdout 'Employer Address: \(Kanengo\)'
+stdout 'Employer Phone: \(01777888999\)'
+stdout 'Period Employed \(months\): \(36\)'
+stdout 'Highest Qualification: \(Secondary\)'
+stdout 'Summary'
+stdout 'Choose Activity'
+stdout 'Welcome to Kaso SACCO'
+
+-- input.txt --
+1
+2
+SOBO
+100000
+90000
+Driver
+Kanengo
+01777888999
+36
+2
+0
+2
+1
+2
+Rab Processors
+01
+01
+Driver
+P.O. Box 1; Kanengo
+01
+01
+01
+00
+6
