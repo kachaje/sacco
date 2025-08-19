@@ -40,12 +40,12 @@ func (m *MemberOccupation) AddMemberOccupation(data map[string]any) (int64, erro
 
 	payload, err := json.Marshal(data)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("memberOccupation.AddMemberOccupation.1: %s", err.Error())
 	}
 
 	err = json.Unmarshal(payload, m)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("memberOccupation.AddMemberOccupation.2: %s", err.Error())
 	}
 
 	result, err := m.db.ExecContext(
@@ -68,11 +68,11 @@ func (m *MemberOccupation) AddMemberOccupation(data map[string]any) (int64, erro
 		m.GrossPay, m.NetPay, m.HighestQualification,
 	)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("memberOccupation.AddMemberOccupation.3: %s", err.Error())
 	}
 
 	if id, err = result.LastInsertId(); err != nil {
-		return 0, err
+		return 0, fmt.Errorf("memberOccupation.AddMemberOccupation.4: %s", err.Error())
 	}
 
 	return id, nil
@@ -93,7 +93,7 @@ func (m *MemberOccupation) UpdateMemberOccupation(data map[string]any, id int64)
 
 	_, err := m.db.Exec(statement, values...)
 	if err != nil {
-		return err
+		return fmt.Errorf("memberOccupation.UpdateMemberOccupation.1: %s", err.Error())
 	}
 
 	return nil
