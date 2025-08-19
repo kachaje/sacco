@@ -64,6 +64,32 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 
 	case "3":
 		session.CurrentMenu = "registration.3"
+
+		if session.ActiveMemberData != nil && session.ActiveMemberData["contactDetails"] != nil {
+			val, ok := session.ActiveMemberData["contactDetails"].(map[string]any)
+			if ok {
+				data := map[string]any{}
+
+				targetKeys := []string{
+					"id",
+					"memberId",
+					"postalAddress",
+					"residentialAddress",
+					"phoneNumber",
+					"homeVillage",
+					"homeTA",
+					"homeDistrict",
+				}
+				for key, value := range val {
+					if slices.Contains(targetKeys, key) {
+						data[key] = fmt.Sprintf("%v", value)
+					}
+				}
+
+				session.ContactsWorkflow.Data = data
+			}
+		}
+
 		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	case "4":
