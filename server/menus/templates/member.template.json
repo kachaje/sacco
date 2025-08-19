@@ -1,0 +1,144 @@
+{
+  "A. PERSONAL INFORMATION": {
+    "level": "root",
+    "data": {
+      "lastName": {
+        "order": 1,
+        "label": "Surname"
+      },
+      "firstName": {
+        "order": 2,
+        "label": "First Name"
+      },
+      "otherName": {
+        "order": 3,
+        "label": "Other Name(s)"
+      },
+      "gender": {
+        "order": 4,
+        "label": "Gender"
+      },
+      "title": {
+        "order": 5,
+        "label": "Title"
+      },
+      "maritalStatus": {
+        "order": 6,
+        "title": "Marital Status"
+      },
+      "dateOfBirth": {
+        "order": 7,
+        "label": "Date of Birth"
+      },
+      "nationalId": {
+        "order": 8,
+        "label": "National ID"
+      },
+      "utilityBillNumber": {
+        "order": 9,
+        "label": "Utility Bill No"
+      },
+      "utilityBillType": {
+        "order": 10,
+        "label": "Utility Bill Type"
+      }
+    }
+  },
+  "B. OCCUPATION DETAILS": {
+    "level": "occupationDetails",
+    "data": {
+      "employerName": {
+        "order": 1,
+        "label": "Name of Employer"
+      },
+      "netPay": {
+        "order": 2,
+        "label": "Net Pay"
+      },
+      "jobTitle": {
+        "order": 3,
+        "label": "Job Title"
+      },
+      "employerAddress": {
+        "order": 4,
+        "label": "Employer Address"
+      },
+      "highestQualification": {
+        "order": 5,
+        "label": "Highest Qualification"
+      }
+    }
+  },
+  "C. CONTACT DETAILS": {
+    "level": "contactDetails",
+    "data": {
+      "postalAddress": {
+        "order": 1,
+        "label": "Postal Address"
+      },
+      "residentialAddress": {
+        "order": 2,
+        "label": "Residential Address"
+      },
+      "phoneNumber": {
+        "order": 3,
+        "label": "Phone Number"
+      },
+      "email": {
+        "order": 4,
+        "label": "Email"
+      },
+      "homeVillage": {
+        "order": 5,
+        "label": "Village"
+      },
+      "homeTA": {
+        "order": 6,
+        "label": "Traditional Authority"
+      },
+      "homeDistrict": {
+        "order": 7,
+        "label": "District"
+      }
+    }
+  },
+  "D. NOMINEE (NEXT OF KIN) DETAILS": {
+    "level": "nomineeDetails",
+    "data": {
+      "nomineeName": {
+        "order": 1,
+        "label": "Name"
+      },
+      "nomineePhone": {
+        "order": 2,
+        "label": "Cell Phone Number"
+      },
+      "nomineeAddress": {
+        "order": 3,
+        "label": "Postal Address/Email"
+      }
+    }
+  },
+  "E. BENEFICIARIES DETAILS": {
+    "level": "beneficiaries",
+    "array": true,
+    "data": {
+      "index": {
+        "order": 1,
+        "label": "No"
+      },
+      "name": {
+        "order": 2,
+        "label": "Name of Beneficiary"
+      },
+      "percentage": {
+        "order": 3,
+        "label": "Percentage"
+      },
+      "contact": {
+        "order": 4,
+        "label": "Contact"
+      }
+    }
+  }
+}
