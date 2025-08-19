@@ -246,6 +246,10 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 			text = "0"
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 		} else {
+			payload, _ := json.MarshalIndent(session.ActiveMemberData, "", "  ")
+
+			fmt.Println(string(payload))
+
 			if preferredLanguage != nil && *preferredLanguage == "ny" {
 				response = "CON Zambiri za Membala\n" +
 					"\n" +

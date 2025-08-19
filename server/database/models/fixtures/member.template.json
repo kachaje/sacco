@@ -1,0 +1,66 @@
+{
+  "A. PERSONAL INFORMATION": {
+    "lastName": {
+      "order": 1,
+      "label": "Surname"
+    },
+    "firstName": {
+      "order": 2,
+      "label": "First Name"
+    },
+    "otherName": {
+      "order": 3,
+      "label": "Other Name(s)"
+    },
+    "gender": {
+      "order": 4,
+      "label": "Gender"
+    },
+    "title": {
+      "order": 5,
+      "label": "Title"
+    },
+    "maritalStatus": {
+      "order": 6,
+      "title": "Marital Status"
+    },
+    "dateOfBirth": {
+      "order": 7,
+      "label": "Date of Birth"
+    },
+    "nationalId": {
+      "order": 8,
+      "label": "National ID"
+    },
+    "utilityBillNumber": {
+      "order": 9,
+      "label": "Utility Bill No"
+    },
+    "utilityBillType": {
+      "order": 10,
+      "label": "Utility Bill Type"
+    }
+  },
+  "B. OCCUPATION DETAILS": {
+    "employerName": {
+      "order": 1,
+      "label": "Name of Employer"
+    },
+    "netPay": {
+      "order": 2,
+      "label": "Net Pay"
+    },
+    "jobTitle": {
+      "order": 3,
+      "label": "Job Title"
+    },
+    "employerAddress": {
+      "order": 4,
+      "label": "Employer Address"
+    },
+    "highestQualification": {
+      "order": 5,
+      "label": "Highest Qualification"
+    }
+  }
+}
