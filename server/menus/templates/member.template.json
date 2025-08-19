@@ -24,7 +24,7 @@
       },
       "maritalStatus": {
         "order": 6,
-        "title": "Marital Status"
+        "label": "Marital Status"
       },
       "dateOfBirth": {
         "order": 7,
@@ -123,20 +123,13 @@
     "level": "beneficiaries",
     "array": true,
     "data": {
-      "index": {
-        "order": 1,
-        "label": "No"
-      },
       "name": {
-        "order": 2,
         "label": "Name of Beneficiary"
       },
       "percentage": {
-        "order": 3,
         "label": "Percentage"
       },
       "contact": {
-        "order": 4,
         "label": "Contact"
       }
     }
