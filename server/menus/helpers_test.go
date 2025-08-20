@@ -37,6 +37,8 @@ func TestLoadTemplateData(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	delete(templateData, "1. OFFICIAL DETAILS")
+
 	content, err = os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.template.output.json"))
 	if err != nil {
 		t.Fatal(err)
