@@ -160,9 +160,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 
-	if os.Getenv("CI") == "" && os.Getenv("TRAVIS") == "" && os.Getenv("GITLAB_CI") == "" && os.Getenv("JENKINS_URL") == "" {
-		RerunFailedSaves(&phoneNumber, &sessionID, &cacheFolder, db.AddMember, menus.Sessions)
-	}
+	RerunFailedSaves(&phoneNumber, &sessionID, &cacheFolder, db.AddMember, menus.Sessions)
 
 	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
