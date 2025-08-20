@@ -10,8 +10,8 @@ import (
 )
 
 type Model struct {
-	ModelName  string
-	Fields     []string
+	ModelName string
+	Fields    []string
 
 	db *sql.DB
 }
@@ -26,9 +26,9 @@ func NewModel(
 	}
 
 	m := &Model{
-		db:         db,
-		ModelName:  modelName,
-		Fields:     fields,
+		db:        db,
+		ModelName: modelName,
+		Fields:    fields,
 	}
 
 	return m, nil
@@ -93,53 +93,7 @@ func (m *Model) UpdateRecord(data map[string]any, id int64) error {
 	return nil
 }
 
-func (m *Model) FetchById(id int64) (map[string]any, error) {
-	rows, err := m.db.Query(fmt.Sprintf(`SELECT * FROM %s WHERE active=1 AND id=?`, m.ModelName), id)
-	if err != nil {
-		return nil, err
-	}
-
-	cols, err := rows.Columns()
-	if err != nil {
-		return nil, err
-	}
-
-	values := make([]any, len(cols))
-	scanArgs := make([]any, len(cols))
-
-	for i := range values {
-		scanArgs[i] = &values[i]
-	}
-
-	rows.Next()
-	err = rows.Scan(scanArgs...)
-	if err != nil {
-		return nil, err
-	}
-
-	rowMap := make(map[string]any)
-	for i, col := range cols {
-		val := values[i]
-		if b, ok := val.([]byte); ok {
-			rowMap[col] = string(b)
-		} else {
-			rowMap[col] = val
-		}
-	}
-
-	return rowMap, nil
-}
-
-func (m *Model) FilterBy(whereStatement string) ([]map[string]any, error) {
-	if !regexp.MustCompile("active").MatchString(whereStatement) {
-		whereStatement = fmt.Sprintf("%s AND active=1", whereStatement)
-	}
-
-	rows, err := m.db.Query(fmt.Sprintf(`SELECT * FROM %s %s`, m.ModelName, whereStatement))
-	if err != nil {
-		return nil, err
-	}
-
+func (m *Model) loadRows(rows *sql.Rows) ([]map[string]any, error) {
 	cols, err := rows.Columns()
 	if err != nil {
 		return nil, err
@@ -174,4 +128,35 @@ func (m *Model) FilterBy(whereStatement string) ([]map[string]any, error) {
 	}
 
 	return results, nil
+}
+
+func (m *Model) FetchById(id int64) (map[string]any, error) {
+	rows, err := m.db.Query(fmt.Sprintf(`SELECT * FROM %s WHERE active=1 AND id=?`, m.ModelName), id)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := m.loadRows(rows)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(result) > 0 {
+		return result[0], nil
+	}
+
+	return nil, nil
+}
+
+func (m *Model) FilterBy(whereStatement string) ([]map[string]any, error) {
+	if !regexp.MustCompile("active").MatchString(whereStatement) {
+		whereStatement = fmt.Sprintf("%s AND active=1", whereStatement)
+	}
+
+	rows, err := m.db.Query(fmt.Sprintf(`SELECT * FROM %s %s`, m.ModelName, whereStatement))
+	if err != nil {
+		return nil, err
+	}
+
+	return m.loadRows(rows)
 }
