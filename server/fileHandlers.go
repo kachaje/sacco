@@ -358,10 +358,14 @@ func SaveData(
 				}
 
 				if rawData[nameLabel] == nil {
-					row = map[string]any{
-						"active": 0,
+					if id != 0 {
+						row = map[string]any{
+							"active": 0,
+						}
+					} else {
+						continue
 					}
-				} else {
+				} else if rawData[nameLabel] != nil {
 					name = fmt.Sprintf("%v", rawData[nameLabel])
 					contact = fmt.Sprintf("%v", rawData[contactLabel])
 
