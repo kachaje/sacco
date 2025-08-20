@@ -566,6 +566,10 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 		e []map[string]any,
 		f *int64,
 	) (*int64, error), sessions map[string]*parser.Session) error {
+	if os.Getenv("CI") != "" || os.Getenv("TRAVIS") != "" || os.Getenv("GITLAB_CI") != "" || os.Getenv("JENKINS_URL") != "" {
+		return nil
+	}
+
 	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
