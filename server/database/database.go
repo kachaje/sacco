@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"sacco/server/database/models"
+	"sacco/utils"
 	"strconv"
 	"strings"
 
@@ -15,6 +16,11 @@ import (
 //go:embed schema.sql
 var schemaStatement string
 
+//go:embed models.yml
+var modelTemplates string
+
+var modelTemplatesData map[string]any
+
 type Database struct {
 	DbName            string
 	DB                *sql.DB
@@ -23,6 +29,16 @@ type Database struct {
 	MemberBeneficiary *models.MemberBeneficiary
 	MemberOccupation  *models.MemberOccupation
 	MemberNominee     *models.MemberNominee
+	GenericModels     map[string]*models.Model
+}
+
+func init() {
+	var err error
+
+	modelTemplatesData, err = utils.LoadYaml(modelTemplates)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func NewDatabase(dbname string) *Database {
@@ -36,8 +52,9 @@ func NewDatabase(dbname string) *Database {
 	}
 
 	instance := &Database{
-		DbName: dbname,
-		DB:     db,
+		DbName:        dbname,
+		DB:            db,
+		GenericModels: map[string]*models.Model{},
 	}
 
 	err = instance.initDb()
@@ -50,6 +67,19 @@ func NewDatabase(dbname string) *Database {
 	instance.MemberBeneficiary = models.NewMemberBeneficiary(db, nil)
 	instance.MemberOccupation = models.NewMemberOccupation(db, nil)
 	instance.MemberNominee = models.NewMemberNominee(db, nil)
+
+	for table, value := range modelTemplatesData {
+		fields, ok := value.([]string)
+		if ok {
+			model, err := models.NewModel(db, table, fields)
+			if err != nil {
+				log.Printf("server.database.NewDatabase: %s", err.Error())
+				continue
+			}
+
+			instance.GenericModels[table] = model
+		}
+	}
 
 	return instance
 }

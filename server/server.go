@@ -65,7 +65,7 @@ func init() {
 
 	personalInformationData, err = utils.LoadYaml(PITemplate)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	languageData, err = utils.LoadYaml(languageTemplate)
