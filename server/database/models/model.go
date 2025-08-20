@@ -94,3 +94,42 @@ func (m *Model) UpdateRecord(data map[string]any, id int64) error {
 
 	return nil
 }
+
+func (m *Model) FetchById(id int64) (map[string]any, error) {
+	rows, err := m.db.Query(fmt.Sprintf(`SELECT * FROM %s WHERE active=1 AND id=?`, m.ModelName), id)
+	if err != nil {
+		return nil, err
+	}
+
+	cols, err := rows.Columns()
+	if err != nil {
+		return nil, err
+	}
+
+	values := make([]any, len(cols))
+	scanArgs := make([]any, len(cols))
+
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	// for rows.Next() {
+	rows.Next()
+	err = rows.Scan(scanArgs...)
+	if err != nil {
+		return nil, err
+	}
+
+	rowMap := make(map[string]any)
+	for i, col := range cols {
+		val := values[i]
+		if b, ok := val.([]byte); ok {
+			rowMap[col] = string(b)
+		} else {
+			rowMap[col] = val
+		}
+	}
+	// }
+
+	return rowMap, nil
+}

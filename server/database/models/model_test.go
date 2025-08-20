@@ -25,7 +25,10 @@ func setupDb(dbname string) (*sql.DB, *models.Model, error) {
 		lastName TEXT,
 		gender TEXT,
 		height REAL,
-		weight REAL
+		weight REAL,
+		active INTEGER DEFAULT 1,
+		created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+		updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 	);`, tableName)
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
@@ -221,5 +224,74 @@ func TestUpdateRecord(t *testing.T) {
 	}
 	if weight != data["weight"].(float64) {
 		t.Fatalf("Test failed. Expected: %v; Actual: %v", data["weight"], weight)
+	}
+}
+
+func TestFetchById(t *testing.T) {
+	dbname := "testFetchById.db"
+
+	db, model, err := setupDb(dbname)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		os.Remove(dbname)
+	}()
+
+	target := map[string]any{
+		"firstName": "John",
+		"lastName":  "Phiri",
+		"gender":    "Male",
+		"height":    172.0,
+		"weight":    95.0,
+	}
+
+	result, err := models.QueryWithRetry(
+		db,
+		context.Background(),
+		fmt.Sprintf(`INSERT INTO %s (
+			firstName,
+			lastName,
+			gender,
+			height,
+			weight
+		) VALUES (
+		 	?, ?, ?, ?, ?
+		)`, tableName),
+		target["firstName"],
+		target["lastName"],
+		target["gender"],
+		target["height"],
+		target["weight"],
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var id int64
+
+	if id, err = result.LastInsertId(); err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := model.FetchById(id)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if target["firstName"].(string) != data["firstName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target["firstName"], data["firstName"])
+	}
+	if target["lastName"].(string) != data["lastName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target["lastName"], data["lastName"])
+	}
+	if target["gender"].(string) != data["gender"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target["gender"], data["gender"])
+	}
+	if target["height"].(float64) != data["height"].(float64) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", target["height"], data["height"])
+	}
+	if target["weight"].(float64) != data["weight"].(float64) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", target["weight"], data["weight"])
 	}
 }
