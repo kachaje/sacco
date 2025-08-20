@@ -168,19 +168,22 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 			switch text {
 			case "1":
 				response = "CON National Bank of Malawi\n" +
-					fmt.Sprintf("%8s: Kaso SACCO\n", name) +
-					fmt.Sprintf("%8s: 1006857589\n", number) +
-					fmt.Sprintf("%8s: Lilongwe\n", branch) +
+					fmt.Sprintf("%-8s: Kaso SACCO\n", name) +
+					fmt.Sprintf("%-8s: 1006857589\n", number) +
+					fmt.Sprintf("%-8s: Lilongwe\n", branch) +
+					"\n"+
 					lastLine
 			case "2":
 				response = "CON Airtel Money\n" +
-					fmt.Sprintf("%8s: Kaso SACCO\n", name) +
-					fmt.Sprintf("%8s: 0985 242 629\n", number) +
+					fmt.Sprintf("%-8s: Kaso SACCO\n", name) +
+					fmt.Sprintf("%-8s: 0985 242 629\n", number) +
+					"\n" +
 					lastLine
 			default:
 				response = firstLine +
 					"1. National Bank\n" +
 					"2. Airtel Money\n" +
+					"\n" +
 					lastLine
 			}
 		}
