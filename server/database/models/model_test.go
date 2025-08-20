@@ -295,3 +295,81 @@ func TestFetchById(t *testing.T) {
 		t.Fatalf("Test failed. Expected: %v; Actual: %v", target["weight"], data["weight"])
 	}
 }
+
+func TestFilterBy(t *testing.T) {
+	dbname := "testFilterBy.db"
+
+	db, model, err := setupDb(dbname)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		os.Remove(dbname)
+	}()
+
+	target := map[string]any{
+		"firstName": "John",
+		"lastName":  "Phiri",
+		"gender":    "Male",
+		"height":    172.0,
+		"weight":    95.0,
+	}
+
+	_, err = models.QueryWithRetry(
+		db,
+		context.Background(),
+		fmt.Sprintf(`INSERT INTO %s (
+			firstName,
+			lastName,
+			gender,
+			height,
+			weight
+		) VALUES (
+		 	?, ?, ?, ?, ?
+		)`, tableName),
+		target["firstName"],
+		target["lastName"],
+		target["gender"],
+		target["height"],
+		target["weight"],
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result, err := model.FilterBy(`WHERE firstName = "Mary"`)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) != 0 {
+		t.Fatal("Test failed. Expected no results")
+	}
+
+	result, err = model.FilterBy(`WHERE firstName = "John"`)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) <= 0 {
+		t.Fatal("Test failed. No matches found")
+	}
+
+	data := result[0]
+
+	if target["firstName"].(string) != data["firstName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target["firstName"], data["firstName"])
+	}
+	if target["lastName"].(string) != data["lastName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target["lastName"], data["lastName"])
+	}
+	if target["gender"].(string) != data["gender"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", target["gender"], data["gender"])
+	}
+	if target["height"].(float64) != data["height"].(float64) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", target["height"], data["height"])
+	}
+	if target["weight"].(float64) != data["weight"].(float64) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", target["weight"], data["weight"])
+	}
+}

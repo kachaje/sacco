@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"regexp"
 	"slices"
 	"strings"
 )
@@ -113,7 +114,6 @@ func (m *Model) FetchById(id int64) (map[string]any, error) {
 		scanArgs[i] = &values[i]
 	}
 
-	// for rows.Next() {
 	rows.Next()
 	err = rows.Scan(scanArgs...)
 	if err != nil {
@@ -129,7 +129,52 @@ func (m *Model) FetchById(id int64) (map[string]any, error) {
 			rowMap[col] = val
 		}
 	}
-	// }
 
 	return rowMap, nil
+}
+
+func (m *Model) FilterBy(whereStatement string) ([]map[string]any, error) {
+	if !regexp.MustCompile("active").MatchString(whereStatement) {
+		whereStatement = fmt.Sprintf("%s AND active=1", whereStatement)
+	}
+
+	rows, err := m.db.Query(fmt.Sprintf(`SELECT * FROM %s %s`, m.ModelName, whereStatement))
+	if err != nil {
+		return nil, err
+	}
+
+	cols, err := rows.Columns()
+	if err != nil {
+		return nil, err
+	}
+
+	values := make([]any, len(cols))
+	scanArgs := make([]any, len(cols))
+
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	results := []map[string]any{}
+
+	for rows.Next() {
+		err = rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+
+		rowMap := make(map[string]any)
+		for i, col := range cols {
+			val := values[i]
+			if b, ok := val.([]byte); ok {
+				rowMap[col] = string(b)
+			} else {
+				rowMap[col] = val
+			}
+		}
+
+		results = append(results, rowMap)
+	}
+
+	return results, nil
 }
