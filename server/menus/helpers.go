@@ -80,6 +80,26 @@ func LoadTemplateData(data map[string]any, template map[string]any) map[string]a
 				fieldData = v
 			}
 
+			loadBeneficiary := func(vd map[string]any, i int, j *float64) {
+				for _, field := range []string{"name", "percentage", "contact"} {
+					vf, ok := fieldData[field].(map[string]any)
+					if ok {
+						keyLabel := fmt.Sprintf("%s%d", field, i+1)
+
+						result[key].(map[string]any)[keyLabel] = map[string]any{
+							"order": *j,
+							"label": fmt.Sprintf("%v", vf["label"]),
+						}
+
+						if vd[field] != nil {
+							result[key].(map[string]any)[keyLabel].(map[string]any)["value"] = vd[field]
+						}
+
+						*j++
+					}
+				}
+			}
+
 			switch level {
 			case "beneficiaries":
 				v, ok := data[level].([]any)
@@ -88,22 +108,17 @@ func LoadTemplateData(data map[string]any, template map[string]any) map[string]a
 					for i := range v {
 						vd, ok := v[i].(map[string]any)
 						if ok {
-							for _, field := range []string{"name", "percentage", "contact"} {
-								vf, ok := fieldData[field].(map[string]any)
-								if ok {
-									keyLabel := fmt.Sprintf("%s%d", field, i+1)
-
-									result[key].(map[string]any)[keyLabel] = map[string]any{
-										"order": j,
-										"label": fmt.Sprintf("%v", vf["label"]),
-									}
-
-									if vd[field] != nil {
-										result[key].(map[string]any)[keyLabel].(map[string]any)["value"] = vd[field]
-									}
-
-									j++
-								}
+							loadBeneficiary(vd, i, &j)
+						}
+					}
+				} else {
+					v, ok := data[level].([]map[string]any)
+					if ok {
+						var j float64 = 1
+						for i := range v {
+							vd := v[i]
+							if ok {
+								loadBeneficiary(vd, i, &j)
 							}
 						}
 					}
