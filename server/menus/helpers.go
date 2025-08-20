@@ -1,8 +1,10 @@
 package menus
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
+	"sort"
 	"strconv"
 )
 
@@ -144,7 +146,107 @@ func LoadTemplateData(data map[string]any, template map[string]any) map[string]a
 func TabulateData(data map[string]any) []string {
 	result := []string{}
 
-	
+	keys := []string{}
+
+	for key := range data {
+		keys = append(keys, key)
+	}
+
+	sort.Strings(keys)
+
+	for _, key := range keys {
+		result = append(result, key)
+
+		keysMap := map[float64]string{}
+		floatKeys := []float64{}
+
+		row, ok := data[key].(map[string]any)
+		if ok {
+			childData := map[string]map[string]any{}
+
+			for k, v := range row {
+				val, ok := v.(map[string]any)
+				if ok && val["order"] != nil {
+					childData[k] = val
+
+					order, err := strconv.ParseFloat(fmt.Sprintf("%v", val["order"]), 64)
+					if err == nil {
+						keysMap[order] = k
+						floatKeys = append(floatKeys, order)
+					}
+				}
+			}
+
+			sort.Float64s(floatKeys)
+
+			if key == "E. BENEFICIARIES DETAILS" {
+				row1 := "--- --------------------- --------- ------------"
+				row2 := "No | Name of Beneficiary | Percent | Contact"
+
+				result = append(result, row1)
+				result = append(result, row2)
+				result = append(result, row1)
+
+				for i := range 4 {
+					index := i + 1
+
+					nameLabel := fmt.Sprintf("name%d", index)
+					percentageLabel := fmt.Sprintf("percentage%d", index)
+					contactLabel := fmt.Sprintf("contact%d", index)
+
+					if childData[nameLabel] == nil {
+						break
+					}
+
+					var name string
+					var percentage float64
+					var contact string
+
+					name = fmt.Sprintf("%v", childData[nameLabel]["value"])
+
+					if childData[percentageLabel] != nil {
+						v, err := strconv.ParseFloat(fmt.Sprintf("%v", childData[percentageLabel]["value"]), 64)
+						if err == nil {
+							percentage = v
+						}
+					}
+					if childData[contactLabel] != nil {
+						contact = fmt.Sprintf("%v", childData[contactLabel]["value"])
+					}
+
+					entry := fmt.Sprintf("%-3d| %-19s | %7.1f | %s", index, name, percentage, contact)
+
+					result = append(result, entry)
+				}
+			} else {
+				for _, order := range floatKeys {
+					var label string
+					var value string
+
+					childKey := keysMap[order]
+
+					if childData[childKey]["label"] != nil {
+						label = fmt.Sprintf("%v:", childData[childKey]["label"])
+					}
+					if childData[childKey]["value"] != nil {
+						value = fmt.Sprintf("%v", childData[childKey]["value"])
+					}
+
+					entry := fmt.Sprintf("   %-25s| %s", label, value)
+
+					result = append(result, entry)
+				}
+			}
+
+			result = append(result, "")
+		}
+	}
+
+	if false {
+		payload, _ := json.MarshalIndent(data, "", "  ")
+
+		fmt.Println(string(payload))
+	}
 
 	return result
 }

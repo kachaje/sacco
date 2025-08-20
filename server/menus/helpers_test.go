@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"reflect"
 	"sacco/server/menus"
+	"sacco/utils"
+	"strings"
 	"testing"
 )
 
@@ -65,7 +67,22 @@ func TestTabulateData(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	content, err = os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.txt"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	target := string(content)
+
 	result := menus.TabulateData(data)
 
-	fmt.Println(result)
+	if os.Getenv("DEBUG") == "true" {
+		fmt.Println(strings.Join(result, "\n"))
+
+		os.WriteFile(filepath.Join("..", "database", "models", "fixtures", "member.txt"), []byte(strings.Join(result, "\n")), 0644)
+	}
+
+	if utils.CleanString(target) != utils.CleanString(strings.Join(result, "\n")) {
+		t.Fatal("Test failed")
+	}
 }
