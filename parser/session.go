@@ -121,17 +121,17 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string, memberData ma
 		}
 	}
 
-	if len(memberData) > 0 {
-		s.ActiveMemberData = memberData
+	s.ActiveMemberData = memberData
 
+	if len(memberData) > 0 {
 		if os.Getenv("DEBUG") == "true" {
 			payload, _ := json.MarshalIndent(memberData, "", "  ")
 
 			fmt.Println(string(payload))
 		}
-
-		s.UpdateSessionFlags()
 	}
+
+	s.UpdateSessionFlags()
 
 	return nil
 }

@@ -151,11 +151,11 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 				if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {
 					log.Println(err)
 				}
+			}
 
-				err = session.LoadMemberCache(phoneNumber, cacheFolder, session.ActiveMemberData)
-				if err != nil {
-					log.Printf("server.ussdHandler: %s", err.Error())
-				}
+			err = session.LoadMemberCache(phoneNumber, cacheFolder, session.ActiveMemberData)
+			if err != nil {
+				log.Printf("server.ussdHandler: %s", err.Error())
 			}
 		}()
 	}
