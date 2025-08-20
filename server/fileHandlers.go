@@ -249,6 +249,8 @@ func SaveData(
 				CacheFile(filename, val)
 			}
 
+			sessions[*sessionId].ContactsAdded = true
+
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
@@ -272,6 +274,8 @@ func SaveData(
 
 				CacheFile(filename, val)
 			}
+
+			sessions[*sessionId].NomineeAdded = true
 
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
@@ -307,6 +311,8 @@ func SaveData(
 
 				CacheFile(filename, val)
 			}
+
+			sessions[*sessionId].OccupationAdded = true
 
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
@@ -410,6 +416,8 @@ func SaveData(
 			}
 
 			if phoneNumber != nil && cacheFolder != nil && sessions != nil && sessionId != nil {
+				sessions[*sessionId].BeneficiariesAdded = true
+
 				sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 			}
 		}
