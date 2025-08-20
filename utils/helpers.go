@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"net"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -69,4 +70,24 @@ func GetFreePort() (port int, err error) {
 		}
 	}
 	return
+}
+
+func LockFile(filename string) (string, error) {
+	lockFilename := fmt.Sprintf("%s.lock", filename)
+
+	return lockFilename,  os.WriteFile(lockFilename, []byte{}, 0644)
+}
+
+func UnLockFile(filename string) error {
+	lockFilename := fmt.Sprintf("%s.lock", filename)
+
+	return os.Remove(lockFilename)
+}
+
+func FileLocked(filename string) bool {
+	lockFilename := fmt.Sprintf("%s.lock", filename)
+
+	_, err := os.Stat(lockFilename)
+
+	return !os.IsNotExist(err)
 }

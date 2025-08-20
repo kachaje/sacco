@@ -51,3 +51,102 @@ func TestLoadYaml(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 }
+
+func TestLockFile(t *testing.T) {
+	rootFolder := filepath.Join(".", "tmpFileLock")
+
+	os.MkdirAll(rootFolder, 0755)
+	defer func() {
+		os.RemoveAll(rootFolder)
+	}()
+
+	filename := filepath.Join(rootFolder, "lock.txt")
+
+	err := os.WriteFile(filename, []byte{}, 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		os.Remove(filename)
+	}()
+
+	lockFilename, err := utils.LockFile(filename)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		os.Remove(lockFilename)
+	}()
+
+	_, err = os.Stat(lockFilename)
+	if os.IsNotExist(err) {
+		t.Fatal("Test failed")
+	}
+}
+
+func TestUnLockFile(t *testing.T) {
+	rootFolder := filepath.Join(".", "tmpFileUnLock")
+
+	os.MkdirAll(rootFolder, 0755)
+	defer func() {
+		os.RemoveAll(rootFolder)
+	}()
+
+	filename := filepath.Join(rootFolder, "lock.txt")
+	lockFilename := fmt.Sprintf("%s.lock", filename)
+
+	err := os.WriteFile(lockFilename, []byte{}, 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		os.Remove(lockFilename)
+	}()
+
+	err = utils.UnLockFile(filename)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = os.Stat(lockFilename)
+	if !os.IsNotExist(err) {
+		t.Fatal("Test failed")
+	}
+}
+
+func TestFileLocked(t *testing.T) {
+	rootFolder := filepath.Join(".", "tmpFileLocked")
+
+	os.MkdirAll(rootFolder, 0755)
+	defer func() {
+		os.RemoveAll(rootFolder)
+	}()
+
+	filename := filepath.Join(rootFolder, "lock.txt")
+	lockFilename := fmt.Sprintf("%s.lock", filename)
+
+	err := os.WriteFile(lockFilename, []byte{}, 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if _, err := os.Stat(lockFilename); !os.IsNotExist(err) {
+			os.Remove(lockFilename)
+		}
+	}()
+
+	locked := utils.FileLocked(filename)
+	if !locked {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", locked)
+	}
+
+	err = os.Remove(lockFilename)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	locked = utils.FileLocked(filename)
+	if locked {
+		t.Fatalf("Test failed. Expected: false; Actual: %v", locked)
+	}
+}
