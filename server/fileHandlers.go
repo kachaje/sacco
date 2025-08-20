@@ -372,6 +372,11 @@ func SaveData(
 
 			records := []map[string]any{}
 
+			if sessions != nil && sessions[*sessionId] != nil &&
+				sessions[*sessionId].MemberId != nil {
+				memberId = *sessions[*sessionId].MemberId
+			}
+
 			for i := range 4 {
 				var name, contact string
 				var percentage float64
@@ -524,4 +529,109 @@ func SavePreference(phoneNumber, key, value, preferencesFolder string) error {
 	}
 
 	return os.WriteFile(settingsFile, payload, 0644)
+}
+
+func RerunFailedSaves(phoneNumber, sessionId, cacheFolder, preferenceFolder *string,
+	saveFunc func(
+		a map[string]any,
+		b map[string]any,
+		c map[string]any,
+		d map[string]any,
+		e []map[string]any,
+		f *int64,
+	) (*int64, error), sessions map[string]*parser.Session) error {
+	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
+
+	_, err := os.Stat(sessionFolder)
+	if !os.IsNotExist(err) {
+		targetFiles := []string{
+			"memberDetails",
+			"contactDetails",
+			"nomineeDetails",
+			"occupationDetails",
+			"beneficiaries",
+		}
+
+		for _, target := range targetFiles {
+			filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", target))
+
+			_, err := os.Stat(filename)
+			if !os.IsNotExist(err) {
+				content, err := os.ReadFile(filename)
+				if err != nil {
+					log.Printf("server.RerunFailedSaves.1: %s", err.Error())
+					continue
+				}
+
+				if target == "beneficiaries" {
+					rawData := []map[string]any{}
+
+					err = json.Unmarshal(content, &rawData)
+					if err != nil {
+						log.Printf("server.RerunFailedSaves.2: %s", err.Error())
+						continue
+					}
+
+					data := map[string]any{}
+
+					for i, row := range rawData {
+						index := i + 1
+
+						nameLabel := fmt.Sprintf("name%v", index)
+						percentLabel := fmt.Sprintf("percentage%v", index)
+						contactLabel := fmt.Sprintf("contact%v", index)
+						idLabel := fmt.Sprintf("id%v", index)
+						memberIdLabel := fmt.Sprintf("memberId%v", index)
+
+						if row["name"] != nil {
+							data[nameLabel] = fmt.Sprintf("%v", row["name"])
+						}
+						if row["contact"] != nil {
+							data[contactLabel] = fmt.Sprintf("%v", row["contact"])
+						}
+						if row["percentage"] != nil {
+							v, err := strconv.ParseFloat(fmt.Sprintf("%v", row["percentage"]), 64)
+							if err == nil {
+								data[percentLabel] = v
+							}
+						}
+						if row["id"] != nil {
+							v, err := strconv.ParseInt(fmt.Sprintf("%v", row["id"]), 10, 64)
+							if err == nil {
+								data[idLabel] = v
+							}
+						}
+						if row["memberId"] != nil {
+							v, err := strconv.ParseInt(fmt.Sprintf("%v", row["memberId"]), 10, 64)
+							if err == nil {
+								data[memberIdLabel] = v
+							}
+						}
+					}
+
+					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, preferenceFolder, saveFunc, sessions, nil)
+					if err != nil {
+						log.Printf("server.RerunFailedSaves.3: %s", err.Error())
+						continue
+					}
+				} else {
+					data := map[string]any{}
+
+					err = json.Unmarshal(content, &data)
+					if err != nil {
+						log.Printf("server.RerunFailedSaves.4: %s", err.Error())
+						continue
+					}
+
+					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, preferenceFolder, saveFunc, sessions, nil)
+					if err != nil {
+						log.Printf("server.RerunFailedSaves.5: %s", err.Error())
+						continue
+					}
+				}
+			}
+		}
+	}
+
+	return nil
 }
