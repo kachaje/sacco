@@ -231,17 +231,9 @@ func SaveData(
 
 			sessions[*sessionId].ActiveMemberData = memberData
 
+			sessions[*sessionId].RefreshSession()
+
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
-
-			if os.Getenv("DEBUG") == "true" {
-				payload, _ := json.MarshalIndent(memberData, "", "  ")
-
-				fmt.Println(string(payload))
-
-				filename := filepath.Join(sessionFolder, "memberDetails.json")
-
-				CacheFile(filename, memberData)
-			}
 		}
 
 	case "contactDetails":
@@ -278,6 +270,8 @@ func SaveData(
 			sessions[*sessionId].ActiveMemberData["contactDetails"] = val
 
 			sessions[*sessionId].ContactsAdded = true
+
+			sessions[*sessionId].RefreshSession()
 
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
@@ -365,6 +359,8 @@ func SaveData(
 			sessions[*sessionId].ActiveMemberData["occupationDetails"] = val
 
 			sessions[*sessionId].OccupationAdded = true
+
+			sessions[*sessionId].RefreshSession()
 
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
@@ -485,6 +481,8 @@ func SaveData(
 				sessions[*sessionId].ActiveMemberData["beneficiaries"] = records
 
 				sessions[*sessionId].BeneficiariesAdded = true
+
+				sessions[*sessionId].RefreshSession()
 
 				sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 			}
