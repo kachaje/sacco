@@ -262,15 +262,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 			text = ""
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 		} else {
-			payload, _ := json.MarshalIndent(session.ActiveMemberData, "", "  ")
-
-			fmt.Println(string(payload))
-
 			data := LoadTemplateData(session.ActiveMemberData, templateData)
-
-			payload, _ = json.MarshalIndent(data, "", "  ")
-
-			fmt.Println(string(payload))
 
 			table := TabulateData(data)
 
