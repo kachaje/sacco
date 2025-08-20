@@ -114,6 +114,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	session, exists := menus.Sessions[sessionID]
 	if !exists {
 		session = &parser.Session{
+			ActiveMemberData: map[string]any{},
 			QueryFn:     db.MemberByDefaultPhoneNumber,
 			CurrentMenu: "main",
 			Data:        make(map[string]string),

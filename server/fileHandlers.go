@@ -66,6 +66,18 @@ func SaveData(
 				memberData["defaultPhoneNumber"] = *phoneNumber
 			}
 
+			filename := filepath.Join(sessionFolder, "memberDetails.json")
+
+			transactionDone := false
+
+			// By default cache the data first in case we lose database connection
+			CacheFile(filename, memberData)
+			defer func() {
+				if transactionDone {
+					os.Remove(filename)
+				}
+			}()
+
 			if sessions[*sessionId].ContactsAdded ||
 				sessions[*sessionId].BeneficiariesAdded ||
 				sessions[*sessionId].NomineeAdded ||
@@ -195,6 +207,8 @@ func SaveData(
 						os.Remove(beneficiariesFile)
 					}
 				}
+
+				transactionDone = true
 			} else {
 				if saveFunc == nil {
 					return fmt.Errorf("server.SaveData.memberDetails.10:missing saveFunc")
@@ -207,6 +221,8 @@ func SaveData(
 				}
 
 				id = *mid
+
+				transactionDone = true
 			}
 
 			sessions[*sessionId].MemberId = &id
@@ -231,6 +247,18 @@ func SaveData(
 	case "contactDetails":
 		val, ok := data.(map[string]any)
 		if ok {
+			filename := filepath.Join(sessionFolder, "contactDetails.json")
+
+			transactionDone := false
+
+			// By default cache the data first in case we lose database connection
+			CacheFile(filename, val)
+			defer func() {
+				if transactionDone {
+					os.Remove(filename)
+				}
+			}()
+
 			if sessions[*sessionId].MemberId != nil {
 				val["memberId"] = *sessions[*sessionId].MemberId
 
@@ -243,11 +271,11 @@ func SaveData(
 				if err != nil {
 					return fmt.Errorf("server.SaveData.contactDetails.2:%s", err.Error())
 				}
-			} else {
-				filename := filepath.Join(sessionFolder, "contactDetails.json")
 
-				CacheFile(filename, val)
+				transactionDone = true
 			}
+
+			sessions[*sessionId].ActiveMemberData["contactDetails"] = val
 
 			sessions[*sessionId].ContactsAdded = true
 
@@ -257,6 +285,18 @@ func SaveData(
 	case "nomineeDetails":
 		val, ok := data.(map[string]any)
 		if ok {
+			filename := filepath.Join(sessionFolder, "nomineeDetails.json")
+
+			transactionDone := false
+
+			// By default cache the data first in case we lose database connection
+			CacheFile(filename, val)
+			defer func() {
+				if transactionDone {
+					os.Remove(filename)
+				}
+			}()
+
 			if sessions[*sessionId].MemberId != nil {
 				val["memberId"] = *sessions[*sessionId].MemberId
 
@@ -269,11 +309,11 @@ func SaveData(
 				if err != nil {
 					return fmt.Errorf("server.SaveData.nomineeDetails.2:%s", err.Error())
 				}
-			} else {
-				filename := filepath.Join(sessionFolder, "nomineeDetails.json")
 
-				CacheFile(filename, val)
+				transactionDone = true
 			}
+
+			sessions[*sessionId].ActiveMemberData["nomineeDetails"] = val
 
 			sessions[*sessionId].NomineeAdded = true
 
@@ -283,6 +323,18 @@ func SaveData(
 	case "occupationDetails":
 		val, ok := data.(map[string]any)
 		if ok {
+			filename := filepath.Join(sessionFolder, "occupationDetails.json")
+
+			transactionDone := false
+
+			// By default cache the data first in case we lose database connection
+			CacheFile(filename, val)
+			defer func() {
+				if transactionDone {
+					os.Remove(filename)
+				}
+			}()
+
 			for _, key := range []string{"netPay", "grossPay", "periodEmployed"} {
 				if val[key] != nil {
 					nv, ok := val[key].(string)
@@ -306,11 +358,11 @@ func SaveData(
 				if err != nil {
 					return fmt.Errorf("server.SaveData.occupationDetails.2:%s", err.Error())
 				}
-			} else {
-				filename := filepath.Join(sessionFolder, "occupationDetails.json")
 
-				CacheFile(filename, val)
+				transactionDone = true
 			}
+
+			sessions[*sessionId].ActiveMemberData["occupationDetails"] = val
 
 			sessions[*sessionId].OccupationAdded = true
 
@@ -398,6 +450,18 @@ func SaveData(
 				records = append(records, row)
 			}
 
+			filename := filepath.Join(sessionFolder, "beneficiaries.json")
+
+			transactionDone := false
+
+			// By default cache the data first in case we lose database connection
+			CacheFile(filename, records)
+			defer func() {
+				if transactionDone {
+					os.Remove(filename)
+				}
+			}()
+
 			if os.Getenv("DEBUG") == "true" {
 				payload, _ := json.MarshalIndent(records, "", "  ")
 
@@ -413,13 +477,13 @@ func SaveData(
 				if err != nil {
 					return fmt.Errorf("server.SaveData.beneficiaries.5:%s", err.Error())
 				}
-			} else {
-				filename := filepath.Join(sessionFolder, "beneficiaries.json")
 
-				CacheFile(filename, records)
+				transactionDone = true
 			}
 
 			if phoneNumber != nil && cacheFolder != nil && sessions != nil && sessionId != nil {
+				sessions[*sessionId].ActiveMemberData["beneficiaries"] = records
+
 				sessions[*sessionId].BeneficiariesAdded = true
 
 				sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
