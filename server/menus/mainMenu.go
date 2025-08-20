@@ -171,7 +171,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 					fmt.Sprintf("%-8s: Kaso SACCO\n", name) +
 					fmt.Sprintf("%-8s: 1006857589\n", number) +
 					fmt.Sprintf("%-8s: Lilongwe\n", branch) +
-					"\n"+
+					"\n" +
 					lastLine
 			case "2":
 				response = "CON Airtel Money\n" +

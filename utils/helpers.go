@@ -75,7 +75,7 @@ func GetFreePort() (port int, err error) {
 func LockFile(filename string) (string, error) {
 	lockFilename := fmt.Sprintf("%s.lock", filename)
 
-	return lockFilename,  os.WriteFile(lockFilename, []byte{}, 0644)
+	return lockFilename, os.WriteFile(lockFilename, []byte{}, 0644)
 }
 
 func UnLockFile(filename string) error {
