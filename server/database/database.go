@@ -69,9 +69,15 @@ func NewDatabase(dbname string) *Database {
 	instance.MemberNominee = models.NewMemberNominee(db, nil)
 
 	for table, value := range modelTemplatesData {
-		fields, ok := value.([]string)
+		val, ok := value.([]any)
 		if ok {
-			model, err := models.NewModel(db, table, fields)
+			fields := []string{}
+
+			for _, v := range val {
+				fields = append(fields, v.(string))
+			}
+
+			model, err := models.NewModel(instance.DB, table, fields)
 			if err != nil {
 				log.Printf("server.database.NewDatabase: %s", err.Error())
 				continue

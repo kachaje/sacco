@@ -1,95 +1,87 @@
 memberBusiness:
-  fields:
-    - id
-    - memberId
-    - numberOfBusinessYears
-    - typeOfBusiness
-    - nameOfBusiness
-    - tradingArea
+  - id
+  - memberId
+  - numberOfBusinessYears
+  - typeOfBusiness
+  - nameOfBusiness
+  - tradingArea
 
 memberLastYearBusinessHistory:
-  fields:
-    - id
-    - memberBusinessId
-    - financialYear
-    - totalIncome
-    - totalCostOfGoods
-    - employeesWages
-    - ownSalary
-    - transport
-    - loanInterest
-    - utilities
-    - rentals
-    - otherCosts
-    - totalCosts
-    - netProfitLoss
+  - id
+  - memberBusinessId
+  - financialYear
+  - totalIncome
+  - totalCostOfGoods
+  - employeesWages
+  - ownSalary
+  - transport
+  - loanInterest
+  - utilities
+  - rentals
+  - otherCosts
+  - totalCosts
+  - netProfitLoss
 
 memberNextYearBusinessProjection:
-  fields:
-    - id
-    - memberBusinessId
-    - financialYear
-    - totalIncome
-    - totalCostOfGoods
-    - employeesWages
-    - ownSalary
-    - transport
-    - loanInterest
-    - utilities
-    - rentals
-    - otherCosts
-    - totalCosts
-    - netProfitLoss
+  - id
+  - memberBusinessId
+  - financialYear
+  - totalIncome
+  - totalCostOfGoods
+  - employeesWages
+  - ownSalary
+  - transport
+  - loanInterest
+  - utilities
+  - rentals
+  - otherCosts
+  - totalCosts
+  - netProfitLoss
 
 memberShares:
-  fields:
-    - id
-    - memberId
-    - numberOfShares
-    - pricePerShare
-    - sharesType
+  - id
+  - memberId
+  - numberOfShares
+  - pricePerShare
+  - sharesType
 
 memberLoan:
-  fields:
-    - id
-    - memberId
-    - employeeNumber
-    - loanAmount
-    - repaymentPeriod
-    - loanPurpose
-    - loanStatus
-    - loanType
-    - amountRecommended
-    - approvedBy
-    - approvalDate
-    - amountApproved
-    - verifiedBy
-    - dateVerified
-    - denialOrPartialReason
+  - id
+  - memberId
+  - employeeNumber
+  - loanAmount
+  - repaymentPeriod
+  - loanPurpose
+  - loanStatus
+  - loanType
+  - amountRecommended
+  - approvedBy
+  - approvalDate
+  - amountApproved
+  - verifiedBy
+  - dateVerified
+  - denialOrPartialReason
 
 memberLoanLiability:
-  fields:
-    - id
-    - memberId
-    - loanId
-    - description
-    - value
+  - id
+  - memberId
+  - loanId
+  - description
+  - value
 
 memberLoanSecurity:
-  fields:
-    - id
-    - memberId
-    - loanId
-    - description
-    - value
-    - serialNumber
+  - id
+  - memberId
+  - loanId
+  - description
+  - value
+  - serialNumber
 
 memberLoanWitness:
-  fields:
-    - id
-    - memberId
-    - loanId
-    - name
-    - telephone
-    - address
-    - date
+  - id
+  - memberId
+  - loanId
+  - name
+  - telephone
+  - address
+  - date

@@ -252,3 +252,102 @@ func TestMemberBeneficiaries(t *testing.T) {
 		}
 	}
 }
+
+func TestGenericModel(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	data := map[string]any{
+		"memberId":              1,
+		"numberOfBusinessYears": 1,
+		"typeOfBusiness":        "Vendor",
+		"nameOfBusiness":        "Vendors Galore",
+		"tradingArea":           "Mtandire",
+	}
+
+	mid, err := db.GenericModels["memberBusiness"].AddRecord(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if mid == nil {
+		t.Fatal("Test failed. Got nil id")
+	}
+
+	{
+		result, err := db.GenericModels["memberBusiness"].FetchById(*mid)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if result == nil {
+			t.Fatal("Test failed. Got nil result")
+		}
+
+		for key, value := range data {
+			if result[key] == nil {
+				t.Fatal("Test failed")
+			}
+
+			if fmt.Sprintf("%v", result[key]) != fmt.Sprintf("%v", value) {
+				t.Fatalf("Test failed. Expected: %v; Actual: %v", value, result[key])
+			}
+		}
+	}
+
+	{
+		result, err := db.GenericModels["memberBusiness"].FilterBy(`WHERE typeOfBusiness="Vendor"`)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if len(result) <= 0 {
+			t.Fatal("Test failed. Got nil result")
+		}
+
+		for key, value := range data {
+			if result[0][key] == nil {
+				t.Fatal("Test failed")
+			}
+
+			if fmt.Sprintf("%v", result[0][key]) != fmt.Sprintf("%v", value) {
+				t.Fatalf("Test failed. Expected: %v; Actual: %v", value, result[0][key])
+			}
+		}
+	}
+
+	{
+		err = db.GenericModels["memberBusiness"].UpdateRecord(map[string]any{
+			"typeOfBusiness": "Taxi",
+		}, *mid)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		result, err := db.GenericModels["memberBusiness"].FetchById(*mid)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if result == nil {
+			t.Fatal("Test failed. Got nil result")
+		}
+
+		for key, value := range data {
+			if result[key] == nil {
+				t.Fatal("Test failed")
+			}
+
+			if key == "typeOfBusiness" {
+				if result[key].(string) != "Taxi" {
+					t.Fatalf("Test failed. Expected: Taxi; Actual: %v", result[key])
+				}
+			} else {
+				if fmt.Sprintf("%v", result[key]) != fmt.Sprintf("%v", value) {
+					t.Fatalf("Test failed. Expected: %v; Actual: %v", value, result[key])
+				}
+			}
+		}
+	}
+}
