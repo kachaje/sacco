@@ -570,6 +570,25 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 
 	_, err := os.Stat(sessionFolder)
 	if !os.IsNotExist(err) {
+		retryNumberLockfile := filepath.Join(sessionFolder, fmt.Sprintf("%s.number", *phoneNumber))
+
+		if utils.FileLocked(retryNumberLockfile) {
+			return nil
+		}
+
+		_, err = utils.LockFile(retryNumberLockfile)
+		if err != nil {
+			log.Printf("server.RerunFailedSaves.LockFile: %s", err.Error())
+			return err
+		}
+		defer func() {
+			err = utils.UnLockFile(retryNumberLockfile)
+			if err != nil {
+				log.Printf("server.RerunFailedSaves.UnLockFile: %s", err.Error())
+				return
+			}
+		}()
+
 		targetFiles := []string{
 			"memberDetails",
 			"contactDetails",
