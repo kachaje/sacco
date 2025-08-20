@@ -12,7 +12,6 @@ import (
 type Model struct {
 	ModelName  string
 	Fields     []string
-	FieldTypes map[string]string
 
 	db *sql.DB
 }
@@ -21,7 +20,6 @@ func NewModel(
 	db *sql.DB,
 	modelName string,
 	fields []string,
-	fieldTypes map[string]string,
 ) (*Model, error) {
 	if modelName == "" {
 		return nil, fmt.Errorf("missing required modelName")
@@ -31,7 +29,6 @@ func NewModel(
 		db:         db,
 		ModelName:  modelName,
 		Fields:     fields,
-		FieldTypes: fieldTypes,
 	}
 
 	return m, nil

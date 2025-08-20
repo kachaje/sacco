@@ -36,16 +36,8 @@ func setupDb(dbname string) (*sql.DB, *models.Model, error) {
 	}
 
 	fields := []string{"firstName", "lastName", "gender", "height", "weight"}
-	fieldTypes := map[string]string{
-		"id":        "int",
-		"firstName": "string",
-		"lastName":  "string",
-		"gender":    "string",
-		"height":    "float",
-		"weight":    "weight",
-	}
 
-	model, err := models.NewModel(db, tableName, fields, fieldTypes)
+	model, err := models.NewModel(db, tableName, fields)
 	if err != nil {
 		return nil, nil, err
 	}
