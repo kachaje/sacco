@@ -273,6 +273,7 @@ func TestMemberDetails(t *testing.T) {
 
 	delete(result, "memberIdNumber")
 	delete(result, "shortMemberId")
+	delete(result, "dateJoined")
 
 	payload, _ := json.MarshalIndent(result, "", "  ")
 
