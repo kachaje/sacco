@@ -312,7 +312,7 @@ func TestRerunFailedSaves(t *testing.T) {
 
 	sessions[sessionId] = session
 
-	err = server.RerunFailedSaves(&phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions)
+	err = server.RerunFailedSaves(&phoneNumber, &sessionId, &cacheFolder, saveFunc, sessions)
 	if err != nil {
 		t.Fatal(err)
 	}

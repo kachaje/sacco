@@ -160,6 +160,8 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 
+	RerunFailedSaves(&phoneNumber, &sessionID, &cacheFolder, db.AddMember, menus.Sessions)
+
 	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	w.Header().Set("Content-Type", "text/plain")

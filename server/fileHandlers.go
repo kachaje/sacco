@@ -531,7 +531,7 @@ func SavePreference(phoneNumber, key, value, preferencesFolder string) error {
 	return os.WriteFile(settingsFile, payload, 0644)
 }
 
-func RerunFailedSaves(phoneNumber, sessionId, cacheFolder, preferenceFolder *string,
+func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 	saveFunc func(
 		a map[string]any,
 		b map[string]any,
@@ -562,6 +562,8 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder, preferenceFolder *str
 					log.Printf("server.RerunFailedSaves.1: %s", err.Error())
 					continue
 				}
+
+				log.Printf("server.RerunFailedSaves: Retrying to save %s\n", target)
 
 				if target == "beneficiaries" {
 					rawData := []map[string]any{}
@@ -609,7 +611,7 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder, preferenceFolder *str
 						}
 					}
 
-					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, preferenceFolder, saveFunc, sessions, nil)
+					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, nil, saveFunc, sessions, nil)
 					if err != nil {
 						log.Printf("server.RerunFailedSaves.3: %s", err.Error())
 						continue
@@ -623,7 +625,7 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder, preferenceFolder *str
 						continue
 					}
 
-					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, preferenceFolder, saveFunc, sessions, nil)
+					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, nil, saveFunc, sessions, nil)
 					if err != nil {
 						log.Printf("server.RerunFailedSaves.5: %s", err.Error())
 						continue
