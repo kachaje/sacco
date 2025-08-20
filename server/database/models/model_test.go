@@ -1,6 +1,7 @@
 package models_test
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"os"
@@ -101,6 +102,95 @@ func TestAddRecord(t *testing.T) {
 	FROM %s WHERE id=?`, tableName), *mid)
 
 	var id int64
+	var weight, height float64
+	var firstName,
+		lastName,
+		gender string
+
+	err = row.Scan(&id,
+		&firstName,
+		&lastName,
+		&gender,
+		&height,
+		&weight,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if firstName != data["firstName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["firstName"], firstName)
+	}
+	if lastName != data["lastName"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["lastName"], lastName)
+	}
+	if gender != data["gender"].(string) {
+		t.Fatalf("Test failed. Expected: %s; Actual: %v", data["gender"], gender)
+	}
+	if height != data["height"].(float64) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", data["height"], height)
+	}
+	if weight != data["weight"].(float64) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", data["weight"], weight)
+	}
+}
+
+func TestUpdateRecord(t *testing.T) {
+	dbname := "testUpdate.db"
+
+	db, model, err := setupDb(dbname)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		os.Remove(dbname)
+	}()
+
+	data := map[string]any{
+		"firstName": "John",
+		"lastName":  "Phiri",
+		"gender":    "Male",
+		"height":    172.0,
+		"weight":    95.0,
+	}
+
+	result, err := models.QueryWithRetry(
+		db,
+		context.Background(),
+		fmt.Sprintf(`INSERT INTO %s (
+			firstName,
+			lastName,
+			gender,
+			height,
+			weight
+		) VALUES (
+		 	?, ?, ?, ?, ?
+		)`, tableName), "Mary", "Banda", "Female", 162.0, 72.0,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var id int64
+
+	if id, err = result.LastInsertId(); err != nil {
+		t.Fatal(err)
+	}
+
+	err = model.UpdateRecord(data, id)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	row := db.QueryRow(fmt.Sprintf(`SELECT
+		id,
+		firstName,
+		lastName,
+		gender,
+		height,
+		weight
+	FROM %s WHERE id=?`, tableName), id)
+
 	var weight, height float64
 	var firstName,
 		lastName,

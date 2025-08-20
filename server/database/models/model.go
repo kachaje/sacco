@@ -69,3 +69,28 @@ func (m *Model) AddRecord(data map[string]any) (*int64, error) {
 
 	return &id, nil
 }
+
+func (m *Model) UpdateRecord(data map[string]any, id int64) error {
+	fields := []string{}
+	values := []any{}
+
+	for key, value := range data {
+		fields = append(fields, fmt.Sprintf("%s = ?", key))
+		values = append(values, value)
+	}
+
+	values = append(values, id)
+
+	statement := fmt.Sprintf("UPDATE %s SET %s WHERE id=?", m.ModelName, strings.Join(fields, ", "))
+
+	_, err := QueryWithRetry(
+		m.db,
+		context.Background(),
+		statement, values...,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
