@@ -138,6 +138,7 @@ func (d *Database) initDb() error {
 		CREATE TABLE IF NOT EXISTS memberLastYearBusinessHistory (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberBusinessId INTEGER NOT NULL,
+      financialYear TEXT,
 			totalIncome REAL,
 			totalCostOfGoods REAL,
 			employeesWages REAL,
@@ -156,6 +157,7 @@ func (d *Database) initDb() error {
 		CREATE TABLE IF NOT EXISTS memberNextYearBusinessProjection (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberBusinessId INTEGER NOT NULL,
+      financialYear TEXT,
 			totalIncome REAL,
 			totalCostOfGoods REAL,
 			employeesWages REAL,
@@ -171,7 +173,7 @@ func (d *Database) initDb() error {
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
-		CREATE TABLE IF NOT EXISTS share (
+		CREATE TABLE IF NOT EXISTS memberShares (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			numberOfShares REAL,
@@ -181,7 +183,7 @@ func (d *Database) initDb() error {
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
-		CREATE TABLE IF NOT EXISTS loan (
+		CREATE TABLE IF NOT EXISTS memberLoan (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			employeeNumber TEXT,
@@ -201,7 +203,7 @@ func (d *Database) initDb() error {
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
-		CREATE TABLE IF NOT EXISTS loanLiability (
+		CREATE TABLE IF NOT EXISTS memberLoanLiability (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			loanId INTEGER NOT NULL,
@@ -211,7 +213,7 @@ func (d *Database) initDb() error {
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
-		CREATE TABLE IF NOT EXISTS loanSecurity (
+		CREATE TABLE IF NOT EXISTS memberLoanSecurity (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			loanId INTEGER NOT NULL,
@@ -222,7 +224,7 @@ func (d *Database) initDb() error {
 			created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 			updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 		);
-		CREATE TABLE IF NOT EXISTS loanWitness (
+		CREATE TABLE IF NOT EXISTS memberLoanWitness (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			memberId INTEGER NOT NULL,
 			loanId INTEGER NOT NULL,
