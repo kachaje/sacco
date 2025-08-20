@@ -8,7 +8,11 @@
       },
       "memberIdNumber": {
         "order": 2,
-        "label": "File Number"
+        "label": "Full File Number"
+      },
+      "shortMemberId": {
+        "order": 3,
+        "label": "Short File Number"
       }
     }
   },
