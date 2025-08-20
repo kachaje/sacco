@@ -115,11 +115,11 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	if !exists {
 		session = &parser.Session{
 			ActiveMemberData: map[string]any{},
-			QueryFn:     db.MemberByDefaultPhoneNumber,
-			CurrentMenu: "main",
-			Data:        make(map[string]string),
-			SessionId:   sessionID,
-			PhoneNumber: phoneNumber,
+			QueryFn:          db.MemberByDefaultPhoneNumber,
+			CurrentMenu:      "main",
+			Data:             make(map[string]string),
+			SessionId:        sessionID,
+			PhoneNumber:      phoneNumber,
 
 			LanguageWorkflow: parser.NewWorkflow(languageData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
@@ -152,7 +152,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 					log.Println(err)
 				}
 
-				err = session.LoadMemberCache(phoneNumber, cacheFolder)
+				err = session.LoadMemberCache(phoneNumber, cacheFolder, session.ActiveMemberData)
 				if err != nil {
 					log.Printf("server.ussdHandler: %s", err.Error())
 				}

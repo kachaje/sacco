@@ -81,15 +81,13 @@ func (s *Session) UpdateSessionFlags() error {
 	return nil
 }
 
-func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
+func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string, memberData map[string]any) error {
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
 	if os.IsNotExist(err) {
 		return err
 	}
-
-	memberData := map[string]any{}
 
 	for _, key := range []string{"contactDetails", "nomineeDetails", "occupationDetails", "beneficiaries"} {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
