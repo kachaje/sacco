@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"sync"
+	"time"
 )
 
 type Session struct {
@@ -29,11 +31,14 @@ type Session struct {
 	ActiveMemberData   map[string]any
 
 	QueryFn func(string) (map[string]any, error)
+
+	Mu *sync.Mutex
 }
 
 func NewSession(queryFn func(string) (map[string]any, error)) *Session {
 	return &Session{
 		QueryFn: queryFn,
+		Mu:      &sync.Mutex{},
 	}
 }
 
@@ -81,7 +86,41 @@ func (s *Session) UpdateSessionFlags() error {
 	return nil
 }
 
-func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string, memberData map[string]any) error {
+func (s *Session) WriteToMap(key string, value any) {
+	retries := 0
+
+RETRY:
+	time.Sleep(time.Duration(retries) * time.Second)
+
+	if s.Mu == nil {
+		s.Mu = &sync.Mutex{}
+	}
+
+	done := s.Mu.TryLock()
+	if !done {
+		if retries < 3 {
+			retries++
+			goto RETRY
+		}
+	}
+
+	defer s.Mu.Unlock()
+
+	if s.ActiveMemberData == nil {
+		s.ActiveMemberData = map[string]any{}
+	}
+
+	s.ActiveMemberData[key] = value
+}
+
+func (s *Session) ReadFromMap(key string) any {
+	s.Mu.TryLock()
+	defer s.Mu.Unlock()
+
+	return s.ActiveMemberData[key]
+}
+
+func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
@@ -109,7 +148,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string, memberData ma
 				continue
 			}
 
-			memberData[key] = data
+			s.WriteToMap(key, data)
 		} else {
 			data := map[string]any{}
 			err = json.Unmarshal(content, &data)
@@ -117,17 +156,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string, memberData ma
 				continue
 			}
 
-			memberData[key] = data
-		}
-	}
-
-	s.ActiveMemberData = memberData
-
-	if len(memberData) > 0 {
-		if os.Getenv("DEBUG") == "true" {
-			payload, _ := json.MarshalIndent(memberData, "", "  ")
-
-			fmt.Println(string(payload))
+			s.WriteToMap(key, data)
 		}
 	}
 

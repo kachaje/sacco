@@ -153,7 +153,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 
-			err = session.LoadMemberCache(phoneNumber, cacheFolder, session.ActiveMemberData)
+			err = session.LoadMemberCache(phoneNumber, cacheFolder)
 			if err != nil {
 				log.Printf("server.ussdHandler: %s", err.Error())
 			}

@@ -33,7 +33,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 func TestLoadMemberCache(t *testing.T) {
 	session := parser.NewSession(nil)
 
-	err := session.LoadMemberCache("0999888777", filepath.Join("..", "server", "database", "models", "fixtures", "cache"), map[string]any{})
+	err := session.LoadMemberCache("0999888777", filepath.Join("..", "server", "database", "models", "fixtures", "cache"))
 	if err != nil {
 		t.Fatal(err)
 	}

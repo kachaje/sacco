@@ -259,7 +259,7 @@ func SaveData(
 
 			sessions[*sessionId].RefreshSession()
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder, sessions[*sessionId].ActiveMemberData)
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	case "contactDetails":
@@ -299,7 +299,7 @@ func SaveData(
 
 			sessions[*sessionId].RefreshSession()
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder, sessions[*sessionId].ActiveMemberData)
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	case "nomineeDetails":
@@ -337,7 +337,7 @@ func SaveData(
 
 			sessions[*sessionId].NomineeAdded = true
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder, sessions[*sessionId].ActiveMemberData)
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	case "occupationDetails":
@@ -388,7 +388,7 @@ func SaveData(
 
 			sessions[*sessionId].RefreshSession()
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder, sessions[*sessionId].ActiveMemberData)
+			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
 	case "beneficiaries":
@@ -515,7 +515,7 @@ func SaveData(
 
 				sessions[*sessionId].RefreshSession()
 
-				sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder, sessions[*sessionId].ActiveMemberData)
+				sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 			}
 		}
 
