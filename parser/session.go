@@ -43,43 +43,50 @@ func NewSession(queryFn func(string) (map[string]any, error)) *Session {
 }
 
 func (s *Session) UpdateSessionFlags() error {
-	if s.ActiveMemberData != nil {
-		if s.ActiveMemberData["beneficiaries"] != nil {
-			val, ok := s.ActiveMemberData["beneficiaries"].([]any)
+	beneficiariesData := s.ReadFromMap("beneficiaries")
+	if beneficiariesData != nil {
+		val, ok := beneficiariesData.([]any)
+		if ok && len(val) > 0 {
+			s.BeneficiariesAdded = true
+		} else {
+			val, ok := beneficiariesData.([]map[string]any)
 			if ok && len(val) > 0 {
 				s.BeneficiariesAdded = true
-			} else {
-				val, ok := s.ActiveMemberData["beneficiaries"].([]map[string]any)
-				if ok && len(val) > 0 {
-					s.BeneficiariesAdded = true
-				}
 			}
 		}
-		if s.ActiveMemberData["contactDetails"] != nil {
-			val, ok := s.ActiveMemberData["contactDetails"].(map[string]any)
-			if ok && len(val) > 0 {
-				s.ContactsAdded = true
-			}
-		}
-		if s.ActiveMemberData["nomineeDetails"] != nil {
-			val, ok := s.ActiveMemberData["nomineeDetails"].(map[string]any)
-			if ok && len(val) > 0 {
-				s.NomineeAdded = true
-			}
-		}
-		if s.ActiveMemberData["occupationDetails"] != nil {
-			val, ok := s.ActiveMemberData["occupationDetails"].(map[string]any)
-			if ok && len(val) > 0 {
-				s.OccupationAdded = true
-			}
-		}
-		if s.ActiveMemberData["id"] != nil {
-			val := fmt.Sprintf("%v", s.ActiveMemberData["id"])
+	}
 
-			id, err := strconv.ParseInt(val, 10, 64)
-			if err == nil {
-				s.MemberId = &id
-			}
+	contactDetailsData := s.ReadFromMap("contactDetails")
+	if contactDetailsData != nil {
+		val, ok := contactDetailsData.(map[string]any)
+		if ok && len(val) > 0 {
+			s.ContactsAdded = true
+		}
+	}
+
+	nomineeDetailsData := s.ReadFromMap("nomineeDetails")
+	if nomineeDetailsData != nil {
+		val, ok := nomineeDetailsData.(map[string]any)
+		if ok && len(val) > 0 {
+			s.NomineeAdded = true
+		}
+	}
+
+	occupationDetailsData := s.ReadFromMap("occupationDetails")
+	if occupationDetailsData != nil {
+		val, ok := occupationDetailsData.(map[string]any)
+		if ok && len(val) > 0 {
+			s.OccupationAdded = true
+		}
+	}
+
+	idData := s.ReadFromMap("id")
+	if idData != nil {
+		val := fmt.Sprintf("%v", idData)
+
+		id, err := strconv.ParseInt(val, 10, 64)
+		if err == nil {
+			s.MemberId = &id
 		}
 	}
 
@@ -103,7 +110,6 @@ RETRY:
 			goto RETRY
 		}
 	}
-
 	defer s.Mu.Unlock()
 
 	if s.ActiveMemberData == nil {
@@ -114,7 +120,22 @@ RETRY:
 }
 
 func (s *Session) ReadFromMap(key string) any {
-	s.Mu.TryLock()
+	retries := 0
+
+RETRY:
+	time.Sleep(time.Duration(retries) * time.Second)
+
+	if s.Mu == nil {
+		s.Mu = &sync.Mutex{}
+	}
+
+	done := s.Mu.TryLock()
+	if !done {
+		if retries < 3 {
+			retries++
+			goto RETRY
+		}
+	}
 	defer s.Mu.Unlock()
 
 	return s.ActiveMemberData[key]
