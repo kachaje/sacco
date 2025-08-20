@@ -7,10 +7,36 @@ import (
 	"os"
 	"path/filepath"
 	"sacco/parser"
+	"sacco/utils"
 	"strconv"
+	"time"
 )
 
 func CacheFile(filename string, data any) {
+	retries := 0
+
+RETRY:
+	time.Sleep(time.Duration(retries) * time.Second)
+
+	if utils.FileLocked(filename) {
+		if retries < 5 {
+			retries++
+			goto RETRY
+		}
+	}
+	_, err := utils.LockFile(filename)
+	if err != nil {
+		log.Printf("server.Cachefile.1: %s", err.Error())
+		retries = 0
+		goto RETRY
+	}
+	defer func() {
+		err := utils.UnLockFile(filename)
+		if err != nil {
+			log.Printf("server.Cachefile.2: %s", err.Error())
+		}
+	}()
+
 	payload, err := json.MarshalIndent(data, "", "  ")
 	if err == nil {
 		err = os.WriteFile(filename, payload, 0644)
@@ -554,6 +580,11 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 
 		for _, target := range targetFiles {
 			filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", target))
+
+			// Priority is on writes this this can wait
+			if utils.FileLocked(filename) {
+				continue
+			}
 
 			_, err := os.Stat(filename)
 			if !os.IsNotExist(err) {
