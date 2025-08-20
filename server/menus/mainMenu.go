@@ -1,6 +1,7 @@
 package menus
 
 import (
+	_ "embed"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -11,8 +12,19 @@ import (
 	"sync"
 )
 
+//go:embed templates/member.template.json
+var templateContent []byte
+
 var Sessions = make(map[string]*parser.Session)
 var mu sync.Mutex
+var templateData map[string]any
+
+func init() {
+	err := json.Unmarshal(templateContent, &templateData)
+	if err != nil {
+		log.Fatalf("server.menus.init: %s", err.Error())
+	}
+}
 
 func CheckPreferredLanguage(phoneNumber, preferencesFolder string) *string {
 	settingsFile := filepath.Join(preferencesFolder, phoneNumber)
@@ -245,18 +257,30 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 			session.CurrentMenu = "main"
 			text = "0"
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		} else if strings.TrimSpace(text) == "99" {
+			session.CurrentMenu = "registration"
+			text = ""
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 		} else {
-			payload, _ := json.MarshalIndent(session.ActiveMemberData, "", "  ")
+			data := LoadTemplateData(session.ActiveMemberData, templateData)
 
-			fmt.Println(string(payload))
+			table := TabulateData(data)
+
+			tableString := strings.Join(table, "\n")
 
 			if preferredLanguage != nil && *preferredLanguage == "ny" {
 				response = "CON Zambiri za Membala\n" +
 					"\n" +
+					fmt.Sprintf("%s\n", tableString) +
+					"\n" +
+					"99. Basi\n" +
 					"00. Tiyambirenso"
 			} else {
 				response = "CON Member Details\n" +
 					"\n" +
+					fmt.Sprintf("%s\n", tableString) +
+					"\n" +
+					"99. Cancel\n" +
 					"00. Main Menu"
 			}
 		}
