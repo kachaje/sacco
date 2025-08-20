@@ -271,6 +271,9 @@ func TestMemberDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	delete(result, "memberIdNumber")
+	delete(result, "shortMemberId")
+
 	payload, _ := json.MarshalIndent(result, "", "  ")
 
 	target, err := os.ReadFile(filepath.Join(".", "fixtures", "member.json"))

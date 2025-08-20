@@ -118,6 +118,9 @@ func TestDatabaseAddMember(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	delete(result, "memberIdNumber")
+	delete(result, "shortMemberId")
+
 	payload, _ := json.MarshalIndent(result, "", "  ")
 
 	if utils.CleanScript(payload) != utils.CleanScript(target) {
@@ -146,6 +149,9 @@ func TestMemberByDefaultPhoneNumber(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	delete(result, "memberIdNumber")
+	delete(result, "shortMemberId")
 
 	payload, _ := json.MarshalIndent(result, "", "  ")
 

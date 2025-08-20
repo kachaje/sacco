@@ -14,6 +14,8 @@ CREATE TABLE
     fileNumber TEXT,
     oldFileNumber TEXT,
     defaultPhoneNumber TEXT,
+    memberIdNumber TEXT,
+    shortMemberId TEXT,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP

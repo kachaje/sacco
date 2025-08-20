@@ -10,6 +10,8 @@ import (
 	"slices"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Member struct {
@@ -27,6 +29,8 @@ type Member struct {
 	FileNumber         string `json:"fileNumber"`
 	OldFileNumber      string `json:"oldFileNumber"`
 	DefaultPhoneNumber string `json:"defaultPhoneNumber"`
+	MemberIdNumber     string `json:"memberIdNumber"`
+	ShortMemberId      string `json:"shortMemberId"`
 
 	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
 	ContactDetails    *MemberContact      `json:"contactDetails"`
@@ -45,6 +49,7 @@ func NewMember(db *sql.DB) *Member {
 			"title", "maritalStatus", "dateOfBirth", "nationalId",
 			"utilityBillType", "utilityBillNumber", "fileNumber",
 			"oldFileNumber", "defaultPhoneNumber",
+			"shortMemberId", "memberIdNumber",
 		},
 	}
 }
@@ -119,6 +124,16 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 func (m *Member) AddMember(data map[string]any) (int64, error) {
 	var id int64
 
+	if data["memberIdNumber"] == nil {
+		memberIdNumber := strings.ToUpper(
+			regexp.MustCompile(`[^A-Za-z0-9]`).
+				ReplaceAllLiteralString(uuid.NewString(), ""),
+		)
+
+		data["memberIdNumber"] = memberIdNumber
+		data["shortMemberId"] = memberIdNumber[:8]
+	}
+
 	payload, err := json.Marshal(data)
 	if err != nil {
 		return 0, err
@@ -145,15 +160,17 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 			utilityBillNumber,
 			fileNumber,
 			oldFileNumber,
-			defaultPhoneNumber
+			defaultPhoneNumber,
+			memberIdNumber,
+			shortMemberId
 		) VALUES (
-		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 		)`,
 		m.FirstName, m.LastName, m.OtherName,
 		m.Gender, m.Title, m.MaritalStatus,
 		m.DateOfBirth, m.NationalId, m.UtilityBillType,
 		m.UtilityBillNumber, m.FileNumber, m.OldFileNumber,
-		m.DefaultPhoneNumber,
+		m.DefaultPhoneNumber, m.MemberIdNumber, m.ShortMemberId,
 	)
 	if err != nil {
 		return 0, fmt.Errorf("member.AddMember.1: %s", err.Error())
@@ -207,7 +224,9 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber any
+		defaultPhoneNumber,
+		memberIdNumber,
+		shortMemberId any
 	var err error
 
 	val, ok := row.(*sql.Row)
@@ -227,6 +246,8 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 			&fileNumber,
 			&oldFileNumber,
 			&defaultPhoneNumber,
+			&memberIdNumber,
+			&shortMemberId,
 		)
 	} else {
 		val, ok := row.(*sql.Rows)
@@ -246,6 +267,8 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 				&fileNumber,
 				&oldFileNumber,
 				&defaultPhoneNumber,
+				&memberIdNumber,
+				&shortMemberId,
 			)
 		}
 	}
@@ -350,6 +373,20 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 			record.DefaultPhoneNumber = value
 		}
 	}
+	if memberIdNumber != nil {
+		value := fmt.Sprintf("%v", memberIdNumber)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.MemberIdNumber = value
+		}
+	}
+	if shortMemberId != nil {
+		value := fmt.Sprintf("%v", shortMemberId)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.ShortMemberId = value
+		}
+	}
 
 	return &record, atLeastOneFieldAdded, nil
 }
@@ -370,7 +407,9 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber
+		defaultPhoneNumber,
+		memberIdNumber,
+		shortMemberId
 	FROM member WHERE id=? AND active=1`, id)
 
 	record, found, err := m.loadRow(row)
@@ -408,7 +447,9 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 				utilityBillNumber,
 				fileNumber,
 				oldFileNumber,
-				defaultPhoneNumber
+				defaultPhoneNumber,
+				memberIdNumber,
+				shortMemberId
 			FROM member %s`,
 			whereStatement,
 		))
@@ -452,7 +493,9 @@ RETRY:
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber
+		defaultPhoneNumber,
+		memberIdNumber,
+		shortMemberId
 	FROM member WHERE defaultPhoneNumber=? AND active=1`, phoneNumber)
 
 	record, found, err := m.loadRow(row)
