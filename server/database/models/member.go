@@ -31,6 +31,7 @@ type Member struct {
 	DefaultPhoneNumber string `json:"defaultPhoneNumber"`
 	MemberIdNumber     string `json:"memberIdNumber"`
 	ShortMemberId      string `json:"shortMemberId"`
+	DateJoined         string `json:"dateJoined"`
 
 	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
 	ContactDetails    *MemberContact      `json:"contactDetails"`
@@ -49,7 +50,7 @@ func NewMember(db *sql.DB) *Member {
 			"title", "maritalStatus", "dateOfBirth", "nationalId",
 			"utilityBillType", "utilityBillNumber", "fileNumber",
 			"oldFileNumber", "defaultPhoneNumber",
-			"shortMemberId", "memberIdNumber",
+			"shortMemberId", "memberIdNumber", "dateJoined",
 		},
 	}
 }
@@ -134,6 +135,8 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 		data["shortMemberId"] = memberIdNumber[:8]
 	}
 
+	data["dateJoined"] = time.Now().Format("2006-01-02")
+
 	payload, err := json.Marshal(data)
 	if err != nil {
 		return 0, err
@@ -162,15 +165,17 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 			oldFileNumber,
 			defaultPhoneNumber,
 			memberIdNumber,
-			shortMemberId
+			shortMemberId,
+			dateJoined
 		) VALUES (
-		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+		 	?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 		)`,
 		m.FirstName, m.LastName, m.OtherName,
 		m.Gender, m.Title, m.MaritalStatus,
 		m.DateOfBirth, m.NationalId, m.UtilityBillType,
 		m.UtilityBillNumber, m.FileNumber, m.OldFileNumber,
-		m.DefaultPhoneNumber, m.MemberIdNumber, m.ShortMemberId,
+		m.DefaultPhoneNumber, m.MemberIdNumber,
+		m.ShortMemberId, m.DateJoined,
 	)
 	if err != nil {
 		return 0, fmt.Errorf("member.AddMember.1: %s", err.Error())
@@ -226,7 +231,8 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 		oldFileNumber,
 		defaultPhoneNumber,
 		memberIdNumber,
-		shortMemberId any
+		shortMemberId,
+		dateJoined any
 	var err error
 
 	val, ok := row.(*sql.Row)
@@ -248,6 +254,7 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 			&defaultPhoneNumber,
 			&memberIdNumber,
 			&shortMemberId,
+			&dateJoined,
 		)
 	} else {
 		val, ok := row.(*sql.Rows)
@@ -269,6 +276,7 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 				&defaultPhoneNumber,
 				&memberIdNumber,
 				&shortMemberId,
+				&dateJoined,
 			)
 		}
 	}
@@ -387,6 +395,13 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 			record.ShortMemberId = value
 		}
 	}
+	if dateJoined != nil {
+		value := fmt.Sprintf("%v", dateJoined)
+		if value != "" {
+			atLeastOneFieldAdded = true
+			record.DateJoined = value
+		}
+	}
 
 	return &record, atLeastOneFieldAdded, nil
 }
@@ -409,7 +424,8 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		oldFileNumber,
 		defaultPhoneNumber,
 		memberIdNumber,
-		shortMemberId
+		shortMemberId,
+		dateJoined
 	FROM member WHERE id=? AND active=1`, id)
 
 	record, found, err := m.loadRow(row)
@@ -449,7 +465,8 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 				oldFileNumber,
 				defaultPhoneNumber,
 				memberIdNumber,
-				shortMemberId
+				shortMemberId,
+				dateJoined
 			FROM member %s`,
 			whereStatement,
 		))
@@ -495,7 +512,8 @@ RETRY:
 		oldFileNumber,
 		defaultPhoneNumber,
 		memberIdNumber,
-		shortMemberId
+		shortMemberId,
+		dateJoined
 	FROM member WHERE defaultPhoneNumber=? AND active=1`, phoneNumber)
 
 	record, found, err := m.loadRow(row)

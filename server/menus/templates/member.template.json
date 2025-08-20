@@ -1,4 +1,17 @@
 {
+  "0. OFFICIAL DETAILS": {
+    "level": "root",
+    "data": {
+      "dateJoined": {
+        "order": 1,
+        "label": "Date Joined"
+      },
+      "memberIdNumber": {
+        "order": 2,
+        "label": "File Number"
+      }
+    }
+  },
   "A. PERSONAL INFORMATION": {
     "level": "root",
     "data": {
