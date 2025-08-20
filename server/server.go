@@ -114,6 +114,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	session, exists := menus.Sessions[sessionID]
 	if !exists {
 		session = &parser.Session{
+			QueryFn:     db.MemberByDefaultPhoneNumber,
 			CurrentMenu: "main",
 			Data:        make(map[string]string),
 			SessionId:   sessionID,
@@ -142,10 +143,8 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 
 	if phoneNumber != "default" {
 		go func() {
-			data, err := db.MemberByDefaultPhoneNumber(phoneNumber)
+			_, err := session.RefreshSession()
 			if err == nil {
-				session.ActiveMemberData = data
-
 				session.UpdateSessionFlags()
 			} else {
 				if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {

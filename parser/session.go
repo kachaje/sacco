@@ -27,10 +27,14 @@ type Session struct {
 	OccupationAdded    bool
 	BeneficiariesAdded bool
 	ActiveMemberData   map[string]any
+
+	QueryFn func(string) (map[string]any, error)
 }
 
-func NewSession() *Session {
-	return &Session{}
+func NewSession(queryFn func(string) (map[string]any, error)) *Session {
+	return &Session{
+		QueryFn: queryFn,
+	}
 }
 
 func (s *Session) UpdateSessionFlags() error {
@@ -132,4 +136,18 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 	}
 
 	return nil
+}
+
+func (s *Session) RefreshSession() (map[string]any, error) {
+	if s.PhoneNumber != "" && s.QueryFn != nil {
+		data, err := s.QueryFn(s.PhoneNumber)
+		if err != nil {
+			return s.ActiveMemberData, err
+		}
+
+		s.ActiveMemberData = data
+
+		return data, nil
+	}
+	return s.ActiveMemberData, nil
 }

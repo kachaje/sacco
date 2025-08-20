@@ -262,6 +262,11 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 			text = ""
 			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 		} else {
+			err := session.LoadMemberCache(phoneNumber, cacheFolder)
+			if err != nil {
+				log.Printf("server.menus.MainMenu: %s", err.Error())
+			}
+
 			data := LoadTemplateData(session.ActiveMemberData, templateData)
 
 			table := TabulateData(data)

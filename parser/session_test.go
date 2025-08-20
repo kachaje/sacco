@@ -21,7 +21,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	session := parser.NewSession()
+	session := parser.NewSession(nil)
 	session.ActiveMemberData = data
 
 	err = session.UpdateSessionFlags()
@@ -31,7 +31,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 }
 
 func TestLoadMemberCache(t *testing.T) {
-	session := parser.NewSession()
+	session := parser.NewSession(nil)
 
 	err := session.LoadMemberCache("0999888777", filepath.Join("..", "server", "database", "models", "fixtures", "cache"))
 	if err != nil {
