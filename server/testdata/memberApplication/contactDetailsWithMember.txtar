@@ -5,6 +5,7 @@ stdout 'Welcome to Kaso SACCO'
 stdout 'Choose Activity'
 stdout 'Postal Address:'
 stdout 'Residential Address:'
+stdout 'Email:'
 stdout 'Home Village:'
 stdout 'Home T/A:'
 stdout 'Home District:'
@@ -25,6 +26,7 @@ stdout 'Summary'
 stdout '1\. Member Details'
 stdout 'Postal Address: \(P.O. Box 1\)'
 stdout 'Residential Address: \(Area 49\)'
+stdout 'Email:'
 stdout 'Home Village: \(Chawantha\)'
 stdout 'Home T/A: \(Kalolo\)'
 stdout 'Home District: \(Lilongwe\)'
@@ -37,6 +39,7 @@ stdout 'Welcome to Kaso SACCO'
 3
 P.O. Box 1
 Area 49
+02
 Chawantha
 Kalolo
 4
@@ -57,6 +60,7 @@ DHSGH3837
 3
 P.O. Box 1
 Area 49
+02
 Chawantha
 Kalolo
 1
