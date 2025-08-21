@@ -85,3 +85,18 @@ memberLoanWitness:
   - telephone
   - address
   - date
+
+employmentVerification:
+  - id
+  - memberId
+  - loanId
+  - jobVerified
+  - periodEmployed
+  - jobTitle
+  - employerName
+  - employerAddress
+  - employerPhone
+  - grossPay
+  - grossVerified
+  - netPay
+  - netVerified

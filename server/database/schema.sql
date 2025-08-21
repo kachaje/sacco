@@ -212,3 +212,23 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
+
+CREATE TABLE
+  IF NOT EXISTS employmentVerification (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    memberId INTEGER NOT NULL,
+    loanId INTEGER NOT NULL,
+    jobVerified TEXT NOT NULL CHECK (jobVerified IN ('Yes', 'No')) DEFAULT 'No',
+    periodEmployed REAL,
+    jobTitle TEXT,
+    employerName TEXT,
+    employerAddress TEXT,
+    employerPhone TEXT,
+    grossPay REAL,
+    grossVerified TEXT NOT NULL CHECK (grossVerified IN ('Yes', 'No')) DEFAULT 'No',
+    netPay REAL,
+    netVerified TEXT NOT NULL CHECK (netVerified IN ('Yes', 'No')) DEFAULT 'No',
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  )
