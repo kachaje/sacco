@@ -226,7 +226,7 @@ func SaveData(
 		}
 
 	case "beneficiaries":
-		return handleBeneficiaries(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, refData, sessionFolder)
+		return HandleBeneficiaries(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, refData, sessionFolder)
 
 	default:
 		fmt.Println("##########", *phoneNumber, *sessionId, data)

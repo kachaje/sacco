@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func handleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
+func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 	saveFunc func(
 		map[string]any,
 		string,
@@ -125,7 +125,7 @@ func handleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 			}
 
 			for i := range records {
-				_, err := saveFunc(records[i], "beneficiaries", 0)
+				_, err := saveFunc(records[i], "memberBeneficiary", 0)
 				if err != nil {
 					return fmt.Errorf("server.SaveData.beneficiaries.5:%s", err.Error())
 				}
