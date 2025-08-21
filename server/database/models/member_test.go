@@ -19,19 +19,19 @@ func TestAddMember(t *testing.T) {
 	m := models.NewMember(db.DB)
 
 	data := map[string]any{
-		"firstName":          "TEXT",
-		"lastName":           "TEXT",
-		"otherName":          "TEXT",
-		"gender":             "Female",
-		"title":              "TEXT",
-		"maritalStatus":      "TEXT",
-		"dateOfBirth":        "TEXT",
-		"nationalId":         "TEXT",
-		"utilityBillType":    "TEXT",
-		"utilityBillNumber":  "TEXT",
-		"fileNumber":         "TEXT",
-		"oldFileNumber":      "TEXT",
-		"defaultPhoneNumber": "TEXT",
+		"firstName":         "TEXT",
+		"lastName":          "TEXT",
+		"otherName":         "TEXT",
+		"gender":            "Female",
+		"title":             "TEXT",
+		"maritalStatus":     "TEXT",
+		"dateOfBirth":       "TEXT",
+		"nationalId":        "TEXT",
+		"utilityBillType":   "TEXT",
+		"utilityBillNumber": "TEXT",
+		"fileNumber":        "TEXT",
+		"oldFileNumber":     "TEXT",
+		"phoneNumber":       "TEXT",
 	}
 
 	id, err := m.AddMember(data)
@@ -53,7 +53,7 @@ func TestAddMember(t *testing.T) {
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber
+		phoneNumber
 	FROM member WHERE id=?`, id)
 
 	var firstName,
@@ -68,13 +68,13 @@ func TestAddMember(t *testing.T) {
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber string
+		phoneNumber string
 
 	err = row.Scan(&id, &firstName, &lastName, &otherName,
 		&gender, &title, &maritalStatus,
 		&dateOfBirth, &nationalId, &utilityBillType,
 		&utilityBillNumber, &fileNumber, &oldFileNumber,
-		&defaultPhoneNumber)
+		&phoneNumber)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,7 +94,7 @@ func TestAddMember(t *testing.T) {
 			utilityBillNumber,
 			fileNumber,
 			oldFileNumber,
-			defaultPhoneNumber,
+			phoneNumber,
 		)
 	}
 }
@@ -110,9 +110,10 @@ func TestUpdateMember(t *testing.T) {
 		"Mary",
 		"Banda",
 		"Female",
+		"09999999999",
 	}
 
-	result, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender) VALUES (?, ?, ?)`, fields...)
+	result, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender, phoneNumber) VALUES (?, ?, ?, ?)`, fields...)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -168,9 +169,10 @@ func TestFetchMember(t *testing.T) {
 		"Mary",
 		"Banda",
 		"Female",
+		"09999999999",
 	}
 
-	result, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender) VALUES (?, ?, ?)`, fields...)
+	result, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender, phoneNumber) VALUES (?, ?, ?, ?)`, fields...)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -210,26 +212,30 @@ func TestMemberFilterBy(t *testing.T) {
 			"Mary",
 			"Banda",
 			"Female",
+			"09999999999",
 		},
 		{
 			"John",
 			"Bongwe",
 			"Male",
+			"09999999999",
 		},
 		{
 			"Paul",
 			"Bandawe",
 			"Male",
+			"09999999999",
 		},
 		{
 			"Peter",
 			"Banda",
 			"Male",
+			"09999999999",
 		},
 	}
 
 	for i := range fields {
-		_, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender) VALUES (?, ?, ?)`, fields[i]...)
+		_, err := db.DB.Exec(`INSERT INTO member (firstName, lastName, gender, phoneNumber) VALUES (?, ?, ?, ?)`, fields[i]...)
 		if err != nil {
 			t.Fatal(err)
 		}

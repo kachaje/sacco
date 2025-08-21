@@ -89,7 +89,7 @@ func SaveData(
 			var err error
 
 			if phoneNumber != nil && *phoneNumber != "default" {
-				memberData["defaultPhoneNumber"] = *phoneNumber
+				memberData["phoneNumber"] = *phoneNumber
 			}
 
 			filename := filepath.Join(sessionFolder, "memberDetails.json")

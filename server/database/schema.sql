@@ -1,8 +1,8 @@
 CREATE TABLE
   IF NOT EXISTS member (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    firstName TEXT,
-    lastName TEXT,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
     otherName TEXT,
     gender TEXT CHECK (gender IN ('Male', 'Female')),
     title TEXT,
@@ -13,7 +13,7 @@ CREATE TABLE
     utilityBillNumber TEXT,
     fileNumber TEXT,
     oldFileNumber TEXT,
-    defaultPhoneNumber TEXT,
+    phoneNumber TEXT NOT NULL,
     memberIdNumber TEXT,
     shortMemberId TEXT,
     dateJoined TEXT,
@@ -28,7 +28,6 @@ CREATE TABLE
     memberId INTEGER NOT NULL,
     postalAddress TEXT,
     residentialAddress TEXT,
-    phoneNumber TEXT,
     email TEXT,
     homeVillage TEXT,
     homeTA TEXT,

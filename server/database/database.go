@@ -220,15 +220,15 @@ func (d *Database) AddMember(
 	return &memberId, nil
 }
 
-func (d *Database) MemberByDefaultPhoneNumber(phoneNumber string) (map[string]any, error) {
+func (d *Database) MemberByPhoneNumber(phoneNumber string) (map[string]any, error) {
 	member, err := d.Member.FetchMemberByPhoneNumber(phoneNumber)
 	if err != nil {
-		return nil, fmt.Errorf("database.MemberByDefaultPhoneNumber.1: %s", err.Error())
+		return nil, fmt.Errorf("database.MemberByPhoneNumber.1: %s", err.Error())
 	}
 
 	fullRecord, err := d.Member.MemberDetails(member.ID)
 	if err != nil {
-		return nil, fmt.Errorf("database.MemberByDefaultPhoneNumber.2: %s", err.Error())
+		return nil, fmt.Errorf("database.MemberByPhoneNumber.2: %s", err.Error())
 	}
 
 	return fullRecord, nil

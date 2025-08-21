@@ -35,12 +35,10 @@
     "homeVillage": "Songwe",
     "id": 1,
     "memberId": 1,
-    "phoneNumber": "09999999999",
     "postalAddress": "P.O. Box 1000, Lilongwe",
     "residentialAddress": "Area 2, Lilongwe"
   },
   "dateOfBirth": "1999-09-01",
-  "defaultPhoneNumber": "09999999999",
   "fileNumber": "",
   "firstName": "Mary",
   "gender": "Female",
@@ -69,6 +67,7 @@
   },
   "oldFileNumber": "",
   "otherName": "",
+  "phoneNumber": "09999999999",
   "title": "Miss",
   "utilityBillNumber": "29383746",
   "utilityBillType": "ESCOM"

@@ -19,7 +19,6 @@ func TestAddMemberContact(t *testing.T) {
 		"memberId":           1,
 		"postalAddress":      "TEXT",
 		"residentialAddress": "TEXT",
-		"phoneNumber":        "TEXT",
 		"homeVillage":        "TEXT",
 		"homeTA":             "TEXT",
 		"homeDistrict":       "TEXT",
@@ -35,7 +34,6 @@ func TestAddMemberContact(t *testing.T) {
 		memberId,
 		postalAddress,
 		residentialAddress,
-		phoneNumber,
 		homeVillage,
 		homeTA,
 		homeDistrict
@@ -44,7 +42,6 @@ func TestAddMemberContact(t *testing.T) {
 	var memberId int64
 	var postalAddress,
 		residentialAddress,
-		phoneNumber,
 		homeVillage,
 		homeTA,
 		homeDistrict string
@@ -54,7 +51,6 @@ func TestAddMemberContact(t *testing.T) {
 		&memberId,
 		&postalAddress,
 		&residentialAddress,
-		&phoneNumber,
 		&homeVillage,
 		&homeTA,
 		&homeDistrict,
@@ -69,7 +65,6 @@ func TestAddMemberContact(t *testing.T) {
 			memberId,
 			postalAddress,
 			residentialAddress,
-			phoneNumber,
 			homeVillage,
 			homeTA,
 			homeDistrict,

@@ -17,17 +17,8 @@ enterResidentialAddress:
   text:
     en: Residential Address
     ny: Komwe Mumakhala
-  nextScreen: enterPhoneNumber
-  inputIdentifier: residentialAddress
-
-enterPhoneNumber:
-  order: 20
-  type: inputScreen
-  text:
-    en: Phone Number
-    ny: Nambala Yafoni
   nextScreen: enterVillage
-  inputIdentifier: phoneNumber
+  inputIdentifier: residentialAddress
 
 enterVillage:
   order: 21

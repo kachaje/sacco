@@ -64,10 +64,19 @@ enterGender:
         en: Male
         ny: Amuna
   inputIdentifier: gender
+  nextScreen: enterPhoneNumber
+
+enterPhoneNumber:
+  order: 6
+  type: inputScreen
+  text:
+    en: Phone Number
+    ny: Nambala Yafoni
   nextScreen: enterTitle
+  inputIdentifier: phoneNumber
 
 enterTitle:
-  order: 6
+  order: 7
   type: inputScreen
   text:
     en: Title
@@ -101,7 +110,7 @@ enterTitle:
   nextScreen: enterMaritalStatus
 
 enterMaritalStatus:
-  order: 7
+  order: 8
   type: inputScreen
   text:
     en: Marital Status
@@ -127,7 +136,7 @@ enterMaritalStatus:
   nextScreen: enterDateOfBirth
 
 enterDateOfBirth:
-  order: 8
+  order: 9
   type: inputScreen
   text:
     en: Date of Birth
@@ -137,7 +146,7 @@ enterDateOfBirth:
   nextScreen: enterNationalId
 
 enterNationalId:
-  order: 9
+  order: 10
   type: inputScreen
   text:
     en: National ID
@@ -146,7 +155,7 @@ enterNationalId:
   nextScreen: enterUtilityBillType
 
 enterUtilityBillType:
-  order: 10
+  order: 11
   type: inputScreen
   text:
     en: Utility Bill Type
@@ -162,7 +171,7 @@ enterUtilityBillType:
   nextScreen: enterUtilityBillNo
 
 enterUtilityBillNo:
-  order: 11
+  order: 12
   type: inputScreen
   text:
     en: Utility Bill Number

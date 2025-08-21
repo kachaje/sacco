@@ -129,7 +129,7 @@ func TestDatabaseAddMember(t *testing.T) {
 	}
 }
 
-func TestMemberByDefaultPhoneNumber(t *testing.T) {
+func TestMemberByPhoneNumber(t *testing.T) {
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
 	defer db.Close()
@@ -146,7 +146,7 @@ func TestMemberByDefaultPhoneNumber(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err := db.MemberByDefaultPhoneNumber("09999999999")
+	result, err := db.MemberByPhoneNumber("09999999999")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -184,7 +184,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err := db.MemberByDefaultPhoneNumber("09999999999")
+	result, err := db.MemberByPhoneNumber("09999999999")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -231,7 +231,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err = db.MemberByDefaultPhoneNumber("09999999999")
+	result, err = db.MemberByPhoneNumber("09999999999")
 	if err != nil {
 		t.Fatal(err)
 	}

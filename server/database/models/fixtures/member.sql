@@ -13,7 +13,7 @@ INSERT INTO
     utilityBillNumber,
     fileNumber,
     oldFileNumber,
-    defaultPhoneNumber
+    phoneNumber
   )
 VALUES
   (
@@ -38,7 +38,6 @@ INSERT INTO
     memberId,
     postalAddress,
     residentialAddress,
-    phoneNumber,
     homeVillage,
     homeTA,
     homeDistrict
@@ -48,7 +47,6 @@ VALUES
     1,
     "P.O. Box 1000, Lilongwe",
     "Area 2, Lilongwe",
-    "09999999999",
     "Songwe",
     "Kyungu",
     "Karonga"

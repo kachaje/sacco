@@ -84,20 +84,20 @@ func TestSaveDataAll(t *testing.T) {
 	sessions[sessionId].ContactsAdded = true
 
 	data := map[string]any{
-		"dateOfBirth":        "1999-09-01",
-		"defaultPhoneNumber": "09999999999",
-		"fileNumber":         "",
-		"firstName":          "Mary",
-		"gender":             "Female",
-		"id":                 1,
-		"lastName":           "Banda",
-		"maritalStatus":      "Single",
-		"nationalId":         "DHFYR8475",
-		"oldFileNumber":      "",
-		"otherName":          "",
-		"title":              "Miss",
-		"utilityBillNumber":  "29383746",
-		"utilityBillType":    "ESCOM",
+		"dateOfBirth":       "1999-09-01",
+		"phoneNumber":       "09999999999",
+		"fileNumber":        "",
+		"firstName":         "Mary",
+		"gender":            "Female",
+		"id":                1,
+		"lastName":          "Banda",
+		"maritalStatus":     "Single",
+		"nationalId":        "DHFYR8475",
+		"oldFileNumber":     "",
+		"otherName":         "",
+		"title":             "Miss",
+		"utilityBillNumber": "29383746",
+		"utilityBillType":   "ESCOM",
 	}
 
 	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
@@ -191,20 +191,20 @@ func TestSaveDataOne(t *testing.T) {
 	sessions[sessionId].OccupationAdded = true
 
 	data := map[string]any{
-		"dateOfBirth":        "1999-09-01",
-		"defaultPhoneNumber": "09999999999",
-		"fileNumber":         "",
-		"firstName":          "Mary",
-		"gender":             "Female",
-		"id":                 1,
-		"lastName":           "Banda",
-		"maritalStatus":      "Single",
-		"nationalId":         "DHFYR8475",
-		"oldFileNumber":      "",
-		"otherName":          "",
-		"title":              "Miss",
-		"utilityBillNumber":  "29383746",
-		"utilityBillType":    "ESCOM",
+		"dateOfBirth":       "1999-09-01",
+		"phoneNumber":       "09999999999",
+		"fileNumber":        "",
+		"firstName":         "Mary",
+		"gender":            "Female",
+		"id":                1,
+		"lastName":          "Banda",
+		"maritalStatus":     "Single",
+		"nationalId":        "DHFYR8475",
+		"oldFileNumber":     "",
+		"otherName":         "",
+		"title":             "Miss",
+		"utilityBillNumber": "29383746",
+		"utilityBillType":   "ESCOM",
 	}
 
 	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)

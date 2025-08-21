@@ -15,23 +15,23 @@ import (
 )
 
 type Member struct {
-	ID                 int64  `json:"id"`
-	FirstName          string `json:"firstName"`
-	LastName           string `json:"lastName"`
-	OtherName          string `json:"otherName"`
-	Gender             string `json:"gender"`
-	Title              string `json:"title"`
-	MaritalStatus      string `json:"maritalStatus"`
-	DateOfBirth        string `json:"dateOfBirth"`
-	NationalId         string `json:"nationalId"`
-	UtilityBillType    string `json:"utilityBillType"`
-	UtilityBillNumber  string `json:"utilityBillNumber"`
-	FileNumber         string `json:"fileNumber"`
-	OldFileNumber      string `json:"oldFileNumber"`
-	DefaultPhoneNumber string `json:"defaultPhoneNumber"`
-	MemberIdNumber     string `json:"memberIdNumber"`
-	ShortMemberId      string `json:"shortMemberId"`
-	DateJoined         string `json:"dateJoined"`
+	ID                int64  `json:"id"`
+	FirstName         string `json:"firstName"`
+	LastName          string `json:"lastName"`
+	OtherName         string `json:"otherName"`
+	Gender            string `json:"gender"`
+	Title             string `json:"title"`
+	MaritalStatus     string `json:"maritalStatus"`
+	DateOfBirth       string `json:"dateOfBirth"`
+	NationalId        string `json:"nationalId"`
+	UtilityBillType   string `json:"utilityBillType"`
+	UtilityBillNumber string `json:"utilityBillNumber"`
+	FileNumber        string `json:"fileNumber"`
+	OldFileNumber     string `json:"oldFileNumber"`
+	PhoneNumber       string `json:"phoneNumber"`
+	MemberIdNumber    string `json:"memberIdNumber"`
+	ShortMemberId     string `json:"shortMemberId"`
+	DateJoined        string `json:"dateJoined"`
 
 	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
 	ContactDetails    *MemberContact      `json:"contactDetails"`
@@ -49,7 +49,7 @@ func NewMember(db *sql.DB) *Member {
 			"id", "firstName", "lastName", "otherName", "gender",
 			"title", "maritalStatus", "dateOfBirth", "nationalId",
 			"utilityBillType", "utilityBillNumber", "fileNumber",
-			"oldFileNumber", "defaultPhoneNumber",
+			"oldFileNumber", "phoneNumber",
 			"shortMemberId", "memberIdNumber", "dateJoined",
 		},
 	}
@@ -163,7 +163,7 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 			utilityBillNumber,
 			fileNumber,
 			oldFileNumber,
-			defaultPhoneNumber,
+			phoneNumber,
 			memberIdNumber,
 			shortMemberId,
 			dateJoined
@@ -174,7 +174,7 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 		m.Gender, m.Title, m.MaritalStatus,
 		m.DateOfBirth, m.NationalId, m.UtilityBillType,
 		m.UtilityBillNumber, m.FileNumber, m.OldFileNumber,
-		m.DefaultPhoneNumber, m.MemberIdNumber,
+		m.PhoneNumber, m.MemberIdNumber,
 		m.ShortMemberId, m.DateJoined,
 	)
 	if err != nil {
@@ -229,7 +229,7 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber,
+		phoneNumber,
 		memberIdNumber,
 		shortMemberId,
 		dateJoined any
@@ -251,7 +251,7 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 			&utilityBillNumber,
 			&fileNumber,
 			&oldFileNumber,
-			&defaultPhoneNumber,
+			&phoneNumber,
 			&memberIdNumber,
 			&shortMemberId,
 			&dateJoined,
@@ -273,7 +273,7 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 				&utilityBillNumber,
 				&fileNumber,
 				&oldFileNumber,
-				&defaultPhoneNumber,
+				&phoneNumber,
 				&memberIdNumber,
 				&shortMemberId,
 				&dateJoined,
@@ -374,11 +374,11 @@ func (m *Member) loadRow(row any) (*Member, bool, error) {
 			record.OldFileNumber = value
 		}
 	}
-	if defaultPhoneNumber != nil {
-		value := fmt.Sprintf("%v", defaultPhoneNumber)
+	if phoneNumber != nil {
+		value := fmt.Sprintf("%v", phoneNumber)
 		if value != "" {
 			atLeastOneFieldAdded = true
-			record.DefaultPhoneNumber = value
+			record.PhoneNumber = value
 		}
 	}
 	if memberIdNumber != nil {
@@ -422,7 +422,7 @@ func (m *Member) FetchMember(id int64) (*Member, error) {
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber,
+		phoneNumber,
 		memberIdNumber,
 		shortMemberId,
 		dateJoined
@@ -463,7 +463,7 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 				utilityBillNumber,
 				fileNumber,
 				oldFileNumber,
-				defaultPhoneNumber,
+				phoneNumber,
 				memberIdNumber,
 				shortMemberId,
 				dateJoined
@@ -510,11 +510,11 @@ RETRY:
 		utilityBillNumber,
 		fileNumber,
 		oldFileNumber,
-		defaultPhoneNumber,
+		phoneNumber,
 		memberIdNumber,
 		shortMemberId,
 		dateJoined
-	FROM member WHERE defaultPhoneNumber=? AND active=1`, phoneNumber)
+	FROM member WHERE phoneNumber=? AND active=1`, phoneNumber)
 
 	record, found, err := m.loadRow(row)
 	if err != nil {

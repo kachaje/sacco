@@ -14,7 +14,6 @@ type MemberContact struct {
 	MemberId           *int64 `json:"memberId"`
 	PostalAddress      string `json:"postalAddress"`
 	ResidentialAddress string `json:"residentialAddress"`
-	PhoneNumber        string `json:"phoneNumber"`
 	HomeVillage        string `json:"homeVillage"`
 	HomeTA             string `json:"homeTA"`
 	HomeDistrict       string `json:"homeDistrict"`
@@ -54,15 +53,14 @@ func (m *MemberContact) AddMemberContact(data map[string]any) (int64, error) {
 			memberId,
 			postalAddress,
 			residentialAddress,
-			phoneNumber,
 			homeVillage,
 			homeTA,
 			homeDistrict
 		) VALUES (
-		 	?, ?, ?, ?, ?, ?, ?
+		 	?, ?, ?, ?, ?, ?
 		)`,
 		*m.MemberId, m.PostalAddress, m.ResidentialAddress,
-		m.PhoneNumber, m.HomeVillage, m.HomeTA, m.HomeDistrict,
+		m.HomeVillage, m.HomeTA, m.HomeDistrict,
 	)
 	if err != nil {
 		return 0, err
@@ -105,7 +103,6 @@ func (m *MemberContact) loadRow(row any) (*MemberContact, bool, error) {
 	var memberId int64
 	var postalAddress,
 		residentialAddress,
-		phoneNumber,
 		homeVillage,
 		homeTA,
 		homeDistrict any
@@ -118,7 +115,6 @@ func (m *MemberContact) loadRow(row any) (*MemberContact, bool, error) {
 			&memberId,
 			&postalAddress,
 			&residentialAddress,
-			&phoneNumber,
 			&homeVillage,
 			&homeTA,
 			&homeDistrict,
@@ -131,7 +127,6 @@ func (m *MemberContact) loadRow(row any) (*MemberContact, bool, error) {
 				&memberId,
 				&postalAddress,
 				&residentialAddress,
-				&phoneNumber,
 				&homeVillage,
 				&homeTA,
 				&homeDistrict,
@@ -161,13 +156,6 @@ func (m *MemberContact) loadRow(row any) (*MemberContact, bool, error) {
 		if value != "" {
 			atLeastOneFieldAdded = true
 			record.ResidentialAddress = value
-		}
-	}
-	if phoneNumber != nil {
-		value := fmt.Sprintf("%v", phoneNumber)
-		if value != "" {
-			atLeastOneFieldAdded = true
-			record.PhoneNumber = value
 		}
 	}
 	if homeVillage != nil {
@@ -202,7 +190,6 @@ func (m *MemberContact) FetchMemberContact(id int64) (*MemberContact, error) {
 		memberId,
 		postalAddress,
 		residentialAddress,
-		phoneNumber,
 		homeVillage,
 		homeTA,
 		homeDistrict
@@ -234,7 +221,6 @@ func (m *MemberContact) FilterBy(whereStatement string) ([]MemberContact, error)
 				memberId,
 				postalAddress,
 				residentialAddress,
-				phoneNumber,
 				homeVillage,
 				homeTA,
 				homeDistrict 
