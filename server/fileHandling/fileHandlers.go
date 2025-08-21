@@ -87,7 +87,7 @@ func SaveData(
 		)
 
 	case "memberDetails":
-		return handleMemberDetails(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
+		return HandleMemberDetails(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
 
 	case "contactDetails":
 		val, ok := data.(map[string]any)

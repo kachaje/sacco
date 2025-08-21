@@ -9,7 +9,7 @@ import (
 	"sacco/server/parser"
 )
 
-func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
+func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
 	memberData, ok := data.(map[string]any)
 	if ok {

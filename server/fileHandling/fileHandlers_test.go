@@ -2,6 +2,7 @@ package filehandling_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -116,6 +117,7 @@ func TestSaveDataAll(t *testing.T) {
 			t.Fatalf("Test failed. Expected file %s to be deleted by now", filename)
 		}
 	}
+
 }
 
 func TestSaveDataOne(t *testing.T) {
@@ -370,4 +372,92 @@ func TestHandleBeneficiaries(t *testing.T) {
 	if len(result) != 2 {
 		t.Fatalf("Test failed. Expected: 2; Actual: %v", len(result))
 	}
+}
+
+func TestHandleMemberDetails(t *testing.T) {
+	phoneNumber := "0999888777"
+	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
+	cacheFolder := filepath.Join(".", "tmp5", "cache")
+
+	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
+
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer func() {
+		db.Close()
+
+		os.RemoveAll(filepath.Join(".", "tmp5"))
+	}()
+
+	for _, file := range []string{
+		"contactDetails.json",
+		"occupationDetails.json",
+		"beneficiaries.json",
+		"nomineeDetails.json",
+	} {
+		src, err := os.Open(filepath.Join(sourceFolder, file))
+		if err != nil {
+			t.Fatal(err)
+			continue
+		}
+		defer src.Close()
+
+		dst, err := os.Create(filepath.Join(cacheFolder, phoneNumber, file))
+		if err != nil {
+			t.Fatal(err)
+			continue
+		}
+		defer dst.Close()
+
+		_, err = io.Copy(dst, src)
+		if err != nil {
+			t.Fatal(err)
+			continue
+		}
+
+		_, err = os.Stat(dst.Name())
+		if os.IsNotExist(err) {
+			t.Fatalf("Test failed. Failed to create %s", dst.Name())
+		}
+	}
+
+	data := map[string]any{
+		"dateOfBirth":       "1999-09-01",
+		"phoneNumber":       phoneNumber,
+		"fileNumber":        "",
+		"firstName":         "Mary",
+		"gender":            "Female",
+		"id":                1,
+		"lastName":          "Banda",
+		"maritalStatus":     "Single",
+		"nationalId":        "DHFYR8475",
+		"oldFileNumber":     "",
+		"otherName":         "",
+		"title":             "Miss",
+		"utilityBillNumber": "29383746",
+		"utilityBillType":   "ESCOM",
+	}
+
+	var id int64
+	sessionId := "sample"
+
+	sessions := map[string]*parser.Session{
+		sessionId: {
+			MemberId:         &id,
+			ActiveMemberData: map[string]any{},
+			AddedModels:      map[string]bool{},
+		},
+	}
+
+	err := filehandling.HandleMemberDetails(data, &phoneNumber, &sessionId, &cacheFolder, db.GenericsSaveData, sessions, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result, err := db.MemberByPhoneNumber(phoneNumber)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	fmt.Println(result)
 }
