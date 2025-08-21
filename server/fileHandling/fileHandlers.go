@@ -84,7 +84,17 @@ func SaveData(
 		}
 
 	case "memberBusiness":
-		return handleCommonModels(data, model, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
+		return HandleCommonModels(
+			data, model, phoneNumber, sessionId, cacheFolder,
+			func(
+				data map[string]any,
+				model string,
+				parentId *int64,
+			) (*int64, error) {
+				return nil, nil
+			},
+			sessions, sessionFolder,
+		)
 
 	case "memberDetails":
 		return handleMemberDetails(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)

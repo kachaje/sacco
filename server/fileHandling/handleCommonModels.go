@@ -8,14 +8,11 @@ import (
 	"strconv"
 )
 
-func handleCommonModels(data any, model, phoneNumber, sessionId, cacheFolder *string,
+func HandleCommonModels(data any, model, phoneNumber, sessionId, cacheFolder *string,
 	saveFunc func(
-		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		data map[string]any,
+		model string,
+		parentId *int64,
 	) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
 	val, ok := data.(map[string]any)
 	if ok {
@@ -57,7 +54,7 @@ func handleCommonModels(data any, model, phoneNumber, sessionId, cacheFolder *st
 				return fmt.Errorf("server.SaveData.%s.1:missing saveFunc", *model)
 			}
 
-			_, err := saveFunc(nil, nil, nil, val, nil, sessions[*sessionId].MemberId)
+			_, err := saveFunc(val, *model, sessions[*sessionId].MemberId)
 			if err != nil {
 				return fmt.Errorf("server.SaveData.%s.2:%s", *model, err.Error())
 			}
