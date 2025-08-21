@@ -137,7 +137,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 
 				memberData["nomineeDetails"] = nomineeData
 
-				_, err = saveFunc(contactsData, "memberNominee", 0)
+				_, err = saveFunc(nomineeData, "memberNominee", 0)
 				if err != nil {
 					log.Println(err)
 					return err
@@ -155,7 +155,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 
 				memberData["occupationDetails"] = occupationData
 
-				_, err = saveFunc(contactsData, "memberOccupation", 0)
+				_, err = saveFunc(occupationData, "memberOccupation", 0)
 				if err != nil {
 					log.Println(err)
 					return err

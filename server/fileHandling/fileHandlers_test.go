@@ -2,13 +2,13 @@ package filehandling_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"sacco/server/database"
 	filehandling "sacco/server/fileHandling"
 	"sacco/server/parser"
+	"sacco/utils"
 	"testing"
 )
 
@@ -466,7 +466,68 @@ func TestHandleMemberDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	payload, _ := json.MarshalIndent(result, "", "  ")
+	target := map[string]any{
+		"dateOfBirth":   "1999-09-01",
+		"firstName":     "Mary",
+		"gender":        "Female",
+		"id":            1,
+		"lastName":      "Banda",
+		"maritalStatus": "Single",
+		"memberBeneficiary": []map[string]any{
+			{
+				"contact":    "0888777444",
+				"id":         1,
+				"memberId":   1,
+				"name":       "John Phiri",
+				"percentage": 10,
+			},
+			{
+				"contact":    "07746635653",
+				"id":         2,
+				"memberId":   1,
+				"name":       "Jean Banda",
+				"percentage": 5,
+			},
+		},
+		"memberContact": map[string]any{
+			"homeDistrict":       "Lilongwe",
+			"homeTA":             "Kalolo",
+			"homeVillage":        "Kalulu",
+			"id":                 1,
+			"memberId":           1,
+			"postalAddress":      "P.O. Box 1",
+			"residentialAddress": "Area 49",
+		},
+		"memberNominee": map[string]any{
+			"id":             1,
+			"memberId":       1,
+			"nomineeAddress": "P.O. Box 1",
+			"nomineeName":    "John Phiri",
+			"nomineePhone":   "0888444666",
+		},
+		"memberOccupation": map[string]any{
+			"employerAddress":      "Kanengo",
+			"employerName":         "SOBO",
+			"employerPhone":        "01282373737",
+			"grossPay":             100000,
+			"highestQualification": "Secondary",
+			"id":                   1,
+			"jobTitle":             "Driver",
+			"memberId":             1,
+			"netPay":               90000,
+			"periodEmployed":       36,
+		},
+		"nationalId":        "DHFYR8475",
+		"phoneNumber":       "0999888777",
+		"title":             "Miss",
+		"utilityBillNumber": "29383746",
+		"utilityBillType":   "ESCOM",
+	}
 
-	fmt.Println(string(payload))
+	payloadResult, _ := json.MarshalIndent(result, "", "  ")
+	payloadTarget, _ := json.MarshalIndent(target, "", "  ")
+
+	if utils.CleanScript(payloadResult) != utils.CleanScript(payloadTarget) {
+		t.Fatal("Test failed")
+	}
 }
