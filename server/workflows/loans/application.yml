@@ -2,6 +2,11 @@ model: loanApplication
 
 initialScreen: enterPhoneNumber
 
+enterMemberId:
+  type: hiddenField
+  inputIdentifier: memberId
+  hidden: true
+
 enterPhoneNumber:
   order: 0
   type: inputScreen
