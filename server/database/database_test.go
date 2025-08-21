@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sacco/server"
 	"sacco/server/database"
+	filehandling "sacco/server/fileHandling"
 	"sacco/utils"
 	"slices"
 	"testing"
@@ -226,7 +226,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 
 	model := "beneficiaries"
 
-	err = server.SaveData(update, &model, nil, nil, nil, nil, db.AddMember, nil, beneficiaries)
+	err = filehandling.SaveData(update, &model, nil, nil, nil, nil, db.AddMember, nil, beneficiaries)
 	if err != nil {
 		t.Fatal(err)
 	}

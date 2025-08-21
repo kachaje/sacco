@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sacco/server/database"
+	filehandling "sacco/server/fileHandling"
 	"sacco/server/menus"
 	"sacco/server/parser"
 	"sacco/utils"
@@ -130,19 +131,19 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			SessionId:        sessionID,
 			PhoneNumber:      phoneNumber,
 
-			LanguageWorkflow: parser.NewWorkflow(languageData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+			LanguageWorkflow: parser.NewWorkflow(languageData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			PIWorkflow: parser.NewWorkflow(personalInformationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+			PIWorkflow: parser.NewWorkflow(personalInformationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			OccupationWorkflow: parser.NewWorkflow(occupationData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+			OccupationWorkflow: parser.NewWorkflow(occupationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			ContactsWorkflow: parser.NewWorkflow(contactsData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+			ContactsWorkflow: parser.NewWorkflow(contactsData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			NomineeWorkflow: parser.NewWorkflow(nomineeData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+			NomineeWorkflow: parser.NewWorkflow(nomineeData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
-			BusinessInfoWorkflow: parser.NewWorkflow(businessInfoData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+			BusinessInfoWorkflow: parser.NewWorkflow(businessInfoData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 		}
 
 		if preferredLanguage != nil {
@@ -171,7 +172,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 
-	RerunFailedSaves(&phoneNumber, &sessionID, &cacheFolder, db.AddMember, menus.Sessions)
+	filehandling.RerunFailedSaves(&phoneNumber, &sessionID, &cacheFolder, db.AddMember, menus.Sessions)
 
 	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 

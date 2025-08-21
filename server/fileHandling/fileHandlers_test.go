@@ -1,18 +1,18 @@
-package server_test
+package filehandling_test
 
 import (
 	"encoding/json"
 	"io"
 	"os"
 	"path/filepath"
+	filehandling "sacco/server/fileHandling"
 	"sacco/server/parser"
-	"sacco/server"
 	"testing"
 )
 
 func TestSaveDataAll(t *testing.T) {
 	phoneNumber := "0999888777"
-	sourceFolder := filepath.Join(".", "database", "models", "fixtures", "cache", phoneNumber)
+	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
 	cacheFolder := filepath.Join(".", "tmp1", "cache")
 
 	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
@@ -76,7 +76,7 @@ func TestSaveDataAll(t *testing.T) {
 
 	model := "memberDetails"
 
-	err := server.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -100,7 +100,7 @@ func TestSaveDataAll(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err = filehandling.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -122,7 +122,7 @@ func TestSaveDataAll(t *testing.T) {
 
 func TestSaveDataOne(t *testing.T) {
 	phoneNumber := "0999888777"
-	sourceFolder := filepath.Join(".", "database", "models", "fixtures", "cache", phoneNumber)
+	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
 	cacheFolder := filepath.Join(".", "tmp2", "cache")
 
 	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
@@ -183,7 +183,7 @@ func TestSaveDataOne(t *testing.T) {
 
 	model := "memberDetails"
 
-	err := server.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -207,7 +207,7 @@ func TestSaveDataOne(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	err = server.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err = filehandling.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -312,7 +312,7 @@ func TestRerunFailedSaves(t *testing.T) {
 
 	sessions[sessionId] = session
 
-	err = server.RerunFailedSaves(&phoneNumber, &sessionId, &cacheFolder, saveFunc, sessions)
+	err = filehandling.RerunFailedSaves(&phoneNumber, &sessionId, &cacheFolder, saveFunc, sessions)
 	if err != nil {
 		t.Fatal(err)
 	}
