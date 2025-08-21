@@ -3,6 +3,7 @@ A. PERSONAL INFORMATION
    First Name:              | Mary
    Other Name(s):           | 
    Gender:                  | Female
+   Phone Number:            | 09999999999
    Title:                   | Miss
    Marital Status:          | Single
    Date of Birth:           | 1999-09-01
@@ -20,7 +21,6 @@ B. OCCUPATION DETAILS
 C. CONTACT DETAILS
    Postal Address:          | P.O. Box 1000, Lilongwe
    Residential Address:     | Area 2, Lilongwe
-   Phone Number:            | 09999999999
    Email:                   | 
    Village:                 | Songwe
    Traditional Authority:   | Kyungu

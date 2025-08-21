@@ -35,28 +35,32 @@
         "order": 4,
         "label": "Gender"
       },
-      "title": {
+      "phoneNumber": {
         "order": 5,
+        "label": "Phone Number"
+      },
+      "title": {
+        "order": 6,
         "label": "Title"
       },
       "maritalStatus": {
-        "order": 6,
+        "order": 7,
         "label": "Marital Status"
       },
       "dateOfBirth": {
-        "order": 7,
+        "order": 8,
         "label": "Date of Birth"
       },
       "nationalId": {
-        "order": 8,
+        "order": 9,
         "label": "National ID"
       },
       "utilityBillNumber": {
-        "order": 9,
+        "order": 10,
         "label": "Utility Bill No"
       },
       "utilityBillType": {
-        "order": 10,
+        "order": 11,
         "label": "Utility Bill Type"
       }
     }
@@ -96,10 +100,6 @@
       "residentialAddress": {
         "order": 2,
         "label": "Residential Address"
-      },
-      "phoneNumber": {
-        "order": 3,
-        "label": "Phone Number"
       },
       "email": {
         "order": 4,

@@ -2,7 +2,7 @@
   "A. PERSONAL INFORMATION": {
     "dateOfBirth": {
       "label": "Date of Birth",
-      "order": 7,
+      "order": 8,
       "value": "1999-09-01"
     },
     "firstName": {
@@ -22,31 +22,36 @@
     },
     "maritalStatus": {
       "label": "Marital Status",
-      "order": 6,
+      "order": 7,
       "value": "Single"
     },
     "nationalId": {
       "label": "National ID",
-      "order": 8,
+      "order": 9,
       "value": "DHFYR8475"
     },
     "otherName": {
       "label": "Other Name(s)",
       "order": 3
     },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "order": 5,
+      "value": "09999999999"
+    },
     "title": {
       "label": "Title",
-      "order": 5,
+      "order": 6,
       "value": "Miss"
     },
     "utilityBillNumber": {
       "label": "Utility Bill No",
-      "order": 9,
+      "order": 10,
       "value": "29383746"
     },
     "utilityBillType": {
       "label": "Utility Bill Type",
-      "order": 10,
+      "order": 11,
       "value": "ESCOM"
     }
   },
@@ -96,11 +101,6 @@
       "label": "Village",
       "order": 5,
       "value": "Songwe"
-    },
-    "phoneNumber": {
-      "label": "Phone Number",
-      "order": 3,
-      "value": "09999999999"
     },
     "postalAddress": {
       "label": "Postal Address",
