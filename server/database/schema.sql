@@ -178,7 +178,7 @@ CREATE TABLE
   IF NOT EXISTS memberLoanLiability (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    loanId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     description TEXT,
     value REAL,
     active INTEGER DEFAULT 1,
@@ -190,7 +190,7 @@ CREATE TABLE
   IF NOT EXISTS memberLoanSecurity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    loanId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     description TEXT,
     value REAL,
     serialNumber TEXT,
@@ -203,7 +203,7 @@ CREATE TABLE
   IF NOT EXISTS memberLoanWitness (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    loanId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     name TEXT,
     telephone TEXT,
     address TEXT,
@@ -217,7 +217,7 @@ CREATE TABLE
   IF NOT EXISTS employmentVerification (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    loanId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     jobVerified TEXT NOT NULL CHECK (jobVerified IN ('Yes', 'No')) DEFAULT 'No',
     periodEmployed REAL,
     jobTitle TEXT,

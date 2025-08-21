@@ -31,7 +31,7 @@ enterSelectLoan:
   text:
     en: Select Loan
     ny: Sankhani Ngongole
-  inputIdentifier: loanId
+  inputIdentifier: memberLoanId
   nextScreen: enterEmployerName
 
 enterEmployerName:

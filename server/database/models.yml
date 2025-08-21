@@ -65,14 +65,14 @@ memberLoan:
 memberLoanLiability:
   - id
   - memberId
-  - loanId
+  - memberLoanId
   - description
   - value
 
 memberLoanSecurity:
   - id
   - memberId
-  - loanId
+  - memberLoanId
   - description
   - value
   - serialNumber
@@ -80,7 +80,7 @@ memberLoanSecurity:
 memberLoanWitness:
   - id
   - memberId
-  - loanId
+  - memberLoanId
   - name
   - telephone
   - address
@@ -89,7 +89,7 @@ memberLoanWitness:
 employmentVerification:
   - id
   - memberId
-  - loanId
+  - memberLoanId
   - jobVerified
   - periodEmployed
   - jobTitle
