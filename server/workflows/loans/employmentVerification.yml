@@ -1,0 +1,96 @@
+model: employmentVerification
+
+initialScreen: enterEmployerName
+
+enterEmployerName:
+  order: 0
+  type: inputScreen
+  text:
+    en: Name of Employer
+    ny: Kolembedwa Ntchito
+  inputIdentifier: employerName
+  nextScreen: enterJobTitle
+
+enterJobTitle:
+  order: 1
+  type: inputScreen
+  text:
+    en: Job Title
+    ny: Udindo ku Ntchito
+  inputIdentifier: jobTitle
+  nextScreen: enterJobTitleVerified
+
+enterJobTitleVerified:
+  order: 2
+  type: inputScreen
+  text:
+    en: Job Verified
+    ny: Ntchito Idatsimikizidwa
+  inputIdentifier: jobVerified
+  nextScreen: enterPeriodEmployed
+
+enterPeriodEmployed:
+  order: 3
+  type: inputScreen
+  text:
+    en: Period Employed (months)
+    ny: Miyezi Pantchitoyo
+  nextScreen: enterEmployerAddress
+  inputIdentifier: periodEmployed
+
+enterEmployerAddress:
+  order: 4
+  type: inputScreen
+  text:
+    en: Employer Address
+    ny: Keyala Yakuntchito
+  nextScreen: enterEmployerPhone
+  inputIdentifier: employerAddress
+
+enterEmployerPhone:
+  order: 5
+  type: inputScreen
+  text:
+    en: Employer Phone
+    ny: Foni Yakuntchito
+  nextScreen: enterGrossPay
+  inputIdentifier: employerPhone
+
+enterGrossPay:
+  order: 6
+  type: inputScreen
+  text:
+    en: Gross Income
+    ny: Zolandila ndi Msonkho
+  nextScreen: enterGrossPayVerified
+  inputIdentifier: grossPay
+
+enterGrossPayVerified:
+  order: 7
+  type: inputScreen
+  text:
+    en: Gross Verified
+    ny: Zamsonkho Zatsimikizidwa
+  inputIdentifier: grossVerified
+  nextScreen: enterNetPay
+
+enterNetPay:
+  order: 8
+  type: inputScreen
+  text:
+    en: Net Pay
+    ny: Malipilo Akachotsa Msonkho
+  nextScreen: enterJobTitle
+  inputIdentifier: netPay
+
+enterNetPayVerified:
+  order: 9
+  type: inputScreen
+  text:
+    en: Net Verified
+    ny: Zochotsa Msonkho Zatsimikizidwa
+  inputIdentifier: netVerified
+  nextScreen: formSummary
+
+formSummary:
+  type: quitScreen
