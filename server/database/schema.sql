@@ -95,6 +95,7 @@ CREATE TABLE
   IF NOT EXISTS memberLastYearBusinessHistory (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberBusinessId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     financialYear TEXT,
     totalIncome REAL,
     totalCostOfGoods REAL,
@@ -116,6 +117,7 @@ CREATE TABLE
   IF NOT EXISTS memberNextYearBusinessProjection (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberBusinessId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     financialYear TEXT,
     totalIncome REAL,
     totalCostOfGoods REAL,
