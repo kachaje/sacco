@@ -24,7 +24,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 			targetKeys := []string{
 				"dateOfBirth", "firstName", "gender", "lastName",
 				"maritalStatus", "nationalId", "otherName", "title",
-				"utilityBillNumber", "utilityBillType", "id",
+				"utilityBillNumber", "utilityBillType", "id", "phoneNumber",
 			}
 			for key, value := range session.ActiveMemberData {
 				if slices.Contains(targetKeys, key) {
