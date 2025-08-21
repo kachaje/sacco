@@ -95,10 +95,7 @@ func (s *Session) UpdateSessionFlags() error {
 	return nil
 }
 
-func (s *Session) UpdateActiveMemberData(data map[string]any) {
-	retries := 0
-
-RETRY:
+func (s *Session) UpdateActiveMemberData(data map[string]any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	if s.Mu == nil {
@@ -109,7 +106,8 @@ RETRY:
 	if !done {
 		if retries < 3 {
 			retries++
-			goto RETRY
+			s.UpdateActiveMemberData(data, retries)
+			return
 		}
 	}
 	defer s.Mu.Unlock()
@@ -217,7 +215,7 @@ func (s *Session) RefreshSession() (map[string]any, error) {
 			return s.ActiveMemberData, err
 		}
 
-		s.UpdateActiveMemberData(data)
+		s.UpdateActiveMemberData(data, 0)
 
 		return data, nil
 	}

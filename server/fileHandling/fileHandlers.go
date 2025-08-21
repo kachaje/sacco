@@ -258,7 +258,7 @@ func SaveData(
 
 			memberData["id"] = id
 
-			sessions[*sessionId].UpdateActiveMemberData(memberData)
+			sessions[*sessionId].UpdateActiveMemberData(memberData, 0)
 
 			sessions[*sessionId].RefreshSession()
 
