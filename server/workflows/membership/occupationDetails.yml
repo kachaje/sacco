@@ -2,6 +2,16 @@ model: occupationDetails
 
 initialScreen: enterEmployerName
 
+enterId:
+  type: hiddenField
+  inputIdentifier: id
+  hidden: true
+
+enterMemberId:
+  type: hiddenField
+  inputIdentifier: memberId
+  hidden: true
+
 enterEmployerName:
   order: 1
   type: inputScreen

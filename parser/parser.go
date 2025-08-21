@@ -138,7 +138,9 @@ func NewWorkflow(
 				if row["inputIdentifier"] != nil {
 					id := fmt.Sprintf("%v", row["inputIdentifier"])
 
-					w.ScreenIdMap[id] = key
+					if row["hidden"] == nil {
+						w.ScreenIdMap[id] = key
+					}
 
 					if row["order"] != nil {
 						if row["skipSummary"] != nil {

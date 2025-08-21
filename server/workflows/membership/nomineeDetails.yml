@@ -2,6 +2,16 @@ model: nomineeDetails
 
 initialScreen: enterNextOfKin
 
+enterId:
+  type: hiddenField
+  inputIdentifier: id
+  hidden: true
+
+enterMemberId:
+  type: hiddenField
+  inputIdentifier: memberId
+  hidden: true
+
 enterNextOfKin:
   order: 24
   type: inputScreen

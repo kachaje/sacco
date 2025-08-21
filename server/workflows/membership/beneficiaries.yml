@@ -2,6 +2,16 @@ model: beneficiaries
 
 initialScreen: enterBeneficiary1
 
+enterId:
+  type: hiddenField
+  inputIdentifier: id
+  hidden: true
+
+enterMemberId:
+  type: hiddenField
+  inputIdentifier: memberId
+  hidden: true
+
 enterBeneficiary1:
   order: 28
   type: inputScreen

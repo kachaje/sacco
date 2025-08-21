@@ -2,6 +2,16 @@ model: contactDetails
 
 initialScreen: enterPostalAddress
 
+enterId:
+  type: hiddenField
+  inputIdentifier: id
+  hidden: true
+
+enterMemberId:
+  type: hiddenField
+  inputIdentifier: memberId
+  hidden: true
+
 enterPostalAddress:
   order: 18
   type: inputScreen

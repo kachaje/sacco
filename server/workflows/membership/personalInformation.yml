@@ -2,6 +2,11 @@ model: memberDetails
 
 initialScreen: enterFirstName
 
+enterId:
+  type: hiddenField
+  inputIdentifier: id
+  hidden: true
+
 enterFirstName:
   order: 1
   type: inputScreen
