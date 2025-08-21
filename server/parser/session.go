@@ -19,6 +19,7 @@ type Session struct {
 	ContactsWorkflow      *WorkFlow
 	NomineeWorkflow       *WorkFlow
 	BeneficiariesWorkflow *WorkFlow
+	BusinessInfoWorkflow  *WorkFlow
 	PreferredLanguage     string
 	MemberId              *int64
 	SessionId             string
@@ -28,6 +29,7 @@ type Session struct {
 	NomineeAdded       bool
 	OccupationAdded    bool
 	BeneficiariesAdded bool
+	BusinessInfoAdded  bool
 	ActiveMemberData   map[string]any
 
 	QueryFn func(string) (map[string]any, error)

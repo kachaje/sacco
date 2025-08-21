@@ -174,12 +174,17 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 		session.CurrentMenu = "registration.6"
 		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
+	case "7":
+		session.CurrentMenu = "registration.7"
+		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+
 	default:
 		memberAdded := ""
 		occupationAdded := ""
 		contactAdded := ""
 		nomineeAdded := ""
 		beneficiariesAdded := ""
+		businessInfoAdded := ""
 
 		if session.MemberId != nil {
 			if phoneNumber == "default" {
@@ -216,6 +221,13 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 				beneficiariesAdded = "(*)"
 			}
 		}
+		if session.BusinessInfoAdded {
+			if phoneNumber == "default" {
+				businessInfoAdded = "&#10003;"
+			} else {
+				businessInfoAdded = "(*)"
+			}
+		}
 
 		if preferredLanguage != nil && *preferredLanguage == "ny" {
 			response = "CON Sankhani Zochita\n" +
@@ -224,7 +236,9 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 				fmt.Sprintf("3. Adiresi Yamembela\n %s", contactAdded) +
 				fmt.Sprintf("4. Wachibale wa Membala %s\n", nomineeAdded) +
 				fmt.Sprintf("5. Odzalandila %s\n", beneficiariesAdded) +
-				"6. Onani Zonse Zamembala\n" +
+				fmt.Sprintf("6. Zabizinesi %s\n", businessInfoAdded) +
+				"\n" +
+				"7. Onani Zonse Zamembala\n" +
 				"\n" +
 				"00. Tiyambirenso"
 		} else {
@@ -234,7 +248,9 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 				fmt.Sprintf("3. Contact Details %s\n", contactAdded) +
 				fmt.Sprintf("4. Next of Kin Details %s\n", nomineeAdded) +
 				fmt.Sprintf("5. Beneficiaries %s\n", beneficiariesAdded) +
-				"6. View Member Details\n" +
+				fmt.Sprintf("6. Business Details %s\n", businessInfoAdded) +
+				"\n" +
+				"7. View Member Details\n" +
 				"\n" +
 				"00. Main Menu"
 		}

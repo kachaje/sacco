@@ -11,9 +11,9 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"sacco/server/parser"
 	"sacco/server/database"
 	"sacco/server/menus"
+	"sacco/server/parser"
 	"sacco/utils"
 	"strings"
 	"sync"
@@ -43,6 +43,9 @@ var nomineeTemplate string
 //go:embed workflows/membership/beneficiaries.yml
 var beneficiariesTemplate string
 
+//go:embed workflows/membership/businessInformation.yml
+var businessInfoTemplate string
+
 //go:embed workflows/preferences/language.yml
 var languageTemplate string
 
@@ -54,6 +57,7 @@ var occupationData map[string]any
 var contactsData map[string]any
 var nomineeData map[string]any
 var beneficiariesData map[string]any
+var businessInfoData map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
 var cacheFolder = filepath.Join(".", "data", "cache")
@@ -89,6 +93,11 @@ func init() {
 	}
 
 	beneficiariesData, err = utils.LoadYaml(beneficiariesTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	businessInfoData, err = utils.LoadYaml(businessInfoTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -132,6 +141,8 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			NomineeWorkflow: parser.NewWorkflow(nomineeData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 
 			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
+
+			BusinessInfoWorkflow: parser.NewWorkflow(businessInfoData, SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.AddMember, menus.Sessions, nil),
 		}
 
 		if preferredLanguage != nil {

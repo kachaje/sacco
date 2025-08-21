@@ -256,6 +256,19 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		}
 
 	case "registration.6":
+		response = session.BusinessInfoWorkflow.NavNext(text)
+
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		} else if strings.TrimSpace(response) == "" {
+			session.CurrentMenu = "registration"
+			text = ""
+			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		}
+
+	case "registration.7":
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
