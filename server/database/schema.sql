@@ -82,9 +82,9 @@ CREATE TABLE
   IF NOT EXISTS memberBusiness (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    numberOfBusinessYears REAL,
-    typeOfBusiness TEXT,
-    nameOfBusiness TEXT,
+    yearsInBusiness REAL,
+    businessNature TEXT,
+    businessName TEXT,
     tradingArea TEXT,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,

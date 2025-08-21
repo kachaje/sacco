@@ -1,9 +1,9 @@
 memberBusiness:
   - id
   - memberId
-  - numberOfBusinessYears
-  - typeOfBusiness
-  - nameOfBusiness
+  - yearsInBusiness
+  - businessNature
+  - businessName
   - tradingArea
 
 memberLastYearBusinessHistory:

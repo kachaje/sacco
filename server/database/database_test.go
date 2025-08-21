@@ -267,11 +267,11 @@ func TestGenericModel(t *testing.T) {
 	defer db.Close()
 
 	data := map[string]any{
-		"memberId":              1,
-		"numberOfBusinessYears": 1,
-		"typeOfBusiness":        "Vendor",
-		"nameOfBusiness":        "Vendors Galore",
-		"tradingArea":           "Mtandire",
+		"memberId":        1,
+		"yearsInBusiness": 1,
+		"businessNature":  "Vendor",
+		"businessName":    "Vendors Galore",
+		"tradingArea":     "Mtandire",
 	}
 
 	mid, err := db.GenericModels["memberBusiness"].AddRecord(data)
@@ -305,7 +305,7 @@ func TestGenericModel(t *testing.T) {
 	}
 
 	{
-		result, err := db.GenericModels["memberBusiness"].FilterBy(`WHERE typeOfBusiness="Vendor"`)
+		result, err := db.GenericModels["memberBusiness"].FilterBy(`WHERE businessNature="Vendor"`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -327,7 +327,7 @@ func TestGenericModel(t *testing.T) {
 
 	{
 		err = db.GenericModels["memberBusiness"].UpdateRecord(map[string]any{
-			"typeOfBusiness": "Taxi",
+			"businessNature": "Taxi",
 		}, *mid)
 		if err != nil {
 			t.Fatal(err)
@@ -347,7 +347,7 @@ func TestGenericModel(t *testing.T) {
 				t.Fatal("Test failed")
 			}
 
-			if key == "typeOfBusiness" {
+			if key == "businessNature" {
 				if result[key].(string) != "Taxi" {
 					t.Fatalf("Test failed. Expected: Taxi; Actual: %v", result[key])
 				}
