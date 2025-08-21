@@ -9,6 +9,8 @@ import (
 	"sacco/utils"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 
 	_ "modernc.org/sqlite"
 )
@@ -30,6 +32,8 @@ type Database struct {
 	MemberOccupation  *models.MemberOccupation
 	MemberNominee     *models.MemberNominee
 	GenericModels     map[string]*models.Model
+
+	Mu *sync.Mutex
 }
 
 func init() {
@@ -55,6 +59,7 @@ func NewDatabase(dbname string) *Database {
 		DbName:        dbname,
 		DB:            db,
 		GenericModels: map[string]*models.Model{},
+		Mu:            &sync.Mutex{},
 	}
 
 	err = instance.initDb()
@@ -232,4 +237,33 @@ func (d *Database) MemberByPhoneNumber(phoneNumber string) (map[string]any, erro
 	}
 
 	return fullRecord, nil
+}
+
+func (d *Database) GenericsSaveData(data map[string]any,
+	model string,
+	retries int,
+) (*int64, error) {
+	time.Sleep(time.Duration(retries) * time.Second)
+
+	if !d.Mu.TryLock() {
+		if retries < 5 {
+			retries++
+
+			return d.GenericsSaveData(data, model, retries)
+		}
+
+		return nil, fmt.Errorf("server.database.GenericsSaveData: failed to save due to lock error")
+	}
+	defer d.Mu.Unlock()
+
+	if d.GenericModels[model] == nil {
+		return nil, fmt.Errorf("server.database.GenericsSaveData: model %s does not exist", model)
+	}
+
+	id, err := d.GenericModels[model].AddRecord(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return id, nil
 }

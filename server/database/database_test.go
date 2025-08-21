@@ -261,6 +261,50 @@ func TestMemberBeneficiaries(t *testing.T) {
 	}
 }
 
+func TestGenericsSaveData(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer db.Close()
+
+	data := map[string]any{
+		"memberId":        1,
+		"yearsInBusiness": 1,
+		"businessNature":  "Vendor",
+		"businessName":    "Vendors Galore",
+		"tradingArea":     "Mtandire",
+	}
+
+	mid, err := db.GenericsSaveData(data, "memberBusiness", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if mid == nil {
+		t.Fatal("Test failed. Got nil id")
+	}
+
+	{
+		result, err := db.GenericModels["memberBusiness"].FetchById(*mid)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if result == nil {
+			t.Fatal("Test failed. Got nil result")
+		}
+
+		for key, value := range data {
+			if result[key] == nil {
+				t.Fatal("Test failed")
+			}
+
+			if fmt.Sprintf("%v", result[key]) != fmt.Sprintf("%v", value) {
+				t.Fatalf("Test failed. Expected: %v; Actual: %v", value, result[key])
+			}
+		}
+	}
+}
+
 func TestGenericModel(t *testing.T) {
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
