@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"sacco/server/parser"
 	"sacco/utils"
-	"strconv"
 	"time"
 )
 
@@ -83,137 +82,147 @@ func SaveData(
 			}
 		}
 
+	case "contactDetails", "nomineeDetails", "occupationDetails":
+		return handleCommonModels(data, model, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
+
 	case "memberDetails":
 		return handleMemberDetails(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
 
-	case "contactDetails":
-		val, ok := data.(map[string]any)
-		if ok {
-			filename := filepath.Join(sessionFolder, "contactDetails.json")
+	// case "contactDetails":
+	// 	val, ok := data.(map[string]any)
+	// 	if ok {
+	// 		filename := filepath.Join(sessionFolder, "contactDetails.json")
 
-			transactionDone := false
+	// 		transactionDone := false
 
-			// By default cache the data first in case we lose database connection
-			CacheFile(filename, val, 0)
-			defer func() {
-				if transactionDone {
-					os.Remove(filename)
-				}
-			}()
+	// 		// By default cache the data first in case we lose database connection
+	// 		CacheFile(filename, val, 0)
+	// 		defer func() {
+	// 			if transactionDone {
+	// 				os.Remove(filename)
+	// 			}
+	// 		}()
 
-			if sessions[*sessionId].MemberId != nil {
-				val["memberId"] = *sessions[*sessionId].MemberId
+	// 		if sessions[*sessionId].MemberId != nil {
+	// 			val["memberId"] = *sessions[*sessionId].MemberId
 
-				if saveFunc == nil {
-					log.Println("Missing saveFunc")
-					return fmt.Errorf("server.SaveData.contactDetails.1:missing saveFunc")
-				}
+	// 			if saveFunc == nil {
+	// 				log.Println("Missing saveFunc")
+	// 				return fmt.Errorf("server.SaveData.contactDetails.1:missing saveFunc")
+	// 			}
 
-				_, err := saveFunc(nil, val, nil, nil, nil, sessions[*sessionId].MemberId)
-				if err != nil {
-					return fmt.Errorf("server.SaveData.contactDetails.2:%s", err.Error())
-				}
+	// 			_, err := saveFunc(nil, val, nil, nil, nil, sessions[*sessionId].MemberId)
+	// 			if err != nil {
+	// 				return fmt.Errorf("server.SaveData.contactDetails.2:%s", err.Error())
+	// 			}
 
-				transactionDone = true
-			}
+	// 			transactionDone = true
+	// 		}
 
-			sessions[*sessionId].ActiveMemberData["contactDetails"] = val
+	// 		sessions[*sessionId].ActiveMemberData["contactDetails"] = val
 
-			sessions[*sessionId].ContactsAdded = true
+	// 		sessions[*sessionId].ContactsAdded = true
 
-			sessions[*sessionId].RefreshSession()
+	// 		sessions[*sessionId].RefreshSession()
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
-		}
+	// 		sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+	// 	}
 
-	case "nomineeDetails":
-		val, ok := data.(map[string]any)
-		if ok {
-			filename := filepath.Join(sessionFolder, "nomineeDetails.json")
+	// case "nomineeDetails":
+	// 	val, ok := data.(map[string]any)
+	// 	if ok {
+	// 		filename := filepath.Join(sessionFolder, "nomineeDetails.json")
 
-			transactionDone := false
+	// 		transactionDone := false
 
-			// By default cache the data first in case we lose database connection
-			CacheFile(filename, val, 0)
-			defer func() {
-				if transactionDone {
-					os.Remove(filename)
-				}
-			}()
+	// 		// By default cache the data first in case we lose database connection
+	// 		CacheFile(filename, val, 0)
+	// 		defer func() {
+	// 			if transactionDone {
+	// 				os.Remove(filename)
+	// 			}
+	// 		}()
 
-			if sessions[*sessionId].MemberId != nil {
-				val["memberId"] = *sessions[*sessionId].MemberId
+	// 		if sessions[*sessionId].MemberId != nil {
+	// 			val["memberId"] = *sessions[*sessionId].MemberId
 
-				if saveFunc == nil {
-					log.Println("Missing saveFunc")
-					return fmt.Errorf("server.SaveData.nomineeDetails.1:missing saveFunc")
-				}
+	// 			if saveFunc == nil {
+	// 				log.Println("Missing saveFunc")
+	// 				return fmt.Errorf("server.SaveData.nomineeDetails.1:missing saveFunc")
+	// 			}
 
-				_, err := saveFunc(nil, nil, val, nil, nil, sessions[*sessionId].MemberId)
-				if err != nil {
-					return fmt.Errorf("server.SaveData.nomineeDetails.2:%s", err.Error())
-				}
+	// 			_, err := saveFunc(nil, nil, val, nil, nil, sessions[*sessionId].MemberId)
+	// 			if err != nil {
+	// 				return fmt.Errorf("server.SaveData.nomineeDetails.2:%s", err.Error())
+	// 			}
 
-				transactionDone = true
-			}
+	// 			transactionDone = true
+	// 		}
 
-			sessions[*sessionId].ActiveMemberData["nomineeDetails"] = val
+	// 		sessions[*sessionId].ActiveMemberData["nomineeDetails"] = val
 
-			sessions[*sessionId].NomineeAdded = true
+	// 		sessions[*sessionId].NomineeAdded = true
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
-		}
+	// 		sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+	// 	}
 
-	case "occupationDetails":
-		val, ok := data.(map[string]any)
-		if ok {
-			filename := filepath.Join(sessionFolder, "occupationDetails.json")
+	// case "occupationDetails":
+	// 	val, ok := data.(map[string]any)
+	// 	if ok {
+	// 		filename := filepath.Join(sessionFolder, "occupationDetails.json")
 
-			transactionDone := false
+	// 		transactionDone := false
 
-			// By default cache the data first in case we lose database connection
-			CacheFile(filename, val, 0)
-			defer func() {
-				if transactionDone {
-					os.Remove(filename)
-				}
-			}()
+	// 		// By default cache the data first in case we lose database connection
+	// 		CacheFile(filename, val, 0)
+	// 		defer func() {
+	// 			if transactionDone {
+	// 				os.Remove(filename)
+	// 			}
+	// 		}()
 
-			for _, key := range []string{"netPay", "grossPay", "periodEmployed"} {
-				if val[key] != nil {
-					nv, ok := val[key].(string)
-					if ok {
-						real, err := strconv.ParseFloat(nv, 64)
-						if err == nil {
-							val[key] = real
-						}
-					}
-				}
-			}
+	// 		for _, key := range []string{
+	// 			"netPay", "grossPay", "periodEmployed", "yearsInBusiness",
+	// 			"totalIncome", "totalCostOfGoods", "employeesWages", "ownSalary",
+	// 			"transport", "loanInterest", "utilities", "rentals", "otherCosts",
+	// 			"totalCosts", "netProfitLoss", "numberOfShares", "pricePerShare",
+	// 			"loanAmount", "repaymentPeriod", "amountRecommended",
+	// 			"amountApproved", "value",
+	// 		} {
+	// 			if val[key] != nil {
+	// 				nv, ok := val[key].(string)
+	// 				if ok {
+	// 					real, err := strconv.ParseFloat(nv, 64)
+	// 					if err == nil {
+	// 						val[key] = real
+	// 					}
+	// 				}
+	// 			}
+	// 		}
 
-			if sessions[*sessionId].MemberId != nil {
-				val["memberId"] = *sessions[*sessionId].MemberId
+	// 		if sessions[*sessionId].MemberId != nil {
+	// 			val["memberId"] = *sessions[*sessionId].MemberId
 
-				if saveFunc == nil {
-					return fmt.Errorf("server.SaveData.occupationDetails.1:missing saveFunc")
-				}
+	// 			if saveFunc == nil {
+	// 				return fmt.Errorf("server.SaveData.occupationDetails.1:missing saveFunc")
+	// 			}
 
-				_, err := saveFunc(nil, nil, nil, val, nil, sessions[*sessionId].MemberId)
-				if err != nil {
-					return fmt.Errorf("server.SaveData.occupationDetails.2:%s", err.Error())
-				}
+	// 			_, err := saveFunc(nil, nil, nil, val, nil, sessions[*sessionId].MemberId)
+	// 			if err != nil {
+	// 				return fmt.Errorf("server.SaveData.occupationDetails.2:%s", err.Error())
+	// 			}
 
-				transactionDone = true
-			}
+	// 			transactionDone = true
+	// 		}
 
-			sessions[*sessionId].ActiveMemberData["occupationDetails"] = val
+	// 		sessions[*sessionId].ActiveMemberData["occupationDetails"] = val
 
-			sessions[*sessionId].OccupationAdded = true
+	// 		sessions[*sessionId].OccupationAdded = true
 
-			sessions[*sessionId].RefreshSession()
+	// 		sessions[*sessionId].RefreshSession()
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
-		}
+	// 		sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+	// 	}
 
 	case "beneficiaries":
 		return handleBeneficiaries(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, refData, sessionFolder)

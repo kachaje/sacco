@@ -25,6 +25,8 @@ type Session struct {
 	SessionId             string
 	PhoneNumber           string
 
+	AddedModels map[string]bool
+
 	ContactsAdded      bool
 	NomineeAdded       bool
 	OccupationAdded    bool
@@ -39,8 +41,9 @@ type Session struct {
 
 func NewSession(queryFn func(string) (map[string]any, error)) *Session {
 	return &Session{
-		QueryFn: queryFn,
-		Mu:      &sync.Mutex{},
+		QueryFn:     queryFn,
+		Mu:          &sync.Mutex{},
+		AddedModels: map[string]bool{},
 	}
 }
 
