@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sacco/server/database"
 	filehandling "sacco/server/fileHandling"
 	"sacco/server/parser"
 	"testing"
@@ -310,5 +311,63 @@ func TestRerunFailedSaves(t *testing.T) {
 
 	if count != 2 {
 		t.Fatalf("Test failed. Expected: 2; Actual: %v", count)
+	}
+}
+
+func TestHandleBeneficiaries(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer func() {
+		db.Close()
+
+		if _, err := os.Stat("beneficiaries.json"); !os.IsNotExist(err) {
+			os.Remove("beneficiaries.json")
+		}
+	}()
+
+	data := map[string]any{
+		"contact1":    "P.O. Box 1234",
+		"id1":         1,
+		"memberId1":   1,
+		"name1":       "Benefator 1",
+		"percentage1": 35,
+		"contact2":    "P.O. Box 5678",
+		"id2":         2,
+		"memberId2":   1,
+		"name2":       "Benefator 2",
+		"percentage2": 25,
+	}
+
+	phoneNumber := "0999888777"
+	sessionId := "sample"
+	cacheFolder := "./tmp"
+
+	var id int64 = 1
+
+	sessions := map[string]*parser.Session{
+		sessionId: {
+			MemberId:         &id,
+			ActiveMemberData: map[string]any{},
+			AddedModels:      map[string]bool{},
+		},
+	}
+
+	err := filehandling.HandleBeneficiaries(data, &phoneNumber, &sessionId, &cacheFolder, db.GenericsSaveData, sessions, nil, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !sessions[sessionId].AddedModels["memberBeneficiary"] {
+		t.Fatalf("Test failed. Expected: true; Actual: %v",
+			sessions[sessionId].AddedModels["memberBeneficiary"])
+	}
+
+	result, err := db.GenericModels["memberBeneficiary"].FilterBy("WHERE active=1")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) != 2 {
+		t.Fatalf("Test failed. Expected: 2; Actual: %v", len(result))
 	}
 }

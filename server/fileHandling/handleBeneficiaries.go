@@ -47,7 +47,7 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 				if err == nil {
 					id = v
 				} else {
-					log.Printf("server.SaveData.beneficiaries.2:%s", err.Error())
+					log.Printf("server.SaveData.memberBeneficiary.2:%s", err.Error())
 				}
 			}
 
@@ -56,7 +56,7 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 				if err == nil {
 					memberId = v
 				} else {
-					log.Printf("server.SaveData.beneficiaries.3:%s", err.Error())
+					log.Printf("server.SaveData.memberBeneficiary.3:%s", err.Error())
 				}
 			}
 
@@ -76,7 +76,7 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 				if err == nil {
 					percentage = v
 				} else {
-					log.Printf("server.SaveData.beneficiaries.1:%s", err.Error())
+					log.Printf("server.SaveData.memberBeneficiary.1:%s", err.Error())
 				}
 
 				row = map[string]any{
@@ -101,7 +101,7 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 			records = append(records, row)
 		}
 
-		filename := filepath.Join(sessionFolder, "beneficiaries.json")
+		filename := filepath.Join(sessionFolder, "memberBeneficiary.json")
 
 		transactionDone := false
 
@@ -121,13 +121,13 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 
 		if memberId != 0 {
 			if saveFunc == nil {
-				return fmt.Errorf("server.SaveData.beneficiaries.4:missing saveFunc")
+				return fmt.Errorf("server.SaveData.memberBeneficiary.4:missing saveFunc")
 			}
 
 			for i := range records {
 				_, err := saveFunc(records[i], "memberBeneficiary", 0)
 				if err != nil {
-					return fmt.Errorf("server.SaveData.beneficiaries.5:%s", err.Error())
+					return fmt.Errorf("server.SaveData.memberBeneficiary.5:%s", err.Error())
 				}
 			}
 
@@ -135,9 +135,9 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 		}
 
 		if phoneNumber != nil && cacheFolder != nil && sessions != nil && sessionId != nil {
-			sessions[*sessionId].ActiveMemberData["beneficiaries"] = records
+			sessions[*sessionId].ActiveMemberData["memberBeneficiary"] = records
 
-			sessions[*sessionId].BeneficiariesAdded = true
+			sessions[*sessionId].AddedModels["memberBeneficiary"] = true
 
 			sessions[*sessionId].RefreshSession()
 
