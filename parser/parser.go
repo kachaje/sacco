@@ -19,8 +19,9 @@ const (
 )
 
 type WorkFlow struct {
-	Tree map[string]any
-	Data map[string]any
+	Tree           map[string]any
+	Data           map[string]any
+	OptionalFields map[string]bool
 
 	CurrentScreen      string
 	NextScreen         string
@@ -87,6 +88,7 @@ func NewWorkflow(
 	w := &WorkFlow{
 		Tree:            tree,
 		Data:            map[string]any{},
+		OptionalFields:  map[string]bool{},
 		CurrentScreen:   INITIAL_SCREEN,
 		CurrentLanguage: LANG_EN,
 		ScreenIdMap:     map[string]string{},
@@ -151,6 +153,10 @@ func NewWorkflow(
 						if err == nil {
 							w.ScreenOrder[i] = id
 						}
+					}
+
+					if row["optional"] != nil {
+						w.OptionalFields[id] = true
 					}
 				}
 			}
@@ -334,7 +340,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		}
 	}
 
-	if input == "01" {
+	if input == "01" || input == "02" {
 		node = w.GetNode(w.CurrentScreen)
 
 		if node["nextScreen"] != nil {
@@ -632,6 +638,10 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 					options = append(options, "01. Momwemo")
 				}
 
+				if id != "" && w.OptionalFields[id] {
+					options = append(options, "02. Tidumphe")
+				}
+
 				if input != startLabel {
 					options = append(options, "98. Bwererani")
 				}
@@ -644,6 +654,10 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 
 				if id != "" && w.Data[id] != nil {
 					options = append(options, "01. Keep")
+				}
+
+				if id != "" && w.OptionalFields[id] {
+					options = append(options, "02. Skip")
 				}
 
 				if input != startLabel {

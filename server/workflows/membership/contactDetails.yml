@@ -17,8 +17,18 @@ enterResidentialAddress:
   text:
     en: Residential Address
     ny: Komwe Mumakhala
-  nextScreen: enterVillage
+  nextScreen: enterEmail
   inputIdentifier: residentialAddress
+
+enterEmail:
+  order: 20
+  type: inputScreen
+  text:
+    en: Email
+    ny: Imelo
+  nextScreen: enterVillage
+  inputIdentifier: email
+  optional: true
 
 enterVillage:
   order: 21
