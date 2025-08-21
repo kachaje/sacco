@@ -6,7 +6,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sacco/server/parser"
+	"strings"
+	"time"
+
+	"github.com/google/uuid"
 )
 
 func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
@@ -34,10 +39,10 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			}
 		}()
 
-		if sessions[*sessionId].ContactsAdded ||
-			sessions[*sessionId].BeneficiariesAdded ||
-			sessions[*sessionId].NomineeAdded ||
-			sessions[*sessionId].OccupationAdded {
+		if sessions[*sessionId].AddedModels["memberContact"] ||
+			sessions[*sessionId].AddedModels["memberNominee"] ||
+			sessions[*sessionId].AddedModels["memberOccupation"] ||
+			sessions[*sessionId].AddedModels["memberBeneficiary"] {
 
 			var contactsData, nomineeData, occupationData map[string]any
 			var beneficiariesData []map[string]any
@@ -106,6 +111,18 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 				return fmt.Errorf("server.SaveData.memberDetails.9:missing saveFunc")
 			}
 
+			if memberData["memberIdNumber"] == nil {
+				memberIdNumber := strings.ToUpper(
+					regexp.MustCompile(`[^A-Za-z0-9]`).
+						ReplaceAllLiteralString(uuid.NewString(), ""),
+				)
+
+				memberData["memberIdNumber"] = memberIdNumber
+				memberData["shortMemberId"] = memberIdNumber[:8]
+			}
+
+			memberData["dateJoined"] = time.Now().Format("2006-01-02")
+
 			mid, err := saveFunc(memberData, "member", 0)
 			if err != nil {
 				log.Println(err)
@@ -119,7 +136,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 
 				memberData["contactDetails"] = contactsData
 
-				_, err = saveFunc(contactsData, "contactDetails", 0)
+				_, err = saveFunc(contactsData, "memberContact", 0)
 				if err != nil {
 					log.Println(err)
 					return err
@@ -137,7 +154,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 
 				memberData["nomineeDetails"] = nomineeData
 
-				_, err = saveFunc(contactsData, "nomineeDetails", 0)
+				_, err = saveFunc(contactsData, "memberNominee", 0)
 				if err != nil {
 					log.Println(err)
 					return err
@@ -155,7 +172,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 
 				memberData["occupationDetails"] = occupationData
 
-				_, err = saveFunc(contactsData, "occupationDetails", 0)
+				_, err = saveFunc(contactsData, "memberOccupation", 0)
 				if err != nil {
 					log.Println(err)
 					return err
@@ -172,7 +189,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 				for i := range beneficiariesData {
 					beneficiariesData[i]["memberId"] = id
 
-					_, err = saveFunc(beneficiariesData[i], "beneficiaries", 0)
+					_, err = saveFunc(beneficiariesData[i], "memberBeneficiary", 0)
 					if err != nil {
 						log.Println(err)
 						continue

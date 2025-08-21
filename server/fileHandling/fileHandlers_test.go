@@ -379,7 +379,9 @@ func TestHandleMemberDetails(t *testing.T) {
 	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
 	cacheFolder := filepath.Join(".", "tmp5", "cache")
 
-	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
+	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
+
+	os.MkdirAll(sessionFolder, 0755)
 
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
@@ -402,7 +404,7 @@ func TestHandleMemberDetails(t *testing.T) {
 		}
 		defer src.Close()
 
-		dst, err := os.Create(filepath.Join(cacheFolder, phoneNumber, file))
+		dst, err := os.Create(filepath.Join(sessionFolder, file))
 		if err != nil {
 			t.Fatal(err)
 			continue
@@ -445,11 +447,16 @@ func TestHandleMemberDetails(t *testing.T) {
 		sessionId: {
 			MemberId:         &id,
 			ActiveMemberData: map[string]any{},
-			AddedModels:      map[string]bool{},
+			AddedModels: map[string]bool{
+				"memberContact":     true,
+				"memberNominee":     true,
+				"memberOccupation":  true,
+				"memberBeneficiary": true,
+			},
 		},
 	}
 
-	err := filehandling.HandleMemberDetails(data, &phoneNumber, &sessionId, &cacheFolder, db.GenericsSaveData, sessions, "")
+	err := filehandling.HandleMemberDetails(data, &phoneNumber, &sessionId, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -459,5 +466,7 @@ func TestHandleMemberDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	fmt.Println(result)
+	payload, _ := json.MarshalIndent(result, "", "  ")
+
+	fmt.Println(string(payload))
 }
