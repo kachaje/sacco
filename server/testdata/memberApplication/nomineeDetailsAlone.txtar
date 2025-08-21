@@ -4,6 +4,7 @@ exec wscli -p 8994 -n 0888999782
 stdout 'Welcome to Kaso SACCO'
 stdout 'Choose Activity'
 stdout 'Name:'
+stdout 'Phone Number:'
 stdout 'Address:'
 stdout '- Name: John Banda'
 stdout '4\. Next of Kin Details \(\*\)'
@@ -13,6 +14,7 @@ stdout 'Welcome to Kaso SACCO'
 1
 4
 John Banda
+0888999783
 P.O. Box 1
 0
 00

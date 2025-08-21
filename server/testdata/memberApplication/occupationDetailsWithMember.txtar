@@ -17,6 +17,7 @@ stdout 'First Name:'
 stdout 'Last Name:'
 stdout 'Other Name'
 stdout 'Gender:'
+stdout 'Phone Number: \(0888999779\)'
 stdout 'Title:'
 stdout 'Marital Status:'
 stdout 'Date of Birth:'
@@ -56,6 +57,7 @@ Mary
 Banda
 2
 1
+01
 3
 2
 1999-09-01
