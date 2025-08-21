@@ -221,7 +221,7 @@ func (d *Database) AddMember(
 }
 
 func (d *Database) MemberByPhoneNumber(phoneNumber string) (map[string]any, error) {
-	member, err := d.Member.FetchMemberByPhoneNumber(phoneNumber)
+	member, err := d.Member.FetchMemberByPhoneNumber(phoneNumber, 0)
 	if err != nil {
 		return nil, fmt.Errorf("database.MemberByPhoneNumber.1: %s", err.Error())
 	}

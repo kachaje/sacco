@@ -490,10 +490,7 @@ func (m *Member) FilterBy(whereStatement string) ([]Member, error) {
 	return results, nil
 }
 
-func (m *Member) FetchMemberByPhoneNumber(phoneNumber string) (*Member, error) {
-	retries := 0
-
-RETRY:
+func (m *Member) FetchMemberByPhoneNumber(phoneNumber string, retries int) (*Member, error) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	row := m.db.QueryRow(`SELECT 
@@ -524,7 +521,7 @@ RETRY:
 
 				log.Printf("member.FetchMemberByPhoneNumber.retry: %d\n", retries)
 
-				goto RETRY
+				return m.FetchMemberByPhoneNumber(phoneNumber, retries)
 			}
 		}
 		return nil, fmt.Errorf("member.FetchMemberByPhoneNumber.1: %s", err.Error())
