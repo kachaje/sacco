@@ -1,3 +1,58 @@
+member:
+  - id
+  - firstName
+  - lastName
+  - otherName
+  - gender
+  - title
+  - maritalStatus
+  - dateOfBirth
+  - nationalId
+  - utilityBillType
+  - utilityBillNumber
+  - fileNumber
+  - oldFileNumber
+  - phoneNumber
+  - memberIdNumber
+  - shortMemberId
+  - dateJoined
+
+memberContact:
+  - id
+  - memberId
+  - postalAddress
+  - residentialAddress
+  - email
+  - homeVillage
+  - homeTA
+  - homeDistrict
+
+memberNominee:
+  - id
+  - memberId
+  - nomineeName
+  - nomineePhone
+  - nomineeAddress
+
+memberOccupation:
+  - id
+  - memberId
+  - employerName
+  - employerAddress
+  - employerPhone
+  - jobTitle
+  - periodEmployed
+  - grossPay
+  - netPay
+  - highestQualification
+
+memberBeneficiary:
+  - id
+  - memberId
+  - name
+  - percentage
+  - contact
+
 memberBusiness:
   - id
   - memberId
