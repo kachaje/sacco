@@ -2,6 +2,7 @@ package menus
 
 import (
 	"fmt"
+	"regexp"
 	"sacco/parser"
 	"slices"
 )
@@ -20,6 +21,10 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 		session.CurrentMenu = "registration.1"
 		if session.ActiveMemberData != nil {
 			data := map[string]any{}
+
+			if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) {
+				data["phoneNumber"] = phoneNumber
+			}
 
 			targetKeys := []string{
 				"dateOfBirth", "firstName", "gender", "lastName",
