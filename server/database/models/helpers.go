@@ -9,10 +9,7 @@ import (
 	"time"
 )
 
-func QueryWithRetry(db *sql.DB, ctx context.Context, query string, args ...any) (sql.Result, error) {
-	retries := 0
-
-RETRY:
+func QueryWithRetry(db *sql.DB, ctx context.Context, retries int, query string, args ...any) (sql.Result, error) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	result, err := db.ExecContext(ctx, query, args...)
@@ -23,7 +20,7 @@ RETRY:
 
 				log.Printf("models.QueryWithRetry.retry: %d\n", retries)
 
-				goto RETRY
+				return QueryWithRetry(db, ctx, retries, query, args...)
 			}
 		}
 		return nil, fmt.Errorf("models.QueryWithRetry.1: %s", err.Error())

@@ -149,7 +149,7 @@ func (m *Member) AddMember(data map[string]any) (int64, error) {
 
 	result, err := QueryWithRetry(
 		m.db,
-		context.Background(),
+		context.Background(), 0,
 		`INSERT INTO member (
 			firstName,
 			lastName,
@@ -205,7 +205,7 @@ func (m *Member) UpdateMember(data map[string]any, id int64) error {
 
 	_, err := QueryWithRetry(
 		m.db,
-		context.Background(),
+		context.Background(), 0,
 		statement, values...,
 	)
 	if err != nil {

@@ -151,7 +151,7 @@ func TestUpdateRecord(t *testing.T) {
 
 	result, err := models.QueryWithRetry(
 		db,
-		context.Background(),
+		context.Background(), 0,
 		fmt.Sprintf(`INSERT INTO %s (
 			firstName,
 			lastName,
@@ -240,7 +240,7 @@ func TestFetchById(t *testing.T) {
 
 	result, err := models.QueryWithRetry(
 		db,
-		context.Background(),
+		context.Background(), 0,
 		fmt.Sprintf(`INSERT INTO %s (
 			firstName,
 			lastName,
@@ -309,7 +309,7 @@ func TestFilterBy(t *testing.T) {
 
 	_, err = models.QueryWithRetry(
 		db,
-		context.Background(),
+		context.Background(), 0,
 		fmt.Sprintf(`INSERT INTO %s (
 			firstName,
 			lastName,
