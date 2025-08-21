@@ -11,7 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"sacco/parser"
+	"sacco/server/parser"
 	"sacco/server/database"
 	"sacco/server/menus"
 	"sacco/utils"

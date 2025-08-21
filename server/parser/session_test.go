@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
-	"sacco/parser"
+	"sacco/server/parser"
 	"testing"
 )
 
 func TestUpdateSessionFlags(t *testing.T) {
-	content, err := os.ReadFile(filepath.Join("..", "server", "database", "models", "fixtures", "member.json"))
+	content, err := os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 func TestLoadMemberCache(t *testing.T) {
 	session := parser.NewSession(nil)
 
-	err := session.LoadMemberCache("0999888777", filepath.Join("..", "server", "database", "models", "fixtures", "cache"))
+	err := session.LoadMemberCache("0999888777", filepath.Join("..", "database", "models", "fixtures", "cache"))
 	if err != nil {
 		t.Fatal(err)
 	}

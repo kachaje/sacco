@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"sacco/parser"
+	"sacco/server/parser"
 	"sacco/utils"
 	"strconv"
 	"time"

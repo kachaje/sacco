@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"sacco/parser"
+	"sacco/server/parser"
 	"sacco/server"
 	"testing"
 )
