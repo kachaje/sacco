@@ -12,12 +12,9 @@ import (
 
 func handleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 	saveFunc func(
-		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		map[string]any,
+		string,
+		int,
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any, sessionFolder string) error {
 	rawData, ok := data.(map[string]any)
 	if ok {
@@ -127,9 +124,11 @@ func handleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 				return fmt.Errorf("server.SaveData.beneficiaries.4:missing saveFunc")
 			}
 
-			_, err := saveFunc(nil, nil, nil, nil, records, &memberId)
-			if err != nil {
-				return fmt.Errorf("server.SaveData.beneficiaries.5:%s", err.Error())
+			for i := range records {
+				_, err := saveFunc(records[i], "beneficiaries", 0)
+				if err != nil {
+					return fmt.Errorf("server.SaveData.beneficiaries.5:%s", err.Error())
+				}
 			}
 
 			transactionDone = true

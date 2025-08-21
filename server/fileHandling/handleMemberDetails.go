@@ -10,14 +10,7 @@ import (
 )
 
 func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
-	saveFunc func(
-		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
-	) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
+	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
 	memberData, ok := data.(map[string]any)
 	if ok {
 		var id int64
@@ -113,7 +106,7 @@ func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 				return fmt.Errorf("server.SaveData.memberDetails.9:missing saveFunc")
 			}
 
-			mid, err := saveFunc(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
+			mid, err := saveFunc(memberData, "member", 0)
 			if err != nil {
 				log.Println(err)
 				return err
@@ -125,6 +118,12 @@ func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 				contactsData["memberId"] = id
 
 				memberData["contactDetails"] = contactsData
+
+				_, err = saveFunc(contactsData, "contactDetails", 0)
+				if err != nil {
+					log.Println(err)
+					return err
+				}
 
 				if os.Getenv("DEBUG") == "true" {
 					CacheFile(contactsFile, contactsData, 0)
@@ -138,6 +137,12 @@ func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 
 				memberData["nomineeDetails"] = nomineeData
 
+				_, err = saveFunc(contactsData, "nomineeDetails", 0)
+				if err != nil {
+					log.Println(err)
+					return err
+				}
+
 				if os.Getenv("DEBUG") == "true" {
 					CacheFile(nomineeFile, nomineeData, 0)
 				} else {
@@ -150,6 +155,12 @@ func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 
 				memberData["occupationDetails"] = occupationData
 
+				_, err = saveFunc(contactsData, "occupationDetails", 0)
+				if err != nil {
+					log.Println(err)
+					return err
+				}
+
 				if os.Getenv("DEBUG") == "true" {
 					CacheFile(occupationFile, occupationData, 0)
 				} else {
@@ -160,6 +171,12 @@ func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			if len(beneficiariesData) > 0 {
 				for i := range beneficiariesData {
 					beneficiariesData[i]["memberId"] = id
+
+					_, err = saveFunc(beneficiariesData[i], "beneficiaries", 0)
+					if err != nil {
+						log.Println(err)
+						continue
+					}
 				}
 
 				memberData["beneficiaries"] = beneficiariesData
@@ -177,7 +194,7 @@ func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 				return fmt.Errorf("server.SaveData.memberDetails.10:missing saveFunc")
 			}
 
-			mid, err := saveFunc(memberData, nil, nil, nil, nil, nil)
+			mid, err := saveFunc(memberData, "member", 0)
 			if err != nil {
 				log.Println(err)
 				return fmt.Errorf("server.SaveData.memberDetails.11:%s", err.Error())

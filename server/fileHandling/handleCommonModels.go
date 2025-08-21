@@ -12,7 +12,7 @@ func HandleCommonModels(data any, model, phoneNumber, sessionId, cacheFolder *st
 	saveFunc func(
 		data map[string]any,
 		model string,
-		parentId *int64,
+		retries int,
 	) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
 	val, ok := data.(map[string]any)
 	if ok {
@@ -54,7 +54,7 @@ func HandleCommonModels(data any, model, phoneNumber, sessionId, cacheFolder *st
 				return fmt.Errorf("server.SaveData.%s.1:missing saveFunc", *model)
 			}
 
-			_, err := saveFunc(val, *model, sessions[*sessionId].MemberId)
+			_, err := saveFunc(val, *model, 0)
 			if err != nil {
 				return fmt.Errorf("server.SaveData.%s.2:%s", *model, err.Error())
 			}

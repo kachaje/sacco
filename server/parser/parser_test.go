@@ -417,12 +417,9 @@ func TestCancel(t *testing.T) {
 	called := false
 
 	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		[]map[string]any,
-		*int64,
+		a map[string]any,
+		b string,
+		c int,
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
 		if m != nil {
 			t.Fatalf("Test failed. Expected: nil; Actual: %v", m)
@@ -472,12 +469,9 @@ func TestSubmit(t *testing.T) {
 	called := false
 
 	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		[]map[string]any,
-		*int64,
+		a map[string]any,
+		b string,
+		c int,
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
 		if m == nil {
 			t.Fatalf("Test failed")
@@ -534,12 +528,9 @@ func TestNavNext(t *testing.T) {
 	called := false
 
 	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		map[string]any,
-		[]map[string]any,
-		*int64,
+		a map[string]any,
+		b string,
+		c int,
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
 		if m == nil {
 			t.Fatalf("Test failed")

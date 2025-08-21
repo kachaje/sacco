@@ -63,11 +63,8 @@ func TestSaveDataAll(t *testing.T) {
 
 	saveFunc := func(
 		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		b string,
+		c int,
 	) (*int64, error) {
 		var id int64 = 13
 
@@ -170,11 +167,8 @@ func TestSaveDataOne(t *testing.T) {
 
 	saveFunc := func(
 		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		b string,
+		c int,
 	) (*int64, error) {
 		var id int64 = 13
 
@@ -288,11 +282,8 @@ func TestRerunFailedSaves(t *testing.T) {
 
 	saveFunc := func(
 		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		b string,
+		c int,
 	) (*int64, error) {
 		count++
 

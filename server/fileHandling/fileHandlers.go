@@ -53,12 +53,9 @@ func CacheFile(filename string, data any, retries int) {
 func SaveData(
 	data any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string,
 	saveFunc func(
-		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		map[string]any,
+		string,
+		int,
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
 	var sessionFolder string
 
@@ -86,14 +83,7 @@ func SaveData(
 	case "memberBusiness":
 		return HandleCommonModels(
 			data, model, phoneNumber, sessionId, cacheFolder,
-			func(
-				data map[string]any,
-				model string,
-				parentId *int64,
-			) (*int64, error) {
-				return nil, nil
-			},
-			sessions, sessionFolder,
+			saveFunc, sessions, sessionFolder,
 		)
 
 	case "memberDetails":
@@ -122,7 +112,7 @@ func SaveData(
 					return fmt.Errorf("server.SaveData.contactDetails.1:missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, val, nil, nil, nil, sessions[*sessionId].MemberId)
+				_, err := saveFunc(val, "contactDetails", 0)
 				if err != nil {
 					return fmt.Errorf("server.SaveData.contactDetails.2:%s", err.Error())
 				}
@@ -162,7 +152,7 @@ func SaveData(
 					return fmt.Errorf("server.SaveData.nomineeDetails.1:missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, nil, val, nil, nil, sessions[*sessionId].MemberId)
+				_, err := saveFunc(val, "nomineeDetails", 0)
 				if err != nil {
 					return fmt.Errorf("server.SaveData.nomineeDetails.2:%s", err.Error())
 				}
@@ -218,7 +208,7 @@ func SaveData(
 					return fmt.Errorf("server.SaveData.occupationDetails.1:missing saveFunc")
 				}
 
-				_, err := saveFunc(nil, nil, nil, val, nil, sessions[*sessionId].MemberId)
+				_, err := saveFunc(val, "occupationDetails", 0)
 				if err != nil {
 					return fmt.Errorf("server.SaveData.occupationDetails.2:%s", err.Error())
 				}

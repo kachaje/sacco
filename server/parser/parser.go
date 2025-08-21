@@ -35,12 +35,9 @@ type WorkFlow struct {
 	SubmitCallback     func(
 		d any, m *string, p *string, s *string, c *string, f *string,
 		addFn func(
-			a map[string]any,
-			b map[string]any,
-			c map[string]any,
-			d map[string]any,
-			e []map[string]any,
-			f *int64,
+			map[string]any,
+			string,
+			int,
 		) (*int64, error),
 		ss map[string]*Session,
 		refData map[string]any,
@@ -50,12 +47,9 @@ type WorkFlow struct {
 	CacheFolder      string
 	PreferenceFolder string
 	AddFunc          func(
-		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		map[string]any,
+		string,
+		int,
 	) (*int64, error)
 
 	Sessions map[string]*Session
@@ -67,22 +61,16 @@ func NewWorkflow(
 		any, *string, *string, *string, *string, *string,
 		func(
 			map[string]any,
-			map[string]any,
-			map[string]any,
-			map[string]any,
-			[]map[string]any,
-			*int64,
+			string,
+			int,
 		) (*int64, error),
 		map[string]*Session,
 		map[string]any,
 	) error,
 	preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, addFunc func(
-		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		map[string]any,
+		string,
+		int,
 	) (*int64, error), sessions map[string]*Session, refData map[string]any) *WorkFlow {
 
 	w := &WorkFlow{

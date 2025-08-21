@@ -226,7 +226,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 
 	model := "beneficiaries"
 
-	err = filehandling.SaveData(update, &model, nil, nil, nil, nil, db.AddMember, nil, beneficiaries)
+	err = filehandling.SaveData(update, &model, nil, nil, nil, nil, db.GenericsSaveData, nil, beneficiaries)
 	if err != nil {
 		t.Fatal(err)
 	}

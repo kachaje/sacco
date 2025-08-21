@@ -14,11 +14,8 @@ import (
 func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 	saveFunc func(
 		a map[string]any,
-		b map[string]any,
-		c map[string]any,
-		d map[string]any,
-		e []map[string]any,
-		f *int64,
+		b string,
+		c int,
 	) (*int64, error), sessions map[string]*parser.Session) error {
 	sessionFolder := filepath.Join(*cacheFolder, *phoneNumber)
 
