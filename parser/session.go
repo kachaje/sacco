@@ -93,6 +93,28 @@ func (s *Session) UpdateSessionFlags() error {
 	return nil
 }
 
+func (s *Session) UpdateActiveMemberData(data map[string]any) {
+	retries := 0
+
+RETRY:
+	time.Sleep(time.Duration(retries) * time.Second)
+
+	if s.Mu == nil {
+		s.Mu = &sync.Mutex{}
+	}
+
+	done := s.Mu.TryLock()
+	if !done {
+		if retries < 3 {
+			retries++
+			goto RETRY
+		}
+	}
+	defer s.Mu.Unlock()
+
+	s.ActiveMemberData = data
+}
+
 func (s *Session) WriteToMap(key string, value any) {
 	retries := 0
 
@@ -193,7 +215,7 @@ func (s *Session) RefreshSession() (map[string]any, error) {
 			return s.ActiveMemberData, err
 		}
 
-		s.ActiveMemberData = data
+		s.UpdateActiveMemberData(data)
 
 		return data, nil
 	}

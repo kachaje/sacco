@@ -22,7 +22,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 	}
 
 	session := parser.NewSession(nil)
-	session.ActiveMemberData = data
+	session.UpdateActiveMemberData(data)
 
 	err = session.UpdateSessionFlags()
 	if err != nil {
