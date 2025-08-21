@@ -6,12 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sacco/server/parser"
-	"strings"
-	"time"
-
-	"github.com/google/uuid"
 )
 
 func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
@@ -110,18 +105,6 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			if saveFunc == nil {
 				return fmt.Errorf("server.SaveData.memberDetails.9:missing saveFunc")
 			}
-
-			if memberData["memberIdNumber"] == nil {
-				memberIdNumber := strings.ToUpper(
-					regexp.MustCompile(`[^A-Za-z0-9]`).
-						ReplaceAllLiteralString(uuid.NewString(), ""),
-				)
-
-				memberData["memberIdNumber"] = memberIdNumber
-				memberData["shortMemberId"] = memberIdNumber[:8]
-			}
-
-			memberData["dateJoined"] = time.Now().Format("2006-01-02")
 
 			mid, err := saveFunc(memberData, "member", 0)
 			if err != nil {

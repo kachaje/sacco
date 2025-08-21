@@ -461,7 +461,7 @@ func TestHandleMemberDetails(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err := db.MemberByPhoneNumber(phoneNumber)
+	result, err := db.MemberDetailsByPhoneNumber(phoneNumber, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

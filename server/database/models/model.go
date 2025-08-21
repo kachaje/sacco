@@ -7,6 +7,9 @@ import (
 	"regexp"
 	"slices"
 	"strings"
+	"time"
+
+	"github.com/google/uuid"
 )
 
 type Model struct {
@@ -39,6 +42,20 @@ func (m *Model) AddRecord(data map[string]any) (*int64, error) {
 	values := []any{}
 	markers := []string{}
 	var id int64
+
+	if m.ModelName == "member" {
+		if data["memberIdNumber"] == nil {
+			memberIdNumber := strings.ToUpper(
+				regexp.MustCompile(`[^A-Za-z0-9]`).
+					ReplaceAllLiteralString(uuid.NewString(), ""),
+			)
+
+			data["memberIdNumber"] = memberIdNumber
+			data["shortMemberId"] = memberIdNumber[:8]
+		}
+
+		data["dateJoined"] = time.Now().Format("2006-01-02")
+	}
 
 	for key, value := range data {
 		if !slices.Contains(m.Fields, key) {
