@@ -45,7 +45,7 @@ func NewSession(queryFn func(string) (map[string]any, error)) *Session {
 }
 
 func (s *Session) UpdateSessionFlags() error {
-	beneficiariesData := s.ReadFromMap("beneficiaries")
+	beneficiariesData := s.ReadFromMap("beneficiaries", 0)
 	if beneficiariesData != nil {
 		val, ok := beneficiariesData.([]any)
 		if ok && len(val) > 0 {
@@ -58,7 +58,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	contactDetailsData := s.ReadFromMap("contactDetails")
+	contactDetailsData := s.ReadFromMap("contactDetails", 0)
 	if contactDetailsData != nil {
 		val, ok := contactDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
@@ -66,7 +66,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	nomineeDetailsData := s.ReadFromMap("nomineeDetails")
+	nomineeDetailsData := s.ReadFromMap("nomineeDetails", 0)
 	if nomineeDetailsData != nil {
 		val, ok := nomineeDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
@@ -74,7 +74,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	occupationDetailsData := s.ReadFromMap("occupationDetails")
+	occupationDetailsData := s.ReadFromMap("occupationDetails", 0)
 	if occupationDetailsData != nil {
 		val, ok := occupationDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
@@ -82,7 +82,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	idData := s.ReadFromMap("id")
+	idData := s.ReadFromMap("id", 0)
 	if idData != nil {
 		val := fmt.Sprintf("%v", idData)
 
@@ -115,10 +115,7 @@ func (s *Session) UpdateActiveMemberData(data map[string]any, retries int) {
 	s.ActiveMemberData = data
 }
 
-func (s *Session) WriteToMap(key string, value any) {
-	retries := 0
-
-RETRY:
+func (s *Session) WriteToMap(key string, value any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	if s.Mu == nil {
@@ -129,7 +126,8 @@ RETRY:
 	if !done {
 		if retries < 3 {
 			retries++
-			goto RETRY
+			s.WriteToMap(key, value, retries)
+			return
 		}
 	}
 	defer s.Mu.Unlock()
@@ -141,10 +139,7 @@ RETRY:
 	s.ActiveMemberData[key] = value
 }
 
-func (s *Session) ReadFromMap(key string) any {
-	retries := 0
-
-RETRY:
+func (s *Session) ReadFromMap(key string, retries int) any {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	if s.Mu == nil {
@@ -155,7 +150,7 @@ RETRY:
 	if !done {
 		if retries < 3 {
 			retries++
-			goto RETRY
+			return s.ReadFromMap(key, retries)
 		}
 	}
 	defer s.Mu.Unlock()
@@ -191,7 +186,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 				continue
 			}
 
-			s.WriteToMap(key, data)
+			s.WriteToMap(key, data, 0)
 		} else {
 			data := map[string]any{}
 			err = json.Unmarshal(content, &data)
@@ -199,7 +194,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 				continue
 			}
 
-			s.WriteToMap(key, data)
+			s.WriteToMap(key, data, 0)
 		}
 	}
 
