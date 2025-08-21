@@ -1,23 +1,23 @@
 model: loanApplication
 
-initialScreen: enterMemberIdNo
+initialScreen: enterPhoneNumber
 
-enterMemberIdNo:
+enterPhoneNumber:
   order: 0
   type: inputScreen
   text:
-    en: Member ID Number
-    ny: Nambala Yamembala
-  inputIdentifier: memberIdNumber
-  nextScreen: enterEmploymentNumber
+    en: Phone Number
+    ny: Nambala Yafoni
+  inputIdentifier: phoneNumber
+  nextScreen: enterVerifyMember
 
-enterEmploymentNumber:
+enterVerifyMember:
   order: 1
   type: inputScreen
   text:
-    en: Employment Number
-    ny: Nambala Yakuntchito
-  inputIdentifier: employeeNumber
+    en: Member Name
+    ny: Dzina Lamembala
+  inputIdentifier: memberName
   nextScreen: enterLoanType
 
 enterLoanType:
@@ -75,4 +75,7 @@ enterRepaymentPeriod:
     en: Repayment Months
     ny: Miyezi Yobweza
   inputIdentifier: repaymentPeriod
-  nextScreen:
+  nextScreen: formSummary
+
+formSummary:
+  type: quitScreen
