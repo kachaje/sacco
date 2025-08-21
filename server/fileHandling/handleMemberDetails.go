@@ -1,0 +1,203 @@
+package filehandling
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"sacco/server/parser"
+)
+
+func handleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
+	saveFunc func(
+		a map[string]any,
+		b map[string]any,
+		c map[string]any,
+		d map[string]any,
+		e []map[string]any,
+		f *int64,
+	) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
+	memberData, ok := data.(map[string]any)
+	if ok {
+		var id int64
+		var err error
+
+		if phoneNumber != nil && *phoneNumber != "default" {
+			if memberData["phoneNumber"] == nil {
+				memberData["phoneNumber"] = *phoneNumber
+			}
+		}
+
+		filename := filepath.Join(sessionFolder, "memberDetails.json")
+
+		transactionDone := false
+
+		// By default cache the data first in case we lose database connection
+		CacheFile(filename, memberData, 0)
+		defer func() {
+			if transactionDone {
+				os.Remove(filename)
+			}
+		}()
+
+		if sessions[*sessionId].ContactsAdded ||
+			sessions[*sessionId].BeneficiariesAdded ||
+			sessions[*sessionId].NomineeAdded ||
+			sessions[*sessionId].OccupationAdded {
+
+			var contactsData, nomineeData, occupationData map[string]any
+			var beneficiariesData []map[string]any
+
+			contactsFile := filepath.Join(sessionFolder, "contactDetails.json")
+
+			_, err = os.Stat(contactsFile)
+			if !os.IsNotExist(err) {
+				content, err := os.ReadFile(contactsFile)
+				if err != nil {
+					log.Printf("server.SaveData.memberDetails.1:%s\n", err.Error())
+				} else {
+					err = json.Unmarshal(content, &contactsData)
+					if err != nil {
+						log.Printf("server.SaveData.memberDetails.2:%s\n", err.Error())
+					}
+				}
+			}
+
+			nomineeFile := filepath.Join(sessionFolder, "nomineeDetails.json")
+
+			_, err = os.Stat(nomineeFile)
+			if !os.IsNotExist(err) {
+				content, err := os.ReadFile(nomineeFile)
+				if err != nil {
+					log.Printf("server.SaveData.memberDetails.3:%s\n", err.Error())
+				} else {
+					err = json.Unmarshal(content, &nomineeData)
+					if err != nil {
+						log.Printf("server.SaveData.memberDetails.4:%s\n", err.Error())
+					}
+				}
+			}
+
+			occupationFile := filepath.Join(sessionFolder, "occupationDetails.json")
+
+			_, err = os.Stat(occupationFile)
+			if !os.IsNotExist(err) {
+				content, err := os.ReadFile(occupationFile)
+				if err != nil {
+					log.Printf("server.SaveData.memberDetails.5:%s\n", err.Error())
+				} else {
+					err = json.Unmarshal(content, &occupationData)
+					if err != nil {
+						log.Printf("server.SaveData.memberDetails.6:%s\n", err.Error())
+					}
+				}
+			}
+
+			beneficiariesFile := filepath.Join(sessionFolder, "beneficiaries.json")
+
+			_, err = os.Stat(beneficiariesFile)
+			if !os.IsNotExist(err) {
+				content, err := os.ReadFile(beneficiariesFile)
+				if err != nil {
+					log.Printf("server.SaveData.memberDetails.7:%s\n", err.Error())
+				} else {
+					err = json.Unmarshal(content, &beneficiariesData)
+					if err != nil {
+						log.Printf("server.SaveData.memberDetails.8:%s\n", err.Error())
+					}
+				}
+			}
+
+			if saveFunc == nil {
+				return fmt.Errorf("server.SaveData.memberDetails.9:missing saveFunc")
+			}
+
+			mid, err := saveFunc(memberData, contactsData, nomineeData, occupationData, beneficiariesData, nil)
+			if err != nil {
+				log.Println(err)
+				return err
+			}
+
+			id = *mid
+
+			if len(contactsData) > 0 {
+				contactsData["memberId"] = id
+
+				memberData["contactDetails"] = contactsData
+
+				if os.Getenv("DEBUG") == "true" {
+					CacheFile(contactsFile, contactsData, 0)
+				} else {
+					os.Remove(contactsFile)
+				}
+			}
+
+			if len(nomineeData) > 0 {
+				nomineeData["memberId"] = id
+
+				memberData["nomineeDetails"] = nomineeData
+
+				if os.Getenv("DEBUG") == "true" {
+					CacheFile(nomineeFile, nomineeData, 0)
+				} else {
+					os.Remove(nomineeFile)
+				}
+			}
+
+			if len(occupationData) > 0 {
+				occupationData["memberId"] = id
+
+				memberData["occupationDetails"] = occupationData
+
+				if os.Getenv("DEBUG") == "true" {
+					CacheFile(occupationFile, occupationData, 0)
+				} else {
+					os.Remove(occupationFile)
+				}
+			}
+
+			if len(beneficiariesData) > 0 {
+				for i := range beneficiariesData {
+					beneficiariesData[i]["memberId"] = id
+				}
+
+				memberData["beneficiaries"] = beneficiariesData
+
+				if os.Getenv("DEBUG") == "true" {
+					CacheFile(beneficiariesFile, beneficiariesData, 0)
+				} else {
+					os.Remove(beneficiariesFile)
+				}
+			}
+
+			transactionDone = true
+		} else {
+			if saveFunc == nil {
+				return fmt.Errorf("server.SaveData.memberDetails.10:missing saveFunc")
+			}
+
+			mid, err := saveFunc(memberData, nil, nil, nil, nil, nil)
+			if err != nil {
+				log.Println(err)
+				return fmt.Errorf("server.SaveData.memberDetails.11:%s", err.Error())
+			}
+
+			id = *mid
+
+			transactionDone = true
+		}
+
+		sessions[*sessionId].MemberId = &id
+
+		memberData["id"] = id
+
+		sessions[*sessionId].UpdateActiveMemberData(memberData, 0)
+
+		sessions[*sessionId].RefreshSession()
+
+		sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+	}
+
+	return nil
+}
