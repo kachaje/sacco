@@ -12,23 +12,24 @@ import (
 	"time"
 )
 
-func CacheFile(filename string, data any) {
-	retries := 0
-
-RETRY:
+func CacheFile(filename string, data any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	if utils.FileLocked(filename) {
 		if retries < 5 {
 			retries++
-			goto RETRY
+
+			CacheFile(filename, data, retries)
+			return
 		}
 	}
 	_, err := utils.LockFile(filename)
 	if err != nil {
 		log.Printf("server.Cachefile.1: %s", err.Error())
 		retries = 0
-		goto RETRY
+
+		CacheFile(filename, data, retries)
+		return
 	}
 	defer func() {
 		err := utils.UnLockFile(filename)
@@ -99,7 +100,7 @@ func SaveData(
 			transactionDone := false
 
 			// By default cache the data first in case we lose database connection
-			CacheFile(filename, memberData)
+			CacheFile(filename, memberData, 0)
 			defer func() {
 				if transactionDone {
 					os.Remove(filename)
@@ -192,7 +193,7 @@ func SaveData(
 					memberData["contactDetails"] = contactsData
 
 					if os.Getenv("DEBUG") == "true" {
-						CacheFile(contactsFile, contactsData)
+						CacheFile(contactsFile, contactsData, 0)
 					} else {
 						os.Remove(contactsFile)
 					}
@@ -204,7 +205,7 @@ func SaveData(
 					memberData["nomineeDetails"] = nomineeData
 
 					if os.Getenv("DEBUG") == "true" {
-						CacheFile(nomineeFile, nomineeData)
+						CacheFile(nomineeFile, nomineeData, 0)
 					} else {
 						os.Remove(nomineeFile)
 					}
@@ -216,7 +217,7 @@ func SaveData(
 					memberData["occupationDetails"] = occupationData
 
 					if os.Getenv("DEBUG") == "true" {
-						CacheFile(occupationFile, occupationData)
+						CacheFile(occupationFile, occupationData, 0)
 					} else {
 						os.Remove(occupationFile)
 					}
@@ -230,7 +231,7 @@ func SaveData(
 					memberData["beneficiaries"] = beneficiariesData
 
 					if os.Getenv("DEBUG") == "true" {
-						CacheFile(beneficiariesFile, beneficiariesData)
+						CacheFile(beneficiariesFile, beneficiariesData, 0)
 					} else {
 						os.Remove(beneficiariesFile)
 					}
@@ -272,7 +273,7 @@ func SaveData(
 			transactionDone := false
 
 			// By default cache the data first in case we lose database connection
-			CacheFile(filename, val)
+			CacheFile(filename, val, 0)
 			defer func() {
 				if transactionDone {
 					os.Remove(filename)
@@ -312,7 +313,7 @@ func SaveData(
 			transactionDone := false
 
 			// By default cache the data first in case we lose database connection
-			CacheFile(filename, val)
+			CacheFile(filename, val, 0)
 			defer func() {
 				if transactionDone {
 					os.Remove(filename)
@@ -350,7 +351,7 @@ func SaveData(
 			transactionDone := false
 
 			// By default cache the data first in case we lose database connection
-			CacheFile(filename, val)
+			CacheFile(filename, val, 0)
 			defer func() {
 				if transactionDone {
 					os.Remove(filename)
@@ -484,7 +485,7 @@ func SaveData(
 			transactionDone := false
 
 			// By default cache the data first in case we lose database connection
-			CacheFile(filename, records)
+			CacheFile(filename, records, 0)
 			defer func() {
 				if transactionDone {
 					os.Remove(filename)
