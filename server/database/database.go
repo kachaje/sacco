@@ -8,7 +8,6 @@ import (
 	"sacco/server/database/models"
 	"sacco/utils"
 	"slices"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -25,14 +24,9 @@ var modelTemplates string
 var modelTemplatesData map[string]any
 
 type Database struct {
-	DbName            string
-	DB                *sql.DB
-	Member            *models.Member
-	MemberContact     *models.MemberContact
-	MemberBeneficiary *models.MemberBeneficiary
-	MemberOccupation  *models.MemberOccupation
-	MemberNominee     *models.MemberNominee
-	GenericModels     map[string]*models.Model
+	DbName        string
+	DB            *sql.DB
+	GenericModels map[string]*models.Model
 
 	Mu *sync.Mutex
 }
@@ -67,12 +61,6 @@ func NewDatabase(dbname string) *Database {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	instance.Member = models.NewMember(db)
-	instance.MemberContact = models.NewMemberContact(db, nil)
-	instance.MemberBeneficiary = models.NewMemberBeneficiary(db, nil)
-	instance.MemberOccupation = models.NewMemberOccupation(db, nil)
-	instance.MemberNominee = models.NewMemberNominee(db, nil)
 
 	for table, value := range modelTemplatesData {
 		val, ok := value.([]any)
@@ -109,137 +97,6 @@ func (d *Database) initDb() error {
 	return nil
 }
 
-func (d *Database) AddMember(
-	memberData, contactData,
-	nomineeData, occupationData map[string]any,
-	beneficiariesData []map[string]any,
-	existingMemberId *int64,
-) (*int64, error) {
-	var memberId int64
-	var err error
-
-	if memberData["id"] != nil {
-		val := fmt.Sprintf("%v", memberData["id"])
-
-		v, err := strconv.ParseInt(val, 10, 64)
-		if err == nil {
-			existingMemberId = &v
-		}
-	}
-
-	if existingMemberId == nil {
-		if memberData != nil {
-			id, err := d.Member.AddMember(memberData)
-			if err != nil {
-				return nil, fmt.Errorf("database.AddMember.1: %s", err.Error())
-			}
-
-			memberId = id
-		}
-	} else {
-		memberId = *existingMemberId
-
-		if memberData != nil {
-			err = d.Member.UpdateMember(memberData, *existingMemberId)
-			if err != nil {
-				return nil, fmt.Errorf("database.AddMember.2: %s", err.Error())
-			}
-		}
-	}
-
-	if contactData != nil {
-		contactData["memberId"] = memberId
-
-		if contactData["id"] != nil {
-			id, ok := contactData["id"].(int64)
-			if ok {
-				err = d.MemberContact.UpdateMemberContact(contactData, id)
-				if err != nil {
-					return nil, fmt.Errorf("database.AddMember.4a: %s", err.Error())
-				}
-			}
-		} else {
-			_, err = d.MemberContact.AddMemberContact(contactData)
-			if err != nil {
-				return nil, fmt.Errorf("database.AddMember.3: %s", err.Error())
-			}
-		}
-	}
-
-	if nomineeData != nil {
-		nomineeData["memberId"] = memberId
-
-		if nomineeData["id"] != nil {
-			id, ok := nomineeData["id"].(int64)
-			if ok {
-				err = d.MemberNominee.UpdateMemberNominee(nomineeData, id)
-				if err != nil {
-					return nil, fmt.Errorf("database.AddMember.4a: %s", err.Error())
-				}
-			}
-		} else {
-			_, err = d.MemberNominee.AddMemberNominee(nomineeData)
-			if err != nil {
-				return nil, fmt.Errorf("database.AddMember.4b: %s", err.Error())
-			}
-		}
-	}
-
-	if occupationData != nil {
-		occupationData["memberId"] = memberId
-
-		if occupationData["id"] != nil {
-			id, ok := occupationData["id"].(int64)
-			if ok {
-				err = d.MemberOccupation.UpdateMemberOccupation(occupationData, id)
-				if err != nil {
-					return nil, fmt.Errorf("database.AddMember.5a: %s", err.Error())
-				}
-			}
-		} else {
-			_, err = d.MemberOccupation.AddMemberOccupation(occupationData)
-			if err != nil {
-				return nil, fmt.Errorf("database.AddMember.5b: %s", err.Error())
-			}
-		}
-	}
-
-	for _, beneficiaryData := range beneficiariesData {
-		beneficiaryData["memberId"] = memberId
-
-		if beneficiaryData["id"] != nil {
-			id, ok := beneficiaryData["id"].(int64)
-			if ok {
-				err = d.MemberBeneficiary.UpdateMemberBeneficiary(beneficiaryData, id)
-				if err != nil {
-					return nil, fmt.Errorf("database.AddMember.6a: %s", err.Error())
-				}
-			}
-		} else {
-			_, err = d.MemberBeneficiary.AddMemberBeneficiary(beneficiaryData)
-			if err != nil {
-				return nil, fmt.Errorf("database.AddMember.6b: %s", err.Error())
-			}
-		}
-	}
-
-	return &memberId, nil
-}
-
-func (d *Database) MemberByPhoneNumber(phoneNumber string) (map[string]any, error) {
-	member, err := d.Member.FetchMemberByPhoneNumber(phoneNumber, 0)
-	if err != nil {
-		return nil, fmt.Errorf("database.MemberByPhoneNumber.1: %s", err.Error())
-	}
-
-	fullRecord, err := d.Member.MemberDetails(member.ID)
-	if err != nil {
-		return nil, fmt.Errorf("database.MemberByPhoneNumber.2: %s", err.Error())
-	}
-
-	return fullRecord, nil
-}
-
 func (d *Database) GenericsSaveData(data map[string]any,
 	model string,
 	retries int,
@@ -269,7 +126,7 @@ func (d *Database) GenericsSaveData(data map[string]any,
 	return id, nil
 }
 
-func (d *Database) MemberDetailsByPhoneNumber(phoneNumber string, arrayFields, skipFields []string) (map[string]any, error) {
+func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFields []string) (map[string]any, error) {
 	results, err := d.GenericModels["member"].FilterBy(fmt.Sprintf(`WHERE phoneNumber = "%s" AND active = 1`, phoneNumber))
 	if err != nil {
 		return nil, err

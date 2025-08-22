@@ -34,12 +34,12 @@ type Session struct {
 	BusinessInfoAdded  bool
 	ActiveMemberData   map[string]any
 
-	QueryFn func(string) (map[string]any, error)
+	QueryFn func(string, []string, []string) (map[string]any, error)
 
 	Mu *sync.Mutex
 }
 
-func NewSession(queryFn func(string) (map[string]any, error)) *Session {
+func NewSession(queryFn func(string, []string, []string) (map[string]any, error)) *Session {
 	return &Session{
 		QueryFn:     queryFn,
 		Mu:          &sync.Mutex{},
@@ -208,7 +208,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 
 func (s *Session) RefreshSession() (map[string]any, error) {
 	if s.PhoneNumber != "" && s.QueryFn != nil {
-		data, err := s.QueryFn(s.PhoneNumber)
+		data, err := s.QueryFn(s.PhoneNumber, nil, nil)
 		if err != nil {
 			return s.ActiveMemberData, err
 		}

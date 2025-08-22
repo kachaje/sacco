@@ -39,134 +39,6 @@ func TestDatabase(t *testing.T) {
 		}
 	}
 }
-
-func TestDatabaseAddMember(t *testing.T) {
-	db := database.NewDatabase(":memory:")
-	defer db.Close()
-
-	target, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	data := map[string]any{}
-
-	err = json.Unmarshal(target, &data)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	var memberBeneficiary []map[string]any
-	var memberContact map[string]any
-	var nominee map[string]any
-	var memberOccupation map[string]any
-
-	{
-		val, ok := data["memberBeneficiary"].([]any)
-		if ok {
-			for i := range val {
-				vl, ok := val[i].(map[string]any)
-				if ok {
-					delete(vl, "id")
-					memberBeneficiary = append(memberBeneficiary, vl)
-				}
-			}
-			delete(data, "memberBeneficiary")
-		} else {
-			t.Fatal("Test failed. Failed to convert map")
-		}
-	}
-	{
-		val, ok := data["memberContact"].(map[string]any)
-		if ok {
-			delete(val, "id")
-			memberContact = val
-			delete(data, "memberContact")
-		} else {
-			t.Fatal("Test failed. Failed to convert map")
-		}
-	}
-	{
-		val, ok := data["memberNominee"].(map[string]any)
-		if ok {
-			delete(val, "id")
-			nominee = val
-			delete(data, "memberNominee")
-		} else {
-			t.Fatal("Test failed. Failed to convert map")
-		}
-	}
-	{
-		val, ok := data["memberOccupation"].(map[string]any)
-		if ok {
-			delete(val, "id")
-			memberOccupation = val
-			delete(data, "memberOccupation")
-		} else {
-			t.Fatal("Test failed. Failed to convert map")
-		}
-	}
-	delete(data, "id")
-
-	id, err := db.AddMember(data, memberContact, nominee, memberOccupation, memberBeneficiary, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	result, err := db.Member.MemberDetails(*id)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	delete(result, "memberIdNumber")
-	delete(result, "shortMemberId")
-	delete(result, "dateJoined")
-
-	payload, _ := json.MarshalIndent(result, "", "  ")
-
-	if utils.CleanScript(payload) != utils.CleanScript(target) {
-		t.Fatal("Test failed")
-	}
-}
-
-func TestMemberByPhoneNumber(t *testing.T) {
-	dbname := ":memory:"
-	db := database.NewDatabase(dbname)
-	defer db.Close()
-
-	content, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.sql"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	sqlStatement := string(content)
-
-	_, err = db.DB.Exec(sqlStatement)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	result, err := db.MemberByPhoneNumber("09999999999")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	delete(result, "memberIdNumber")
-	delete(result, "shortMemberId")
-	delete(result, "dateJoined")
-
-	payload, _ := json.MarshalIndent(result, "", "  ")
-
-	target, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if utils.CleanScript(payload) != utils.CleanScript(target) {
-		t.Fatal("Test failed")
-	}
-}
-
 func TestMemberBeneficiaries(t *testing.T) {
 	t.Skip()
 
@@ -186,7 +58,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err := db.MemberByPhoneNumber("09999999999")
+	result, err := db.MemberByPhoneNumber("09999999999", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -233,7 +105,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err = db.MemberByPhoneNumber("09999999999")
+	result, err = db.MemberByPhoneNumber("09999999999", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -562,7 +434,7 @@ func TestMemberDetailsByPhoneNumber(t *testing.T) {
 		}
 	}
 
-	result, err := db.MemberDetailsByPhoneNumber(phoneNumber, nil, nil)
+	result, err := db.MemberByPhoneNumber(phoneNumber, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
