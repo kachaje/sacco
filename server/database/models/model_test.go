@@ -7,6 +7,8 @@ import (
 	"os"
 	"sacco/server/database/models"
 	"testing"
+
+	_ "modernc.org/sqlite"
 )
 
 var (
