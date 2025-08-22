@@ -1,4 +1,4 @@
-model: nomineeDetails
+model: memberNominee
 
 initialScreen: enterNextOfKin
 

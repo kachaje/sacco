@@ -22,7 +22,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			}
 		}
 
-		filename := filepath.Join(sessionFolder, "memberDetails.json")
+		filename := filepath.Join(sessionFolder, "member.json")
 
 		transactionDone := false
 
@@ -42,68 +42,68 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			var contactsData, nomineeData, occupationData map[string]any
 			var beneficiariesData []map[string]any
 
-			contactsFile := filepath.Join(sessionFolder, "contactDetails.json")
+			contactsFile := filepath.Join(sessionFolder, "memberContact.json")
 
 			_, err = os.Stat(contactsFile)
 			if !os.IsNotExist(err) {
 				content, err := os.ReadFile(contactsFile)
 				if err != nil {
-					log.Printf("server.SaveData.memberDetails.1:%s\n", err.Error())
+					log.Printf("server.SaveData.member.1:%s\n", err.Error())
 				} else {
 					err = json.Unmarshal(content, &contactsData)
 					if err != nil {
-						log.Printf("server.SaveData.memberDetails.2:%s\n", err.Error())
+						log.Printf("server.SaveData.member.2:%s\n", err.Error())
 					}
 				}
 			}
 
-			nomineeFile := filepath.Join(sessionFolder, "nomineeDetails.json")
+			nomineeFile := filepath.Join(sessionFolder, "memberNominee.json")
 
 			_, err = os.Stat(nomineeFile)
 			if !os.IsNotExist(err) {
 				content, err := os.ReadFile(nomineeFile)
 				if err != nil {
-					log.Printf("server.SaveData.memberDetails.3:%s\n", err.Error())
+					log.Printf("server.SaveData.member.3:%s\n", err.Error())
 				} else {
 					err = json.Unmarshal(content, &nomineeData)
 					if err != nil {
-						log.Printf("server.SaveData.memberDetails.4:%s\n", err.Error())
+						log.Printf("server.SaveData.member.4:%s\n", err.Error())
 					}
 				}
 			}
 
-			occupationFile := filepath.Join(sessionFolder, "occupationDetails.json")
+			occupationFile := filepath.Join(sessionFolder, "memberOccupation.json")
 
 			_, err = os.Stat(occupationFile)
 			if !os.IsNotExist(err) {
 				content, err := os.ReadFile(occupationFile)
 				if err != nil {
-					log.Printf("server.SaveData.memberDetails.5:%s\n", err.Error())
+					log.Printf("server.SaveData.member.5:%s\n", err.Error())
 				} else {
 					err = json.Unmarshal(content, &occupationData)
 					if err != nil {
-						log.Printf("server.SaveData.memberDetails.6:%s\n", err.Error())
+						log.Printf("server.SaveData.member.6:%s\n", err.Error())
 					}
 				}
 			}
 
-			beneficiariesFile := filepath.Join(sessionFolder, "beneficiaries.json")
+			beneficiariesFile := filepath.Join(sessionFolder, "memberBeneficiary.json")
 
 			_, err = os.Stat(beneficiariesFile)
 			if !os.IsNotExist(err) {
 				content, err := os.ReadFile(beneficiariesFile)
 				if err != nil {
-					log.Printf("server.SaveData.memberDetails.7:%s\n", err.Error())
+					log.Printf("server.SaveData.member.7:%s\n", err.Error())
 				} else {
 					err = json.Unmarshal(content, &beneficiariesData)
 					if err != nil {
-						log.Printf("server.SaveData.memberDetails.8:%s\n", err.Error())
+						log.Printf("server.SaveData.member.8:%s\n", err.Error())
 					}
 				}
 			}
 
 			if saveFunc == nil {
-				return fmt.Errorf("server.SaveData.memberDetails.9:missing saveFunc")
+				return fmt.Errorf("server.SaveData.member.9:missing saveFunc")
 			}
 
 			mid, err := saveFunc(memberData, "member", 0)
@@ -191,13 +191,13 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			transactionDone = true
 		} else {
 			if saveFunc == nil {
-				return fmt.Errorf("server.SaveData.memberDetails.10:missing saveFunc")
+				return fmt.Errorf("server.SaveData.member.10:missing saveFunc")
 			}
 
 			mid, err := saveFunc(memberData, "member", 0)
 			if err != nil {
 				log.Println(err)
-				return fmt.Errorf("server.SaveData.memberDetails.11:%s", err.Error())
+				return fmt.Errorf("server.SaveData.member.11:%s", err.Error())
 			}
 
 			id = *mid

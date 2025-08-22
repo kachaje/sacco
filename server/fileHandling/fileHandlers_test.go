@@ -26,10 +26,10 @@ func TestSaveDataAll(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"contactDetails.json",
-		"occupationDetails.json",
-		"beneficiaries.json",
-		"nomineeDetails.json",
+		"memberContact.json",
+		"memberOccupation.json",
+		"memberBeneficiary.json",
+		"memberNominee.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {
@@ -75,7 +75,7 @@ func TestSaveDataAll(t *testing.T) {
 		return &id, nil
 	}
 
-	model := "memberDetails"
+	model := "member"
 
 	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
@@ -107,10 +107,10 @@ func TestSaveDataAll(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"contactDetails.json",
-		"occupationDetails.json",
-		"beneficiaries.json",
-		"nomineeDetails.json",
+		"memberContact.json",
+		"memberOccupation.json",
+		"memberBeneficiary.json",
+		"memberNominee.json",
 	} {
 		filename := filepath.Join(cacheFolder, phoneNumber, file)
 
@@ -136,7 +136,7 @@ func TestSaveDataOne(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"occupationDetails.json",
+		"memberOccupation.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {
@@ -182,7 +182,7 @@ func TestSaveDataOne(t *testing.T) {
 		return &id, nil
 	}
 
-	model := "memberDetails"
+	model := "member"
 
 	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
@@ -214,10 +214,10 @@ func TestSaveDataOne(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"contactDetails.json",
-		"occupationDetails.json",
-		"beneficiaries.json",
-		"nomineeDetails.json",
+		"memberContact.json",
+		"memberOccupation.json",
+		"memberBeneficiary.json",
+		"memberNominee.json",
 	} {
 		filename := filepath.Join(cacheFolder, phoneNumber, file)
 
@@ -263,7 +263,7 @@ func TestRerunFailedSaves(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = os.WriteFile(filepath.Join(sessionFolder, "beneficiaries.json"), payload, 0644)
+	err = os.WriteFile(filepath.Join(sessionFolder, "memberBeneficiary.json"), payload, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -282,7 +282,7 @@ func TestRerunFailedSaves(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = os.WriteFile(filepath.Join(sessionFolder, "contactDetails.json"), payload, 0644)
+	err = os.WriteFile(filepath.Join(sessionFolder, "memberContact.json"), payload, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -328,8 +328,8 @@ func TestHandleBeneficiaries(t *testing.T) {
 	defer func() {
 		db.Close()
 
-		if _, err := os.Stat("beneficiaries.json"); !os.IsNotExist(err) {
-			os.Remove("beneficiaries.json")
+		if _, err := os.Stat("memberBeneficiary.json"); !os.IsNotExist(err) {
+			os.Remove("memberBeneficiary.json")
 		}
 	}()
 
@@ -398,10 +398,10 @@ func TestHandleMemberDetails(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"contactDetails.json",
-		"occupationDetails.json",
-		"beneficiaries.json",
-		"nomineeDetails.json",
+		"memberContact.json",
+		"memberOccupation.json",
+		"memberBeneficiary.json",
+		"memberNominee.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {

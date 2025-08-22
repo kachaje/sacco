@@ -128,18 +128,18 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 		session.CurrentMenu = "registration.5"
 
 		if session.ActiveMemberData != nil && session.ActiveMemberData["memberBeneficiary"] != nil {
-			beneficiaries := []map[string]any{}
+			memberBeneficiary := []map[string]any{}
 
 			val, ok := session.ActiveMemberData["memberBeneficiary"].([]map[string]any)
 			if ok {
-				beneficiaries = val
+				memberBeneficiary = val
 			} else {
 				val, ok := session.ActiveMemberData["memberBeneficiary"].([]any)
 				if ok {
 					for _, row := range val {
 						v, ok := row.(map[string]any)
 						if ok {
-							beneficiaries = append(beneficiaries, v)
+							memberBeneficiary = append(memberBeneficiary, v)
 						}
 					}
 				}
@@ -154,7 +154,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 					"percentage",
 					"contact",
 				}
-				for i, val := range beneficiaries {
+				for i, val := range memberBeneficiary {
 					for key, value := range val {
 						if slices.Contains(targetKeys, key) {
 							label := fmt.Sprintf("%s%d", key, i+1)

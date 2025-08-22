@@ -56,10 +56,10 @@ func TestDatabaseAddMember(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var beneficiaries []map[string]any
-	var contactDetails map[string]any
+	var memberBeneficiary []map[string]any
+	var memberContact map[string]any
 	var nominee map[string]any
-	var occupationDetails map[string]any
+	var memberOccupation map[string]any
 
 	{
 		val, ok := data["memberBeneficiary"].([]any)
@@ -68,7 +68,7 @@ func TestDatabaseAddMember(t *testing.T) {
 				vl, ok := val[i].(map[string]any)
 				if ok {
 					delete(vl, "id")
-					beneficiaries = append(beneficiaries, vl)
+					memberBeneficiary = append(memberBeneficiary, vl)
 				}
 			}
 			delete(data, "memberBeneficiary")
@@ -80,7 +80,7 @@ func TestDatabaseAddMember(t *testing.T) {
 		val, ok := data["memberContact"].(map[string]any)
 		if ok {
 			delete(val, "id")
-			contactDetails = val
+			memberContact = val
 			delete(data, "memberContact")
 		} else {
 			t.Fatal("Test failed. Failed to convert map")
@@ -100,7 +100,7 @@ func TestDatabaseAddMember(t *testing.T) {
 		val, ok := data["memberOccupation"].(map[string]any)
 		if ok {
 			delete(val, "id")
-			occupationDetails = val
+			memberOccupation = val
 			delete(data, "memberOccupation")
 		} else {
 			t.Fatal("Test failed. Failed to convert map")
@@ -108,7 +108,7 @@ func TestDatabaseAddMember(t *testing.T) {
 	}
 	delete(data, "id")
 
-	id, err := db.AddMember(data, contactDetails, nominee, occupationDetails, beneficiaries, nil)
+	id, err := db.AddMember(data, memberContact, nominee, memberOccupation, memberBeneficiary, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -191,7 +191,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	beneficiaries := map[string]any{}
+	memberBeneficiary := map[string]any{}
 
 	val, ok := result["memberBeneficiary"].([]any)
 	if ok {
@@ -201,14 +201,14 @@ func TestMemberBeneficiaries(t *testing.T) {
 				for key, value := range v {
 					keyLabel := fmt.Sprintf("%s%d", key, i+1)
 
-					beneficiaries[keyLabel] = value
+					memberBeneficiary[keyLabel] = value
 				}
 			}
 		}
 	}
 
 	if os.Getenv("DEBUG") == "true" {
-		payload, _ := json.MarshalIndent(beneficiaries, "", "  ")
+		payload, _ := json.MarshalIndent(memberBeneficiary, "", "  ")
 
 		fmt.Println(string(payload))
 	}
@@ -228,7 +228,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 
 	model := "memberBeneficiary"
 
-	err = filehandling.SaveData(update, &model, nil, nil, nil, nil, db.GenericsSaveData, nil, beneficiaries)
+	err = filehandling.SaveData(update, &model, nil, nil, nil, nil, db.GenericsSaveData, nil, memberBeneficiary)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -239,26 +239,26 @@ func TestMemberBeneficiaries(t *testing.T) {
 	}
 
 	{
-		beneficiaries := []map[string]any{}
+		memberBeneficiary := []map[string]any{}
 
 		val, ok = result["memberBeneficiary"].([]any)
 		if ok {
 			for _, row := range val {
 				v, ok := row.(map[string]any)
 				if ok {
-					beneficiaries = append(beneficiaries, v)
+					memberBeneficiary = append(memberBeneficiary, v)
 				}
 			}
 		}
 
 		if os.Getenv("DEBUG") == "true" {
-			payload, _ := json.MarshalIndent(beneficiaries, "", "  ")
+			payload, _ := json.MarshalIndent(memberBeneficiary, "", "  ")
 
 			fmt.Println(string(payload))
 		}
 
-		if len(beneficiaries) != 2 {
-			t.Fatalf("Test failed. Expected: 2; Actual: %v", len(beneficiaries))
+		if len(memberBeneficiary) != 2 {
+			t.Fatalf("Test failed. Expected: 2; Actual: %v", len(memberBeneficiary))
 		}
 	}
 }

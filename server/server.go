@@ -29,22 +29,22 @@ import (
 //go:embed index.html
 var indexHTML string
 
-//go:embed workflows/membership/personalInformation.yml
+//go:embed workflows/membership/member.yml
 var PITemplate string
 
-//go:embed workflows/membership/occupationDetails.yml
+//go:embed workflows/membership/memberOccupation.yml
 var occupationTemplate string
 
-//go:embed workflows/membership/contactDetails.yml
+//go:embed workflows/membership/memberContact.yml
 var contactsTemplate string
 
-//go:embed workflows/membership/nomineeDetails.yml
+//go:embed workflows/membership/memberNominee.yml
 var nomineeTemplate string
 
-//go:embed workflows/membership/beneficiaries.yml
+//go:embed workflows/membership/memberBeneficiary.yml
 var beneficiariesTemplate string
 
-//go:embed workflows/membership/businessInformation.yml
+//go:embed workflows/membership/memberBusiness.yml
 var businessInfoTemplate string
 
 //go:embed workflows/preferences/language.yml

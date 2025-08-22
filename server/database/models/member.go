@@ -67,13 +67,13 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	c := NewMemberContact(m.db, &memberId)
 
-	contactDetails, err := c.FilterBy(filter)
+	memberContact, err := c.FilterBy(filter)
 	if err != nil {
 		return nil, fmt.Errorf("member.MemberDetails.2: %s", err.Error())
 	}
 
-	if len(contactDetails) > 0 {
-		member.ContactDetails = &contactDetails[0]
+	if len(memberContact) > 0 {
+		member.ContactDetails = &memberContact[0]
 	}
 
 	n := NewMemberNominee(m.db, &memberId)
@@ -100,13 +100,13 @@ func (m *Member) MemberDetails(memberId int64) (map[string]any, error) {
 
 	b := NewMemberBeneficiary(m.db, &memberId)
 
-	beneficiaries, err := b.FilterBy(filter)
+	memberBeneficiary, err := b.FilterBy(filter)
 	if err != nil {
 		return nil, fmt.Errorf("member.MemberDetails.5: %s", err.Error())
 	}
 
-	if len(beneficiaries) > 0 {
-		member.Beneficiaries = beneficiaries
+	if len(memberBeneficiary) > 0 {
+		member.Beneficiaries = memberBeneficiary
 	}
 
 	payload, err := json.Marshal(member)

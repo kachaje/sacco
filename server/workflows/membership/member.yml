@@ -1,4 +1,4 @@
-model: memberDetails
+model: member
 
 initialScreen: enterFirstName
 

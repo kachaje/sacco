@@ -41,7 +41,7 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 		}()
 
 		targetFiles := []string{
-			"memberDetails",
+			"member",
 			"memberContact",
 			"memberNominee",
 			"memberOccupation",
