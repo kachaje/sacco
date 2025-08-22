@@ -1,5 +1,5 @@
 {
-  "beneficiaries": [
+  "memberBeneficiary": [
     {
       "contact": "P.O. Box 1",
       "id": 1,
@@ -29,7 +29,7 @@
       "percentage": 2
     }
   ],
-  "contactDetails": {
+  "memberContact": {
     "homeDistrict": "Karonga",
     "homeTA": "Kyungu",
     "homeVillage": "Songwe",
@@ -46,14 +46,14 @@
   "lastName": "Banda",
   "maritalStatus": "Single",
   "nationalId": "DHFYR8475",
-  "nomineeDetails": {
+  "memberNominee": {
     "id": 1,
     "memberId": 1,
     "nomineeAddress": "Same as member",
     "nomineeName": "John Banda",
     "nomineePhone": "0888888888"
   },
-  "occupationDetails": {
+  "memberOccupation": {
     "employerAddress": "Kanengo, Lilongwe",
     "employerName": "Sunseed Oil",
     "employerPhone": "",

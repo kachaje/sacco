@@ -62,7 +62,7 @@ func TestDatabaseAddMember(t *testing.T) {
 	var occupationDetails map[string]any
 
 	{
-		val, ok := data["beneficiaries"].([]any)
+		val, ok := data["memberBeneficiary"].([]any)
 		if ok {
 			for i := range val {
 				vl, ok := val[i].(map[string]any)
@@ -71,37 +71,37 @@ func TestDatabaseAddMember(t *testing.T) {
 					beneficiaries = append(beneficiaries, vl)
 				}
 			}
-			delete(data, "beneficiaries")
+			delete(data, "memberBeneficiary")
 		} else {
 			t.Fatal("Test failed. Failed to convert map")
 		}
 	}
 	{
-		val, ok := data["contactDetails"].(map[string]any)
+		val, ok := data["memberContact"].(map[string]any)
 		if ok {
 			delete(val, "id")
 			contactDetails = val
-			delete(data, "contactDetails")
+			delete(data, "memberContact")
 		} else {
 			t.Fatal("Test failed. Failed to convert map")
 		}
 	}
 	{
-		val, ok := data["nomineeDetails"].(map[string]any)
+		val, ok := data["memberNominee"].(map[string]any)
 		if ok {
 			delete(val, "id")
 			nominee = val
-			delete(data, "nomineeDetails")
+			delete(data, "memberNominee")
 		} else {
 			t.Fatal("Test failed. Failed to convert map")
 		}
 	}
 	{
-		val, ok := data["occupationDetails"].(map[string]any)
+		val, ok := data["memberOccupation"].(map[string]any)
 		if ok {
 			delete(val, "id")
 			occupationDetails = val
-			delete(data, "occupationDetails")
+			delete(data, "memberOccupation")
 		} else {
 			t.Fatal("Test failed. Failed to convert map")
 		}
@@ -193,7 +193,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 
 	beneficiaries := map[string]any{}
 
-	val, ok := result["beneficiaries"].([]any)
+	val, ok := result["memberBeneficiary"].([]any)
 	if ok {
 		for i, row := range val {
 			v, ok := row.(map[string]any)
@@ -226,7 +226,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		"percentage2": 25,
 	}
 
-	model := "beneficiaries"
+	model := "memberBeneficiary"
 
 	err = filehandling.SaveData(update, &model, nil, nil, nil, nil, db.GenericsSaveData, nil, beneficiaries)
 	if err != nil {
@@ -241,7 +241,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 	{
 		beneficiaries := []map[string]any{}
 
-		val, ok = result["beneficiaries"].([]any)
+		val, ok = result["memberBeneficiary"].([]any)
 		if ok {
 			for _, row := range val {
 				v, ok := row.(map[string]any)

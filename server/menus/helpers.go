@@ -101,7 +101,7 @@ func LoadTemplateData(data map[string]any, template map[string]any) map[string]a
 			}
 
 			switch level {
-			case "beneficiaries":
+			case "memberBeneficiary":
 				v, ok := data[level].([]any)
 				if ok {
 					var j float64 = 1

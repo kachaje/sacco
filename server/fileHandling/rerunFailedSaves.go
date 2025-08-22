@@ -42,10 +42,10 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 
 		targetFiles := []string{
 			"memberDetails",
-			"contactDetails",
-			"nomineeDetails",
-			"occupationDetails",
-			"beneficiaries",
+			"memberContact",
+			"memberNominee",
+			"memberOccupation",
+			"memberBeneficiary",
 		}
 
 		for _, target := range targetFiles {
@@ -66,7 +66,7 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 
 				log.Printf("server.RerunFailedSaves: Retrying to save %s\n", target)
 
-				if target == "beneficiaries" {
+				if target == "memberBeneficiary" {
 					rawData := []map[string]any{}
 
 					err = json.Unmarshal(content, &rawData)

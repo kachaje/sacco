@@ -48,7 +48,7 @@ func NewSession(queryFn func(string) (map[string]any, error)) *Session {
 }
 
 func (s *Session) UpdateSessionFlags() error {
-	beneficiariesData := s.ReadFromMap("beneficiaries", 0)
+	beneficiariesData := s.ReadFromMap("memberBeneficiary", 0)
 	if beneficiariesData != nil {
 		val, ok := beneficiariesData.([]any)
 		if ok && len(val) > 0 {
@@ -61,7 +61,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	contactDetailsData := s.ReadFromMap("contactDetails", 0)
+	contactDetailsData := s.ReadFromMap("memberContact", 0)
 	if contactDetailsData != nil {
 		val, ok := contactDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
@@ -69,7 +69,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	nomineeDetailsData := s.ReadFromMap("nomineeDetails", 0)
+	nomineeDetailsData := s.ReadFromMap("memberNominee", 0)
 	if nomineeDetailsData != nil {
 		val, ok := nomineeDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
@@ -77,7 +77,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	occupationDetailsData := s.ReadFromMap("occupationDetails", 0)
+	occupationDetailsData := s.ReadFromMap("memberOccupation", 0)
 	if occupationDetailsData != nil {
 		val, ok := occupationDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
@@ -169,7 +169,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 		return err
 	}
 
-	for _, key := range []string{"contactDetails", "nomineeDetails", "occupationDetails", "beneficiaries"} {
+	for _, key := range []string{"memberContact", "memberNominee", "memberOccupation", "memberBeneficiary"} {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
 
 		_, err := os.Stat(filename)
@@ -182,7 +182,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 			continue
 		}
 
-		if key == "beneficiaries" {
+		if key == "memberBeneficiary" {
 			data := []map[string]any{}
 			err = json.Unmarshal(content, &data)
 			if err != nil {

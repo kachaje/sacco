@@ -89,7 +89,7 @@ func SaveData(
 	case "memberDetails":
 		return HandleMemberDetails(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
 
-	case "contactDetails":
+	case "memberContact":
 		val, ok := data.(map[string]any)
 		if ok {
 			filename := filepath.Join(sessionFolder, "contactDetails.json")
@@ -112,7 +112,7 @@ func SaveData(
 					return fmt.Errorf("server.SaveData.contactDetails.1:missing saveFunc")
 				}
 
-				_, err := saveFunc(val, "contactDetails", 0)
+				_, err := saveFunc(val, "memberContact", 0)
 				if err != nil {
 					return fmt.Errorf("server.SaveData.contactDetails.2:%s", err.Error())
 				}
@@ -120,7 +120,7 @@ func SaveData(
 				transactionDone = true
 			}
 
-			sessions[*sessionId].ActiveMemberData["contactDetails"] = val
+			sessions[*sessionId].ActiveMemberData["memberContact"] = val
 
 			sessions[*sessionId].ContactsAdded = true
 
@@ -129,7 +129,7 @@ func SaveData(
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
-	case "nomineeDetails":
+	case "memberNominee":
 		val, ok := data.(map[string]any)
 		if ok {
 			filename := filepath.Join(sessionFolder, "nomineeDetails.json")
@@ -152,7 +152,7 @@ func SaveData(
 					return fmt.Errorf("server.SaveData.nomineeDetails.1:missing saveFunc")
 				}
 
-				_, err := saveFunc(val, "nomineeDetails", 0)
+				_, err := saveFunc(val, "memberNominee", 0)
 				if err != nil {
 					return fmt.Errorf("server.SaveData.nomineeDetails.2:%s", err.Error())
 				}
@@ -160,14 +160,14 @@ func SaveData(
 				transactionDone = true
 			}
 
-			sessions[*sessionId].ActiveMemberData["nomineeDetails"] = val
+			sessions[*sessionId].ActiveMemberData["memberNominee"] = val
 
 			sessions[*sessionId].NomineeAdded = true
 
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
-	case "occupationDetails":
+	case "memberOccupation":
 		val, ok := data.(map[string]any)
 		if ok {
 			filename := filepath.Join(sessionFolder, "occupationDetails.json")
@@ -208,7 +208,7 @@ func SaveData(
 					return fmt.Errorf("server.SaveData.occupationDetails.1:missing saveFunc")
 				}
 
-				_, err := saveFunc(val, "occupationDetails", 0)
+				_, err := saveFunc(val, "memberOccupation", 0)
 				if err != nil {
 					return fmt.Errorf("server.SaveData.occupationDetails.2:%s", err.Error())
 				}
@@ -216,7 +216,7 @@ func SaveData(
 				transactionDone = true
 			}
 
-			sessions[*sessionId].ActiveMemberData["occupationDetails"] = val
+			sessions[*sessionId].ActiveMemberData["memberOccupation"] = val
 
 			sessions[*sessionId].OccupationAdded = true
 
@@ -225,7 +225,7 @@ func SaveData(
 			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 
-	case "beneficiaries":
+	case "memberBeneficiary":
 		return HandleBeneficiaries(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, refData, sessionFolder)
 
 	default:

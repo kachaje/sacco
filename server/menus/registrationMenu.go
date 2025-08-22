@@ -45,8 +45,8 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 	case "2":
 		session.CurrentMenu = "registration.2"
 
-		if session.ActiveMemberData != nil && session.ActiveMemberData["occupationDetails"] != nil {
-			val, ok := session.ActiveMemberData["occupationDetails"].(map[string]any)
+		if session.ActiveMemberData != nil && session.ActiveMemberData["memberOccupation"] != nil {
+			val, ok := session.ActiveMemberData["memberOccupation"].(map[string]any)
 			if ok {
 				data := map[string]any{}
 
@@ -70,8 +70,8 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 	case "3":
 		session.CurrentMenu = "registration.3"
 
-		if session.ActiveMemberData != nil && session.ActiveMemberData["contactDetails"] != nil {
-			val, ok := session.ActiveMemberData["contactDetails"].(map[string]any)
+		if session.ActiveMemberData != nil && session.ActiveMemberData["memberContact"] != nil {
+			val, ok := session.ActiveMemberData["memberContact"].(map[string]any)
 			if ok {
 				data := map[string]any{}
 
@@ -100,8 +100,8 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 	case "4":
 		session.CurrentMenu = "registration.4"
 
-		if session.ActiveMemberData != nil && session.ActiveMemberData["nomineeDetails"] != nil {
-			val, ok := session.ActiveMemberData["nomineeDetails"].(map[string]any)
+		if session.ActiveMemberData != nil && session.ActiveMemberData["memberNominee"] != nil {
+			val, ok := session.ActiveMemberData["memberNominee"].(map[string]any)
 			if ok {
 				data := map[string]any{}
 
@@ -127,14 +127,14 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 	case "5":
 		session.CurrentMenu = "registration.5"
 
-		if session.ActiveMemberData != nil && session.ActiveMemberData["beneficiaries"] != nil {
+		if session.ActiveMemberData != nil && session.ActiveMemberData["memberBeneficiary"] != nil {
 			beneficiaries := []map[string]any{}
 
-			val, ok := session.ActiveMemberData["beneficiaries"].([]map[string]any)
+			val, ok := session.ActiveMemberData["memberBeneficiary"].([]map[string]any)
 			if ok {
 				beneficiaries = val
 			} else {
-				val, ok := session.ActiveMemberData["beneficiaries"].([]any)
+				val, ok := session.ActiveMemberData["memberBeneficiary"].([]any)
 				if ok {
 					for _, row := range val {
 						v, ok := row.(map[string]any)

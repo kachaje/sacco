@@ -33,10 +33,10 @@ type Member struct {
 	ShortMemberId     string `json:"shortMemberId"`
 	DateJoined        string `json:"dateJoined"`
 
-	Beneficiaries     []MemberBeneficiary `json:"beneficiaries"`
-	ContactDetails    *MemberContact      `json:"contactDetails"`
-	Nominee           *MemberNominee      `json:"nomineeDetails"`
-	OccupationDetails *MemberOccupation   `json:"occupationDetails"`
+	Beneficiaries     []MemberBeneficiary `json:"memberBeneficiary"`
+	ContactDetails    *MemberContact      `json:"memberContact"`
+	Nominee           *MemberNominee      `json:"memberNominee"`
+	OccupationDetails *MemberOccupation   `json:"memberOccupation"`
 
 	validFields []string
 	db          *sql.DB

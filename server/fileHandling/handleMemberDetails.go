@@ -117,7 +117,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			if len(contactsData) > 0 {
 				contactsData["memberId"] = id
 
-				memberData["contactDetails"] = contactsData
+				memberData["memberContact"] = contactsData
 
 				_, err = saveFunc(contactsData, "memberContact", 0)
 				if err != nil {
@@ -135,7 +135,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			if len(nomineeData) > 0 {
 				nomineeData["memberId"] = id
 
-				memberData["nomineeDetails"] = nomineeData
+				memberData["memberNominee"] = nomineeData
 
 				_, err = saveFunc(nomineeData, "memberNominee", 0)
 				if err != nil {
@@ -153,7 +153,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			if len(occupationData) > 0 {
 				occupationData["memberId"] = id
 
-				memberData["occupationDetails"] = occupationData
+				memberData["memberOccupation"] = occupationData
 
 				_, err = saveFunc(occupationData, "memberOccupation", 0)
 				if err != nil {
@@ -179,7 +179,7 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 					}
 				}
 
-				memberData["beneficiaries"] = beneficiariesData
+				memberData["memberBeneficiary"] = beneficiariesData
 
 				if os.Getenv("DEBUG") == "true" {
 					CacheFile(beneficiariesFile, beneficiariesData, 0)
