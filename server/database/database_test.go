@@ -40,11 +40,15 @@ func TestDatabase(t *testing.T) {
 	}
 }
 func TestMemberBeneficiaries(t *testing.T) {
-	t.Skip()
-
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
-	defer db.Close()
+	defer func() {
+		db.Close()
+
+		if _, err := os.Stat("memberBeneficiary.json"); !os.IsNotExist(err) {
+			os.Remove("memberBeneficiary.json")
+		}
+	}()
 
 	content, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.sql"))
 	if err != nil {
@@ -58,23 +62,22 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err := db.MemberByPhoneNumber("09999999999", nil, nil)
+	phoneNumber := "09999999999"
+
+	result, err := db.MemberByPhoneNumber(phoneNumber, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	memberBeneficiary := map[string]any{}
 
-	val, ok := result["memberBeneficiary"].([]any)
+	val, ok := result["memberBeneficiary"].([]map[string]any)
 	if ok {
 		for i, row := range val {
-			v, ok := row.(map[string]any)
-			if ok {
-				for key, value := range v {
-					keyLabel := fmt.Sprintf("%s%d", key, i+1)
+			for key, value := range row {
+				keyLabel := fmt.Sprintf("%s%d", key, i+1)
 
-					memberBeneficiary[keyLabel] = value
-				}
+				memberBeneficiary[keyLabel] = value
 			}
 		}
 	}
@@ -105,7 +108,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err = db.MemberByPhoneNumber("09999999999", nil, nil)
+	result, err = db.MemberByPhoneNumber(phoneNumber, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,14 +116,9 @@ func TestMemberBeneficiaries(t *testing.T) {
 	{
 		memberBeneficiary := []map[string]any{}
 
-		val, ok = result["memberBeneficiary"].([]any)
+		rows, ok := result["memberBeneficiary"].([]map[string]any)
 		if ok {
-			for _, row := range val {
-				v, ok := row.(map[string]any)
-				if ok {
-					memberBeneficiary = append(memberBeneficiary, v)
-				}
-			}
+			memberBeneficiary = append(memberBeneficiary, rows...)
 		}
 
 		if os.Getenv("DEBUG") == "true" {
@@ -278,7 +276,7 @@ func TestGenericModel(t *testing.T) {
 	}
 }
 
-func TestMemberDetailsByPhoneNumber(t *testing.T) {
+func TestMemberByPhoneNumber(t *testing.T) {
 	phoneNumber := "0999888777"
 
 	dbname := ":memory:"

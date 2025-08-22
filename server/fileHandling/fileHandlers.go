@@ -85,6 +85,9 @@ func SaveData(
 			saveFunc, sessions, sessionFolder,
 		)
 
+	case "memberBeneficiary":
+		return HandleBeneficiaries(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, refData, sessionFolder)
+
 	case "member":
 		return HandleMemberDetails(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
 
@@ -223,9 +226,6 @@ func SaveData(
 
 	// 		sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
 	// 	}
-
-	case "memberBeneficiary":
-		return HandleBeneficiaries(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, refData, sessionFolder)
 
 	default:
 		fmt.Println("##########", *phoneNumber, *sessionId, data)

@@ -118,9 +118,24 @@ func (d *Database) GenericsSaveData(data map[string]any,
 		return nil, fmt.Errorf("server.database.GenericsSaveData: model %s does not exist", model)
 	}
 
-	id, err := d.GenericModels[model].AddRecord(data)
-	if err != nil {
-		return nil, err
+	var id *int64
+	var err error
+
+	if data["id"] != nil {
+		val, ok := data["id"].(int64)
+		if ok {
+			id = &val
+
+			err = d.GenericModels[model].UpdateRecord(data, *id)
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		id, err = d.GenericModels[model].AddRecord(data)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return id, nil
