@@ -1,6 +1,6 @@
 exec server -p 8999 2>&1 >/dev/null &
 stdin input.txt
-exec wscli -p 8999
+exec wscli -p 8999 -n 0888999789
 stdout 'Welcome to Kaso SACCO'
 stdout 'Choose Activity'
 stdout 'First Name:'
@@ -21,7 +21,7 @@ stdout 'Last Name: (Banda)'
 stdout 'Other Name'
 stdout 'Other Name'
 stdout 'Gender: (Female)'
-stdout 'Phone Number: \(0888999781\)'
+stdout 'Phone Number: \(0888999789\)'
 stdout 'Title: (Miss)'
 stdout 'Marital Status: (Single)'
 stdout 'Date of Birth: (1999-09-01)'
@@ -38,7 +38,7 @@ Mary
 Banda
 2
 1
-0888999781
+0888999789
 3
 2
 1999-09-01

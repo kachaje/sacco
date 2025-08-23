@@ -9,6 +9,7 @@ import (
 	"sacco/server/database/models"
 	"sacco/utils"
 	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -134,12 +135,21 @@ func (d *Database) GenericsSaveData(data map[string]any,
 				} else if val, ok := data["id"].(float64); ok {
 					v := int64(val)
 					id = &v
+				} else if val, ok := data["id"].(string); ok {
+					v, err := strconv.ParseInt(val, 10, 64)
+					if err == nil {
+						id = &v
+					}
 				}
 			}
 
-			err = d.GenericModels[model].UpdateRecord(data, *id)
-			if err != nil {
-				return nil, err
+			if id != nil {
+				err = d.GenericModels[model].UpdateRecord(data, *id)
+				if err != nil {
+					return nil, err
+				}
+			} else {
+				return nil, fmt.Errorf("no id found")
 			}
 		} else {
 			return nil, err
