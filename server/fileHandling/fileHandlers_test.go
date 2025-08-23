@@ -232,8 +232,6 @@ func TestSaveDataAll(t *testing.T) {
 }
 
 func TestRerunFailedSaves(t *testing.T) {
-	t.Skip()
-
 	phoneNumber := "0999888777"
 	cacheFolder := filepath.Join(".", "tmpReruns", "cache")
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
@@ -307,6 +305,7 @@ func TestRerunFailedSaves(t *testing.T) {
 	session := &parser.Session{
 		ActiveMemberData: map[string]any{},
 		MemberId:         &id,
+		AddedModels:      map[string]bool{},
 	}
 
 	sessionId := "sample"
@@ -320,8 +319,8 @@ func TestRerunFailedSaves(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if count != 2 {
-		t.Fatalf("Test failed. Expected: 2; Actual: %v", count)
+	if count != 3 {
+		t.Fatalf("Test failed. Expected: 3; Actual: %v", count)
 	}
 }
 
