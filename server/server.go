@@ -130,6 +130,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			Data:             make(map[string]string),
 			SessionId:        sessionID,
 			PhoneNumber:      phoneNumber,
+			SkipFields:       []string{"active"},
 
 			LanguageWorkflow: parser.NewWorkflow(languageData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
 
