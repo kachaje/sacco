@@ -60,7 +60,7 @@ func CheckPreferredLanguage(phoneNumber, preferencesFolder string) *string {
 	return nil
 }
 
-func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder string) string {
+func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string) string {
 	preferredLanguage := CheckPreferredLanguage(phoneNumber, preferencesFolder)
 
 	if preferredLanguage != nil {
@@ -93,22 +93,22 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		case "1":
 			text = "000"
 			session.CurrentMenu = "registration"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		case "2":
 			text = "000"
 			session.CurrentMenu = "loan"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		case "3":
 			text = "000"
 			session.CurrentMenu = "balance"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		case "4":
 			text = "000"
 			session.CurrentMenu = "banking"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		case "5":
 			session.CurrentMenu = "language"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		case "6":
 			if preferredLanguage != nil && *preferredLanguage == "ny" {
 				response = "END Zikomo potidalila"
@@ -116,7 +116,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 				response = "END Thank you for using our service"
 			}
 			mu.Lock()
-			delete(Sessions, sessionID)
+			delete(Sessions, phoneNumber)
 
 			folderName := filepath.Join(cacheFolder, phoneNumber)
 
@@ -136,20 +136,20 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 	case "language":
 		if text == "" {
 			session.CurrentMenu = "main"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
 			response = session.LanguageWorkflow.NavNext(text)
 
 			if strings.TrimSpace(response) == "" {
 				session.CurrentMenu = "main"
 				text = ""
-				return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+				return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 			}
 		}
 	case "banking":
 		if text == "0" {
 			session.CurrentMenu = "main"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
 			firstLine := "CON Banking Details\n"
 			lastLine := "0. Back to Main Menu"
@@ -188,7 +188,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 			}
 		}
 	case "registration":
-		return RegistrationMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder, preferredLanguage)
+		return RegistrationMenu(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.1":
 		response = session.PIWorkflow.NavNext(text)
@@ -196,11 +196,11 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else if strings.TrimSpace(response) == "" {
 			session.CurrentMenu = "registration"
 			text = ""
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		}
 
 	case "registration.2":
@@ -209,11 +209,11 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else if strings.TrimSpace(response) == "" {
 			session.CurrentMenu = "registration"
 			text = ""
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		}
 
 	case "registration.3":
@@ -222,11 +222,11 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else if strings.TrimSpace(response) == "" {
 			session.CurrentMenu = "registration"
 			text = ""
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		}
 
 	case "registration.4":
@@ -235,11 +235,11 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else if strings.TrimSpace(response) == "" {
 			session.CurrentMenu = "registration"
 			text = ""
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		}
 
 	case "registration.5":
@@ -248,11 +248,11 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else if strings.TrimSpace(response) == "" {
 			session.CurrentMenu = "registration"
 			text = ""
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		}
 
 	case "registration.6":
@@ -261,22 +261,22 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else if strings.TrimSpace(response) == "" {
 			session.CurrentMenu = "registration"
 			text = ""
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		}
 
 	case "registration.7":
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else if strings.TrimSpace(text) == "99" {
 			session.CurrentMenu = "registration"
 			text = ""
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
 			data := LoadTemplateData(session.ActiveMemberData, templateData)
 
@@ -304,7 +304,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 	case "loan":
 		if text == "0" {
 			session.CurrentMenu = "main"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
 			response = "CON Loan Application\n" +
 				"0. Back to Main Menu"
@@ -313,7 +313,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, sessionID, preferences
 	case "balance":
 		if text == "0" {
 			session.CurrentMenu = "main"
-			return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
 			response = "CON Check Balance\n" +
 				"0. Back to Main Menu"

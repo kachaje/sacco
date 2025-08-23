@@ -129,7 +129,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	preferredLanguage := menus.CheckPreferredLanguage(phoneNumber, preferencesFolder)
 
 	mu.Lock()
-	session, exists := menus.Sessions[sessionID]
+	session, exists := menus.Sessions[phoneNumber]
 	if !exists {
 		session = parser.NewSession(db.MemberByPhoneNumber, &phoneNumber, &sessionID)
 
@@ -173,7 +173,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 
-	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+	response := menus.MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, response)
@@ -328,7 +328,7 @@ func Main() {
 					}
 				}
 
-				time.Sleep(2 * time.Second)
+				time.Sleep(5 * time.Second)
 			}
 		}
 	}()

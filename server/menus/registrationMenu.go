@@ -7,7 +7,7 @@ import (
 	"slices"
 )
 
-func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
 	var response string
 
 	switch text {
@@ -15,7 +15,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 		session.PIWorkflow.NavNext(text)
 		session.CurrentMenu = "main"
 		text = "0"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	case "1":
 		session.CurrentMenu = "registration.1"
@@ -40,7 +40,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 			session.PIWorkflow.Data = data
 		}
 
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	case "2":
 		session.CurrentMenu = "registration.2"
@@ -65,7 +65,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 			}
 		}
 
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	case "3":
 		session.CurrentMenu = "registration.3"
@@ -95,7 +95,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 			}
 		}
 
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	case "4":
 		session.CurrentMenu = "registration.4"
@@ -122,7 +122,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 			}
 		}
 
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	case "5":
 		session.CurrentMenu = "registration.5"
@@ -168,15 +168,15 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, sessionID, pre
 			}
 		}
 
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	case "6":
 		session.CurrentMenu = "registration.6"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	case "7":
 		session.CurrentMenu = "registration.7"
-		return MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
 	default:
 		memberAdded := ""

@@ -22,198 +22,200 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 			}
 		}
 
-		filename := filepath.Join(sessionFolder, "member.json")
+		if sessions[*phoneNumber] != nil {
+			filename := filepath.Join(sessionFolder, "member.json")
 
-		transactionDone := false
+			transactionDone := false
 
-		// By default cache the data first in case we lose database connection
-		CacheFile(filename, memberData, 0)
-		defer func() {
-			if transactionDone {
-				os.Remove(filename)
-			}
-		}()
+			// By default cache the data first in case we lose database connection
+			CacheFile(filename, memberData, 0)
+			defer func() {
+				if transactionDone {
+					os.Remove(filename)
+				}
+			}()
 
-		if sessions[*phoneNumber].AddedModels["memberContact"] ||
-			sessions[*phoneNumber].AddedModels["memberNominee"] ||
-			sessions[*phoneNumber].AddedModels["memberOccupation"] ||
-			sessions[*phoneNumber].AddedModels["memberBeneficiary"] {
+			if sessions[*phoneNumber].AddedModels["memberContact"] ||
+				sessions[*phoneNumber].AddedModels["memberNominee"] ||
+				sessions[*phoneNumber].AddedModels["memberOccupation"] ||
+				sessions[*phoneNumber].AddedModels["memberBeneficiary"] {
 
-			var contactsData, nomineeData, occupationData map[string]any
-			var beneficiariesData []map[string]any
+				var contactsData, nomineeData, occupationData map[string]any
+				var beneficiariesData []map[string]any
 
-			contactsFile := filepath.Join(sessionFolder, "memberContact.json")
+				contactsFile := filepath.Join(sessionFolder, "memberContact.json")
 
-			_, err = os.Stat(contactsFile)
-			if !os.IsNotExist(err) {
-				content, err := os.ReadFile(contactsFile)
-				if err != nil {
-					log.Printf("server.SaveData.member.1:%s\n", err.Error())
-				} else {
-					err = json.Unmarshal(content, &contactsData)
+				_, err = os.Stat(contactsFile)
+				if !os.IsNotExist(err) {
+					content, err := os.ReadFile(contactsFile)
 					if err != nil {
-						log.Printf("server.SaveData.member.2:%s\n", err.Error())
+						log.Printf("server.SaveData.member.1:%s\n", err.Error())
+					} else {
+						err = json.Unmarshal(content, &contactsData)
+						if err != nil {
+							log.Printf("server.SaveData.member.2:%s\n", err.Error())
+						}
 					}
 				}
-			}
 
-			nomineeFile := filepath.Join(sessionFolder, "memberNominee.json")
+				nomineeFile := filepath.Join(sessionFolder, "memberNominee.json")
 
-			_, err = os.Stat(nomineeFile)
-			if !os.IsNotExist(err) {
-				content, err := os.ReadFile(nomineeFile)
-				if err != nil {
-					log.Printf("server.SaveData.member.3:%s\n", err.Error())
-				} else {
-					err = json.Unmarshal(content, &nomineeData)
+				_, err = os.Stat(nomineeFile)
+				if !os.IsNotExist(err) {
+					content, err := os.ReadFile(nomineeFile)
 					if err != nil {
-						log.Printf("server.SaveData.member.4:%s\n", err.Error())
+						log.Printf("server.SaveData.member.3:%s\n", err.Error())
+					} else {
+						err = json.Unmarshal(content, &nomineeData)
+						if err != nil {
+							log.Printf("server.SaveData.member.4:%s\n", err.Error())
+						}
 					}
 				}
-			}
 
-			occupationFile := filepath.Join(sessionFolder, "memberOccupation.json")
+				occupationFile := filepath.Join(sessionFolder, "memberOccupation.json")
 
-			_, err = os.Stat(occupationFile)
-			if !os.IsNotExist(err) {
-				content, err := os.ReadFile(occupationFile)
-				if err != nil {
-					log.Printf("server.SaveData.member.5:%s\n", err.Error())
-				} else {
-					err = json.Unmarshal(content, &occupationData)
+				_, err = os.Stat(occupationFile)
+				if !os.IsNotExist(err) {
+					content, err := os.ReadFile(occupationFile)
 					if err != nil {
-						log.Printf("server.SaveData.member.6:%s\n", err.Error())
+						log.Printf("server.SaveData.member.5:%s\n", err.Error())
+					} else {
+						err = json.Unmarshal(content, &occupationData)
+						if err != nil {
+							log.Printf("server.SaveData.member.6:%s\n", err.Error())
+						}
 					}
 				}
-			}
 
-			beneficiariesFile := filepath.Join(sessionFolder, "memberBeneficiary.json")
+				beneficiariesFile := filepath.Join(sessionFolder, "memberBeneficiary.json")
 
-			_, err = os.Stat(beneficiariesFile)
-			if !os.IsNotExist(err) {
-				content, err := os.ReadFile(beneficiariesFile)
-				if err != nil {
-					log.Printf("server.SaveData.member.7:%s\n", err.Error())
-				} else {
-					err = json.Unmarshal(content, &beneficiariesData)
+				_, err = os.Stat(beneficiariesFile)
+				if !os.IsNotExist(err) {
+					content, err := os.ReadFile(beneficiariesFile)
 					if err != nil {
-						log.Printf("server.SaveData.member.8:%s\n", err.Error())
+						log.Printf("server.SaveData.member.7:%s\n", err.Error())
+					} else {
+						err = json.Unmarshal(content, &beneficiariesData)
+						if err != nil {
+							log.Printf("server.SaveData.member.8:%s\n", err.Error())
+						}
 					}
 				}
-			}
 
-			if saveFunc == nil {
-				return fmt.Errorf("server.SaveData.member.9:missing saveFunc")
-			}
+				if saveFunc == nil {
+					return fmt.Errorf("server.SaveData.member.9:missing saveFunc")
+				}
 
-			mid, err := saveFunc(memberData, "member", 0)
-			if err != nil {
-				log.Println(err)
-				return err
-			}
-
-			id = *mid
-
-			if len(contactsData) > 0 {
-				contactsData["memberId"] = id
-
-				memberData["memberContact"] = contactsData
-
-				_, err = saveFunc(contactsData, "memberContact", 0)
+				mid, err := saveFunc(memberData, "member", 0)
 				if err != nil {
 					log.Println(err)
 					return err
 				}
 
-				if os.Getenv("DEBUG") == "true" {
-					CacheFile(contactsFile, contactsData, 0)
-				} else {
-					os.Remove(contactsFile)
-				}
-			}
+				id = *mid
 
-			if len(nomineeData) > 0 {
-				nomineeData["memberId"] = id
+				if len(contactsData) > 0 {
+					contactsData["memberId"] = id
 
-				memberData["memberNominee"] = nomineeData
+					memberData["memberContact"] = contactsData
 
-				_, err = saveFunc(nomineeData, "memberNominee", 0)
-				if err != nil {
-					log.Println(err)
-					return err
-				}
-
-				if os.Getenv("DEBUG") == "true" {
-					CacheFile(nomineeFile, nomineeData, 0)
-				} else {
-					os.Remove(nomineeFile)
-				}
-			}
-
-			if len(occupationData) > 0 {
-				occupationData["memberId"] = id
-
-				memberData["memberOccupation"] = occupationData
-
-				_, err = saveFunc(occupationData, "memberOccupation", 0)
-				if err != nil {
-					log.Println(err)
-					return err
-				}
-
-				if os.Getenv("DEBUG") == "true" {
-					CacheFile(occupationFile, occupationData, 0)
-				} else {
-					os.Remove(occupationFile)
-				}
-			}
-
-			if len(beneficiariesData) > 0 {
-				for i := range beneficiariesData {
-					beneficiariesData[i]["memberId"] = id
-
-					_, err = saveFunc(beneficiariesData[i], "memberBeneficiary", 0)
+					_, err = saveFunc(contactsData, "memberContact", 0)
 					if err != nil {
 						log.Println(err)
-						continue
+						return err
+					}
+
+					if os.Getenv("DEBUG") == "true" {
+						CacheFile(contactsFile, contactsData, 0)
+					} else {
+						os.Remove(contactsFile)
 					}
 				}
 
-				memberData["memberBeneficiary"] = beneficiariesData
+				if len(nomineeData) > 0 {
+					nomineeData["memberId"] = id
 
-				if os.Getenv("DEBUG") == "true" {
-					CacheFile(beneficiariesFile, beneficiariesData, 0)
-				} else {
-					os.Remove(beneficiariesFile)
+					memberData["memberNominee"] = nomineeData
+
+					_, err = saveFunc(nomineeData, "memberNominee", 0)
+					if err != nil {
+						log.Println(err)
+						return err
+					}
+
+					if os.Getenv("DEBUG") == "true" {
+						CacheFile(nomineeFile, nomineeData, 0)
+					} else {
+						os.Remove(nomineeFile)
+					}
 				}
+
+				if len(occupationData) > 0 {
+					occupationData["memberId"] = id
+
+					memberData["memberOccupation"] = occupationData
+
+					_, err = saveFunc(occupationData, "memberOccupation", 0)
+					if err != nil {
+						log.Println(err)
+						return err
+					}
+
+					if os.Getenv("DEBUG") == "true" {
+						CacheFile(occupationFile, occupationData, 0)
+					} else {
+						os.Remove(occupationFile)
+					}
+				}
+
+				if len(beneficiariesData) > 0 {
+					for i := range beneficiariesData {
+						beneficiariesData[i]["memberId"] = id
+
+						_, err = saveFunc(beneficiariesData[i], "memberBeneficiary", 0)
+						if err != nil {
+							log.Println(err)
+							continue
+						}
+					}
+
+					memberData["memberBeneficiary"] = beneficiariesData
+
+					if os.Getenv("DEBUG") == "true" {
+						CacheFile(beneficiariesFile, beneficiariesData, 0)
+					} else {
+						os.Remove(beneficiariesFile)
+					}
+				}
+
+				transactionDone = true
+			} else {
+				if saveFunc == nil {
+					return fmt.Errorf("server.SaveData.member.10:missing saveFunc")
+				}
+
+				mid, err := saveFunc(memberData, "member", 0)
+				if err != nil {
+					log.Println(err)
+					return fmt.Errorf("server.SaveData.member.11:%s", err.Error())
+				}
+
+				id = *mid
+
+				transactionDone = true
 			}
 
-			transactionDone = true
-		} else {
-			if saveFunc == nil {
-				return fmt.Errorf("server.SaveData.member.10:missing saveFunc")
-			}
+			sessions[*phoneNumber].MemberId = &id
 
-			mid, err := saveFunc(memberData, "member", 0)
-			if err != nil {
-				log.Println(err)
-				return fmt.Errorf("server.SaveData.member.11:%s", err.Error())
-			}
+			memberData["id"] = id
 
-			id = *mid
+			sessions[*phoneNumber].UpdateActiveMemberData(memberData, 0)
 
-			transactionDone = true
+			sessions[*phoneNumber].RefreshSession()
+
+			sessions[*phoneNumber].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
-
-		sessions[*phoneNumber].MemberId = &id
-
-		memberData["id"] = id
-
-		sessions[*phoneNumber].UpdateActiveMemberData(memberData, 0)
-
-		sessions[*phoneNumber].RefreshSession()
-
-		sessions[*phoneNumber].LoadMemberCache(*phoneNumber, *cacheFolder)
 	}
 
 	return nil

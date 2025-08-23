@@ -134,7 +134,8 @@ func HandleBeneficiaries(data any, phoneNumber, cacheFolder *string,
 			transactionDone = true
 		}
 
-		if phoneNumber != nil && cacheFolder != nil && sessions != nil {
+		if phoneNumber != nil && cacheFolder != nil &&
+			sessions != nil && sessions[*phoneNumber] != nil {
 			sessions[*phoneNumber].ActiveMemberData["memberBeneficiary"] = records
 
 			sessions[*phoneNumber].AddedModels["memberBeneficiary"] = true
