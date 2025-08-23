@@ -1,21 +1,20 @@
 package model2workflow
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"sacco/utils"
 )
 
-func Main(model, sourceFile, destinationFile string) error {
+func Main(model, sourceFile, destinationFile string) (*string, error) {
 	content, err := os.ReadFile(sourceFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	sourceData, err := utils.LoadYaml(string(content))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	data := map[string]any{
@@ -48,6 +47,29 @@ func Main(model, sourceFile, destinationFile string) error {
 						data[tag].(map[string]any)["type"] = "inputScreen"
 						data[tag].(map[string]any)["nextScreen"] = "formSummary"
 
+						if value["optional"] != nil {
+							data[tag].(map[string]any)["optional"] = true
+						}
+
+						if value["options"] != nil {
+							if opts, ok := value["options"].([]any); ok {
+								options := []any{}
+
+								for i, opt := range opts {
+									option := map[string]any{
+										"position": i + 1,
+										"label": map[string]any{
+											"en": opt,
+										},
+									}
+
+									options = append(options, option)
+								}
+
+								data[tag].(map[string]any)["options"] = options
+							}
+						}
+
 						if lastTag != "" {
 							data[lastTag].(map[string]any)["nextScreen"] = tag
 						}
@@ -57,16 +79,20 @@ func Main(model, sourceFile, destinationFile string) error {
 						data[tag].(map[string]any)["hidden"] = true
 						data[tag].(map[string]any)["type"] = "hiddenField"
 					}
-
-					_ = value
 				}
 			}
 		}
 	}
 
-	payload, _ := json.MarshalIndent(data, "", "  ")
+	yamlString, err := utils.DumpYaml(data)
+	if err != nil {
+		return nil, err
+	}
 
-	fmt.Println(string(payload))
+	err = os.WriteFile(destinationFile, []byte(*yamlString), 0644)
+	if err != nil {
+		return nil, err
+	}
 
-	return nil
+	return yamlString, nil
 }

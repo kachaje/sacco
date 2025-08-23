@@ -27,6 +27,19 @@ func CleanString(content string) string {
 	return strings.TrimSpace(regexp.MustCompile(`\s+`).ReplaceAllLiteralString(stage1, " "))
 }
 
+func DumpYaml(data map[string]any) (*string, error) {
+	var result string
+
+	payload, err := yaml.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+
+	result = string(payload)
+
+	return &result, nil
+}
+
 func LoadYaml(yamlData string) (map[string]any, error) {
 	var data map[string]any
 

@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"sacco/server/database/models/model2workflow"
+	"sacco/utils"
 	"testing"
 )
 
@@ -20,13 +21,20 @@ func TestModel2Workflow(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer func() {
-		if false {
-			os.RemoveAll(workingFolder)
-		}
+		os.RemoveAll(workingFolder)
 	}()
 
-	err = model2workflow.Main(model, srcFile, dstFile)
+	result, err := model2workflow.Main(model, srcFile, dstFile)
 	if err != nil {
 		t.Fatal(err)
+	}
+
+	target, err := os.ReadFile(filepath.Join(".", "fixtures", "member.yml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if utils.CleanString(*result) != utils.CleanScript(target) {
+		t.Fatal("Test failed")
 	}
 }
