@@ -12,6 +12,8 @@ member:
       options:
         - Female
         - Male
+  - phoneNumber:
+      required: true
   - title:
       required: true
       options:
@@ -45,8 +47,6 @@ member:
       hidden: true
   - oldFileNumber:
       hidden: true
-  - phoneNumber:
-      required: true
   - memberIdNumber:
       hidden: true
   - shortMemberId:

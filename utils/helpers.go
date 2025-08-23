@@ -124,3 +124,11 @@ func CapitalizeFirstLetter(s string) string {
 	r[0] = unicode.ToUpper(r[0])
 	return string(r)
 }
+
+func IdentifierToLabel(identifier string) string {
+	re := regexp.MustCompile("([A-Z][a-z]*)")
+
+	parts := re.FindAllString(CapitalizeFirstLetter(identifier), -1)
+
+	return strings.Join(parts, " ")
+}

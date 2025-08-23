@@ -150,3 +150,13 @@ func TestFileLocked(t *testing.T) {
 		t.Fatalf("Test failed. Expected: false; Actual: %v", locked)
 	}
 }
+
+func TestIdentifierToLabel(t *testing.T) {
+	result := utils.IdentifierToLabel("thisIsAString")
+
+	target := "This Is A String"
+
+	if result != target {
+		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, result)
+	}
+}

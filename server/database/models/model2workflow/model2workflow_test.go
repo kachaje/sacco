@@ -19,6 +19,11 @@ func TestModel2Workflow(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer func() {
+		if false {
+			os.RemoveAll(workingFolder)
+		}
+	}()
 
 	err = model2workflow.Main(model, srcFile, dstFile)
 	if err != nil {
