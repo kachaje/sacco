@@ -107,13 +107,13 @@ func (d *Database) initDb() error {
 			}
 
 			if count >= len(modelTemplatesData) {
-				time.Sleep(1 * time.Second)
+				time.Sleep(2 * time.Second)
 
 				break
 			}
 		}
 
-		time.Sleep(2 * time.Second)
+		time.Sleep(3 * time.Second)
 	}
 
 	return nil
