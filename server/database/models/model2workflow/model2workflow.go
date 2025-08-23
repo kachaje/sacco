@@ -43,6 +43,12 @@ func Main(model, sourceFile, destinationFile string) (*string, error) {
 					if value["hidden"] == nil {
 						j++
 
+						text := utils.IdentifierToLabel(key)
+
+						data[tag].(map[string]any)["text"] = map[string]any{
+							"en": text,
+						}
+
 						data[tag].(map[string]any)["order"] = j
 						data[tag].(map[string]any)["type"] = "inputScreen"
 						data[tag].(map[string]any)["nextScreen"] = "formSummary"

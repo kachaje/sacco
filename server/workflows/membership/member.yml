@@ -1,188 +1,155 @@
-model: member
-
-initialScreen: enterFirstName
-
-enterId:
-  type: hiddenField
-  inputIdentifier: id
+enterDateJoined:
   hidden: true
-
-enterFirstName:
-  order: 1
-  type: inputScreen
-  text:
-    en: First Name
-    ny: Dzina Loyamba
-  inputIdentifier: firstName
-  nextScreen: enterLastName
-
-enterLastName:
-  order: 2
-  type: inputScreen
-  text:
-    en: Last Name
-    ny: Dzina La Abambo
-  inputIdentifier: lastName
-  nextScreen: enterAskOtherName
-
-enterAskOtherName:
-  order: 3
-  type: inputScreen
-  text:
-    en: Other Name?
-    ny: Dzina Lina?
-  options:
-    - position: 1
-      label:
-        en: Yes
-        ny: Inde
-      nextScreen: enterOtherName
-    - position: 2
-      label:
-        en: No
-        ny: Ayi
-  inputIdentifier: askOtherName
-  nextScreen: enterGender
-
-enterOtherName:
-  order: 4
-  type: inputScreen
-  text:
-    en: Other Name
-    ny: Dzina Lina
-  inputIdentifier: otherName
-  nextScreen: enterGender
-
-enterGender:
-  order: 5
-  type: inputScreen
-  text:
-    en: Gender
-    ny: Amuna/Akazi
-  options:
-    - position: 1
-      label:
-        en: Female
-        ny: Akazi
-    - position: 2
-      label:
-        en: Male
-        ny: Amuna
-  inputIdentifier: gender
-  nextScreen: enterPhoneNumber
-
-enterPhoneNumber:
-  order: 6
-  type: inputScreen
-  text:
-    en: Phone Number
-    ny: Nambala Yafoni
-  nextScreen: enterTitle
-  inputIdentifier: phoneNumber
-
-enterTitle:
-  order: 7
-  type: inputScreen
-  text:
-    en: Title
-    ny: Udindo
-  options:
-    - position: 1
-      label:
-        all: Mr
-    - position: 2
-      label:
-        en: Mrs
-        ny: Mayi
-    - position: 3
-      label:
-        all: Miss
-    - position: 4
-      label:
-        all: Dr
-    - position: 5
-      label:
-        all: Prof
-    - position: 6
-      label:
-        en: Rev
-        ny: Abusa
-    - position: 7
-      label:
-        en: Other
-        ny: Ena
-  inputIdentifier: title
-  nextScreen: enterMaritalStatus
-
-enterMaritalStatus:
-  order: 8
-  type: inputScreen
-  text:
-    en: Marital Status
-    ny: Muli M'banja
-  options:
-    - position: 1
-      label:
-        en: Married
-        ny: Inde
-    - position: 2
-      label:
-        en: Single
-        ny: Ayi
-    - position: 3
-      label:
-        en: Widowed
-        ny: Woferedwa
-    - position: 4
-      label:
-        en: Divorced
-        ny: Osudzulidwa
-  inputIdentifier: maritalStatus
-  nextScreen: enterDateOfBirth
-
+  inputIdentifier: dateJoined
+  type: hiddenField
 enterDateOfBirth:
-  order: 9
-  type: inputScreen
-  text:
-    en: Date of Birth
-    ny: Tsiku Lobadwa
-  validationRule: "^\\d{4}-\\d{2}-\\d{2}$"
   inputIdentifier: dateOfBirth
   nextScreen: enterNationalId
-
-enterNationalId:
-  order: 10
-  type: inputScreen
+  order: 8
   text:
-    en: National ID
-    ny: Nambala Yaunzika
+    en: Date Of Birth
+  type: inputScreen
+enterFileNumber:
+  hidden: true
+  inputIdentifier: fileNumber
+  type: hiddenField
+enterFirstName:
+  inputIdentifier: firstName
+  nextScreen: enterLastName
+  order: 1
+  text:
+    en: First Name
+  type: inputScreen
+enterGender:
+  inputIdentifier: gender
+  nextScreen: enterPhoneNumber
+  options:
+    - label:
+        en: Female
+      position: 1
+    - label:
+        en: Male
+      position: 2
+  order: 4
+  text:
+    en: Gender
+  type: inputScreen
+enterId:
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
+enterLastName:
+  inputIdentifier: lastName
+  nextScreen: enterOtherName
+  order: 2
+  text:
+    en: Last Name
+  type: inputScreen
+enterMaritalStatus:
+  inputIdentifier: maritalStatus
+  nextScreen: enterDateOfBirth
+  options:
+    - label:
+        en: Married
+      position: 1
+    - label:
+        en: Single
+      position: 2
+    - label:
+        en: Widowed
+      position: 3
+    - label:
+        en: Divorced
+      position: 4
+  order: 7
+  text:
+    en: Marital Status
+  type: inputScreen
+enterMemberIdNumber:
+  hidden: true
+  inputIdentifier: memberIdNumber
+  type: hiddenField
+enterNationalId:
   inputIdentifier: nationalId
   nextScreen: enterUtilityBillType
-
-enterUtilityBillType:
-  order: 11
-  type: inputScreen
+  order: 9
   text:
-    en: Utility Bill Type
-    ny: Mtundu Waumboni
+    en: National Id
+  type: inputScreen
+enterOldFileNumber:
+  hidden: true
+  inputIdentifier: oldFileNumber
+  type: hiddenField
+enterOtherName:
+  inputIdentifier: otherName
+  nextScreen: enterGender
+  optional: true
+  order: 3
+  text:
+    en: Other Name
+  type: inputScreen
+enterPhoneNumber:
+  inputIdentifier: phoneNumber
+  nextScreen: enterTitle
+  order: 5
+  text:
+    en: Phone Number
+  type: inputScreen
+enterShortMemberId:
+  hidden: true
+  inputIdentifier: shortMemberId
+  type: hiddenField
+enterTitle:
+  inputIdentifier: title
+  nextScreen: enterMaritalStatus
   options:
-    - position: 1
-      label:
-        all: ESCOM
-    - position: 2
-      label:
-        all: Water Board
-  inputIdentifier: utilityBillType
-  nextScreen: enterUtilityBillNo
-
-enterUtilityBillNo:
-  order: 12
-  type: inputScreen
+    - label:
+        en: Mr
+      position: 1
+    - label:
+        en: Mrs
+      position: 2
+    - label:
+        en: Miss
+      position: 3
+    - label:
+        en: Dr
+      position: 4
+    - label:
+        en: Prof
+      position: 5
+    - label:
+        en: Rev
+      position: 6
+    - label:
+        en: Other
+      position: 7
+  order: 6
   text:
-    en: Utility Bill Number
-    ny: Nambala ya Umboni
+    en: Title
+  type: inputScreen
+enterUtilityBillNumber:
   inputIdentifier: utilityBillNumber
   nextScreen: formSummary
-
+  order: 11
+  text:
+    en: Utility Bill Number
+  type: inputScreen
+enterUtilityBillType:
+  inputIdentifier: utilityBillType
+  nextScreen: enterUtilityBillNumber
+  options:
+    - label:
+        en: ESCOM
+      position: 1
+    - label:
+        en: Water Board
+      position: 2
+  order: 10
+  text:
+    en: Utility Bill Type
+  type: inputScreen
 formSummary:
   type: quitScreen
+initialScreen: enterFirstName
+model: member
