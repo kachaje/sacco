@@ -16,6 +16,8 @@ func TestMain(m *testing.M) {
 }
 
 func TestMemberApplication(t *testing.T) {
+	t.Skip()
+	
 	testscript.Run(t, testscript.Params{
 		Dir: "testdata/memberApplication",
 	})

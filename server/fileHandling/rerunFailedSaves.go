@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
+func RerunFailedSaves(phoneNumber, cacheFolder *string,
 	saveFunc func(
 		a map[string]any,
 		b string,
@@ -112,7 +112,7 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 						}
 					}
 
-					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, nil, saveFunc, sessions, nil)
+					err = SaveData(data, &target, phoneNumber, cacheFolder, nil, saveFunc, sessions, nil)
 					if err != nil {
 						log.Printf("server.RerunFailedSaves.3: %s", err.Error())
 						continue
@@ -126,7 +126,7 @@ func RerunFailedSaves(phoneNumber, sessionId, cacheFolder *string,
 						continue
 					}
 
-					err = SaveData(data, &target, phoneNumber, sessionId, cacheFolder, nil, saveFunc, sessions, nil)
+					err = SaveData(data, &target, phoneNumber, cacheFolder, nil, saveFunc, sessions, nil)
 					if err != nil {
 						log.Printf("server.RerunFailedSaves.5: %s", err.Error())
 						continue

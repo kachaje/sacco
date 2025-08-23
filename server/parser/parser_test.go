@@ -416,7 +416,7 @@ func TestGotoMenu(t *testing.T) {
 func TestCancel(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, cacheFolder, preferenceFolder *string, saveFunc func(
 		a map[string]any,
 		b string,
 		c int,
@@ -468,7 +468,7 @@ func TestCancel(t *testing.T) {
 func TestSubmit(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, cacheFolder, preferenceFolder *string, saveFunc func(
 		a map[string]any,
 		b string,
 		c int,
@@ -527,7 +527,7 @@ func TestSubmit(t *testing.T) {
 func TestNavNext(t *testing.T) {
 	called := false
 
-	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, saveFunc func(
+	wf := parser.NewWorkflow(data, func(m any, model, phoneNumber, cacheFolder, preferenceFolder *string, saveFunc func(
 		a map[string]any,
 		b string,
 		c int,

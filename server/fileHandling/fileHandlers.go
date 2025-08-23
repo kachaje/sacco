@@ -50,7 +50,7 @@ func CacheFile(filename string, data any, retries int) {
 }
 
 func SaveData(
-	data any, model, phoneNumber, sessionId, cacheFolder, preferenceFolder *string,
+	data any, model, phoneNumber, cacheFolder, preferenceFolder *string,
 	saveFunc func(
 		map[string]any,
 		string,
@@ -81,18 +81,18 @@ func SaveData(
 
 	case "memberBusiness", "memberOccupation", "memberNominee", "memberContact":
 		return HandleCommonModels(
-			data, model, phoneNumber, sessionId, cacheFolder,
+			data, model, phoneNumber, cacheFolder,
 			saveFunc, sessions, sessionFolder,
 		)
 
 	case "memberBeneficiary":
-		return HandleBeneficiaries(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, refData, sessionFolder)
+		return HandleBeneficiaries(data, phoneNumber, cacheFolder, saveFunc, sessions, refData, sessionFolder)
 
 	case "member":
-		return HandleMemberDetails(data, phoneNumber, sessionId, cacheFolder, saveFunc, sessions, sessionFolder)
+		return HandleMemberDetails(data, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder)
 
 	default:
-		fmt.Println("##########", *phoneNumber, *sessionId, data)
+		fmt.Println("##########", *phoneNumber, data)
 	}
 
 	return nil

@@ -56,11 +56,9 @@ func TestSaveDataOne(t *testing.T) {
 		AddedModels: map[string]bool{},
 	}
 
-	sessionId := "sample"
-
 	sessions := make(map[string]*parser.Session)
 
-	sessions[sessionId] = session
+	sessions[phoneNumber] = session
 
 	saveFunc := func(
 		a map[string]any,
@@ -74,12 +72,12 @@ func TestSaveDataOne(t *testing.T) {
 
 	model := "member"
 
-	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	sessions[sessionId].AddedModels["memberContact"] = true
+	sessions[phoneNumber].AddedModels["memberContact"] = true
 
 	data := map[string]any{
 		"dateOfBirth":       "1999-09-01",
@@ -98,7 +96,7 @@ func TestSaveDataOne(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	err = filehandling.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err = filehandling.SaveData(data, &model, &phoneNumber, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -170,11 +168,9 @@ func TestSaveDataAll(t *testing.T) {
 		},
 	}
 
-	sessionId := "sample"
-
 	sessions := make(map[string]*parser.Session)
 
-	sessions[sessionId] = session
+	sessions[phoneNumber] = session
 
 	saveFunc := func(
 		a map[string]any,
@@ -188,7 +184,7 @@ func TestSaveDataAll(t *testing.T) {
 
 	model := "member"
 
-	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err := filehandling.SaveData(map[string]any{}, &model, &phoneNumber, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -210,7 +206,7 @@ func TestSaveDataAll(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	err = filehandling.SaveData(data, &model, &phoneNumber, &sessionId, &cacheFolder, nil, saveFunc, sessions, nil)
+	err = filehandling.SaveData(data, &model, &phoneNumber, &cacheFolder, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -308,13 +304,11 @@ func TestRerunFailedSaves(t *testing.T) {
 		AddedModels:      map[string]bool{},
 	}
 
-	sessionId := "sample"
-
 	sessions := make(map[string]*parser.Session)
 
-	sessions[sessionId] = session
+	sessions[phoneNumber] = session
 
-	err = filehandling.RerunFailedSaves(&phoneNumber, &sessionId, &cacheFolder, saveFunc, sessions)
+	err = filehandling.RerunFailedSaves(&phoneNumber, &cacheFolder, saveFunc, sessions)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -349,27 +343,26 @@ func TestHandleBeneficiaries(t *testing.T) {
 	}
 
 	phoneNumber := "0999888777"
-	sessionId := "sample"
 	cacheFolder := "./tmp"
 
 	var id int64 = 1
 
 	sessions := map[string]*parser.Session{
-		sessionId: {
+		phoneNumber: {
 			MemberId:         &id,
 			ActiveMemberData: map[string]any{},
 			AddedModels:      map[string]bool{},
 		},
 	}
 
-	err := filehandling.HandleBeneficiaries(data, &phoneNumber, &sessionId, &cacheFolder, db.GenericsSaveData, sessions, nil, "")
+	err := filehandling.HandleBeneficiaries(data, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, nil, "")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !sessions[sessionId].AddedModels["memberBeneficiary"] {
+	if !sessions[phoneNumber].AddedModels["memberBeneficiary"] {
 		t.Fatalf("Test failed. Expected: true; Actual: %v",
-			sessions[sessionId].AddedModels["memberBeneficiary"])
+			sessions[phoneNumber].AddedModels["memberBeneficiary"])
 	}
 
 	result, err := db.GenericModels["memberBeneficiary"].FilterBy("WHERE active=1")
@@ -449,10 +442,9 @@ func TestHandleMemberDetails(t *testing.T) {
 	}
 
 	var id int64
-	sessionId := "sample"
 
 	sessions := map[string]*parser.Session{
-		sessionId: {
+		phoneNumber: {
 			MemberId:         &id,
 			ActiveMemberData: map[string]any{},
 			AddedModels: map[string]bool{
@@ -464,7 +456,7 @@ func TestHandleMemberDetails(t *testing.T) {
 		},
 	}
 
-	err := filehandling.HandleMemberDetails(data, &phoneNumber, &sessionId, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder)
+	err := filehandling.HandleMemberDetails(data, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder)
 	if err != nil {
 		t.Fatal(err)
 	}

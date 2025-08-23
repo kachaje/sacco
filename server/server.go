@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"context"
 	"flag"
 	"fmt"
 	"io"
@@ -18,6 +19,7 @@ import (
 	"sacco/utils"
 	"strings"
 	"sync"
+	"time"
 
 	_ "embed"
 	"html/template"
@@ -64,6 +66,8 @@ var preferencesFolder = filepath.Join(".", "settings")
 var cacheFolder = filepath.Join(".", "data", "cache")
 
 var db *database.Database
+
+var ctx context.Context
 
 func init() {
 	var err error
@@ -169,8 +173,6 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 
-	filehandling.RerunFailedSaves(&phoneNumber, &sessionID, &cacheFolder, db.GenericsSaveData, menus.Sessions)
-
 	response := menus.MainMenu(session, phoneNumber, text, sessionID, preferencesFolder, cacheFolder)
 
 	w.Header().Set("Content-Type", "text/plain")
@@ -263,6 +265,7 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 func Main() {
 	var err error
 	var dbname string = ":memory:"
+	var cancel context.CancelFunc
 
 	flag.IntVar(&port, "p", port, "server port")
 	flag.StringVar(&dbname, "n", dbname, "database name")
@@ -275,6 +278,9 @@ func Main() {
 			log.Panic(err)
 		}
 	}
+
+	ctx, cancel = context.WithCancel(context.Background())
+	defer cancel()
 
 	_, err = os.Stat(preferencesFolder)
 	if os.IsNotExist(err) {
@@ -303,6 +309,29 @@ func Main() {
 			http.Error(w, "Error executing template", http.StatusInternalServerError)
 		}
 	})
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				if _, err := os.Stat(cacheFolder); !os.IsNotExist(err) {
+					files, err := os.ReadDir(cacheFolder)
+
+					if err == nil {
+						for _, file := range files {
+							phoneNumber := file.Name()
+
+							filehandling.RerunFailedSaves(&phoneNumber, &cacheFolder, db.GenericsSaveData, menus.Sessions)
+						}
+					}
+				}
+
+				time.Sleep(2 * time.Second)
+			}
+		}
+	}()
 
 	http.HandleFunc("/ussd", ussdHandler)
 	log.Printf("USSD server listening on :%d\n", port)

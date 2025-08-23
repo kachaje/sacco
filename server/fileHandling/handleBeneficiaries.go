@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
+func HandleBeneficiaries(data any, phoneNumber, cacheFolder *string,
 	saveFunc func(
 		map[string]any,
 		string,
@@ -22,9 +22,9 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 
 		records := []map[string]any{}
 
-		if sessions != nil && sessions[*sessionId] != nil &&
-			sessions[*sessionId].MemberId != nil {
-			memberId = *sessions[*sessionId].MemberId
+		if sessions != nil && sessions[*phoneNumber] != nil &&
+			sessions[*phoneNumber].MemberId != nil {
+			memberId = *sessions[*phoneNumber].MemberId
 		}
 
 		for i := range 4 {
@@ -90,10 +90,10 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 				row["id"] = id
 			}
 
-			if sessions != nil && sessions[*sessionId].MemberId != nil {
-				row["memberId"] = *sessions[*sessionId].MemberId
+			if sessions != nil && sessions[*phoneNumber].MemberId != nil {
+				row["memberId"] = *sessions[*phoneNumber].MemberId
 
-				memberId = *sessions[*sessionId].MemberId
+				memberId = *sessions[*phoneNumber].MemberId
 			} else if memberId != 0 {
 				row["memberId"] = memberId
 			}
@@ -134,14 +134,14 @@ func HandleBeneficiaries(data any, phoneNumber, sessionId, cacheFolder *string,
 			transactionDone = true
 		}
 
-		if phoneNumber != nil && cacheFolder != nil && sessions != nil && sessionId != nil {
-			sessions[*sessionId].ActiveMemberData["memberBeneficiary"] = records
+		if phoneNumber != nil && cacheFolder != nil && sessions != nil {
+			sessions[*phoneNumber].ActiveMemberData["memberBeneficiary"] = records
 
-			sessions[*sessionId].AddedModels["memberBeneficiary"] = true
+			sessions[*phoneNumber].AddedModels["memberBeneficiary"] = true
 
-			sessions[*sessionId].RefreshSession()
+			sessions[*phoneNumber].RefreshSession()
 
-			sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+			sessions[*phoneNumber].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
 	}
 

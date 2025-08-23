@@ -33,7 +33,7 @@ type WorkFlow struct {
 	ScreenIdMap        map[string]string
 	ScreenOrder        map[int]string
 	SubmitCallback     func(
-		d any, m *string, p *string, s *string, c *string, f *string,
+		d any, m *string, p *string, c *string, f *string,
 		addFn func(
 			map[string]any,
 			string,
@@ -58,7 +58,7 @@ type WorkFlow struct {
 func NewWorkflow(
 	tree map[string]any,
 	callbackFunc func(
-		any, *string, *string, *string, *string, *string,
+		any, *string, *string, *string, *string,
 		func(
 			map[string]any,
 			string,
@@ -282,7 +282,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 			}
 
 			w.SubmitCallback(
-				data, &w.CurrentModel, &w.CurrentPhoneNumber, &w.CurrentSessionId,
+				data, &w.CurrentModel, &w.CurrentPhoneNumber,
 				&w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data,
 			)
 		}

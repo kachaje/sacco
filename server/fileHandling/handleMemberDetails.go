@@ -9,7 +9,7 @@ import (
 	"sacco/server/parser"
 )
 
-func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
+func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
 	memberData, ok := data.(map[string]any)
 	if ok {
@@ -34,10 +34,10 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			}
 		}()
 
-		if sessions[*sessionId].AddedModels["memberContact"] ||
-			sessions[*sessionId].AddedModels["memberNominee"] ||
-			sessions[*sessionId].AddedModels["memberOccupation"] ||
-			sessions[*sessionId].AddedModels["memberBeneficiary"] {
+		if sessions[*phoneNumber].AddedModels["memberContact"] ||
+			sessions[*phoneNumber].AddedModels["memberNominee"] ||
+			sessions[*phoneNumber].AddedModels["memberOccupation"] ||
+			sessions[*phoneNumber].AddedModels["memberBeneficiary"] {
 
 			var contactsData, nomineeData, occupationData map[string]any
 			var beneficiariesData []map[string]any
@@ -205,15 +205,15 @@ func HandleMemberDetails(data any, phoneNumber, sessionId, cacheFolder *string,
 			transactionDone = true
 		}
 
-		sessions[*sessionId].MemberId = &id
+		sessions[*phoneNumber].MemberId = &id
 
 		memberData["id"] = id
 
-		sessions[*sessionId].UpdateActiveMemberData(memberData, 0)
+		sessions[*phoneNumber].UpdateActiveMemberData(memberData, 0)
 
-		sessions[*sessionId].RefreshSession()
+		sessions[*phoneNumber].RefreshSession()
 
-		sessions[*sessionId].LoadMemberCache(*phoneNumber, *cacheFolder)
+		sessions[*phoneNumber].LoadMemberCache(*phoneNumber, *cacheFolder)
 	}
 
 	return nil
