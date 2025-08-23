@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	_ "embed"
 	"fmt"
@@ -94,6 +95,25 @@ func (d *Database) initDb() error {
 	_, err := d.DB.Exec(schemaStatement)
 	if err != nil {
 		return err
+	}
+
+	for {
+		rows, err := d.DB.QueryContext(context.Background(), "SELECT name FROM sqlite_master WHERE type='table'")
+		if err == nil {
+			count := 0
+
+			for rows.Next() {
+				count++
+			}
+
+			if count >= len(modelTemplatesData) {
+				time.Sleep(1 * time.Second)
+
+				break
+			}
+		}
+
+		time.Sleep(2 * time.Second)
 	}
 
 	return nil
