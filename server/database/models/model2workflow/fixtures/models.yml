@@ -9,13 +9,26 @@ member:
       optional: true
   - gender:
       required: true
-  - title:
-      required: true
-  - maritalStatus:
-      required: true
       options:
         - Female
         - Male
+  - title:
+      required: true
+      options:
+        - Mr
+        - Mrs
+        - Miss
+        - Dr
+        - Prof
+        - Rev
+        - Other
+  - maritalStatus:
+      required: true
+      options:
+        - Married
+        - Single
+        - Widowed
+        - Divorced
   - dateOfBirth:
       required: true
       validationRule: "^\\d{4}-\\d{2}-\\d{2}$"

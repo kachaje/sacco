@@ -1,0 +1,176 @@
+model: member
+
+initialScreen: enterFirstName
+
+enterId:
+  type: hiddenField
+  inputIdentifier: id
+  hidden: true
+
+enterFirstName:
+  order: 1
+  type: inputScreen
+  text:
+    en: First Name
+  inputIdentifier: firstName
+  nextScreen: enterLastName
+
+enterLastName:
+  order: 2
+  type: inputScreen
+  text:
+    en: Last Name
+  inputIdentifier: lastName
+  nextScreen: enterOtherName
+
+enterOtherName:
+  order: 4
+  type: inputScreen
+  optional: true
+  text:
+    en: Other Name
+  inputIdentifier: otherName
+  nextScreen: enterGender
+
+enterGender:
+  order: 5
+  type: inputScreen
+  text:
+    en: Gender
+  options:
+    - position: 1
+      label:
+        en: Female
+    - position: 2
+      label:
+        en: Male
+  inputIdentifier: gender
+  nextScreen: enterPhoneNumber
+
+enterPhoneNumber:
+  order: 6
+  type: inputScreen
+  text:
+    en: Phone Number
+  nextScreen: enterTitle
+  inputIdentifier: phoneNumber
+
+enterTitle:
+  order: 7
+  type: inputScreen
+  text:
+    en: Title
+  options:
+    - position: 1
+      label:
+        en: Mr
+    - position: 2
+      label:
+        en: Mrs
+    - position: 3
+      label:
+        en: Miss
+    - position: 4
+      label:
+        en: Dr
+    - position: 5
+      label:
+        en: Prof
+    - position: 6
+      label:
+        en: Rev
+    - position: 7
+      label:
+        en: Other
+  inputIdentifier: title
+  nextScreen: enterMaritalStatus
+
+enterMaritalStatus:
+  order: 8
+  type: inputScreen
+  text:
+    en: Marital Status
+  options:
+    - position: 1
+      label:
+        en: Married
+    - position: 2
+      label:
+        en: Single
+    - position: 3
+      label:
+        en: Widowed
+    - position: 4
+      label:
+        en: Divorced
+  inputIdentifier: maritalStatus
+  nextScreen: enterDateOfBirth
+
+enterDateOfBirth:
+  order: 9
+  type: inputScreen
+  text:
+    en: Date of Birth
+  validationRule: "^\\d{4}-\\d{2}-\\d{2}$"
+  inputIdentifier: dateOfBirth
+  nextScreen: enterNationalId
+
+enterNationalId:
+  order: 10
+  type: inputScreen
+  text:
+    en: National ID
+  inputIdentifier: nationalId
+  nextScreen: enterUtilityBillType
+
+enterUtilityBillType:
+  order: 11
+  type: inputScreen
+  text:
+    en: Utility Bill Type
+  options:
+    - position: 1
+      label:
+        en: ESCOM
+    - position: 2
+      label:
+        en: Water Board
+  inputIdentifier: utilityBillType
+  nextScreen: enterUtilityBillNo
+
+enterUtilityBillNo:
+  order: 12
+  type: inputScreen
+  text:
+    en: Utility Bill Number
+    ny: Nambala ya Umboni
+  inputIdentifier: utilityBillNumber
+  nextScreen: formSummary
+
+enterFileNumber:
+  type: hiddenField
+  inputIdentifier: fileNumber
+  hidden: true
+
+enterOldFileNumber:
+  type: hiddenField
+  inputIdentifier: oldFileNumber
+  hidden: true
+
+enterMemberIdNumber:
+  type: hiddenField
+  inputIdentifier: memberIdNumber
+  hidden: true
+
+enterShortMemberId:
+  type: hiddenField
+  inputIdentifier: shortMemberId
+  hidden: true
+
+enterDateJoined:
+  type: hiddenField
+  inputIdentifier: dateJoined
+  hidden: true
+
+formSummary:
+  type: quitScreen
