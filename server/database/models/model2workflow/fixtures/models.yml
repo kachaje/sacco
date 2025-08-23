@@ -1,0 +1,42 @@
+member:
+  - id:
+      hidden: true
+  - firstName:
+      required: true
+  - lastName:
+      required: true
+  - otherName:
+      optional: true
+  - gender:
+      required: true
+  - title:
+      required: true
+  - maritalStatus:
+      required: true
+      options:
+        - Female
+        - Male
+  - dateOfBirth:
+      required: true
+      validationRule: "^\\d{4}-\\d{2}-\\d{2}$"
+  - nationalId:
+      required: true
+  - utilityBillType:
+      required: true
+      options:
+        - ESCOM
+        - Water Board
+  - utilityBillNumber:
+      required: true
+  - fileNumber:
+      hidden: true
+  - oldFileNumber:
+      hidden: true
+  - phoneNumber:
+      required: true
+  - memberIdNumber:
+      hidden: true
+  - shortMemberId:
+      hidden: true
+  - dateJoined:
+      hidden: true
