@@ -22,6 +22,16 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
+CREATE TRIGGER IF NOT EXISTS memberUpdated AFTER
+UPDATE ON member FOR EACH ROW BEGIN
+UPDATE member
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 CREATE TABLE
   IF NOT EXISTS memberContact (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,6 +47,16 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
+CREATE TRIGGER IF NOT EXISTS memberContactUpdated AFTER
+UPDATE ON memberContact FOR EACH ROW BEGIN
+UPDATE memberContact
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 CREATE TABLE
   IF NOT EXISTS memberNominee (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,6 +68,16 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
+
+CREATE TRIGGER IF NOT EXISTS memberNomineeUpdated AFTER
+UPDATE ON memberNominee FOR EACH ROW BEGIN
+UPDATE memberNominee
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
 
 CREATE TABLE
   IF NOT EXISTS memberOccupation (
@@ -66,6 +96,16 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
+CREATE TRIGGER IF NOT EXISTS memberOccupationUpdated AFTER
+UPDATE ON memberOccupation FOR EACH ROW BEGIN
+UPDATE memberOccupation
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 CREATE TABLE
   IF NOT EXISTS memberBeneficiary (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -77,6 +117,16 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
+
+CREATE TRIGGER IF NOT EXISTS memberBeneficiaryUpdated AFTER
+UPDATE ON memberBeneficiary FOR EACH ROW BEGIN
+UPDATE memberBeneficiary
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
 
 CREATE TABLE
   IF NOT EXISTS memberBusiness (
@@ -90,6 +140,16 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
+
+CREATE TRIGGER IF NOT EXISTS memberBusinessUpdated AFTER
+UPDATE ON memberBusiness FOR EACH ROW BEGIN
+UPDATE memberBusiness
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
 
 CREATE TABLE
   IF NOT EXISTS memberLastYearBusinessHistory (
@@ -113,6 +173,16 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
+CREATE TRIGGER IF NOT EXISTS memberLastYearBusinessHistoryUpdated AFTER
+UPDATE ON memberLastYearBusinessHistory FOR EACH ROW BEGIN
+UPDATE memberLastYearBusinessHistory
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 CREATE TABLE
   IF NOT EXISTS memberNextYearBusinessProjection (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -135,6 +205,16 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
+CREATE TRIGGER IF NOT EXISTS memberNextYearBusinessProjectionUpdated AFTER
+UPDATE ON memberNextYearBusinessProjection FOR EACH ROW BEGIN
+UPDATE memberNextYearBusinessProjection
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 CREATE TABLE
   IF NOT EXISTS memberShares (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -146,6 +226,16 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
+
+CREATE TRIGGER IF NOT EXISTS memberSharesUpdated AFTER
+UPDATE ON memberShares FOR EACH ROW BEGIN
+UPDATE memberShares
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
 
 CREATE TABLE
   IF NOT EXISTS memberLoan (
@@ -176,6 +266,16 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
+CREATE TRIGGER IF NOT EXISTS memberLoanUpdated AFTER
+UPDATE ON memberLoan FOR EACH ROW BEGIN
+UPDATE memberLoan
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 CREATE TABLE
   IF NOT EXISTS memberLoanLiability (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -187,6 +287,16 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
+
+CREATE TRIGGER IF NOT EXISTS memberLoanLiabilityUpdated AFTER
+UPDATE ON memberLoanLiability FOR EACH ROW BEGIN
+UPDATE memberLoanLiability
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
 
 CREATE TABLE
   IF NOT EXISTS memberLoanSecurity (
@@ -201,6 +311,16 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
+CREATE TRIGGER IF NOT EXISTS memberLoanSecurityUpdated AFTER
+UPDATE ON memberLoanSecurity FOR EACH ROW BEGIN
+UPDATE memberLoanSecurity
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 CREATE TABLE
   IF NOT EXISTS memberLoanWitness (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -214,6 +334,16 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
+
+CREATE TRIGGER IF NOT EXISTS memberLoanWitnessUpdated AFTER
+UPDATE ON memberLoanWitness FOR EACH ROW BEGIN
+UPDATE memberLoanWitness
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
 
 CREATE TABLE
   IF NOT EXISTS employmentVerification (
@@ -233,4 +363,14 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-  )
+  );
+
+CREATE TRIGGER IF NOT EXISTS employmentVerificationUpdated AFTER
+UPDATE ON employmentVerification FOR EACH ROW BEGIN
+UPDATE employmentVerification
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;

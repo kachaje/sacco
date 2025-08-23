@@ -90,7 +90,7 @@ func (m *Model) UpdateRecord(data map[string]any, id int64) error {
 	values := []any{}
 
 	for key, value := range data {
-		if !slices.Contains(m.Fields, key) {
+		if !slices.Contains(append(m.Fields, []string{"active", "updated_at"}...), key) {
 			continue
 		}
 

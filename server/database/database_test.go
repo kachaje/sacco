@@ -39,9 +39,7 @@ func TestDatabase(t *testing.T) {
 		}
 	}
 }
-func TestMemberBeneficiaries(t *testing.T) {
-	t.Skip()
-
+func TestDatabaseMemberBeneficiaries(t *testing.T) {
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
 	defer func() {
@@ -110,7 +108,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, err = db.MemberByPhoneNumber(phoneNumber, nil, nil)
+	result, err = db.MemberByPhoneNumber(phoneNumber, nil, []string{})
 	if err != nil {
 		t.Fatal(err)
 	}
