@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"log"
+	"regexp"
 	"sacco/server/database/models"
 	"sacco/utils"
 	"slices"
@@ -121,19 +122,26 @@ func (d *Database) GenericsSaveData(data map[string]any,
 	var id *int64
 	var err error
 
-	if data["id"] != nil {
-		val, ok := data["id"].(int64)
-		if ok {
-			id = &val
+	id, err = d.GenericModels[model].AddRecord(data)
+	if err != nil {
+		if regexp.MustCompile("UNIQUE").MatchString(err.Error()) {
+			if data["id"] != nil {
+				if val, ok := data["id"].(int64); ok {
+					id = &val
+				} else if val, ok := data["id"].(int); ok {
+					v := int64(val)
+					id = &v
+				} else if val, ok := data["id"].(float64); ok {
+					v := int64(val)
+					id = &v
+				}
+			}
 
 			err = d.GenericModels[model].UpdateRecord(data, *id)
 			if err != nil {
 				return nil, err
 			}
-		}
-	} else {
-		id, err = d.GenericModels[model].AddRecord(data)
-		if err != nil {
+		} else {
 			return nil, err
 		}
 	}
