@@ -127,29 +127,21 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	session, exists := menus.Sessions[sessionID]
 	if !exists {
-		session = &parser.Session{
-			ActiveMemberData: map[string]any{},
-			QueryFn:          db.MemberByPhoneNumber,
-			CurrentMenu:      "main",
-			Data:             make(map[string]string),
-			SessionId:        sessionID,
-			PhoneNumber:      phoneNumber,
-			SkipFields:       []string{"active"},
+		session = parser.NewSession(db.MemberByPhoneNumber, &phoneNumber, &sessionID)
 
-			LanguageWorkflow: parser.NewWorkflow(languageData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
+		session.LanguageWorkflow = parser.NewWorkflow(languageData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
-			PIWorkflow: parser.NewWorkflow(personalInformationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
+		session.PIWorkflow = parser.NewWorkflow(personalInformationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
-			OccupationWorkflow: parser.NewWorkflow(occupationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
+		session.OccupationWorkflow = parser.NewWorkflow(occupationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
-			ContactsWorkflow: parser.NewWorkflow(contactsData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
+		session.ContactsWorkflow = parser.NewWorkflow(contactsData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
-			NomineeWorkflow: parser.NewWorkflow(nomineeData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
+		session.NomineeWorkflow = parser.NewWorkflow(nomineeData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
-			BeneficiariesWorkflow: parser.NewWorkflow(beneficiariesData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
+		session.BeneficiariesWorkflow = parser.NewWorkflow(beneficiariesData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
-			BusinessInfoWorkflow: parser.NewWorkflow(businessInfoData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil),
-		}
+		session.BusinessInfoWorkflow = parser.NewWorkflow(businessInfoData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
 		if preferredLanguage != nil {
 			session.PreferredLanguage = *preferredLanguage

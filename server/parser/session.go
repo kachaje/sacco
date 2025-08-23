@@ -40,12 +40,28 @@ type Session struct {
 	Mu *sync.Mutex
 }
 
-func NewSession(queryFn func(string, []string, []string) (map[string]any, error)) *Session {
-	return &Session{
-		QueryFn:     queryFn,
-		Mu:          &sync.Mutex{},
-		AddedModels: map[string]bool{},
+func NewSession(
+	queryFn func(string, []string, []string) (map[string]any, error),
+	phoneNumber, sessionId *string,
+) *Session {
+	s := &Session{
+		QueryFn:          queryFn,
+		Mu:               &sync.Mutex{},
+		AddedModels:      map[string]bool{},
+		ActiveMemberData: map[string]any{},
+		Data:             map[string]string{},
+		SkipFields:       []string{"active"},
+		CurrentMenu:      "main",
 	}
+
+	if phoneNumber != nil {
+		s.PhoneNumber = *phoneNumber
+	}
+	if sessionId != nil {
+		s.SessionId = *sessionId
+	}
+
+	return s
 }
 
 func (s *Session) UpdateSessionFlags() error {
