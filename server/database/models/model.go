@@ -90,6 +90,10 @@ func (m *Model) UpdateRecord(data map[string]any, id int64) error {
 	values := []any{}
 
 	for key, value := range data {
+		if !slices.Contains(m.Fields, key) {
+			continue
+		}
+
 		fields = append(fields, fmt.Sprintf("%s = ?", key))
 		values = append(values, value)
 	}
