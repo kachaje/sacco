@@ -1,4 +1,4 @@
-exec server -p 8999 2>&1 >/dev/null &
+exec server -p 8999 -n db2 2>&1 >/dev/null &
 stdin input.txt
 exec wscli -p 8999 -n 0888999789
 stdout 'Welcome to Kaso SACCO'
