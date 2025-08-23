@@ -166,8 +166,8 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
-	if os.IsNotExist(err) {
-		return err
+	if !os.IsNotExist(err) {
+		os.MkdirAll(sessionFolder, 0755)
 	}
 
 	for _, key := range []string{"memberContact", "memberNominee", "memberOccupation", "memberBeneficiary"} {

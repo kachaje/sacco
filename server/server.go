@@ -103,6 +103,10 @@ func init() {
 		panic(err)
 	}
 
+	_, err = os.Stat(cacheFolder)
+	if !os.IsNotExist(err) {
+		os.MkdirAll(cacheFolder, 0755)
+	}
 }
 
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
