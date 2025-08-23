@@ -151,7 +151,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 			session.PreferredLanguage = *preferredLanguage
 		}
 
-		menus.Sessions[sessionID] = session
+		menus.Sessions[phoneNumber] = session
 	}
 	mu.Unlock()
 

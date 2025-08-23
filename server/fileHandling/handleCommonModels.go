@@ -47,28 +47,30 @@ func HandleCommonModels(data any, model, phoneNumber, cacheFolder *string,
 			}
 		}
 
-		if sessions[*phoneNumber].MemberId != nil {
-			val["memberId"] = *sessions[*phoneNumber].MemberId
+		if sessions[*phoneNumber] != nil {
+			if sessions[*phoneNumber].MemberId != nil {
+				val["memberId"] = *sessions[*phoneNumber].MemberId
 
-			if saveFunc == nil {
-				return fmt.Errorf("server.SaveData.%s.1:missing saveFunc", *model)
+				if saveFunc == nil {
+					return fmt.Errorf("server.SaveData.%s.1:missing saveFunc", *model)
+				}
+
+				_, err := saveFunc(val, *model, 0)
+				if err != nil {
+					return fmt.Errorf("server.SaveData.%s.2:%s", *model, err.Error())
+				}
+
+				transactionDone = true
 			}
 
-			_, err := saveFunc(val, *model, 0)
-			if err != nil {
-				return fmt.Errorf("server.SaveData.%s.2:%s", *model, err.Error())
-			}
+			sessions[*phoneNumber].ActiveMemberData[*model] = val
 
-			transactionDone = true
+			sessions[*phoneNumber].AddedModels[*model] = true
+
+			sessions[*phoneNumber].RefreshSession()
+
+			sessions[*phoneNumber].LoadMemberCache(*phoneNumber, *cacheFolder)
 		}
-
-		sessions[*phoneNumber].ActiveMemberData[*model] = val
-
-		sessions[*phoneNumber].AddedModels[*model] = true
-
-		sessions[*phoneNumber].RefreshSession()
-
-		sessions[*phoneNumber].LoadMemberCache(*phoneNumber, *cacheFolder)
 	}
 
 	return nil
