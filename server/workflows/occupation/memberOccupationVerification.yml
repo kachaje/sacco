@@ -1,4 +1,4 @@
-model: employmentVerification
+model: memberOccupationVerification
 
 initialScreen: enterPhoneNumber
 

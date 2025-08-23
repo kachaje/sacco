@@ -145,7 +145,7 @@ memberLoanWitness:
   - address
   - date
 
-employmentVerification:
+memberOccupationVerification:
   - id
   - memberId
   - memberLoanId

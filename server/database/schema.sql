@@ -346,7 +346,7 @@ WHERE
 END;
 
 CREATE TABLE
-  IF NOT EXISTS employmentVerification (
+  IF NOT EXISTS memberOccupationVerification (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
     memberLoanId INTEGER NOT NULL,
@@ -366,8 +366,8 @@ CREATE TABLE
   );
 
 CREATE TRIGGER IF NOT EXISTS employmentVerificationUpdated AFTER
-UPDATE ON employmentVerification FOR EACH ROW BEGIN
-UPDATE employmentVerification
+UPDATE ON memberOccupationVerification FOR EACH ROW BEGIN
+UPDATE memberOccupationVerification
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
