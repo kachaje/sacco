@@ -407,6 +407,10 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 					}
 				}
 
+				if node["optional"] == nil && len(strings.TrimSpace(input)) == 0 {
+					return node
+				}
+
 				if node != nil && node["inputIdentifier"] != nil {
 					inputIdentifier := fmt.Sprintf("%v", node["inputIdentifier"])
 
