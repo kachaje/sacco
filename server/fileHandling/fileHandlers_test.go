@@ -119,8 +119,6 @@ func TestSaveDataOne(t *testing.T) {
 }
 
 func TestSaveDataAll(t *testing.T) {
-	t.Skip()
-
 	phoneNumber := "0999888777"
 	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
 	cacheFolder := filepath.Join(".", "tmp1", "cache")
@@ -163,7 +161,14 @@ func TestSaveDataAll(t *testing.T) {
 		}
 	}
 
-	session := &parser.Session{}
+	session := &parser.Session{
+		AddedModels: map[string]bool{
+			"memberContact":     true,
+			"memberOccupation":  true,
+			"memberBeneficiary": true,
+			"memberNominee":     true,
+		},
+	}
 
 	sessionId := "sample"
 
@@ -187,8 +192,6 @@ func TestSaveDataAll(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	sessions[sessionId].ContactsAdded = true
 
 	data := map[string]any{
 		"dateOfBirth":       "1999-09-01",
