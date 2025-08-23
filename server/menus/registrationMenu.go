@@ -193,35 +193,35 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 				memberAdded = "(*)"
 			}
 		}
-		if session.OccupationAdded {
+		if session.AddedModels["memberOccupation"] {
 			if phoneNumber == "default" {
 				occupationAdded = "&#10003;"
 			} else {
 				occupationAdded = "(*)"
 			}
 		}
-		if session.ContactsAdded {
+		if session.AddedModels["memberContact"] {
 			if phoneNumber == "default" {
 				contactAdded = "&#10003;"
 			} else {
 				contactAdded = "(*)"
 			}
 		}
-		if session.NomineeAdded {
+		if session.AddedModels["memberNominee"] {
 			if phoneNumber == "default" {
 				nomineeAdded = "&#10003;"
 			} else {
 				nomineeAdded = "(*)"
 			}
 		}
-		if session.BeneficiariesAdded {
+		if session.AddedModels["memberBeneficiary"] {
 			if phoneNumber == "default" {
 				beneficiariesAdded = "&#10003;"
 			} else {
 				beneficiariesAdded = "(*)"
 			}
 		}
-		if session.BusinessInfoAdded {
+		if session.AddedModels["memberBusiness"] {
 			if phoneNumber == "default" {
 				businessInfoAdded = "&#10003;"
 			} else {

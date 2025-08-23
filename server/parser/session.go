@@ -27,11 +27,6 @@ type Session struct {
 
 	AddedModels map[string]bool
 
-	ContactsAdded      bool
-	NomineeAdded       bool
-	OccupationAdded    bool
-	BeneficiariesAdded bool
-	BusinessInfoAdded  bool
 	ActiveMemberData   map[string]any
 
 	QueryFn    func(string, []string, []string) (map[string]any, error)
@@ -69,11 +64,11 @@ func (s *Session) UpdateSessionFlags() error {
 	if beneficiariesData != nil {
 		val, ok := beneficiariesData.([]any)
 		if ok && len(val) > 0 {
-			s.BeneficiariesAdded = true
+			s.AddedModels["memberBeneficiary"] = true
 		} else {
 			val, ok := beneficiariesData.([]map[string]any)
 			if ok && len(val) > 0 {
-				s.BeneficiariesAdded = true
+				s.AddedModels["memberBeneficiary"] = true
 			}
 		}
 	}
@@ -82,7 +77,7 @@ func (s *Session) UpdateSessionFlags() error {
 	if contactDetailsData != nil {
 		val, ok := contactDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
-			s.ContactsAdded = true
+			s.AddedModels["memberContact"] = true
 		}
 	}
 
@@ -90,7 +85,7 @@ func (s *Session) UpdateSessionFlags() error {
 	if nomineeDetailsData != nil {
 		val, ok := nomineeDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
-			s.NomineeAdded = true
+			s.AddedModels["memberNominee"] = true
 		}
 	}
 
@@ -98,7 +93,7 @@ func (s *Session) UpdateSessionFlags() error {
 	if occupationDetailsData != nil {
 		val, ok := occupationDetailsData.(map[string]any)
 		if ok && len(val) > 0 {
-			s.OccupationAdded = true
+			s.AddedModels["memberOccupation"] = true
 		}
 	}
 

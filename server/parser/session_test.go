@@ -38,19 +38,19 @@ func TestLoadMemberCache(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !session.ContactsAdded {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.ContactsAdded)
+	if !session.AddedModels["memberContact"] {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberContact"])
 	}
 
-	if !session.NomineeAdded {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.NomineeAdded)
+	if !session.AddedModels["memberNominee"] {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberNominee"])
 	}
 
-	if !session.BeneficiariesAdded {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.BeneficiariesAdded)
+	if !session.AddedModels["memberBeneficiary"] {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberBeneficiary"])
 	}
 
-	if !session.OccupationAdded {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.OccupationAdded)
+	if !session.AddedModels["memberOccupation"] {
+		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberOccupation"])
 	}
 }
