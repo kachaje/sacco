@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"regexp"
+	"sacco/utils"
 	"slices"
 	"strings"
 	"time"
@@ -73,7 +74,7 @@ func (m *Model) AddRecord(data map[string]any) (*int64, error) {
 		strings.Join(markers, ", "),
 	)
 
-	result, err := QueryWithRetry(m.db, context.Background(), 0, query, values...)
+	result, err := utils.QueryWithRetry(m.db, context.Background(), 0, query, values...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +103,7 @@ func (m *Model) UpdateRecord(data map[string]any, id int64) error {
 
 	statement := fmt.Sprintf("UPDATE %s SET %s WHERE id=?", m.ModelName, strings.Join(fields, ", "))
 
-	_, err := QueryWithRetry(
+	_, err := utils.QueryWithRetry(
 		m.db,
 		context.Background(), 0,
 		statement, values...,

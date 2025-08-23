@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"sacco/server/database/models"
+	"sacco/utils"
 	"testing"
 
 	_ "modernc.org/sqlite"
@@ -151,7 +152,7 @@ func TestUpdateRecord(t *testing.T) {
 		"weight":    95.0,
 	}
 
-	result, err := models.QueryWithRetry(
+	result, err := utils.QueryWithRetry(
 		db,
 		context.Background(), 0,
 		fmt.Sprintf(`INSERT INTO %s (
@@ -240,7 +241,7 @@ func TestFetchById(t *testing.T) {
 		"weight":    95.0,
 	}
 
-	result, err := models.QueryWithRetry(
+	result, err := utils.QueryWithRetry(
 		db,
 		context.Background(), 0,
 		fmt.Sprintf(`INSERT INTO %s (
@@ -309,7 +310,7 @@ func TestFilterBy(t *testing.T) {
 		"weight":    95.0,
 	}
 
-	_, err = models.QueryWithRetry(
+	_, err = utils.QueryWithRetry(
 		db,
 		context.Background(), 0,
 		fmt.Sprintf(`INSERT INTO %s (
