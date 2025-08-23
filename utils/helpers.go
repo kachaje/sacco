@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"unicode"
 
 	"gopkg.in/yaml.v3"
 )
@@ -113,4 +114,13 @@ func QueryWithRetry(db *sql.DB, ctx context.Context, retries int, query string, 
 	}
 
 	return result, nil
+}
+
+func CapitalizeFirstLetter(s string) string {
+	if len(s) == 0 {
+		return ""
+	}
+	r := []rune(s)
+	r[0] = unicode.ToUpper(r[0])
+	return string(r)
 }
