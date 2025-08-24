@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"sacco/server/parser"
 	"slices"
+	"strings"
 )
 
 func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
@@ -252,6 +253,140 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 				"\n" +
 				"7. View Member Details\n" +
 				"\n" +
+				"00. Main Menu"
+		}
+	}
+
+	return response
+}
+
+func RegistrationMenu1(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+	response := session.WorkflowsMapping["member"].NavNext(text)
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		text = "0"
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if strings.TrimSpace(response) == "" {
+		session.CurrentMenu = "registration"
+		text = ""
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	}
+
+	return response
+}
+
+func RegistrationMenu2(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+	response := session.WorkflowsMapping["memberOccupation"].NavNext(text)
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		text = "0"
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if strings.TrimSpace(response) == "" {
+		session.CurrentMenu = "registration"
+		text = ""
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	}
+
+	return response
+}
+
+func RegistrationMenu3(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+	response := session.WorkflowsMapping["memberContact"].NavNext(text)
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		text = "0"
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if strings.TrimSpace(response) == "" {
+		session.CurrentMenu = "registration"
+		text = ""
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	}
+
+	return response
+}
+
+func RegistrationMenu4(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+	response := session.WorkflowsMapping["memberNominee"].NavNext(text)
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		text = "0"
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if strings.TrimSpace(response) == "" {
+		session.CurrentMenu = "registration"
+		text = ""
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	}
+
+	return response
+}
+
+func RegistrationMenu5(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+	response := session.WorkflowsMapping["memberBeneficiary"].NavNext(text)
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		text = "0"
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if strings.TrimSpace(response) == "" {
+		session.CurrentMenu = "registration"
+		text = ""
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	}
+
+	return response
+}
+
+func RegistrationMenu6(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+	response := session.WorkflowsMapping["memberBusiness"].NavNext(text)
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		text = "0"
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if strings.TrimSpace(response) == "" {
+		session.CurrentMenu = "registration"
+		text = ""
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	}
+
+	return response
+}
+
+func RegistrationMenu7(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+	var response string
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		text = "0"
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if strings.TrimSpace(text) == "99" {
+		session.CurrentMenu = "registration"
+		text = ""
+		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else {
+		data := LoadTemplateData(session.ActiveMemberData, templateData)
+
+		table := TabulateData(data)
+
+		tableString := strings.Join(table, "\n")
+
+		if preferredLanguage != nil && *preferredLanguage == "ny" {
+			response = "CON Zambiri za Membala\n" +
+				"\n" +
+				fmt.Sprintf("%s\n", tableString) +
+				"\n" +
+				"99. Basi\n" +
+				"00. Tiyambirenso"
+		} else {
+			response = "CON Member Details\n" +
+				"\n" +
+				fmt.Sprintf("%s\n", tableString) +
+				"\n" +
+				"99. Cancel\n" +
 				"00. Main Menu"
 		}
 	}

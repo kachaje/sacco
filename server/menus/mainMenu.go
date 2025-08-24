@@ -191,115 +191,25 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		return RegistrationMenu(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.1":
-		response = session.WorkflowsMapping["member"].NavNext(text)
-
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(response) == "" {
-			session.CurrentMenu = "registration"
-			text = ""
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		}
+		response = RegistrationMenu1(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.2":
-		response = session.WorkflowsMapping["memberOccupation"].NavNext(text)
-
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(response) == "" {
-			session.CurrentMenu = "registration"
-			text = ""
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		}
+		response = RegistrationMenu2(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.3":
-		response = session.WorkflowsMapping["memberContact"].NavNext(text)
-
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(response) == "" {
-			session.CurrentMenu = "registration"
-			text = ""
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		}
+		response = RegistrationMenu3(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.4":
-		response = session.WorkflowsMapping["memberNominee"].NavNext(text)
-
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(response) == "" {
-			session.CurrentMenu = "registration"
-			text = ""
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		}
+		response = RegistrationMenu4(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.5":
-		response = session.WorkflowsMapping["memberBeneficiary"].NavNext(text)
-
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(response) == "" {
-			session.CurrentMenu = "registration"
-			text = ""
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		}
+		response = RegistrationMenu5(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.6":
-		response = session.WorkflowsMapping["memberBusiness"].NavNext(text)
-
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(response) == "" {
-			session.CurrentMenu = "registration"
-			text = ""
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		}
+		response = RegistrationMenu6(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.7":
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(text) == "99" {
-			session.CurrentMenu = "registration"
-			text = ""
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else {
-			data := LoadTemplateData(session.ActiveMemberData, templateData)
-
-			table := TabulateData(data)
-
-			tableString := strings.Join(table, "\n")
-
-			if preferredLanguage != nil && *preferredLanguage == "ny" {
-				response = "CON Zambiri za Membala\n" +
-					"\n" +
-					fmt.Sprintf("%s\n", tableString) +
-					"\n" +
-					"99. Basi\n" +
-					"00. Tiyambirenso"
-			} else {
-				response = "CON Member Details\n" +
-					"\n" +
-					fmt.Sprintf("%s\n", tableString) +
-					"\n" +
-					"99. Cancel\n" +
-					"00. Main Menu"
-			}
-		}
+		response = RegistrationMenu7(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "loan":
 		return LoansMenu(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
