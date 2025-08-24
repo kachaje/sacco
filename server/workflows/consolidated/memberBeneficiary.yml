@@ -1,0 +1,35 @@
+enterContact:
+    inputIdentifier: contact
+    nextScreen: formSummary
+    order: 3
+    restartBlock: true
+    text:
+        en: Contact
+    type: inputScreen
+enterId:
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
+enterMemberId:
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
+enterName:
+    inputIdentifier: name
+    nextScreen: enterPercentage
+    order: 1
+    skipBlockOnEmpty: true
+    text:
+        en: Name
+    type: inputScreen
+enterPercentage:
+    inputIdentifier: percentage
+    nextScreen: enterContact
+    order: 2
+    text:
+        en: Percentage
+    type: inputScreen
+formSummary:
+    type: quitScreen
+initialScreen: enterName
+model: memberBeneficiary

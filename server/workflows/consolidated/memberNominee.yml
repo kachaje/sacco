@@ -1,0 +1,33 @@
+enterAddress:
+    inputIdentifier: address
+    nextScreen: formSummary
+    order: 3
+    text:
+        en: Address
+    type: inputScreen
+enterId:
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
+enterMemberId:
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
+enterName:
+    inputIdentifier: name
+    nextScreen: enterPhoneNumber
+    order: 1
+    text:
+        en: Name
+    type: inputScreen
+enterPhoneNumber:
+    inputIdentifier: phoneNumber
+    nextScreen: enterAddress
+    order: 2
+    text:
+        en: Phone Number
+    type: inputScreen
+formSummary:
+    type: quitScreen
+initialScreen: enterName
+model: memberNominee

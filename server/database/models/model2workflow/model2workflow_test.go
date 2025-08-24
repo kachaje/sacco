@@ -24,7 +24,17 @@ func TestModel2Workflow(t *testing.T) {
 		os.RemoveAll(workingFolder)
 	}()
 
-	result, err := model2workflow.Main(model, srcFile, dstFile)
+	content, err := os.ReadFile(srcFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := utils.LoadYaml(string(content))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result, err := model2workflow.Main(model, dstFile, data)
 	if err != nil {
 		t.Fatal(err)
 	}

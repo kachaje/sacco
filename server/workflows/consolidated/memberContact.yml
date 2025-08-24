@@ -1,0 +1,55 @@
+enterEmail:
+    inputIdentifier: email
+    nextScreen: enterHomeVillage
+    optional: true
+    order: 3
+    text:
+        en: Email
+    type: inputScreen
+enterHomeDistrict:
+    inputIdentifier: homeDistrict
+    nextScreen: formSummary
+    order: 6
+    text:
+        en: Home District
+    type: inputScreen
+enterHomeTA:
+    inputIdentifier: homeTA
+    nextScreen: enterHomeDistrict
+    order: 5
+    text:
+        en: Home T A
+    type: inputScreen
+enterHomeVillage:
+    inputIdentifier: homeVillage
+    nextScreen: enterHomeTA
+    order: 4
+    text:
+        en: Home Village
+    type: inputScreen
+enterId:
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
+enterMemberId:
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
+enterPostalAddress:
+    inputIdentifier: postalAddress
+    nextScreen: enterResidentialAddress
+    order: 1
+    text:
+        en: Postal Address
+    type: inputScreen
+enterResidentialAddress:
+    inputIdentifier: residentialAddress
+    nextScreen: enterEmail
+    order: 2
+    text:
+        en: Residential Address
+    type: inputScreen
+formSummary:
+    type: quitScreen
+initialScreen: enterPostalAddress
+model: memberContact

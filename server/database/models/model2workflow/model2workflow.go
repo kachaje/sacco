@@ -6,17 +6,7 @@ import (
 	"sacco/utils"
 )
 
-func Main(model, sourceFile, destinationFile string) (*string, error) {
-	content, err := os.ReadFile(sourceFile)
-	if err != nil {
-		return nil, err
-	}
-
-	sourceData, err := utils.LoadYaml(string(content))
-	if err != nil {
-		return nil, err
-	}
-
+func Main(model, destinationFile string, sourceData map[string]any) (*string, error) {
 	data := map[string]any{
 		"model": model,
 		"formSummary": map[string]any{
