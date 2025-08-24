@@ -302,13 +302,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		}
 
 	case "loan":
-		if text == "0" {
-			session.CurrentMenu = "main"
-			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else {
-			response = "CON Loan Application\n" +
-				"0. Back to Main Menu"
-		}
+		return LoansMenu(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "balance":
 		if text == "0" {
