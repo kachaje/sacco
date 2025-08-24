@@ -57,6 +57,26 @@ func Main(model, sourceFile, destinationFile string) (*string, error) {
 							data[tag].(map[string]any)["optional"] = true
 						}
 
+						if value["numericField"] != nil {
+							data[tag].(map[string]any)["validationRule"] = "^\\d{4}-\\d{2}-\\d{2}$"
+						}
+
+						if value["validationRule"] != nil {
+							data[tag].(map[string]any)["validationRule"] = value["validationRule"].(string)
+						}
+
+						if value["skipBlockOnEmpty"] != nil {
+							data[tag].(map[string]any)["skipBlockOnEmpty"] = true
+						}
+
+						if value["restartBlock"] != nil {
+							data[tag].(map[string]any)["restartBlock"] = true
+						}
+
+						if value["adminOnly"] != nil {
+							data[tag].(map[string]any)["adminOnly"] = true
+						}
+
 						if value["options"] != nil {
 							if opts, ok := value["options"].([]any); ok {
 								options := []any{}

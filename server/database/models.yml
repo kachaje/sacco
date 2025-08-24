@@ -30,9 +30,9 @@ memberContact:
 memberNominee:
   - id
   - memberId
-  - nomineeName
-  - nomineePhone
-  - nomineeAddress
+  - name
+  - phoneNumber
+  - address
 
 memberOccupation:
   - id

@@ -61,9 +61,9 @@ CREATE TABLE
   IF NOT EXISTS memberNominee (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    nomineeName TEXT,
-    nomineePhone TEXT,
-    nomineeAddress TEXT,
+    name TEXT,
+    phoneNumber TEXT,
+    address TEXT,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
