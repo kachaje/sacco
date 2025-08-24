@@ -18,80 +18,102 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, er
 	lastTag := ""
 
 	if rawData, ok := sourceData[model].(map[string]any); ok {
-		for _, row := range rawData["fields"].([]any) {
-			if val, ok := row.(map[string]any); ok {
-				for key, rawValue := range val {
-					if value, ok := rawValue.(map[string]any); ok {
-						tag := fmt.Sprintf("enter%s", utils.CapitalizeFirstLetter(key))
+		count := 1
 
-						if data["initialScreen"] == nil && value["hidden"] == nil {
-							data["initialScreen"] = tag
-						}
+		if rawData["settings"] != nil {
+			if val, ok := rawData["settings"].(map[string]any); ok && val["hasLoops"] != nil && val["totalLoops"] != nil {
+				if totalLoops, ok := val["totalLoops"].(int); ok {
+					count = totalLoops
+				} else if totalLoops, ok := val["totalLoops"].(int64); ok {
+					count = int(totalLoops)
+				} else if totalLoops, ok := val["totalLoops"].(float64); ok {
+					count = int(totalLoops)
+				}
+			}
+		}
 
-						data[tag] = map[string]any{
-							"inputIdentifier": key,
-						}
+		for i := range count {
+			suffix := ""
 
-						if value["hidden"] == nil {
-							j++
+			if count > 1 {
+				suffix = fmt.Sprint(i+1)
+			}
 
-							text := utils.IdentifierToLabel(key)
+			for _, row := range rawData["fields"].([]any) {
+				if val, ok := row.(map[string]any); ok {
+					for key, rawValue := range val {
+						if value, ok := rawValue.(map[string]any); ok {
+							tag := fmt.Sprintf("enter%s%v", utils.CapitalizeFirstLetter(key), suffix)
 
-							data[tag].(map[string]any)["text"] = map[string]any{
-								"en": text,
+							if data["initialScreen"] == nil && value["hidden"] == nil {
+								data["initialScreen"] = tag
 							}
 
-							data[tag].(map[string]any)["order"] = j
-							data[tag].(map[string]any)["type"] = "inputScreen"
-							data[tag].(map[string]any)["nextScreen"] = "formSummary"
-
-							if value["optional"] != nil {
-								data[tag].(map[string]any)["optional"] = true
+							data[tag] = map[string]any{
+								"inputIdentifier": fmt.Sprintf("%s%v", key, suffix),
 							}
 
-							if value["numericField"] != nil {
-								data[tag].(map[string]any)["validationRule"] = "^\\d+\\.*\\d*$"
-							}
+							if value["hidden"] == nil {
+								j++
 
-							if value["validationRule"] != nil {
-								data[tag].(map[string]any)["validationRule"] = value["validationRule"].(string)
-							}
+								text := utils.IdentifierToLabel(key)
 
-							if value["terminateBlockOnEmpty"] != nil {
-								data[tag].(map[string]any)["terminateBlockOnEmpty"] = true
-							}
+								data[tag].(map[string]any)["text"] = map[string]any{
+									"en": text,
+								}
 
-							if value["adminOnly"] != nil {
-								data[tag].(map[string]any)["adminOnly"] = true
-							}
+								data[tag].(map[string]any)["order"] = j
+								data[tag].(map[string]any)["type"] = "inputScreen"
+								data[tag].(map[string]any)["nextScreen"] = "formSummary"
 
-							if value["options"] != nil {
-								if opts, ok := value["options"].([]any); ok {
-									options := []any{}
+								if value["optional"] != nil {
+									data[tag].(map[string]any)["optional"] = true
+								}
 
-									for i, opt := range opts {
-										option := map[string]any{
-											"position": i + 1,
-											"label": map[string]any{
-												"en": opt,
-											},
+								if value["numericField"] != nil {
+									data[tag].(map[string]any)["validationRule"] = "^\\d+\\.*\\d*$"
+								}
+
+								if value["validationRule"] != nil {
+									data[tag].(map[string]any)["validationRule"] = value["validationRule"].(string)
+								}
+
+								if value["terminateBlockOnEmpty"] != nil {
+									data[tag].(map[string]any)["terminateBlockOnEmpty"] = true
+								}
+
+								if value["adminOnly"] != nil {
+									data[tag].(map[string]any)["adminOnly"] = true
+								}
+
+								if value["options"] != nil {
+									if opts, ok := value["options"].([]any); ok {
+										options := []any{}
+
+										for i, opt := range opts {
+											option := map[string]any{
+												"position": i + 1,
+												"label": map[string]any{
+													"en": opt,
+												},
+											}
+
+											options = append(options, option)
 										}
 
-										options = append(options, option)
+										data[tag].(map[string]any)["options"] = options
 									}
-
-									data[tag].(map[string]any)["options"] = options
 								}
-							}
 
-							if lastTag != "" {
-								data[lastTag].(map[string]any)["nextScreen"] = tag
-							}
+								if lastTag != "" {
+									data[lastTag].(map[string]any)["nextScreen"] = tag
+								}
 
-							lastTag = tag
-						} else {
-							data[tag].(map[string]any)["hidden"] = true
-							data[tag].(map[string]any)["type"] = "hiddenField"
+								lastTag = tag
+							} else {
+								data[tag].(map[string]any)["hidden"] = true
+								data[tag].(map[string]any)["type"] = "hiddenField"
+							}
 						}
 					}
 				}
