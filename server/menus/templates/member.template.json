@@ -122,15 +122,15 @@
   "D. NOMINEE (NEXT OF KIN) DETAILS": {
     "level": "memberNominee",
     "data": {
-      "nomineeName": {
+      "name": {
         "order": 1,
         "label": "Name"
       },
-      "nomineePhone": {
+      "phoneNumber": {
         "order": 2,
         "label": "Cell Phone Number"
       },
-      "nomineeAddress": {
+      "address": {
         "order": 3,
         "label": "Postal Address/Email"
       }

@@ -114,17 +114,17 @@
     }
   },
   "D. NOMINEE (NEXT OF KIN) DETAILS": {
-    "nomineeAddress": {
+    "address": {
       "label": "Postal Address/Email",
       "order": 3,
       "value": "Same as member"
     },
-    "nomineeName": {
+    "name": {
       "label": "Name",
       "order": 1,
       "value": "John Banda"
     },
-    "nomineePhone": {
+    "phoneNumber": {
       "label": "Cell Phone Number",
       "order": 2,
       "value": "0888888888"

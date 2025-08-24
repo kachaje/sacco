@@ -55,9 +55,9 @@ VALUES
 INSERT INTO
   memberNominee (
     memberId,
-    nomineeName,
-    nomineePhone,
-    nomineeAddress
+    name,
+    phoneNumber,
+    address
   )
 VALUES
   (1, "John Banda", "0888888888", "Same as member");

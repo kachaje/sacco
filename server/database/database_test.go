@@ -318,11 +318,11 @@ func TestMemberByPhoneNumber(t *testing.T) {
 			"residentialAddress": "Area 49",
 		},
 		"memberNominee": map[string]any{
-			"id":             1,
-			"memberId":       1,
-			"nomineeAddress": "P.O. Box 1",
-			"nomineeName":    "John Phiri",
-			"nomineePhone":   "0888444666",
+			"id":          1,
+			"memberId":    1,
+			"address":     "P.O. Box 1",
+			"name":        "John Phiri",
+			"phoneNumber": "0888444666",
 		},
 		"memberOccupation": map[string]any{
 			"employerAddress":      "Kanengo",
@@ -370,9 +370,9 @@ func TestMemberByPhoneNumber(t *testing.T) {
 	}
 
 	memberNominee := map[string]any{
-		"nomineeAddress": "P.O. Box 1",
-		"nomineeName":    "John Phiri",
-		"nomineePhone":   "0888444666",
+		"address":     "P.O. Box 1",
+		"name":        "John Phiri",
+		"phoneNumber": "0888444666",
 	}
 
 	memberOccupation := map[string]any{

@@ -108,9 +108,9 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 				targetKeys := []string{
 					"id",
 					"memberId",
-					"nomineeName",
-					"nomineePhone",
-					"nomineeAddress",
+					"name",
+					"phoneNumber",
+					"address",
 				}
 				for key, value := range val {
 					if slices.Contains(targetKeys, key) {

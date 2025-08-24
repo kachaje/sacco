@@ -1,5 +1,5 @@
 {
-  "nomineeAddress": "P.O. Box 1",
-  "nomineeName": "John Phiri",
-  "nomineePhone": "0888444666"
+  "address": "P.O. Box 1",
+  "name": "John Phiri",
+  "phoneNumber": "0888444666"
 }

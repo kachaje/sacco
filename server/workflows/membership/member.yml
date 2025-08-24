@@ -9,6 +9,7 @@ enterDateOfBirth:
   text:
     en: Date Of Birth
   type: inputScreen
+  validationRule: ^\d{4}-\d{2}-\d{2}$
 enterFileNumber:
   hidden: true
   inputIdentifier: fileNumber
