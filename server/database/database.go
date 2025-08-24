@@ -71,7 +71,12 @@ func NewDatabase(dbname string) *Database {
 			fields := []string{}
 
 			for _, v := range val {
-				fields = append(fields, v.(string))
+				kv, ok := v.(map[string]any)
+				if ok {
+					for key := range kv {
+						fields = append(fields, key)
+					}
+				}
 			}
 
 			model, err := models.NewModel(instance.DB, table, fields)
