@@ -26,40 +26,6 @@ func init() {
 	}
 }
 
-func CheckPreferredLanguage(phoneNumber, preferencesFolder string) *string {
-	settingsFile := filepath.Join(preferencesFolder, phoneNumber)
-
-	_, err := os.Stat(settingsFile)
-	if !os.IsNotExist(err) {
-		content, err := os.ReadFile(settingsFile)
-		if err != nil {
-			log.Println(err)
-			return nil
-		}
-
-		data := map[string]any{}
-
-		err = json.Unmarshal(content, &data)
-		if err != nil {
-			log.Println(err)
-			return nil
-		}
-
-		var preferredLanguage string
-
-		if data["language"] != nil {
-			val, ok := data["language"].(string)
-			if ok {
-				preferredLanguage = val
-			}
-		}
-
-		return &preferredLanguage
-	}
-
-	return nil
-}
-
 func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string) string {
 	preferredLanguage := CheckPreferredLanguage(phoneNumber, preferencesFolder)
 

@@ -12,8 +12,6 @@ func BusinessMenu(session *parser.Session, phoneNumber, text, preferencesFolder,
 		text = "0"
 		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 
-		
-
 	default:
 		if text == "0" {
 			session.CurrentMenu = "main"
