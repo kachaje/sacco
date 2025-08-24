@@ -177,6 +177,12 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 	case "registration.7":
 		response = RegistrationMenu7(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
+	case "business":
+		return BusinessMenu(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
+
+	case "business.1":
+		return BusinessMenu1(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
+
 	case "loan":
 		return LoansMenu(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
