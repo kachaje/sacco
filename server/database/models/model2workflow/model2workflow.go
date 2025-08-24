@@ -55,12 +55,8 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, er
 							data[tag].(map[string]any)["validationRule"] = value["validationRule"].(string)
 						}
 
-						if value["skipBlockOnEmpty"] != nil {
-							data[tag].(map[string]any)["skipBlockOnEmpty"] = true
-						}
-
-						if value["restartBlock"] != nil {
-							data[tag].(map[string]any)["restartBlock"] = true
+						if value["terminateBlockOnEmpty"] != nil {
+							data[tag].(map[string]any)["terminateBlockOnEmpty"] = true
 						}
 
 						if value["adminOnly"] != nil {
