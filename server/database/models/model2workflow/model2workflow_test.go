@@ -13,7 +13,7 @@ func TestModel2Workflow(t *testing.T) {
 	workingFolder := filepath.Join(".", "tmpM2W")
 
 	model := "member"
-	srcFile := filepath.Join(".", "fixtures", "models.yml")
+	srcFile := filepath.Join("..", "..", "models.yml")
 	dstFile := filepath.Join(workingFolder, fmt.Sprintf("%s.yml", model))
 
 	err := os.MkdirAll(workingFolder, 0755)

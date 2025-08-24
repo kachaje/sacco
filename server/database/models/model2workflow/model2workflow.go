@@ -16,80 +16,83 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, er
 
 	j := 0
 	lastTag := ""
-	for _, row := range sourceData[model].([]any) {
-		if val, ok := row.(map[string]any); ok {
-			for key, rawValue := range val {
-				if value, ok := rawValue.(map[string]any); ok {
-					tag := fmt.Sprintf("enter%s", utils.CapitalizeFirstLetter(key))
 
-					if data["initialScreen"] == nil && value["hidden"] == nil {
-						data["initialScreen"] = tag
-					}
+	if rawData, ok := sourceData[model].(map[string]any); ok {
+		for _, row := range rawData["fields"].([]any) {
+			if val, ok := row.(map[string]any); ok {
+				for key, rawValue := range val {
+					if value, ok := rawValue.(map[string]any); ok {
+						tag := fmt.Sprintf("enter%s", utils.CapitalizeFirstLetter(key))
 
-					data[tag] = map[string]any{
-						"inputIdentifier": key,
-					}
-
-					if value["hidden"] == nil {
-						j++
-
-						text := utils.IdentifierToLabel(key)
-
-						data[tag].(map[string]any)["text"] = map[string]any{
-							"en": text,
+						if data["initialScreen"] == nil && value["hidden"] == nil {
+							data["initialScreen"] = tag
 						}
 
-						data[tag].(map[string]any)["order"] = j
-						data[tag].(map[string]any)["type"] = "inputScreen"
-						data[tag].(map[string]any)["nextScreen"] = "formSummary"
-
-						if value["optional"] != nil {
-							data[tag].(map[string]any)["optional"] = true
+						data[tag] = map[string]any{
+							"inputIdentifier": key,
 						}
 
-						if value["numericField"] != nil {
-							data[tag].(map[string]any)["validationRule"] = "^\\d+\\.*\\d*$"
-						}
+						if value["hidden"] == nil {
+							j++
 
-						if value["validationRule"] != nil {
-							data[tag].(map[string]any)["validationRule"] = value["validationRule"].(string)
-						}
+							text := utils.IdentifierToLabel(key)
 
-						if value["terminateBlockOnEmpty"] != nil {
-							data[tag].(map[string]any)["terminateBlockOnEmpty"] = true
-						}
+							data[tag].(map[string]any)["text"] = map[string]any{
+								"en": text,
+							}
 
-						if value["adminOnly"] != nil {
-							data[tag].(map[string]any)["adminOnly"] = true
-						}
+							data[tag].(map[string]any)["order"] = j
+							data[tag].(map[string]any)["type"] = "inputScreen"
+							data[tag].(map[string]any)["nextScreen"] = "formSummary"
 
-						if value["options"] != nil {
-							if opts, ok := value["options"].([]any); ok {
-								options := []any{}
+							if value["optional"] != nil {
+								data[tag].(map[string]any)["optional"] = true
+							}
 
-								for i, opt := range opts {
-									option := map[string]any{
-										"position": i + 1,
-										"label": map[string]any{
-											"en": opt,
-										},
+							if value["numericField"] != nil {
+								data[tag].(map[string]any)["validationRule"] = "^\\d+\\.*\\d*$"
+							}
+
+							if value["validationRule"] != nil {
+								data[tag].(map[string]any)["validationRule"] = value["validationRule"].(string)
+							}
+
+							if value["terminateBlockOnEmpty"] != nil {
+								data[tag].(map[string]any)["terminateBlockOnEmpty"] = true
+							}
+
+							if value["adminOnly"] != nil {
+								data[tag].(map[string]any)["adminOnly"] = true
+							}
+
+							if value["options"] != nil {
+								if opts, ok := value["options"].([]any); ok {
+									options := []any{}
+
+									for i, opt := range opts {
+										option := map[string]any{
+											"position": i + 1,
+											"label": map[string]any{
+												"en": opt,
+											},
+										}
+
+										options = append(options, option)
 									}
 
-									options = append(options, option)
+									data[tag].(map[string]any)["options"] = options
 								}
-
-								data[tag].(map[string]any)["options"] = options
 							}
-						}
 
-						if lastTag != "" {
-							data[lastTag].(map[string]any)["nextScreen"] = tag
-						}
+							if lastTag != "" {
+								data[lastTag].(map[string]any)["nextScreen"] = tag
+							}
 
-						lastTag = tag
-					} else {
-						data[tag].(map[string]any)["hidden"] = true
-						data[tag].(map[string]any)["type"] = "hiddenField"
+							lastTag = tag
+						} else {
+							data[tag].(map[string]any)["hidden"] = true
+							data[tag].(map[string]any)["type"] = "hiddenField"
+						}
 					}
 				}
 			}
