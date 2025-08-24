@@ -65,27 +65,29 @@ func NewDatabase(dbname string) *Database {
 		log.Fatal(err)
 	}
 
-	for table, value := range modelTemplatesData {
-		val, ok := value.([]any)
-		if ok {
-			fields := []string{}
+	for table, row := range modelTemplatesData {
+		if value, ok := row.(map[string]any); ok {
+			val, ok := value["fields"].([]any)
+			if ok {
+				fields := []string{}
 
-			for _, v := range val {
-				kv, ok := v.(map[string]any)
-				if ok {
-					for key := range kv {
-						fields = append(fields, key)
+				for _, v := range val {
+					kv, ok := v.(map[string]any)
+					if ok {
+						for key := range kv {
+							fields = append(fields, key)
+						}
 					}
 				}
-			}
 
-			model, err := models.NewModel(instance.DB, table, fields)
-			if err != nil {
-				log.Printf("server.database.NewDatabase: %s", err.Error())
-				continue
-			}
+				model, err := models.NewModel(instance.DB, table, fields)
+				if err != nil {
+					log.Printf("server.database.NewDatabase: %s", err.Error())
+					continue
+				}
 
-			instance.GenericModels[table] = model
+				instance.GenericModels[table] = model
+			}
 		}
 	}
 
