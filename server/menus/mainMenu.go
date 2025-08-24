@@ -76,7 +76,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 			if preferredLanguage != nil && *preferredLanguage == "ny" {
 				response = "CON Takulandilani ku Kaso SACCO\n" +
 					"1. Membala Watsopano\n" +
-					"2. Tengani Ngongole\n" +
+					"2. Ngongole\n" +
 					"3. Balansi\n" +
 					"4. Matumizidwe\n" +
 					"5. Chiyankhulo\n" +
@@ -84,7 +84,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 			} else {
 				response = "CON Welcome to Kaso SACCO\n" +
 					"1. Membership Application\n" +
-					"2. Loan Application\n" +
+					"2. Loans\n" +
 					"3. Check Balance\n" +
 					"4. Banking Details\n" +
 					"5. Preferred Language\n" +

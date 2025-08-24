@@ -2,7 +2,7 @@ package menus
 
 import "sacco/server/parser"
 
-func LoansMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
+func BusinessMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string, preferredLanguage *string) string {
 	var response string
 
 	switch text {
@@ -17,14 +17,10 @@ func LoansMenu(session *parser.Session, phoneNumber, text, preferencesFolder, ca
 			session.CurrentMenu = "main"
 			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
-			response = "CON Loans\n" +
-				"1. Loan Application\n" +
-				"2. Loan Liability\n" +
-				"3. Loan Security\n" +
-				"4. Loan Witness\n" +
-				"5. Loan Approvals\n" +
-				"6. Employment Details\n" +
-				"7. Business Details\n" +
+			response = "CON Business\n" +
+				"1. Business Details\n" +
+				"2. Previous Year History\n" +
+				"2. Next Year Projection\n" +
 				"\n" +
 				"00. Main Menu"
 		}
