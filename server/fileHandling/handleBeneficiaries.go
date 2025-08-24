@@ -90,7 +90,9 @@ func HandleBeneficiaries(data any, phoneNumber, cacheFolder *string,
 				row["id"] = id
 			}
 
-			if sessions != nil && sessions[*phoneNumber].MemberId != nil {
+			if phoneNumber != nil && sessions != nil &&
+				sessions[*phoneNumber] != nil &&
+				sessions[*phoneNumber].MemberId != nil {
 				row["memberId"] = *sessions[*phoneNumber].MemberId
 
 				memberId = *sessions[*phoneNumber].MemberId

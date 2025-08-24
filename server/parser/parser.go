@@ -145,7 +145,7 @@ func NewWorkflow(
 						}
 					}
 
-					if row["optional"] != nil {
+					if row["optional"] != nil || row["terminateBlockOnEmpty"] != nil {
 						w.OptionalFields[id] = true
 					}
 				}
@@ -333,7 +333,11 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 	if input == "01" || input == "02" {
 		node = w.GetNode(w.CurrentScreen)
 
-		if node["nextScreen"] != nil {
+		if node["terminateBlockOnEmpty"] != nil && input == "02" {
+			nextScreen = "formSummary"
+
+			node = w.GetNode(nextScreen)
+		} else if node["nextScreen"] != nil {
 			nextScreen = fmt.Sprintf("%v", node["nextScreen"])
 
 			node = w.GetNode(nextScreen)

@@ -2,7 +2,6 @@ enterDescription:
     inputIdentifier: description
     nextScreen: enterValue
     order: 1
-    skipBlockOnEmpty: true
     text:
         en: Description
     type: inputScreen
@@ -23,7 +22,6 @@ enterSerialNumber:
     nextScreen: formSummary
     optional: true
     order: 3
-    restartBlock: true
     text:
         en: Serial Number
     type: inputScreen

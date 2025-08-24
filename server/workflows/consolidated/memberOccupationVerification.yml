@@ -54,7 +54,7 @@ enterJobTitle:
     type: inputScreen
 enterJobVerified:
     inputIdentifier: jobVerified
-    nextScreen: enterPeriodEmployed
+    nextScreen: enterPeriodEmployedInMonths
     options:
         - label:
             en: "Yes"
@@ -96,12 +96,12 @@ enterNetVerified:
     text:
         en: Net Verified
     type: inputScreen
-enterPeriodEmployed:
+enterPeriodEmployedInMonths:
     inputIdentifier: periodEmployedInMonths
     nextScreen: enterJobTitle
     order: 2
     text:
-        en: Period Employed
+        en: Period Employed In Months
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 formSummary:
