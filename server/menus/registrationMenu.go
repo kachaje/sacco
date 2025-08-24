@@ -118,7 +118,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 					}
 				}
 
-				session.WorkflowsMapping["memberContact"].Data = data
+				session.WorkflowsMapping["memberNominee"].Data = data
 			}
 		}
 
