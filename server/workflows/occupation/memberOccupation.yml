@@ -73,7 +73,7 @@ enterPeriodEmployed:
     en: Period Employed (months)
     ny: Miyezi Pantchitoyo
   nextScreen: enterHighestQualification
-  inputIdentifier: periodEmployed
+  inputIdentifier: periodEmployedInMonths
 
 enterHighestQualification:
   order: 8

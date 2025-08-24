@@ -48,7 +48,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, er
 						}
 
 						if value["numericField"] != nil {
-							data[tag].(map[string]any)["validationRule"] = "^\\d{4}-\\d{2}-\\d{2}$"
+							data[tag].(map[string]any)["validationRule"] = "^\\d+\\.*\\d*$"
 						}
 
 						if value["validationRule"] != nil {

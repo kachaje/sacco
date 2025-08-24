@@ -1,31 +1,32 @@
 enterEmployerAddress:
     inputIdentifier: employerAddress
     nextScreen: enterEmployerPhone
-    order: 2
+    order: 5
     text:
         en: Employer Address
     type: inputScreen
 enterEmployerName:
     inputIdentifier: employerName
-    nextScreen: enterEmployerAddress
+    nextScreen: enterGrossPay
     order: 1
     text:
         en: Employer Name
     type: inputScreen
 enterEmployerPhone:
     inputIdentifier: employerPhone
-    nextScreen: enterJobTitle
-    order: 3
+    nextScreen: enterPeriodEmployedInMonths
+    order: 6
     text:
         en: Employer Phone
     type: inputScreen
 enterGrossPay:
     inputIdentifier: grossPay
     nextScreen: enterNetPay
-    order: 6
+    order: 2
     text:
         en: Gross Pay
     type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterHighestQualification:
     inputIdentifier: highestQualification
     nextScreen: formSummary
@@ -52,7 +53,7 @@ enterId:
     type: hiddenField
 enterJobTitle:
     inputIdentifier: jobTitle
-    nextScreen: enterPeriodEmployed
+    nextScreen: enterEmployerAddress
     order: 4
     text:
         en: Job Title
@@ -63,18 +64,20 @@ enterMemberId:
     type: hiddenField
 enterNetPay:
     inputIdentifier: netPay
-    nextScreen: enterHighestQualification
-    order: 7
+    nextScreen: enterJobTitle
+    order: 3
     text:
         en: Net Pay
     type: inputScreen
-enterPeriodEmployed:
-    inputIdentifier: periodEmployed
-    nextScreen: enterGrossPay
-    order: 5
+    validationRule: ^\d+\.*\d*$
+enterPeriodEmployedInMonths:
+    inputIdentifier: periodEmployedInMonths
+    nextScreen: enterHighestQualification
+    order: 7
     text:
-        en: Period Employed
+        en: Period Employed In Months
     type: inputScreen
+    validationRule: ^\d+\.*\d*$
 formSummary:
     type: quitScreen
 initialScreen: enterEmployerName

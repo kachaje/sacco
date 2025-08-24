@@ -5,7 +5,7 @@ enterEmployeesWages:
     text:
         en: Employees Wages
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterFinancialYear:
     inputIdentifier: financialYear
     nextScreen: enterTotalIncome
@@ -13,7 +13,7 @@ enterFinancialYear:
     text:
         en: Financial Year
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterId:
     hidden: true
     inputIdentifier: id
@@ -25,7 +25,7 @@ enterLoanInterest:
     text:
         en: Loan Interest
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterMemberBusinessId:
     hidden: true
     inputIdentifier: memberBusinessId
@@ -45,7 +45,7 @@ enterNetProfitLoss:
     text:
         en: Net Profit Loss
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterOtherCosts:
     inputIdentifier: otherCosts
     nextScreen: enterTotalCosts
@@ -54,7 +54,7 @@ enterOtherCosts:
     text:
         en: Other Costs
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterOwnSalary:
     inputIdentifier: ownSalary
     nextScreen: enterTransport
@@ -62,7 +62,7 @@ enterOwnSalary:
     text:
         en: Own Salary
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterRentals:
     inputIdentifier: rentals
     nextScreen: enterOtherCosts
@@ -70,7 +70,7 @@ enterRentals:
     text:
         en: Rentals
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterTotalCostOfGoods:
     inputIdentifier: totalCostOfGoods
     nextScreen: enterEmployeesWages
@@ -78,7 +78,7 @@ enterTotalCostOfGoods:
     text:
         en: Total Cost Of Goods
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterTotalCosts:
     inputIdentifier: totalCosts
     nextScreen: enterNetProfitLoss
@@ -86,7 +86,7 @@ enterTotalCosts:
     text:
         en: Total Costs
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterTotalIncome:
     inputIdentifier: totalIncome
     nextScreen: enterTotalCostOfGoods
@@ -94,7 +94,7 @@ enterTotalIncome:
     text:
         en: Total Income
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterTransport:
     inputIdentifier: transport
     nextScreen: enterLoanInterest
@@ -102,7 +102,7 @@ enterTransport:
     text:
         en: Transport
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterUtilities:
     inputIdentifier: utilities
     nextScreen: enterRentals
@@ -110,7 +110,7 @@ enterUtilities:
     text:
         en: Utilities
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 formSummary:
     type: quitScreen
 initialScreen: enterFinancialYear

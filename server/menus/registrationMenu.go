@@ -53,7 +53,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 				targetKeys := []string{
 					"employerAddress", "employerName", "employerPhone",
 					"grossPay", "highestQualification", "jobTitle", "netPay",
-					"periodEmployed", "id",
+					"periodEmployedInMonths", "id",
 				}
 				for key, value := range val {
 					if slices.Contains(targetKeys, key) {

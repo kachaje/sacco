@@ -29,7 +29,7 @@ func HandleCommonModels(data any, model, phoneNumber, cacheFolder *string,
 		}()
 
 		for _, key := range []string{
-			"netPay", "grossPay", "periodEmployed", "yearsInBusiness",
+			"netPay", "grossPay", "periodEmployedInMonths", "yearsInBusiness",
 			"totalIncome", "totalCostOfGoods", "employeesWages", "ownSalary",
 			"transport", "loanInterest", "utilities", "rentals", "otherCosts",
 			"totalCosts", "netProfitLoss", "numberOfShares", "pricePerShare",

@@ -73,7 +73,7 @@ enterPeriodEmployed:
     en: Period Employed (months)
     ny: Miyezi Pantchitoyo
   nextScreen: enterEmployerAddress
-  inputIdentifier: periodEmployed
+  inputIdentifier: periodEmployedInMonths
 
 enterEmployerAddress:
   order: 7

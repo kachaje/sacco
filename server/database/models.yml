@@ -120,18 +120,21 @@ memberOccupation:
       hidden: true
   - employerName:
       required: true
+  - grossPay:
+      required: true
+      numericField: true
+  - netPay:
+      required: true
+      numericField: true
+  - jobTitle:
+      required: true
   - employerAddress:
       required: true
   - employerPhone:
       required: true
-  - jobTitle:
+  - periodEmployedInMonths:
       required: true
-  - periodEmployed:
-      required: true
-  - grossPay:
-      required: true
-  - netPay:
-      required: true
+      numericField: true
   - highestQualification:
       required: true
       options:
@@ -385,7 +388,7 @@ memberOccupationVerification:
       options:
         - Yes
         - No
-  - periodEmployed:
+  - periodEmployedInMonths:
       required: true
       numericField: true
   - jobTitle:

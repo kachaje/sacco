@@ -34,7 +34,7 @@ enterValue:
     text:
         en: Value
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 formSummary:
     type: quitScreen
 initialScreen: enterDescription

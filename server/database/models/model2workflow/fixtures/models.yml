@@ -97,7 +97,7 @@ memberOccupation:
       required: true
   - jobTitle:
       required: true
-  - periodEmployed:
+  - periodEmployedInMonths:
       required: true
   - grossPay:
       required: true
@@ -356,7 +356,7 @@ memberOccupationVerification:
       options:
         - Yes
         - No
-  - periodEmployed:
+  - periodEmployedInMonths:
       required: true
       numericField: true
   - jobTitle:

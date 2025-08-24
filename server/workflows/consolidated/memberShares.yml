@@ -13,7 +13,7 @@ enterNumberOfShares:
     text:
         en: Number Of Shares
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 enterPricePerShare:
     inputIdentifier: pricePerShare
     nextScreen: 'enterSharesType:'
@@ -21,7 +21,7 @@ enterPricePerShare:
     text:
         en: Price Per Share
     type: inputScreen
-    validationRule: ^\d{4}-\d{2}-\d{2}$
+    validationRule: ^\d+\.*\d*$
 'enterSharesType:':
     inputIdentifier: 'sharesType:'
     nextScreen: formSummary
