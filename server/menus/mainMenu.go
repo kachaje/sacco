@@ -191,7 +191,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		return RegistrationMenu(session, phoneNumber, text, preferencesFolder, cacheFolder, preferredLanguage)
 
 	case "registration.1":
-		response = session.PIWorkflow.NavNext(text)
+		response = session.WorkflowsMapping["member"].NavNext(text)
 
 		if text == "00" {
 			session.CurrentMenu = "main"
@@ -204,7 +204,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		}
 
 	case "registration.2":
-		response = session.OccupationWorkflow.NavNext(text)
+		response = session.WorkflowsMapping["memberOccupation"].NavNext(text)
 
 		if text == "00" {
 			session.CurrentMenu = "main"
@@ -217,7 +217,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		}
 
 	case "registration.3":
-		response = session.ContactsWorkflow.NavNext(text)
+		response = session.WorkflowsMapping["memberContact"].NavNext(text)
 
 		if text == "00" {
 			session.CurrentMenu = "main"
@@ -230,7 +230,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		}
 
 	case "registration.4":
-		response = session.NomineeWorkflow.NavNext(text)
+		response = session.WorkflowsMapping["memberNominee"].NavNext(text)
 
 		if text == "00" {
 			session.CurrentMenu = "main"
@@ -243,7 +243,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		}
 
 	case "registration.5":
-		response = session.BeneficiariesWorkflow.NavNext(text)
+		response = session.WorkflowsMapping["memberBeneficiary"].NavNext(text)
 
 		if text == "00" {
 			session.CurrentMenu = "main"
@@ -256,7 +256,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 		}
 
 	case "registration.6":
-		response = session.BusinessInfoWorkflow.NavNext(text)
+		response = session.WorkflowsMapping["memberBusiness"].NavNext(text)
 
 		if text == "00" {
 			session.CurrentMenu = "main"

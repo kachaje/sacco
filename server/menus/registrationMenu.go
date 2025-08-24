@@ -12,7 +12,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 
 	switch text {
 	case "00":
-		session.PIWorkflow.NavNext(text)
+		session.WorkflowsMapping["member"].NavNext(text)
 		session.CurrentMenu = "main"
 		text = "0"
 		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
@@ -37,7 +37,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 				}
 			}
 
-			session.PIWorkflow.Data = data
+			session.WorkflowsMapping["member"].Data = data
 		}
 
 		return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
@@ -61,7 +61,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 					}
 				}
 
-				session.OccupationWorkflow.Data = data
+				session.WorkflowsMapping["memberOccupation"].Data = data
 			}
 		}
 
@@ -91,7 +91,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 					}
 				}
 
-				session.ContactsWorkflow.Data = data
+				session.WorkflowsMapping["memberContact"].Data = data
 			}
 		}
 
@@ -118,7 +118,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 					}
 				}
 
-				session.NomineeWorkflow.Data = data
+				session.WorkflowsMapping["memberContact"].Data = data
 			}
 		}
 
@@ -164,7 +164,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 					}
 				}
 
-				session.BeneficiariesWorkflow.Data = data
+				session.WorkflowsMapping["memberBeneficiary"].Data = data
 			}
 		}
 

@@ -3,9 +3,11 @@ package server
 import (
 	"bytes"
 	"context"
+	"embed"
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"net/url"
@@ -21,7 +23,6 @@ import (
 	"sync"
 	"time"
 
-	_ "embed"
 	"html/template"
 
 	"github.com/google/uuid"
@@ -31,36 +32,17 @@ import (
 //go:embed index.html
 var indexHTML string
 
-//go:embed workflows/membership/member.yml
-var PITemplate string
-
-//go:embed workflows/occupation/memberOccupation.yml
-var occupationTemplate string
-
-//go:embed workflows/membership/memberContact.yml
-var contactsTemplate string
-
-//go:embed workflows/membership/memberNominee.yml
-var nomineeTemplate string
-
-//go:embed workflows/membership/memberBeneficiary.yml
-var beneficiariesTemplate string
-
-//go:embed workflows/business/memberBusiness.yml
-var businessInfoTemplate string
-
 //go:embed workflows/preferences/language.yml
 var languageTemplate string
 
+//go:embed workflows/consolidated/*
+var consolidatedWorkflows embed.FS
+
 var mu sync.Mutex
 var port int
-var personalInformationData map[string]any
 var languageData map[string]any
-var occupationData map[string]any
-var contactsData map[string]any
-var nomineeData map[string]any
-var beneficiariesData map[string]any
-var businessInfoData map[string]any
+
+var workflowsData map[string]map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
 var cacheFolder = filepath.Join(".", "data", "cache")
@@ -72,39 +54,40 @@ var ctx context.Context
 func init() {
 	var err error
 
-	personalInformationData, err = utils.LoadYaml(PITemplate)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	languageData, err = utils.LoadYaml(languageTemplate)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 
-	occupationData, err = utils.LoadYaml(occupationTemplate)
-	if err != nil {
-		panic(err)
-	}
+	workflowsData = map[string]map[string]any{}
 
-	contactsData, err = utils.LoadYaml(contactsTemplate)
-	if err != nil {
-		panic(err)
-	}
+	err = fs.WalkDir(consolidatedWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
 
-	nomineeData, err = utils.LoadYaml(nomineeTemplate)
-	if err != nil {
-		panic(err)
-	}
+		if d.IsDir() {
+			return nil
+		}
 
-	beneficiariesData, err = utils.LoadYaml(beneficiariesTemplate)
-	if err != nil {
-		panic(err)
-	}
+		content, err := consolidatedWorkflows.ReadFile(file)
+		if err != nil {
+			return err
+		}
 
-	businessInfoData, err = utils.LoadYaml(businessInfoTemplate)
+		data, err := utils.LoadYaml(string(content))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		model := strings.Split(filepath.Base(file), ".")[0]
+
+		workflowsData[model] = data
+
+		return nil
+	})
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 
 	_, err = os.Stat(cacheFolder)
@@ -135,17 +118,9 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 
 		session.LanguageWorkflow = parser.NewWorkflow(languageData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
-		session.PIWorkflow = parser.NewWorkflow(personalInformationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
-
-		session.OccupationWorkflow = parser.NewWorkflow(occupationData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
-
-		session.ContactsWorkflow = parser.NewWorkflow(contactsData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
-
-		session.NomineeWorkflow = parser.NewWorkflow(nomineeData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
-
-		session.BeneficiariesWorkflow = parser.NewWorkflow(beneficiariesData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
-
-		session.BusinessInfoWorkflow = parser.NewWorkflow(businessInfoData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
+		for model, data := range workflowsData {
+			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
+		}
 
 		if preferredLanguage != nil {
 			session.PreferredLanguage = *preferredLanguage

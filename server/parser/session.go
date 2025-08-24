@@ -11,23 +11,21 @@ import (
 )
 
 type Session struct {
-	CurrentMenu           string
-	Data                  map[string]string
-	PIWorkflow            *WorkFlow
-	LanguageWorkflow      *WorkFlow
-	OccupationWorkflow    *WorkFlow
-	ContactsWorkflow      *WorkFlow
-	NomineeWorkflow       *WorkFlow
-	BeneficiariesWorkflow *WorkFlow
-	BusinessInfoWorkflow  *WorkFlow
-	PreferredLanguage     string
-	MemberId              *int64
-	SessionId             string
-	PhoneNumber           string
+	CurrentMenu string
+	Data        map[string]string
+
+	PreferredLanguage string
+	MemberId          *int64
+	SessionId         string
+	PhoneNumber       string
+
+	LanguageWorkflow *WorkFlow
+
+	WorkflowsMapping map[string]*WorkFlow
 
 	AddedModels map[string]bool
 
-	ActiveMemberData   map[string]any
+	ActiveMemberData map[string]any
 
 	QueryFn    func(string, []string, []string) (map[string]any, error)
 	SkipFields []string
@@ -47,6 +45,7 @@ func NewSession(
 		Data:             map[string]string{},
 		SkipFields:       []string{"active"},
 		CurrentMenu:      "main",
+		WorkflowsMapping: map[string]*WorkFlow{},
 	}
 
 	if phoneNumber != nil {
