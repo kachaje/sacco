@@ -39,7 +39,7 @@ INSERT INTO
     postalAddress,
     residentialAddress,
     homeVillage,
-    homeTA,
+    homeTraditionalAuthority,
     homeDistrict
   )
 VALUES

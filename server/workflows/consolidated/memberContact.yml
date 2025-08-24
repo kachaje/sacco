@@ -13,16 +13,16 @@ enterHomeDistrict:
     text:
         en: Home District
     type: inputScreen
-enterHomeTA:
-    inputIdentifier: homeTA
+enterHomeTraditionalAuthority:
+    inputIdentifier: homeTraditionalAuthority
     nextScreen: enterHomeDistrict
     order: 5
     text:
-        en: Home T A
+        en: Home Traditional Authority
     type: inputScreen
 enterHomeVillage:
     inputIdentifier: homeVillage
-    nextScreen: enterHomeTA
+    nextScreen: enterHomeTraditionalAuthority
     order: 4
     text:
         en: Home Village

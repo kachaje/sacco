@@ -266,14 +266,14 @@ func TestRerunFailedSaves(t *testing.T) {
 	}
 
 	payload, err = json.MarshalIndent(map[string]any{
-		"homeDistrict":       "Karonga",
-		"homeTA":             "Kyungu",
-		"homeVillage":        "Songwe",
-		"id":                 1,
-		"memberId":           1,
-		"phoneNumber":        "09999999999",
-		"postalAddress":      "P.O. Box 1000, Lilongwe",
-		"residentialAddress": "Area 2, Lilongwe",
+		"homeDistrict":             "Karonga",
+		"homeTraditionalAuthority": "Kyungu",
+		"homeVillage":              "Songwe",
+		"id":                       1,
+		"memberId":                 1,
+		"phoneNumber":              "09999999999",
+		"postalAddress":            "P.O. Box 1000, Lilongwe",
+		"residentialAddress":       "Area 2, Lilongwe",
 	}, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -490,13 +490,13 @@ func TestHandleMemberDetails(t *testing.T) {
 			},
 		},
 		"memberContact": map[string]any{
-			"homeDistrict":       "Lilongwe",
-			"homeTA":             "Kalolo",
-			"homeVillage":        "Kalulu",
-			"id":                 1,
-			"memberId":           1,
-			"postalAddress":      "P.O. Box 1",
-			"residentialAddress": "Area 49",
+			"homeDistrict":             "Lilongwe",
+			"homeTraditionalAuthority": "Kalolo",
+			"homeVillage":              "Kalulu",
+			"id":                       1,
+			"memberId":                 1,
+			"postalAddress":            "P.O. Box 1",
+			"residentialAddress":       "Area 49",
 		},
 		"memberNominee": map[string]any{
 			"id":          1,

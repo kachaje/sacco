@@ -309,13 +309,13 @@ func TestMemberByPhoneNumber(t *testing.T) {
 			},
 		},
 		"memberContact": map[string]any{
-			"homeDistrict":       "Lilongwe",
-			"homeTA":             "Kalolo",
-			"homeVillage":        "Kalulu",
-			"id":                 1,
-			"memberId":           1,
-			"postalAddress":      "P.O. Box 1",
-			"residentialAddress": "Area 49",
+			"homeDistrict":             "Lilongwe",
+			"homeTraditionalAuthority": "Kalolo",
+			"homeVillage":              "Kalulu",
+			"id":                       1,
+			"memberId":                 1,
+			"postalAddress":            "P.O. Box 1",
+			"residentialAddress":       "Area 49",
 		},
 		"memberNominee": map[string]any{
 			"id":          1,
@@ -361,12 +361,12 @@ func TestMemberByPhoneNumber(t *testing.T) {
 	}
 
 	memberContact := map[string]any{
-		"homeDistrict":       "Lilongwe",
-		"homeTA":             "Kalolo",
-		"homeVillage":        "Kalulu",
-		"phoneNumber":        "0999888777",
-		"postalAddress":      "P.O. Box 1",
-		"residentialAddress": "Area 49",
+		"homeDistrict":             "Lilongwe",
+		"homeTraditionalAuthority": "Kalolo",
+		"homeVillage":              "Kalulu",
+		"phoneNumber":              "0999888777",
+		"postalAddress":            "P.O. Box 1",
+		"residentialAddress":       "Area 49",
 	}
 
 	memberNominee := map[string]any{

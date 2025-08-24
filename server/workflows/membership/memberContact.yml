@@ -56,7 +56,7 @@ enterTA:
     en: Home T/A
     ny: Mfumu Yayikulu
   nextScreen: enterDistrict
-  inputIdentifier: homeTA
+  inputIdentifier: homeTraditionalAuthority
 
 enterDistrict:
   order: 23

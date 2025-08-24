@@ -40,7 +40,7 @@ CREATE TABLE
     residentialAddress TEXT,
     email TEXT,
     homeVillage TEXT,
-    homeTA TEXT,
+    homeTraditionalAuthority TEXT,
     homeDistrict TEXT,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,

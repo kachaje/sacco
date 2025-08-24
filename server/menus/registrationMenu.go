@@ -82,7 +82,7 @@ func RegistrationMenu(session *parser.Session, phoneNumber, text, preferencesFol
 					"residentialAddress",
 					"phoneNumber",
 					"homeVillage",
-					"homeTA",
+					"homeTraditionalAuthority",
 					"homeDistrict",
 				}
 				for key, value := range val {

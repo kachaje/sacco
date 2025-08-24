@@ -67,7 +67,7 @@ memberContact:
       optional: true
   - homeVillage:
       required: true
-  - homeTA:
+  - homeTraditionalAuthority:
       required: true
   - homeDistrict:
       required: true
