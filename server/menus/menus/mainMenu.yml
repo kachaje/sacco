@@ -1,0 +1,24 @@
+1:
+  id: registration
+  label:
+    en: Membership Application
+2:
+  id: loan
+  label:
+    en: Loans
+3:
+  id: balance
+  label:
+    en: Check Balance
+4:
+  id: banking
+  label:
+    en: Banking Details
+5:
+  id: language
+  label:
+    en: Preferred Language
+6:
+  id: exit
+  label:
+    en: Exit
