@@ -68,7 +68,7 @@ func SaveData(
 	}
 
 	switch *model {
-	case "preferredLanguage":
+	case "language":
 		val, ok := data.(map[string]any)
 		if ok {
 			if val["language"] != nil && phoneNumber != nil {
