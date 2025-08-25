@@ -18,22 +18,24 @@ import (
 var menuFiles embed.FS
 
 type Menus struct {
-	ActiveMenus  map[string]any
-	Titles       map[string]string
-	Workflows    map[string]string
-	Functions    map[string]string
-	FunctionsMap map[string]func()
-	TargetKeys   map[string][]string
+	ActiveMenus   map[string]any
+	Titles        map[string]string
+	Workflows     map[string]string
+	Functions     map[string]string
+	FunctionsMap  map[string]func()
+	TargetKeys    map[string][]string
+	LabelWorkflow map[string]any
 }
 
 func NewMenus() *Menus {
 	m := &Menus{
-		ActiveMenus:  map[string]any{},
-		Titles:       map[string]string{},
-		Workflows:    map[string]string{},
-		Functions:    map[string]string{},
-		FunctionsMap: map[string]func(){},
-		TargetKeys:   map[string][]string{},
+		ActiveMenus:   map[string]any{},
+		Titles:        map[string]string{},
+		Workflows:     map[string]string{},
+		Functions:     map[string]string{},
+		FunctionsMap:  map[string]func(){},
+		TargetKeys:    map[string][]string{},
+		LabelWorkflow: map[string]any{},
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -63,6 +65,8 @@ func NewMenus() *Menus {
 			m.Titles[group] = val
 		}
 
+		m.LabelWorkflow[group] = map[string]any{}
+
 		if val, ok := data["fields"].(map[string]any); ok {
 			m.ActiveMenus[group] = map[string]any{}
 
@@ -87,6 +91,11 @@ func NewMenus() *Menus {
 						if val["workflow"] != nil {
 							if v, ok := val["workflow"].(string); ok {
 								m.Workflows[id] = v
+
+								m.LabelWorkflow[group].(map[string]any)[value] = map[string]any{
+									"workflow": v,
+									"id":       id,
+								}
 							}
 						}
 						if val["function"] != nil {
@@ -225,6 +234,10 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				text = "0"
 				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
 			} else if strings.TrimSpace(response) == "" {
+				if text == "0" {
+					session.AddedModels[model] = true
+				}
+
 				parentMenu := "main"
 
 				if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {

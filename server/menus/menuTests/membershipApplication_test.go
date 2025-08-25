@@ -1,6 +1,7 @@
 package menutests
 
 import (
+	"fmt"
 	"io/fs"
 	"log"
 	"path/filepath"
@@ -80,6 +81,10 @@ func TestMembershipApplication(t *testing.T) {
 		if val, ok := a.(map[string]any); ok {
 			data = val
 		}
+
+		session.UpdateActiveMemberData(data, 0)
+
+		session.AddedModels["member"] = true
 
 		return nil
 	}
@@ -342,6 +347,8 @@ Summary
 99. Cancel
 	`
 
+	// session.AddedModels["member"] = true
+
 	if utils.CleanString(result) != utils.CleanString(target) {
 		t.Fatal("Test failed")
 	}
@@ -349,6 +356,8 @@ Summary
 	text = "0"
 
 	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	fmt.Println(result)
 
 	target = `
 CON Choose Activity
