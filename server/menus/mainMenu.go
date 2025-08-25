@@ -104,7 +104,7 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 			session.CurrentMenu = "main"
 			return MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
-			response = session.LanguageWorkflow.NavNext(text)
+			response = session.WorkflowsMapping["language"].NavNext(text)
 
 			if strings.TrimSpace(response) == "" {
 				session.CurrentMenu = "main"
