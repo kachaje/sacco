@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	workingFolder := filepath.Join(".", "consolidated")
+	workingFolder := filepath.Join(".")
 
 	_, err := os.Stat(workingFolder)
 	if os.IsNotExist(err) {

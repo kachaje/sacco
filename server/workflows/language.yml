@@ -1,0 +1,24 @@
+model: preferredLanguage
+
+initialScreen: enterLanguage
+
+enterLanguage:
+  order: 0
+  type: inputScreen
+  text:
+    en: Preferred Language
+    ny: Chiyankhulo Chomwe Mungakonde
+  options:
+    - position: 1
+      label:
+        all: English
+      code: en
+    - position: 2
+      label:
+        all: Chichewa
+      code: ny
+  inputIdentifier: language
+  nextScreen: formSummary
+
+formSummary:
+  type: quitScreen

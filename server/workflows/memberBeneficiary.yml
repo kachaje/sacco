@@ -1,0 +1,124 @@
+enterContact1:
+    inputIdentifier: contact1
+    nextScreen: enterName2
+    order: 3
+    text:
+        en: Contact
+    type: inputScreen
+enterContact2:
+    inputIdentifier: contact2
+    nextScreen: enterName3
+    order: 6
+    text:
+        en: Contact
+    type: inputScreen
+enterContact3:
+    inputIdentifier: contact3
+    nextScreen: enterName4
+    order: 9
+    text:
+        en: Contact
+    type: inputScreen
+enterContact4:
+    inputIdentifier: contact4
+    nextScreen: formSummary
+    order: 12
+    text:
+        en: Contact
+    type: inputScreen
+enterId1:
+    hidden: true
+    inputIdentifier: id1
+    type: hiddenField
+enterId2:
+    hidden: true
+    inputIdentifier: id2
+    type: hiddenField
+enterId3:
+    hidden: true
+    inputIdentifier: id3
+    type: hiddenField
+enterId4:
+    hidden: true
+    inputIdentifier: id4
+    type: hiddenField
+enterMemberId1:
+    hidden: true
+    inputIdentifier: memberId1
+    type: hiddenField
+enterMemberId2:
+    hidden: true
+    inputIdentifier: memberId2
+    type: hiddenField
+enterMemberId3:
+    hidden: true
+    inputIdentifier: memberId3
+    type: hiddenField
+enterMemberId4:
+    hidden: true
+    inputIdentifier: memberId4
+    type: hiddenField
+enterName1:
+    inputIdentifier: name1
+    nextScreen: enterPercentage1
+    order: 1
+    terminateBlockOnEmpty: true
+    text:
+        en: Name
+    type: inputScreen
+enterName2:
+    inputIdentifier: name2
+    nextScreen: enterPercentage2
+    order: 4
+    terminateBlockOnEmpty: true
+    text:
+        en: Name
+    type: inputScreen
+enterName3:
+    inputIdentifier: name3
+    nextScreen: enterPercentage3
+    order: 7
+    terminateBlockOnEmpty: true
+    text:
+        en: Name
+    type: inputScreen
+enterName4:
+    inputIdentifier: name4
+    nextScreen: enterPercentage4
+    order: 10
+    terminateBlockOnEmpty: true
+    text:
+        en: Name
+    type: inputScreen
+enterPercentage1:
+    inputIdentifier: percentage1
+    nextScreen: enterContact1
+    order: 2
+    text:
+        en: Percentage
+    type: inputScreen
+enterPercentage2:
+    inputIdentifier: percentage2
+    nextScreen: enterContact2
+    order: 5
+    text:
+        en: Percentage
+    type: inputScreen
+enterPercentage3:
+    inputIdentifier: percentage3
+    nextScreen: enterContact3
+    order: 8
+    text:
+        en: Percentage
+    type: inputScreen
+enterPercentage4:
+    inputIdentifier: percentage4
+    nextScreen: enterContact4
+    order: 11
+    text:
+        en: Percentage
+    type: inputScreen
+formSummary:
+    type: quitScreen
+initialScreen: enterName1
+model: memberBeneficiary

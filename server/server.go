@@ -32,10 +32,10 @@ import (
 //go:embed index.html
 var indexHTML string
 
-//go:embed workflows/preferences/language.yml
+//go:embed workflows/language.yml
 var languageTemplate string
 
-//go:embed workflows/consolidated/*
+//go:embed workflows/*
 var consolidatedWorkflows embed.FS
 
 var mu sync.Mutex
@@ -67,6 +67,10 @@ func init() {
 		}
 
 		if d.IsDir() {
+			return nil
+		}
+
+		if !strings.HasSuffix(file, ".yml") {
 			return nil
 		}
 
