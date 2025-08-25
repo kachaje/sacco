@@ -86,3 +86,26 @@ CON Employement
 		t.Fatal("Test failed")
 	}
 }
+
+func TestLoanMenu(t *testing.T) {
+	m := menus.NewMenus()
+
+	result := m.LoadMenu("loan", nil, "", "", "", "")
+
+	target := `
+CON Loans
+1. Loan Application
+2. Loan Liability
+3. Loan Security
+4. Loan Witness
+5. Loan Approvals
+6. Employment Details
+7. Business Details
+
+00. Main Menu
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+}
