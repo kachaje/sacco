@@ -2,19 +2,72 @@ package menutests
 
 import (
 	"fmt"
+	"io/fs"
+	"log"
+	"path/filepath"
+	"sacco/server"
 	"sacco/server/menus"
 	"sacco/server/parser"
 	"sacco/utils"
+	"strings"
 	"testing"
 )
 
-func TestMembershipApplication(t *testing.T) {
-	m := menus.NewMenus()
+var workflowsData map[string]map[string]any
 
+func init() {
+	var err error
+
+	workflowsData = map[string]map[string]any{}
+
+	err = fs.WalkDir(server.RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if d.IsDir() {
+			return nil
+		}
+
+		if !strings.HasSuffix(file, ".yml") {
+			return nil
+		}
+
+		content, err := server.RawWorkflows.ReadFile(file)
+		if err != nil {
+			return err
+		}
+
+		data, err := utils.LoadYaml(string(content))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		model := strings.Split(filepath.Base(file), ".")[0]
+
+		workflowsData[model] = data
+
+		return nil
+	})
+	if err != nil {
+		log.Panic(err)
+	}
+}
+
+func TestMembershipApplication(t *testing.T) {
 	phoneNumber := "0999888777"
+
 	session := parser.NewSession(nil, nil, nil)
 
+	menus.Sessions[phoneNumber] = session
+
+	for model, data := range workflowsData {
+		session.WorkflowsMapping[model] = parser.NewWorkflow(data, nil, nil, &phoneNumber, nil, nil, nil, nil, menus.Sessions, nil)
+	}
+
 	text := ""
+
+	m := menus.NewMenus()
 
 	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
 

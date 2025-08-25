@@ -33,7 +33,7 @@ import (
 var indexHTML string
 
 //go:embed workflows/*
-var workflows embed.FS
+var RawWorkflows embed.FS
 
 var mu sync.Mutex
 var port int
@@ -52,7 +52,7 @@ func init() {
 
 	workflowsData = map[string]map[string]any{}
 
-	err = fs.WalkDir(workflows, ".", func(file string, d fs.DirEntry, err error) error {
+	err = fs.WalkDir(RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -65,7 +65,7 @@ func init() {
 			return nil
 		}
 
-		content, err := workflows.ReadFile(file)
+		content, err := RawWorkflows.ReadFile(file)
 		if err != nil {
 			return err
 		}

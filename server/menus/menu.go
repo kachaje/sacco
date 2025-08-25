@@ -187,8 +187,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		model := session.CurrentMenu
 		workflow := m.Workflows[model]
 
-		fmt.Println("##########", workflow)
-
 		if session.ActiveMemberData != nil {
 			data := map[string]any{}
 
@@ -213,8 +211,8 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 
 		if session.WorkflowsMapping != nil &&
-			session.WorkflowsMapping[model] != nil {
-			response = session.WorkflowsMapping[model].NavNext(text)
+			session.WorkflowsMapping[workflow] != nil {
+			response = session.WorkflowsMapping[workflow].NavNext(text)
 
 			if text == "00" {
 				session.CurrentMenu = "main"
