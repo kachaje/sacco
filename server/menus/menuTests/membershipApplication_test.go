@@ -1,7 +1,6 @@
 package menutests
 
 import (
-	"fmt"
 	"io/fs"
 	"log"
 	"path/filepath"
@@ -347,8 +346,6 @@ Summary
 99. Cancel
 	`
 
-	// session.AddedModels["member"] = true
-
 	if utils.CleanString(result) != utils.CleanString(target) {
 		t.Fatal("Test failed")
 	}
@@ -357,13 +354,11 @@ Summary
 
 	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
 
-	fmt.Println(result)
-
 	target = `
 CON Choose Activity
 
 00. Main Menu
-1. Member Details
+1. Member Details (*)
 2. Occupation Details
 3. Contact Details
 4. Next of Kin Details

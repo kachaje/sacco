@@ -2,7 +2,6 @@ package menus
 
 import (
 	"embed"
-	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log"
@@ -20,7 +19,7 @@ var menuFiles embed.FS
 type Menus struct {
 	ActiveMenus   map[string]any
 	Titles        map[string]string
-	Workflows     map[string]string
+	Workflows     map[string]any
 	Functions     map[string]string
 	FunctionsMap  map[string]func()
 	TargetKeys    map[string][]string
@@ -31,7 +30,7 @@ func NewMenus() *Menus {
 	m := &Menus{
 		ActiveMenus:   map[string]any{},
 		Titles:        map[string]string{},
-		Workflows:     map[string]string{},
+		Workflows:     map[string]any{},
 		Functions:     map[string]string{},
 		FunctionsMap:  map[string]func(){},
 		TargetKeys:    map[string][]string{},
@@ -171,18 +170,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		values = append(values, "\n00. Main Menu\n")
 	}
 
-	if false {
-		fmt.Println(session.CurrentMenu, text, keys)
-
-		payload, _ := json.MarshalIndent(m.Workflows, "", "  ")
-
-		fmt.Println(string(payload))
-
-		payload, _ = json.MarshalIndent(m.Functions, "", "  ")
-
-		fmt.Println(string(payload))
-	}
-
 	if slices.Contains(keys, text) {
 		target := text
 		text = "000"
@@ -192,9 +179,9 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 
 		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
-	} else if m.Workflows[session.CurrentMenu] != "" {
+	} else if session != nil &&  m.Workflows[session.CurrentMenu] != nil {
 		model := session.CurrentMenu
-		workflow := m.Workflows[model]
+		workflow := fmt.Sprintf("%v", m.Workflows[model])
 
 		if session.ActiveMemberData != nil {
 			data := map[string]any{}
@@ -254,7 +241,29 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 
 	} else {
-		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(values, ""))
+		newValues := []string{}
+
+		if m.LabelWorkflow[menuName] != nil && session != nil {
+			for _, value := range values {
+				if m.LabelWorkflow[menuName].(map[string]any)[value] != nil {
+					workflow := fmt.Sprintf("%v", m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["workflow"])
+
+					suffix := ""
+
+					if session.AddedModels[workflow] {
+						suffix = "(*)"
+					}
+
+					newValues = append(newValues, fmt.Sprintf("%s %s\n", strings.TrimSpace(value), suffix))
+				} else {
+					newValues = append(newValues, value)
+				}
+			}
+		} else {
+			newValues = values
+		}
+
+		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(newValues, ""))
 	}
 
 	return response
