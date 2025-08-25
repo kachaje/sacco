@@ -162,13 +162,13 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		values = append(values, "\n00. Main Menu\n")
 	}
 
-	fmt.Println(session.CurrentMenu, text, keys)
-
-	payload, _ := json.MarshalIndent(m.Workflows, "", "  ")
-
-	fmt.Println(string(payload))
-
 	if false {
+		fmt.Println(session.CurrentMenu, text, keys)
+
+		payload, _ := json.MarshalIndent(m.Workflows, "", "  ")
+
+		fmt.Println(string(payload))
+
 		payload, _ = json.MarshalIndent(m.Functions, "", "  ")
 
 		fmt.Println(string(payload))
@@ -184,12 +184,57 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 
 		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
 	} else if m.Workflows[session.CurrentMenu] != "" {
+		model := session.CurrentMenu
+		workflow := m.Workflows[model]
 
-		if m.TargetKeys[session.CurrentMenu] != nil {
-			fmt.Println("********", m.TargetKeys[session.CurrentMenu])
+		fmt.Println("##########", workflow)
+
+		if session.ActiveMemberData != nil {
+			data := map[string]any{}
+
+			if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) {
+				data["phoneNumber"] = phoneNumber
+			}
+
+			if m.TargetKeys[model] != nil {
+				targetKeys := m.TargetKeys[model]
+
+				for key, value := range session.ActiveMemberData {
+					if slices.Contains(targetKeys, key) {
+						data[key] = fmt.Sprintf("%v", value)
+					}
+				}
+
+				if session.WorkflowsMapping != nil &&
+					session.WorkflowsMapping[model] != nil {
+					session.WorkflowsMapping[model].Data = data
+				}
+			}
 		}
 
-		fmt.Println("##########", m.Workflows[session.CurrentMenu])
+		if session.WorkflowsMapping != nil &&
+			session.WorkflowsMapping[model] != nil {
+			response = session.WorkflowsMapping[model].NavNext(text)
+
+			if text == "00" {
+				session.CurrentMenu = "main"
+				text = "0"
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+			} else if strings.TrimSpace(response) == "" {
+				parentMenu := "main"
+
+				if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
+					parentMenu = regexp.MustCompile(`\.\d+$`).ReplaceAllLiteralString(session.CurrentMenu, "")
+				}
+
+				session.CurrentMenu = parentMenu
+				text = ""
+
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+			}
+		} else {
+			response = "NOT IMPLEMENTED YET"
+		}
 
 	} else {
 		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(values, ""))
