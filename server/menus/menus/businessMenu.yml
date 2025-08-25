@@ -1,0 +1,18 @@
+title: Business
+fields:
+  "1":
+    id: business.1
+    label:
+      en: Business Details
+  "2":
+    id: business.2
+    label:
+      en: Previous Year History
+  "3":
+    id: business.3
+    label:
+      en: Next Year Projection
+  "00":
+    id: main
+    label:
+      en: Main Menu
