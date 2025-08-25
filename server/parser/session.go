@@ -104,6 +104,11 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
+	nameData := s.ReadFromMap("firstName", 0)
+	if nameData != nil {
+		s.AddedModels["member"] = true
+	}
+
 	return nil
 }
 

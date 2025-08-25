@@ -83,7 +83,7 @@ func TestMembershipApplication(t *testing.T) {
 
 		session.UpdateActiveMemberData(data, 0)
 
-		session.AddedModels["member"] = true
+		session.UpdateSessionFlags()
 
 		return nil
 	}
