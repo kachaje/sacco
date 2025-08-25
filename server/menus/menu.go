@@ -97,7 +97,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 
 	keys := []string{}
 	values := []string{}
-	kv := map[string]any{}
+	kv := map[string]string{}
 
 	if val, ok := m.ActiveMenus[menuName].(map[string]any); ok {
 		if val["keys"] != nil {
@@ -112,17 +112,19 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 		if val["kv"] != nil {
 			if v, ok := val["kv"].(map[string]any); ok {
-				kv = v
+				for key, value := range v {
+					if vs, ok := value.(string); ok {
+						kv[key] = vs
+					}
+				}
 			}
 		}
 	}
 
 	slices.Sort(values)
 
-	_ = kv
-
 	if slices.Contains(keys, text) {
-
+		return m.LoadMenu(kv[text], session, phoneNumber, text, preferencesFolder, cacheFolder)
 	} else {
 		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(values, ""))
 	}

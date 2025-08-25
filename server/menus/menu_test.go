@@ -1,12 +1,13 @@
 package menus_test
 
 import (
+	"fmt"
 	"sacco/server/menus"
 	"sacco/utils"
 	"testing"
 )
 
-func TestLoadMenus(t *testing.T) {
+func TestMainMenu(t *testing.T) {
 	m := menus.NewMenus()
 
 	result := m.LoadMenu("main", nil, "", "", "", "")
@@ -24,4 +25,12 @@ CON Welcome to Kaso SACCO
 	if utils.CleanString(result) != utils.CleanString(target) {
 		t.Fatal("Test failed")
 	}
+}
+
+func TestSubMenu(t *testing.T) {
+	m := menus.NewMenus()
+
+	result := m.LoadMenu("registration", nil, "", "1", "", "")
+
+	fmt.Println(result)
 }

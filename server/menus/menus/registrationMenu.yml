@@ -1,0 +1,30 @@
+title: Choose Activity
+fields:
+  "1":
+    id: registration.1
+    label:
+      en: Member Details
+  "2":
+    id: registration.2
+    label:
+      en: Occupation Details
+  "3":
+    id: registration.3
+    label:
+      en: Contact Details
+  "4":
+    id: registration.4
+    label:
+      en: Next of Kin Details
+  "5":
+    id: registration.5
+    label:
+      en: Beneficiaries
+  "6":
+    id: registration.6
+    label:
+      en: View Member Details
+  "00":
+    id: main
+    label:
+      en: Main Menu
