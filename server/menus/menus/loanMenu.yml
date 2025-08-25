@@ -1,0 +1,34 @@
+title: Loans
+fields:
+  "1":
+    id: loan.1
+    label:
+      en: Loan Application
+  "2":
+    id: loan.2
+    label:
+      en: Loan Liability
+  "3":
+    id: loan.3
+    label:
+      en: Loan Security
+  "4":
+    id: loan.4
+    label:
+      en: Loan Witness
+  "5":
+    id: loan.5
+    label:
+      en: Loan Approvals
+  "6":
+    id: employment
+    label:
+      en: Employment Details
+  "7":
+    id: business
+    label:
+      en: Business Details
+  "00":
+    id: main
+    label:
+      en: Main Menu
