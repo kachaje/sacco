@@ -33,13 +33,34 @@ func TestRegistrationSubMenu(t *testing.T) {
 
 	target := `
 CON Choose Activity
-00. Main Menu
 1. Member Details
 2. Occupation Details
 3. Contact Details
 4. Next of Kin Details
 5. Beneficiaries
 6. View Member Details
+
+00. Main Menu
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+}
+
+func TestBusinessMenu(t *testing.T) {
+	m := menus.NewMenus()
+
+	result := m.LoadMenu("business", nil, "", "", "", "")
+
+	target := `
+CON Business
+1. Business Details
+2. Previous Year History
+3. Next Year Projection
+4. Business Summary
+
+00. Main Menu
 	`
 
 	if utils.CleanString(result) != utils.CleanString(target) {

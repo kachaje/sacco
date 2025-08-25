@@ -123,6 +123,14 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 
 	slices.Sort(values)
 
+	index := utils.Index(values, "00. Main Menu\n")
+
+	if index >= 0 {
+		values = append(values[:index], values[index+1:]...)
+
+		values = append(values, "\n00. Main Menu\n")
+	}
+
 	if slices.Contains(keys, text) {
 		target := text
 
