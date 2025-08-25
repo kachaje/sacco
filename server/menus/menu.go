@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/fs"
 	"log"
+	"os"
 	"path/filepath"
 	"regexp"
 	"sacco/server/parser"
@@ -21,7 +22,7 @@ type Menus struct {
 	Titles        map[string]string
 	Workflows     map[string]any
 	Functions     map[string]any
-	FunctionsMap  map[string]func()
+	FunctionsMap  map[string]func(map[string]any) string
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
 }
@@ -32,9 +33,13 @@ func NewMenus() *Menus {
 		Titles:        map[string]string{},
 		Workflows:     map[string]any{},
 		Functions:     map[string]any{},
-		FunctionsMap:  map[string]func(){},
+		FunctionsMap:  map[string]func(map[string]any) string{},
 		TargetKeys:    map[string][]string{},
 		LabelWorkflow: map[string]any{},
+	}
+
+	m.FunctionsMap["doExit"] = func(m map[string]any) string {
+		return doExit(m)
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -233,21 +238,32 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
 			}
 		} else {
-			response = "NOT IMPLEMENTED YET"
+			if text == "00" {
+				session.CurrentMenu = "main"
+				text = "0"
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+			}
+
+			response = "NOT IMPLEMENTED YET\n\n" +
+				"00. Main Menu\n"
 		}
 
 	} else if session != nil && m.Functions[session.CurrentMenu] != nil {
-		fmt.Println("############", session.CurrentMenu, m.Functions[session.CurrentMenu])
-
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
 			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+		} else {
+			if fnName, ok := m.Functions[session.CurrentMenu].(string); ok && m.FunctionsMap[fnName] != nil {
+				response = m.FunctionsMap[fnName](map[string]any{
+					"phoneNumber": phoneNumber,
+					"cacheFolder": cacheFolder,
+				})
+			} else {
+				response = fmt.Sprintf("Function %s not found\n\n", m.Functions[session.CurrentMenu]) +
+					"00. Main Menu\n"
+			}
 		}
-
-		response = fmt.Sprintf("CON %v\n", m.Functions[session.CurrentMenu]) +
-			"\n" +
-			"00. Main Menu\n"
 	} else {
 		newValues := []string{}
 
@@ -285,4 +301,46 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	}
 
 	return response
+}
+
+func doExit(data map[string]any) string {
+	mu.Lock()
+	defer mu.Unlock()
+
+	var phoneNumber string
+	var cacheFolder string
+
+	if data != nil {
+		if data["phoneNumber"] != nil {
+			if val, ok := data["phoneNumber"].(string); ok {
+				phoneNumber = val
+			}
+		}
+		if data["cacheFolder"] != nil {
+			if val, ok := data["cacheFolder"].(string); ok {
+				cacheFolder = val
+			}
+		}
+
+		if phoneNumber != "" {
+			delete(Sessions, phoneNumber)
+
+			if cacheFolder != "" {
+				folderName := filepath.Join(cacheFolder, phoneNumber)
+
+				_, err := os.Stat(folderName)
+				if !os.IsNotExist(err) {
+					files, err := os.ReadDir(folderName)
+					if err == nil && len(files) == 0 {
+						err = os.RemoveAll(folderName)
+						if err != nil {
+							log.Printf("server.menus.menu.removeFolder: %s\n", err.Error())
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return "END Thank you for using our service"
 }
