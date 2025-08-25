@@ -19,8 +19,6 @@ type Session struct {
 	SessionId         string
 	PhoneNumber       string
 
-	LanguageWorkflow *WorkFlow
-
 	WorkflowsMapping map[string]*WorkFlow
 
 	AddedModels map[string]bool

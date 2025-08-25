@@ -32,15 +32,11 @@ import (
 //go:embed index.html
 var indexHTML string
 
-//go:embed workflows/language.yml
-var languageTemplate string
-
 //go:embed workflows/*
-var consolidatedWorkflows embed.FS
+var workflows embed.FS
 
 var mu sync.Mutex
 var port int
-var languageData map[string]any
 
 var workflowsData map[string]map[string]any
 
@@ -54,14 +50,9 @@ var ctx context.Context
 func init() {
 	var err error
 
-	languageData, err = utils.LoadYaml(languageTemplate)
-	if err != nil {
-		log.Panic(err)
-	}
-
 	workflowsData = map[string]map[string]any{}
 
-	err = fs.WalkDir(consolidatedWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
+	err = fs.WalkDir(workflows, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -74,7 +65,7 @@ func init() {
 			return nil
 		}
 
-		content, err := consolidatedWorkflows.ReadFile(file)
+		content, err := workflows.ReadFile(file)
 		if err != nil {
 			return err
 		}
@@ -119,8 +110,6 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	session, exists := menus.Sessions[phoneNumber]
 	if !exists {
 		session = parser.NewSession(db.MemberByPhoneNumber, &phoneNumber, &sessionID)
-
-		session.LanguageWorkflow = parser.NewWorkflow(languageData, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
 
 		for model, data := range workflowsData {
 			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
