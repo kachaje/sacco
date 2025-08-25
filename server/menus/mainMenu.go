@@ -38,24 +38,6 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 	switch session.CurrentMenu {
 	case "main":
 		switch text {
-		case "", "0":
-			if preferredLanguage != nil && *preferredLanguage == "ny" {
-				response = "CON Takulandilani ku Kaso SACCO\n" +
-					"1. Membala Watsopano\n" +
-					"2. Ngongole\n" +
-					"3. Balansi\n" +
-					"4. Matumizidwe\n" +
-					"5. Chiyankhulo\n" +
-					"6. Malizani"
-			} else {
-				response = "CON Welcome to Kaso SACCO\n" +
-					"1. Membership Application\n" +
-					"2. Loans\n" +
-					"3. Check Balance\n" +
-					"4. Banking Details\n" +
-					"5. Preferred Language\n" +
-					"6. Exit"
-			}
 		case "1":
 			text = "000"
 			session.CurrentMenu = "registration"
@@ -98,6 +80,24 @@ func MainMenu(session *parser.Session, phoneNumber, text, preferencesFolder, cac
 			}
 
 			mu.Unlock()
+		default:
+			if preferredLanguage != nil && *preferredLanguage == "ny" {
+				response = "CON Takulandilani ku Kaso SACCO\n" +
+					"1. Membala Watsopano\n" +
+					"2. Ngongole\n" +
+					"3. Balansi\n" +
+					"4. Matumizidwe\n" +
+					"5. Chiyankhulo\n" +
+					"6. Malizani"
+			} else {
+				response = "CON Welcome to Kaso SACCO\n" +
+					"1. Membership Application\n" +
+					"2. Loans\n" +
+					"3. Check Balance\n" +
+					"4. Banking Details\n" +
+					"5. Preferred Language\n" +
+					"6. Exit"
+			}
 		}
 	case "language":
 		if text == "" {
