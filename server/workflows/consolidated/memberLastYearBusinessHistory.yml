@@ -1,117 +1,117 @@
 enterEmployeesWages:
-    inputIdentifier: employeesWages
-    nextScreen: enterOwnSalary
-    order: 4
-    text:
-        en: Employees Wages
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: employeesWages
+  nextScreen: enterOwnSalary
+  order: 4
+  text:
+    en: Employees Wages
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterFinancialYear:
-    inputIdentifier: financialYear
-    nextScreen: enterTotalIncome
-    order: 1
-    text:
-        en: Financial Year
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: financialYear
+  nextScreen: enterTotalIncome
+  order: 1
+  text:
+    en: Financial Year
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterId:
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 enterLoanInterest:
-    inputIdentifier: loanInterest
-    nextScreen: enterUtilities
-    order: 7
-    text:
-        en: Loan Interest
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: loanInterest
+  nextScreen: enterUtilities
+  order: 7
+  text:
+    en: Loan Interest
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterMemberBusinessId:
-    hidden: true
-    inputIdentifier: memberBusinessId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberBusinessId
+  type: hiddenField
 enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberId
+  type: hiddenField
 enterMemberLoanId:
-    hidden: true
-    inputIdentifier: memberLoanId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberLoanId
+  type: hiddenField
 enterNetProfitLoss:
-    inputIdentifier: netProfitLoss
-    nextScreen: formSummary
-    order: 12
-    text:
-        en: Net Profit Loss
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: netProfitLoss
+  nextScreen: formSummary
+  order: 12
+  text:
+    en: Net Profit Loss
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterOtherCosts:
-    inputIdentifier: otherCosts
-    nextScreen: enterTotalCosts
-    optional: true
-    order: 10
-    text:
-        en: Other Costs
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: otherCosts
+  nextScreen: enterTotalCosts
+  optional: true
+  order: 10
+  text:
+    en: Other Costs
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterOwnSalary:
-    inputIdentifier: ownSalary
-    nextScreen: enterTransport
-    order: 5
-    text:
-        en: Own Salary
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: ownSalary
+  nextScreen: enterTransport
+  order: 5
+  text:
+    en: Own Salary
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterRentals:
-    inputIdentifier: rentals
-    nextScreen: enterOtherCosts
-    order: 9
-    text:
-        en: Rentals
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: rentals
+  nextScreen: enterOtherCosts
+  order: 9
+  text:
+    en: Rentals
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterTotalCostOfGoods:
-    inputIdentifier: totalCostOfGoods
-    nextScreen: enterEmployeesWages
-    order: 3
-    text:
-        en: Total Cost Of Goods
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: totalCostOfGoods
+  nextScreen: enterEmployeesWages
+  order: 3
+  text:
+    en: Total Cost Of Goods
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterTotalCosts:
-    inputIdentifier: totalCosts
-    nextScreen: enterNetProfitLoss
-    order: 11
-    text:
-        en: Total Costs
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: totalCosts
+  nextScreen: enterNetProfitLoss
+  order: 11
+  text:
+    en: Total Costs
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterTotalIncome:
-    inputIdentifier: totalIncome
-    nextScreen: enterTotalCostOfGoods
-    order: 2
-    text:
-        en: Total Income
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: totalIncome
+  nextScreen: enterTotalCostOfGoods
+  order: 2
+  text:
+    en: Total Income
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterTransport:
-    inputIdentifier: transport
-    nextScreen: enterLoanInterest
-    order: 6
-    text:
-        en: Transport
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: transport
+  nextScreen: enterLoanInterest
+  order: 6
+  text:
+    en: Transport
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterUtilities:
-    inputIdentifier: utilities
-    nextScreen: enterRentals
-    order: 8
-    text:
-        en: Utilities
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: utilities
+  nextScreen: enterRentals
+  order: 8
+  text:
+    en: Utilities
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterFinancialYear
 model: memberLastYearBusinessHistory

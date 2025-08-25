@@ -1,130 +1,130 @@
 enterAmountApproved:
-    adminOnly: true
-    inputIdentifier: amountApproved
-    nextScreen: enterDenialOrPartialReason
-    order: 10
-    text:
-        en: Amount Approved
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  adminOnly: true
+  inputIdentifier: amountApproved
+  nextScreen: enterDenialOrPartialReason
+  order: 10
+  text:
+    en: Amount Approved
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterAmountRecommended:
-    adminOnly: true
-    inputIdentifier: amountRecommended
-    nextScreen: enterApprovedBy
-    order: 7
-    text:
-        en: Amount Recommended
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  adminOnly: true
+  inputIdentifier: amountRecommended
+  nextScreen: enterApprovedBy
+  order: 7
+  text:
+    en: Amount Recommended
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterApprovalDate:
-    adminOnly: true
-    inputIdentifier: approvalDate
-    nextScreen: enterAmountApproved
-    order: 9
-    text:
-        en: Approval Date
-    type: inputScreen
+  adminOnly: true
+  inputIdentifier: approvalDate
+  nextScreen: enterAmountApproved
+  order: 9
+  text:
+    en: Approval Date
+  type: inputScreen
 enterApprovedBy:
-    adminOnly: true
-    inputIdentifier: approvedBy
-    nextScreen: enterApprovalDate
-    order: 8
-    text:
-        en: Approved By
-    type: inputScreen
+  adminOnly: true
+  inputIdentifier: approvedBy
+  nextScreen: enterApprovalDate
+  order: 8
+  text:
+    en: Approved By
+  type: inputScreen
 enterDateVerified:
-    hidden: true
-    inputIdentifier: dateVerified
-    type: hiddenField
+  hidden: true
+  inputIdentifier: dateVerified
+  type: hiddenField
 enterDenialOrPartialReason:
-    adminOnly: true
-    inputIdentifier: denialOrPartialReason
-    nextScreen: formSummary
-    order: 11
-    text:
-        en: Denial Or Partial Reason
-    type: inputScreen
+  adminOnly: true
+  inputIdentifier: denialOrPartialReason
+  nextScreen: formSummary
+  order: 11
+  text:
+    en: Denial Or Partial Reason
+  type: inputScreen
 enterEmployeeNumber:
-    inputIdentifier: employeeNumber
-    nextScreen: enterLoanAmount
-    order: 1
-    text:
-        en: Employee Number
-    type: inputScreen
+  inputIdentifier: employeeNumber
+  nextScreen: enterLoanAmount
+  order: 1
+  text:
+    en: Employee Number
+  type: inputScreen
 enterId:
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 enterLoanAmount:
-    inputIdentifier: loanAmount
-    nextScreen: enterRepaymentPeriod
-    order: 2
-    text:
-        en: Loan Amount
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: loanAmount
+  nextScreen: enterRepaymentPeriod
+  order: 2
+  text:
+    en: Loan Amount
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterLoanPurpose:
-    inputIdentifier: loanPurpose
-    nextScreen: enterLoanStatus
-    order: 4
-    text:
-        en: Loan Purpose
-    type: inputScreen
+  inputIdentifier: loanPurpose
+  nextScreen: enterLoanStatus
+  order: 4
+  text:
+    en: Loan Purpose
+  type: inputScreen
 enterLoanStatus:
-    adminOnly: true
-    inputIdentifier: loanStatus
-    nextScreen: enterLoanType
-    options:
-        - label:
-            en: PENDING
-          position: 1
-        - label:
-            en: APPROVED
-          position: 2
-        - label:
-            en: REJECTED
-          position: 3
-    order: 5
-    text:
-        en: Loan Status
-    type: inputScreen
+  adminOnly: true
+  inputIdentifier: loanStatus
+  nextScreen: enterLoanType
+  options:
+    - label:
+        en: PENDING
+      position: 1
+    - label:
+        en: APPROVED
+      position: 2
+    - label:
+        en: REJECTED
+      position: 3
+  order: 5
+  text:
+    en: Loan Status
+  type: inputScreen
 enterLoanType:
-    inputIdentifier: loanType
-    nextScreen: enterAmountRecommended
-    options:
-        - label:
-            en: PERSONAL
-          position: 1
-        - label:
-            en: BUSINESS
-          position: 2
-        - label:
-            en: AGRICULTURAL
-          position: 3
-        - label:
-            en: EMERGENCY
-          position: 4
-    order: 6
-    text:
-        en: Loan Type
-    type: inputScreen
+  inputIdentifier: loanType
+  nextScreen: enterAmountRecommended
+  options:
+    - label:
+        en: PERSONAL
+      position: 1
+    - label:
+        en: BUSINESS
+      position: 2
+    - label:
+        en: AGRICULTURAL
+      position: 3
+    - label:
+        en: EMERGENCY
+      position: 4
+  order: 6
+  text:
+    en: Loan Type
+  type: inputScreen
 enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberId
+  type: hiddenField
 enterRepaymentPeriod:
-    inputIdentifier: repaymentPeriod
-    nextScreen: enterLoanPurpose
-    order: 3
-    text:
-        en: Repayment Period
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: repaymentPeriod
+  nextScreen: enterLoanPurpose
+  order: 3
+  text:
+    en: Repayment Period
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterVerifiedBy:
-    hidden: true
-    inputIdentifier: verifiedBy
-    type: hiddenField
+  hidden: true
+  inputIdentifier: verifiedBy
+  type: hiddenField
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterEmployeeNumber
 model: memberLoan
