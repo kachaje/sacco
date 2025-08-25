@@ -307,14 +307,6 @@ memberLoan:
         numericField: true
     - loanPurpose:
         required: true
-    - loanStatus:
-        required: true
-        default: PENDING
-        adminOnly: true
-        options:
-          - PENDING
-          - APPROVED
-          - REJECTED
     - loanType:
         required: true
         options:
@@ -322,24 +314,6 @@ memberLoan:
           - BUSINESS
           - AGRICULTURAL
           - EMERGENCY
-    - amountRecommended:
-        required: true
-        numericField: true
-        adminOnly: true
-        default: 0
-    - approvedBy:
-        adminOnly: true
-    - approvalDate:
-        adminOnly: true
-    - amountApproved:
-        numericField: true
-        adminOnly: true
-    - verifiedBy:
-        hidden: true
-    - dateVerified:
-        hidden: true
-    - denialOrPartialReason:
-        adminOnly: true
 
 memberLoanLiability:
   fields:
@@ -431,3 +405,38 @@ memberOccupationVerification:
         options:
           - Yes
           - No
+
+memberLoanApproval:
+  fields:
+    - id:
+        hidden: true
+    - memberId:
+        hidden: true
+    - memberLoanId:
+        hidden: true
+    - loanStatus:
+        required: true
+        default: PENDING
+        adminOnly: true
+        options:
+          - PENDING
+          - APPROVED
+          - REJECTED
+    - amountRecommended:
+        required: true
+        numericField: true
+        adminOnly: true
+        default: 0
+    - approvedBy:
+        adminOnly: true
+    - approvalDate:
+        adminOnly: true
+    - amountApproved:
+        numericField: true
+        adminOnly: true
+    - verifiedBy:
+        hidden: true
+    - dateVerified:
+        hidden: true
+    - denialOrPartialReason:
+        adminOnly: true

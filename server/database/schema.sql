@@ -245,7 +245,6 @@ CREATE TABLE
     loanAmount REAL,
     repaymentPeriod REAL,
     loanPurpose TEXT,
-    loanStatus TEXT NOT NULL CHECK (loanStatus IN ('PENDING', 'APPROVED', 'REJECTED')),
     loanType TEXT NOT NULL CHECK (
       loanType IN (
         'PERSONAL',
@@ -254,6 +253,27 @@ CREATE TABLE
         'EMERGENCY'
       )
     ),
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS memberLoanUpdated AFTER
+UPDATE ON memberLoan FOR EACH ROW BEGIN
+UPDATE memberLoan
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS memberLoanApproval (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    memberId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
+    loanStatus TEXT NOT NULL CHECK (loanStatus IN ('PENDING', 'APPROVED', 'REJECTED')),
     amountRecommended REAL,
     approvedBy TEXT,
     approvalDate TEXT,
@@ -266,9 +286,9 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
-CREATE TRIGGER IF NOT EXISTS memberLoanUpdated AFTER
-UPDATE ON memberLoan FOR EACH ROW BEGIN
-UPDATE memberLoan
+CREATE TRIGGER IF NOT EXISTS memberLoanApprovalUpdated AFTER
+UPDATE ON memberLoanApproval FOR EACH ROW BEGIN
+UPDATE memberLoanApproval
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
