@@ -1,10 +1,10 @@
 package menutests
 
 import (
-	"fmt"
 	"io/fs"
 	"log"
 	"path/filepath"
+	"reflect"
 	"sacco/server"
 	"sacco/server/menus"
 	"sacco/server/parser"
@@ -55,14 +55,37 @@ func init() {
 }
 
 func TestMembershipApplication(t *testing.T) {
+	var data map[string]any
+
+	refData := map[string]any{
+		"dateOfBirth":       "1999-09-01",
+		"firstName":         "Mary",
+		"gender":            "Female",
+		"lastName":          "Banda",
+		"maritalStatus":     "Single",
+		"nationalId":        "DHDG57636",
+		"phoneNumber":       "0999888777",
+		"title":             "Miss",
+		"utilityBillNumber": "98383727",
+		"utilityBillType":   "ESCOM",
+	}
+
 	phoneNumber := "0999888777"
 
 	session := parser.NewSession(nil, nil, nil)
 
 	menus.Sessions[phoneNumber] = session
 
+	callbackFn := func(a any, s1, s2, s3, s4 *string, f func(map[string]any, string, int) (*int64, error), m1 map[string]*parser.Session, m2 map[string]any) error {
+		if val, ok := a.(map[string]any); ok {
+			data = val
+		}
+
+		return nil
+	}
+
 	for model, data := range workflowsData {
-		session.WorkflowsMapping[model] = parser.NewWorkflow(data, nil, nil, &phoneNumber, nil, nil, nil, nil, menus.Sessions, nil)
+		session.WorkflowsMapping[model] = parser.NewWorkflow(data, callbackFn, nil, &phoneNumber, nil, nil, nil, nil, menus.Sessions, nil)
 	}
 
 	text := ""
@@ -109,5 +132,245 @@ CON Choose Activity
 
 	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
 
-	fmt.Println(result)
+	target = `
+First Name: 
+
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "Mary"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Last Name: 
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "Banda"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Other Name: 
+
+00. Main Menu
+02. Skip
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "02"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Gender: 
+1. Female
+2. Male
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "1"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Phone Number: (0999888777)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Title: 
+1. Mr
+2. Mrs
+3. Miss
+4. Dr
+5. Prof
+6. Rev
+7. Other
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "3"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Marital Status: 
+1. Married
+2. Single
+3. Widowed
+4. Divorced
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "2"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Date Of Birth: 
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "1999-09-01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+National Id: 
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "DHDG57636"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Utility Bill Type: 
+1. ESCOM
+2. Water Board
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "1"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Utility Bill Number: 
+
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "98383727"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Summary
+- First Name: Mary
+- Last Name: Banda
+- Gender: Female
+- Phone Number: 0999888777
+- Title: Miss
+- Marital Status: Single
+- Date Of Birth: 1999-09-01
+- National Id: DHDG57636
+- Utility Bill Type: ESCOM
+- Utility Bill Number: 98383727
+
+0. Submit
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "0"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+CON Choose Activity
+
+00. Main Menu
+1. Member Details
+2. Occupation Details
+3. Contact Details
+4. Next of Kin Details
+5. Beneficiaries
+6. View Member Details
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	if data == nil {
+		t.Fatal("Test failed")
+	}
+
+	if !reflect.DeepEqual(data, refData) {
+		t.Fatal("Test failed")
+	}
 }

@@ -204,8 +204,14 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				}
 
 				if session.WorkflowsMapping != nil &&
-					session.WorkflowsMapping[model] != nil {
-					session.WorkflowsMapping[model].Data = data
+					session.WorkflowsMapping[workflow] != nil {
+					for key, value := range session.WorkflowsMapping[workflow].Data {
+						if slices.Contains(targetKeys, key) {
+							data[key] = fmt.Sprintf("%v", value)
+						}
+					}
+
+					session.WorkflowsMapping[workflow].Data = data
 				}
 			}
 		}
