@@ -36,7 +36,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, er
 			suffix := ""
 
 			if count > 1 {
-				suffix = fmt.Sprint(i+1)
+				suffix = fmt.Sprint(i + 1)
 			}
 
 			for _, row := range rawData["fields"].([]any) {
