@@ -67,3 +67,22 @@ CON Business
 		t.Fatal("Test failed")
 	}
 }
+
+func TestEmployementMenu(t *testing.T) {
+	m := menus.NewMenus()
+
+	result := m.LoadMenu("employment", nil, "", "", "", "")
+
+	target := `
+CON Employement
+1. Employement Details
+2. Employement Verification
+3. Employement Summary
+
+00. Main Menu
+`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+}
