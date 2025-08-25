@@ -23,6 +23,7 @@ type Menus struct {
 	Workflows    map[string]string
 	Functions    map[string]string
 	FunctionsMap map[string]func()
+	TargetKeys   map[string][]string
 }
 
 func NewMenus() *Menus {
@@ -32,6 +33,7 @@ func NewMenus() *Menus {
 		Workflows:    map[string]string{},
 		Functions:    map[string]string{},
 		FunctionsMap: map[string]func(){},
+		TargetKeys:   map[string][]string{},
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -90,6 +92,17 @@ func NewMenus() *Menus {
 						if val["function"] != nil {
 							if v, ok := val["function"].(string); ok {
 								m.Functions[id] = v
+							}
+						}
+						if val["targetKeys"] != nil {
+							if v, ok := val["targetKeys"].([]any); ok {
+								m.TargetKeys[id] = []string{}
+
+								for _, e := range v {
+									if s, ok := e.(string); ok {
+										m.TargetKeys[id] = append(m.TargetKeys[id], s)
+									}
+								}
 							}
 						}
 					}
@@ -171,6 +184,10 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 
 		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
 	} else if m.Workflows[session.CurrentMenu] != "" {
+
+		if m.TargetKeys[session.CurrentMenu] != nil {
+			fmt.Println("********", m.TargetKeys[session.CurrentMenu])
+		}
 
 		fmt.Println("##########", m.Workflows[session.CurrentMenu])
 
