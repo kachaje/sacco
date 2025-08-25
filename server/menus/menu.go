@@ -2,6 +2,7 @@ package menus
 
 import (
 	"embed"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log"
@@ -148,12 +149,31 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		values = append(values, "\n00. Main Menu\n")
 	}
 
+	fmt.Println(session.CurrentMenu, text, keys)
+
+	payload, _ := json.MarshalIndent(m.Workflows, "", "  ")
+
+	fmt.Println(string(payload))
+
+	if false {
+		payload, _ = json.MarshalIndent(m.Functions, "", "  ")
+
+		fmt.Println(string(payload))
+	}
+
 	if slices.Contains(keys, text) {
 		target := text
+		text = "000"
 
-		text = ""
+		if session != nil {
+			session.CurrentMenu = kv[target]
+		}
 
 		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else if m.Workflows[session.CurrentMenu] != "" {
+
+		fmt.Println("##########", m.Workflows[session.CurrentMenu])
+
 	} else {
 		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(values, ""))
 	}
