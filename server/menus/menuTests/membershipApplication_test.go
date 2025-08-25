@@ -356,14 +356,14 @@ Summary
 
 	target = `
 CON Choose Activity
+1. Member Details (*)
+2. Occupation Details 
+3. Contact Details 
+4. Next of Kin Details 
+5. Beneficiaries 
+6. View Member Details
 
 00. Main Menu
-1. Member Details (*)
-2. Occupation Details
-3. Contact Details
-4. Next of Kin Details
-5. Beneficiaries
-6. View Member Details
 	`
 
 	if utils.CleanString(result) != utils.CleanString(target) {
