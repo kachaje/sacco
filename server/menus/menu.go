@@ -134,6 +134,12 @@ func NewMenus() *Menus {
 func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string) string {
 	var response string
 
+	preferredLanguage := CheckPreferredLanguage(phoneNumber, preferencesFolder)
+
+	if preferredLanguage != nil {
+		session.PreferredLanguage = *preferredLanguage
+	}
+
 	keys := []string{}
 	values := []string{}
 	kv := map[string]string{}
@@ -179,7 +185,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 
 		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
-	} else if session != nil &&  m.Workflows[session.CurrentMenu] != nil {
+	} else if session != nil && m.Workflows[session.CurrentMenu] != nil {
 		model := session.CurrentMenu
 		workflow := fmt.Sprintf("%v", m.Workflows[model])
 

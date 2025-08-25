@@ -47,6 +47,8 @@ var db *database.Database
 
 var ctx context.Context
 
+var activeMenu *menus.Menus
+
 func init() {
 	var err error
 
@@ -141,7 +143,13 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 
-	response := menus.MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	var response string
+
+	if false {
+		response = menus.MainMenu(session, phoneNumber, text, preferencesFolder, cacheFolder)
+	} else {
+		response = activeMenu.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+	}
 
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, response)
@@ -261,6 +269,8 @@ func Main() {
 	}
 
 	db = database.NewDatabase(dbname)
+
+	activeMenu = menus.NewMenus()
 
 	http.HandleFunc("/ws", wsHandler)
 
