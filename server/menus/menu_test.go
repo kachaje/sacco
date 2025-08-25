@@ -1,7 +1,6 @@
 package menus_test
 
 import (
-	"fmt"
 	"sacco/server/menus"
 	"sacco/utils"
 	"testing"
@@ -27,10 +26,23 @@ CON Welcome to Kaso SACCO
 	}
 }
 
-func TestSubMenu(t *testing.T) {
+func TestRegistrationSubMenu(t *testing.T) {
 	m := menus.NewMenus()
 
-	result := m.LoadMenu("registration", nil, "", "1", "", "")
+	result := m.LoadMenu("main", nil, "", "1", "", "")
 
-	fmt.Println(result)
+	target := `
+CON Choose Activity
+00. Main Menu
+1. Member Details
+2. Occupation Details
+3. Contact Details
+4. Next of Kin Details
+5. Beneficiaries
+6. View Member Details
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
 }

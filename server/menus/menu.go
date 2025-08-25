@@ -124,7 +124,11 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	slices.Sort(values)
 
 	if slices.Contains(keys, text) {
-		return m.LoadMenu(kv[text], session, phoneNumber, text, preferencesFolder, cacheFolder)
+		target := text
+
+		text = ""
+
+		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
 	} else {
 		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(values, ""))
 	}
