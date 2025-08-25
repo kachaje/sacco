@@ -17,14 +17,20 @@ import (
 var menuFiles embed.FS
 
 type Menus struct {
-	ActiveMenus map[string]any
-	Titles      map[string]string
+	ActiveMenus  map[string]any
+	Titles       map[string]string
+	Workflows    map[string]string
+	Functions    map[string]string
+	FunctionsMap map[string]func()
 }
 
 func NewMenus() *Menus {
 	m := &Menus{
-		ActiveMenus: map[string]any{},
-		Titles:      map[string]string{},
+		ActiveMenus:  map[string]any{},
+		Titles:       map[string]string{},
+		Workflows:    map[string]string{},
+		Functions:    map[string]string{},
+		FunctionsMap: map[string]func(){},
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -74,6 +80,17 @@ func NewMenus() *Menus {
 						value := fmt.Sprintf("%v. %v\n", key, label)
 
 						values = append(values, value)
+
+						if val["workflow"] != nil {
+							if v, ok := val["workflow"].(string); ok {
+								m.Workflows[id] = v
+							}
+						}
+						if val["function"] != nil {
+							if v, ok := val["function"].(string); ok {
+								m.Functions[id] = v
+							}
+						}
 					}
 				}
 			}
