@@ -1,0 +1,14 @@
+title: Employement
+fields:
+  "1":
+    id: employment.1
+    label:
+      en: Employement Details
+  "2":
+    id: employment.2
+    label:
+      en: Employement Verification
+  "00":
+    id: main
+    label:
+      en: Main Menu
