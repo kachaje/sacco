@@ -41,6 +41,21 @@ func NewMenus() *Menus {
 	m.FunctionsMap["doExit"] = func(m map[string]any) string {
 		return doExit(m)
 	}
+	m.FunctionsMap["businessSummary"] = func(m map[string]any) string {
+		return businessSummary(m)
+	}
+	m.FunctionsMap["employmentSummary"] = func(m map[string]any) string {
+		return employmentSummary(m)
+	}
+	m.FunctionsMap["checkBalance"] = func(m map[string]any) string {
+		return checkBalance(m)
+	}
+	m.FunctionsMap["bankingDetails"] = func(m map[string]any) string {
+		return bankingDetails(m)
+	}
+	m.FunctionsMap["viewMemberDetails"] = func(m map[string]any) string {
+		return viewMemberDetails(m)
+	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -343,4 +358,48 @@ func doExit(data map[string]any) string {
 	}
 
 	return "END Thank you for using our service"
+}
+
+func businessSummary(data map[string]any) string {
+	var result string = "Business Summary\n\n" +
+		"00. Main Menu\n"
+
+	_ = data
+
+	return result
+}
+
+func employmentSummary(data map[string]any) string {
+	var result string = "Employment Summary\n\n" +
+		"00. Main Menu\n"
+
+	_ = data
+	return result
+}
+
+func checkBalance(data map[string]any) string {
+	var result string = "Check Balance\n\n" +
+		"00. Main Menu\n"
+
+	_ = data
+
+	return result
+}
+
+func bankingDetails(data map[string]any) string {
+	var result string = "Banking Details\n\n" +
+		"00. Main Menu\n"
+
+	_ = data
+
+	return result
+}
+
+func viewMemberDetails(data map[string]any) string {
+	var result string = "View Details\n\n" +
+		"00. Main Menu\n"
+
+	_ = data
+
+	return result
 }
