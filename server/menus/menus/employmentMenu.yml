@@ -4,10 +4,17 @@ fields:
     id: employment.1
     label:
       en: Employement Details
+    workflow: memberOccupation
   "2":
     id: employment.2
     label:
       en: Employement Verification
+    workflow: memberOccupationVerification
+  "3":
+    id: employment.3
+    label:
+      en: Employement Summary
+    function: employmentSummary
   "00":
     id: main
     label:

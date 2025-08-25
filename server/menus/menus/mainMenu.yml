@@ -12,15 +12,19 @@ fields:
     id: balance
     label:
       en: Check Balance
+    function: checkBalance
   "4":
     id: banking
     label:
       en: Banking Details
+    function: bankingDetails
   "5":
     id: language
     label:
       en: Preferred Language
+    workflow: language
   "6":
     id: exit
     label:
       en: Exit
+    function: doExit

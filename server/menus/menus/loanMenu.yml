@@ -4,22 +4,27 @@ fields:
     id: loan.1
     label:
       en: Loan Application
+    workflow: memberLoan
   "2":
     id: loan.2
     label:
       en: Loan Liability
+    workflow: memberLoanLiability
   "3":
     id: loan.3
     label:
       en: Loan Security
+    workflow: memberLoanLiability
   "4":
     id: loan.4
     label:
       en: Loan Witness
+    workflow: memberLoanWitness
   "5":
     id: loan.5
     label:
       en: Loan Approvals
+    workflow: loanApproval
   "6":
     id: employment
     label:
