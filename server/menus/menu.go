@@ -2,7 +2,6 @@ package menus
 
 import (
 	"embed"
-	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log"
@@ -10,21 +9,22 @@ import (
 	"regexp"
 	"sacco/server/parser"
 	"sacco/utils"
+	"slices"
 	"strings"
 )
 
 //go:embed menus/*
 var menuFiles embed.FS
 
-var menuFilesData map[string]any
-
 type Menus struct {
 	ActiveMenus map[string]any
+	Titles      map[string]string
 }
 
 func NewMenus() *Menus {
 	m := &Menus{
 		ActiveMenus: map[string]any{},
+		Titles:      map[string]string{},
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -50,7 +50,38 @@ func NewMenus() *Menus {
 
 		group := re.ReplaceAllLiteralString(strings.Split(filepath.Base(file), ".")[0], "")
 
-		m.ActiveMenus[group] = data
+		if val, ok := data["title"].(string); ok {
+			m.Titles[group] = val
+		}
+
+		if val, ok := data["fields"].(map[string]any); ok {
+			m.ActiveMenus[group] = map[string]any{}
+
+			keys := []string{}
+			values := []string{}
+			kv := map[string]any{}
+
+			for key, row := range val {
+				keys = append(keys, key)
+
+				if val, ok := row.(map[string]any); ok {
+					if val["id"] != nil && val["label"] != nil && val["label"].(map[string]any)["en"] != nil {
+						id := fmt.Sprintf("%v", val["id"])
+						label := fmt.Sprintf("%v", val["label"].(map[string]any)["en"])
+
+						kv[key] = id
+
+						value := fmt.Sprintf("%v. %v\n", key, label)
+
+						values = append(values, value)
+					}
+				}
+			}
+
+			m.ActiveMenus[group].(map[string]any)["keys"] = keys
+			m.ActiveMenus[group].(map[string]any)["kv"] = kv
+			m.ActiveMenus[group].(map[string]any)["values"] = values
+		}
 
 		return nil
 	})
@@ -64,12 +95,37 @@ func NewMenus() *Menus {
 func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string) string {
 	var response string
 
-	payload, err := json.MarshalIndent(m.ActiveMenus, "", "  ")
-	if err != nil {
-		panic(err)
+	keys := []string{}
+	values := []string{}
+	kv := map[string]any{}
+
+	if val, ok := m.ActiveMenus[menuName].(map[string]any); ok {
+		if val["keys"] != nil {
+			if v, ok := val["keys"].([]string); ok {
+				keys = v
+			}
+		}
+		if val["values"] != nil {
+			if v, ok := val["values"].([]string); ok {
+				values = v
+			}
+		}
+		if val["kv"] != nil {
+			if v, ok := val["kv"].(map[string]any); ok {
+				kv = v
+			}
+		}
 	}
 
-	fmt.Println(string(payload))
+	slices.Sort(values)
+
+	_ = kv
+
+	if slices.Contains(keys, text) {
+
+	} else {
+		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(values, ""))
+	}
 
 	return response
 }
