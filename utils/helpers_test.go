@@ -160,3 +160,19 @@ func TestIdentifierToLabel(t *testing.T) {
 		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, result)
 	}
 }
+
+func TestIndex(t *testing.T) {
+	numbers := []int{10, 20, 30, 40, 50}
+
+	result := utils.Index(numbers, 30)
+
+	if result != 2 {
+		t.Fatalf("Test failed. Expected: 2; Actual: %d", result)
+	}
+
+	result = utils.Index(numbers, 60)
+
+	if result != -1 {
+		t.Fatalf("Test failed. Expected: -1; Actual: %d", result)
+	}
+}

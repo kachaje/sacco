@@ -145,3 +145,12 @@ func IdentifierToLabel(identifier string) string {
 
 	return strings.Join(parts, " ")
 }
+
+func Index[T comparable](s []T, item T) int {
+	for i, v := range s {
+		if v == item {
+			return i
+		}
+	}
+	return -1
+}
