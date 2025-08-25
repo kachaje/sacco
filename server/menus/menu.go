@@ -20,7 +20,7 @@ type Menus struct {
 	ActiveMenus   map[string]any
 	Titles        map[string]string
 	Workflows     map[string]any
-	Functions     map[string]string
+	Functions     map[string]any
 	FunctionsMap  map[string]func()
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
@@ -31,7 +31,7 @@ func NewMenus() *Menus {
 		ActiveMenus:   map[string]any{},
 		Titles:        map[string]string{},
 		Workflows:     map[string]any{},
-		Functions:     map[string]string{},
+		Functions:     map[string]any{},
 		FunctionsMap:  map[string]func(){},
 		TargetKeys:    map[string][]string{},
 		LabelWorkflow: map[string]any{},
@@ -166,16 +166,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 	}
 
-	slices.Sort(values)
-
-	index := utils.Index(values, "00. Main Menu\n")
-
-	if index >= 0 {
-		values = append(values[:index], values[index+1:]...)
-
-		values = append(values, "\n00. Main Menu\n")
-	}
-
 	if slices.Contains(keys, text) {
 		target := text
 		text = "000"
@@ -246,6 +236,18 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 			response = "NOT IMPLEMENTED YET"
 		}
 
+	} else if session != nil && m.Functions[session.CurrentMenu] != nil {
+		fmt.Println("############", session.CurrentMenu, m.Functions[session.CurrentMenu])
+
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+		}
+
+		response = fmt.Sprintf("CON %v\n", m.Functions[session.CurrentMenu]) +
+			"\n" +
+			"00. Main Menu\n"
 	} else {
 		newValues := []string{}
 
@@ -267,6 +269,16 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 			}
 		} else {
 			newValues = values
+		}
+
+		slices.Sort(newValues)
+
+		index := utils.Index(newValues, "00. Main Menu\n")
+
+		if index >= 0 {
+			newValues = append(newValues[:index], newValues[index+1:]...)
+
+			newValues = append(newValues, "\n00. Main Menu\n")
 		}
 
 		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(newValues, ""))
