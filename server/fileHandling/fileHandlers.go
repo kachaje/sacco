@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"sacco/server/parser"
 	"sacco/utils"
+	"slices"
 	"time"
 )
 
@@ -67,6 +68,22 @@ func SaveData(
 		}
 	}
 
+	memberChildren := []string{
+		"memberBusiness",
+		"memberOccupation",
+		"memberNominee",
+		"memberContact",
+		"memberLastYearBusinessHistory",
+		"memberNextYearBusinessProjection",
+		"memberShares",
+		"memberLoan",
+		"memberLoanLiability",
+		"memberLoanSecurity",
+		"memberLoanWitness",
+		"memberOccupationVerification",
+		"memberLoanApproval",
+	}
+
 	switch *model {
 	case "language":
 		val, ok := data.(map[string]any)
@@ -79,12 +96,6 @@ func SaveData(
 			}
 		}
 
-	case "memberBusiness", "memberOccupation", "memberNominee", "memberContact":
-		return HandleCommonModels(
-			data, model, phoneNumber, cacheFolder,
-			saveFunc, sessions, sessionFolder,
-		)
-
 	case "memberBeneficiary":
 		return HandleBeneficiaries(data, phoneNumber, cacheFolder, saveFunc, sessions, refData, sessionFolder)
 
@@ -92,7 +103,14 @@ func SaveData(
 		return HandleMemberDetails(data, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder)
 
 	default:
-		fmt.Println("##########", *phoneNumber, data)
+		if slices.Contains(memberChildren, *model) {
+			return HandleCommonModels(
+				data, model, phoneNumber, cacheFolder,
+				saveFunc, sessions, sessionFolder,
+			)
+		} else {
+			fmt.Println("##########", *phoneNumber, data)
+		}
 	}
 
 	return nil
