@@ -68,22 +68,6 @@ func SaveData(
 		}
 	}
 
-	memberChildren := []string{
-		"memberBusiness",
-		"memberOccupation",
-		"memberNominee",
-		"memberContact",
-		"memberLastYearBusinessHistory",
-		"memberNextYearBusinessProjection",
-		"memberShares",
-		"memberLoan",
-		"memberLoanLiability",
-		"memberLoanSecurity",
-		"memberLoanWitness",
-		"memberOccupationVerification",
-		"memberLoanApproval",
-	}
-
 	switch *model {
 	case "language":
 		val, ok := data.(map[string]any)
