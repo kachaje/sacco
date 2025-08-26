@@ -2,6 +2,7 @@ package menus
 
 import (
 	"embed"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log"
@@ -17,6 +18,9 @@ import (
 //go:embed menus/*
 var menuFiles embed.FS
 
+//go:embed templates/member.template.json
+var menuTemplateContent []byte
+
 type Menus struct {
 	ActiveMenus   map[string]any
 	Titles        map[string]string
@@ -25,6 +29,15 @@ type Menus struct {
 	FunctionsMap  map[string]func(map[string]any) string
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
+}
+
+var menuTemplateData map[string]any
+
+func init() {
+	err := json.Unmarshal(menuTemplateContent, &menuTemplateData)
+	if err != nil {
+		log.Fatalf("server.menus.init: %s", err.Error())
+	}
 }
 
 func NewMenus() *Menus {
@@ -38,23 +51,23 @@ func NewMenus() *Menus {
 		LabelWorkflow: map[string]any{},
 	}
 
-	m.FunctionsMap["doExit"] = func(m map[string]any) string {
-		return doExit(m)
+	m.FunctionsMap["doExit"] = func(data map[string]any) string {
+		return m.doExit(data)
 	}
-	m.FunctionsMap["businessSummary"] = func(m map[string]any) string {
-		return businessSummary(m)
+	m.FunctionsMap["businessSummary"] = func(data map[string]any) string {
+		return m.businessSummary(data)
 	}
-	m.FunctionsMap["employmentSummary"] = func(m map[string]any) string {
-		return employmentSummary(m)
+	m.FunctionsMap["employmentSummary"] = func(data map[string]any) string {
+		return m.employmentSummary(data)
 	}
-	m.FunctionsMap["checkBalance"] = func(m map[string]any) string {
-		return checkBalance(m)
+	m.FunctionsMap["checkBalance"] = func(data map[string]any) string {
+		return m.checkBalance(data)
 	}
-	m.FunctionsMap["bankingDetails"] = func(m map[string]any) string {
-		return bankingDetails(m)
+	m.FunctionsMap["bankingDetails"] = func(data map[string]any) string {
+		return m.bankingDetails(data)
 	}
-	m.FunctionsMap["viewMemberDetails"] = func(m map[string]any) string {
-		return viewMemberDetails(m)
+	m.FunctionsMap["viewMemberDetails"] = func(data map[string]any) string {
+		return m.viewMemberDetails(data)
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -339,7 +352,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	return response
 }
 
-func doExit(data map[string]any) string {
+func (m *Menus) doExit(data map[string]any) string {
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -381,7 +394,7 @@ func doExit(data map[string]any) string {
 	return "END Thank you for using our service"
 }
 
-func businessSummary(data map[string]any) string {
+func (m *Menus) businessSummary(data map[string]any) string {
 	var result string = "Business Summary\n\n" +
 		"00. Main Menu\n"
 
@@ -390,7 +403,7 @@ func businessSummary(data map[string]any) string {
 	return result
 }
 
-func employmentSummary(data map[string]any) string {
+func (m *Menus) employmentSummary(data map[string]any) string {
 	var result string = "Employment Summary\n\n" +
 		"00. Main Menu\n"
 
@@ -398,7 +411,7 @@ func employmentSummary(data map[string]any) string {
 	return result
 }
 
-func checkBalance(data map[string]any) string {
+func (m *Menus) checkBalance(data map[string]any) string {
 	var result string = "Check Balance\n\n" +
 		"00. Main Menu\n"
 
@@ -407,7 +420,7 @@ func checkBalance(data map[string]any) string {
 	return result
 }
 
-func bankingDetails(data map[string]any) string {
+func (m *Menus) bankingDetails(data map[string]any) string {
 	var result string = "Banking Details\n\n" +
 		"00. Main Menu\n"
 
@@ -416,7 +429,7 @@ func bankingDetails(data map[string]any) string {
 	return result
 }
 
-func viewMemberDetails(data map[string]any) string {
+func (m *Menus) viewMemberDetails(data map[string]any) string {
 	var result string = "View Details\n\n" +
 		"00. Main Menu\n"
 
