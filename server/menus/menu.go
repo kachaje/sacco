@@ -202,8 +202,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		if session.ActiveMemberData != nil {
 			if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) && session.WorkflowsMapping != nil &&
 				session.WorkflowsMapping[workflow] != nil {
-				session.WorkflowsMapping[workflow].Data["phoneNumber"] = phoneNumber
-
 				if m.TargetKeys[model] != nil {
 					targetKeys := m.TargetKeys[model]
 
@@ -243,6 +241,10 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 							}
 						}
 					}
+				}
+
+				if session.WorkflowsMapping[workflow].Data["phoneNumber"] == nil {
+					session.WorkflowsMapping[workflow].Data["phoneNumber"] = phoneNumber
 				}
 			}
 		}
