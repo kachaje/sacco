@@ -156,8 +156,8 @@ func NewMenus(devMode *bool) *Menus {
 								m.Workflows[id] = v
 
 								m.LabelWorkflow[group].(map[string]any)[value] = map[string]any{
-									"workflow": v,
-									"id":       id,
+									"model": v,
+									"id":    id,
 								}
 							}
 						}
@@ -241,62 +241,62 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 
 		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
 	} else if session != nil && m.Workflows[session.CurrentMenu] != nil {
-		model := session.CurrentMenu
-		workflow := fmt.Sprintf("%v", m.Workflows[model])
+		workingMenu := session.CurrentMenu
+		model := fmt.Sprintf("%v", m.Workflows[workingMenu])
 
 		if session.ActiveData != nil {
 			if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) && session.WorkflowsMapping != nil &&
-				session.WorkflowsMapping[workflow] != nil {
-				if m.TargetKeys[model] != nil {
-					targetKeys := m.TargetKeys[model]
+				session.WorkflowsMapping[model] != nil {
+				if m.TargetKeys[workingMenu] != nil {
+					targetKeys := m.TargetKeys[workingMenu]
 
 					updateArrayRow := func(row map[string]any, i int) {
 						for key, value := range row {
 							localKey := fmt.Sprintf("%s%d", key, i+1)
 
-							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[localKey] == nil {
+							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[model].Data[localKey] == nil {
 
-								session.WorkflowsMapping[workflow].Data[localKey] = fmt.Sprintf("%v", value)
+								session.WorkflowsMapping[model].Data[localKey] = fmt.Sprintf("%v", value)
 							}
 						}
 					}
 
-					if session.ActiveData[workflow] != nil {
-						if val, ok := session.ActiveData[workflow].(map[string]any); ok {
+					if session.ActiveData[model] != nil {
+						if val, ok := session.ActiveData[model].(map[string]any); ok {
 							for key, value := range val {
-								if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
-									session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
+								if slices.Contains(targetKeys, key) && session.WorkflowsMapping[model].Data[key] == nil {
+									session.WorkflowsMapping[model].Data[key] = fmt.Sprintf("%v", value)
 								}
 							}
-						} else if val, ok := session.ActiveData[workflow].([]any); ok {
+						} else if val, ok := session.ActiveData[model].([]any); ok {
 							for i, row := range val {
 								if rowVal, ok := row.(map[string]any); ok {
 									updateArrayRow(rowVal, i)
 								}
 							}
-						} else if val, ok := session.ActiveData[workflow].([]map[string]any); ok {
+						} else if val, ok := session.ActiveData[model].([]map[string]any); ok {
 							for i, row := range val {
 								updateArrayRow(row, i)
 							}
 						}
 					} else {
 						for key, value := range session.ActiveData {
-							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
-								session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
+							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[model].Data[key] == nil {
+								session.WorkflowsMapping[model].Data[key] = fmt.Sprintf("%v", value)
 							}
 						}
 					}
 				}
 
-				if session.WorkflowsMapping[workflow].Data["phoneNumber"] == nil {
-					session.WorkflowsMapping[workflow].Data["phoneNumber"] = phoneNumber
+				if session.WorkflowsMapping[model].Data["phoneNumber"] == nil {
+					session.WorkflowsMapping[model].Data["phoneNumber"] = phoneNumber
 				}
 			}
 		}
 
 		if session.WorkflowsMapping != nil &&
-			session.WorkflowsMapping[workflow] != nil {
-			response = session.WorkflowsMapping[workflow].NavNext(text)
+			session.WorkflowsMapping[model] != nil {
+			response = session.WorkflowsMapping[model].NavNext(text)
 
 			if text == "00" {
 				session.CurrentMenu = "main"
@@ -355,11 +355,11 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		if m.LabelWorkflow[menuName] != nil && session != nil {
 			for _, value := range values {
 				if m.LabelWorkflow[menuName].(map[string]any)[value] != nil {
-					workflow := fmt.Sprintf("%v", m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["workflow"])
+					model := fmt.Sprintf("%v", m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["model"])
 
 					suffix := ""
 
-					if session.AddedModels[workflow] {
+					if session.AddedModels[model] {
 						suffix = "(*)"
 					}
 
