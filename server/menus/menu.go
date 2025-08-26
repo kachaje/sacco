@@ -13,6 +13,7 @@ import (
 	"sacco/utils"
 	"slices"
 	"strings"
+	"sync"
 )
 
 //go:embed menus/*
@@ -20,6 +21,12 @@ var menuFiles embed.FS
 
 //go:embed templates/member.template.json
 var menuTemplateContent []byte
+
+//go:embed templates/member.template.json
+var templateContent []byte
+
+var Sessions map[string]*parser.Session
+var templateData map[string]any
 
 type Menus struct {
 	ActiveMenus   map[string]any
@@ -29,6 +36,8 @@ type Menus struct {
 	FunctionsMap  map[string]func(map[string]any) string
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
+
+	mu sync.Mutex
 }
 
 var menuTemplateData map[string]any
@@ -38,6 +47,13 @@ func init() {
 	if err != nil {
 		log.Fatalf("server.menus.init: %s", err.Error())
 	}
+
+	err = json.Unmarshal(templateContent, &templateData)
+	if err != nil {
+		log.Fatalf("server.menus.init: %s", err.Error())
+	}
+
+	Sessions = map[string]*parser.Session{}
 }
 
 func NewMenus() *Menus {
@@ -49,6 +65,7 @@ func NewMenus() *Menus {
 		FunctionsMap:  map[string]func(map[string]any) string{},
 		TargetKeys:    map[string][]string{},
 		LabelWorkflow: map[string]any{},
+		mu:            sync.Mutex{},
 	}
 
 	m.FunctionsMap["doExit"] = func(data map[string]any) string {
@@ -365,8 +382,8 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 }
 
 func (m *Menus) doExit(data map[string]any) string {
-	mu.Lock()
-	defer mu.Unlock()
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
 	var phoneNumber string
 	var cacheFolder string
