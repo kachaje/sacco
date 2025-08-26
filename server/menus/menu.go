@@ -38,6 +38,8 @@ type Menus struct {
 	LabelWorkflow map[string]any
 
 	mu sync.Mutex
+
+	DevModeActive bool
 }
 
 var menuTemplateData map[string]any
@@ -56,7 +58,7 @@ func init() {
 	Sessions = map[string]*parser.Session{}
 }
 
-func NewMenus() *Menus {
+func NewMenus(devMode *bool) *Menus {
 	m := &Menus{
 		ActiveMenus:   map[string]any{},
 		Titles:        map[string]string{},
@@ -66,6 +68,10 @@ func NewMenus() *Menus {
 		TargetKeys:    map[string][]string{},
 		LabelWorkflow: map[string]any{},
 		mu:            sync.Mutex{},
+	}
+
+	if devMode != nil {
+		m.DevModeActive = *devMode
 	}
 
 	m.FunctionsMap["doExit"] = func(data map[string]any) string {
@@ -122,12 +128,17 @@ func NewMenus() *Menus {
 			keys := []string{}
 			values := []string{}
 			kv := map[string]any{}
+			devMenus := map[string]any{}
 
 			for key, row := range val {
 				keys = append(keys, key)
 
 				if val, ok := row.(map[string]any); ok {
 					if val["id"] != nil && val["label"] != nil && val["label"].(map[string]any)["en"] != nil {
+						if val["devOnly"] != nil && !m.DevModeActive {
+							continue
+						}
+
 						id := fmt.Sprintf("%v", val["id"])
 						label := fmt.Sprintf("%v", val["label"].(map[string]any)["en"])
 
@@ -170,6 +181,7 @@ func NewMenus() *Menus {
 			m.ActiveMenus[group].(map[string]any)["keys"] = keys
 			m.ActiveMenus[group].(map[string]any)["kv"] = kv
 			m.ActiveMenus[group].(map[string]any)["values"] = values
+			m.ActiveMenus[group].(map[string]any)["devMenus"] = devMenus
 		}
 
 		return nil

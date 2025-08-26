@@ -48,7 +48,7 @@ func TestMemberOccupation(t *testing.T) {
 
 	text := ""
 
-	m := menus.NewMenus()
+	m := menus.NewMenus(nil)
 
 	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
 

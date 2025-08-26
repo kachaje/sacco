@@ -236,9 +236,11 @@ func Main() {
 	var err error
 	var dbname string = ":memory:"
 	var cancel context.CancelFunc
+	var devMode bool
 
 	flag.IntVar(&port, "p", port, "server port")
 	flag.StringVar(&dbname, "n", dbname, "database name")
+	flag.BoolVar(&devMode, "d", devMode, "dev mode")
 
 	flag.Parse()
 
@@ -264,7 +266,7 @@ func Main() {
 
 	db = database.NewDatabase(dbname)
 
-	activeMenu = menus.NewMenus()
+	activeMenu = menus.NewMenus(&devMode)
 
 	http.HandleFunc("/ws", wsHandler)
 

@@ -7,7 +7,7 @@ import (
 )
 
 func TestMainMenu(t *testing.T) {
-	m := menus.NewMenus()
+	m := menus.NewMenus(nil)
 
 	result := m.LoadMenu("main", nil, "", "", "", "")
 
@@ -28,7 +28,7 @@ CON Welcome to Kaso SACCO
 }
 
 func TestRegistrationSubMenu(t *testing.T) {
-	m := menus.NewMenus()
+	m := menus.NewMenus(nil)
 
 	result := m.LoadMenu("main", nil, "", "1", "", "")
 
@@ -50,7 +50,7 @@ CON Choose Activity
 }
 
 func TestBusinessMenu(t *testing.T) {
-	m := menus.NewMenus()
+	m := menus.NewMenus(nil)
 
 	result := m.LoadMenu("business", nil, "", "", "", "")
 
@@ -71,7 +71,7 @@ CON Business
 }
 
 func TestEmployementMenu(t *testing.T) {
-	m := menus.NewMenus()
+	m := menus.NewMenus(nil)
 
 	result := m.LoadMenu("employment", nil, "", "", "", "")
 
@@ -91,7 +91,7 @@ CON Employement
 }
 
 func TestLoanMenu(t *testing.T) {
-	m := menus.NewMenus()
+	m := menus.NewMenus(nil)
 
 	result := m.LoadMenu("loan", nil, "", "", "", "")
 
