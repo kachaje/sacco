@@ -14,12 +14,26 @@ fields:
       - jobTitle
       - netPay
       - periodEmployedInMonths
+      - memberId
       - id
   "2":
     id: employment.2
     label:
       en: Employement Verification
     workflow: memberOccupationVerification
+    targetKeys:
+      - id
+      - memberId
+      - memberLoanId
+      - jobVerified
+      - periodEmployedInMonths
+      - jobTitle
+      - employerName
+      - employerAddress
+      - employerPhone
+      - grossPay
+      - grossVerified
+      - netVerified
   "3":
     id: employment.3
     label:

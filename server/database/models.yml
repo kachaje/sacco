@@ -373,33 +373,18 @@ memberOccupationVerification:
         hidden: true
     - memberLoanId:
         hidden: true
+    - memberOccupationId:
+        hidden: true
     - jobVerified:
         required: true
         options:
           - Yes
           - No
-    - periodEmployedInMonths:
-        required: true
-        numericField: true
-    - jobTitle:
-        required: true
-    - employerName:
-        required: true
-    - employerAddress:
-        required: true
-    - employerPhone:
-        required: true
-    - grossPay:
-        required: true
-        numericField: true
     - grossVerified:
         required: true
         options:
           - Yes
           - No
-    - netPay:
-        required: true
-        numericField: true
     - netVerified:
         required: true
         options:
