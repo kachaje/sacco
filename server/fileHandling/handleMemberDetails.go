@@ -9,25 +9,6 @@ import (
 	"sacco/server/parser"
 )
 
-var (
-	memberChildren = []string{
-		"memberBusiness",
-		"memberOccupation",
-		"memberNominee",
-		"memberContact",
-		"memberLastYearBusinessHistory",
-		"memberNextYearBusinessProjection",
-		"memberShares",
-		"memberLoan",
-		"memberLoanLiability",
-		"memberLoanSecurity",
-		"memberLoanWitness",
-		"memberOccupationVerification",
-		"memberLoanApproval",
-	}
-	memberArrayChildren = []string{"memberBeneficiary"}
-)
-
 func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
 	memberData, ok := data.(map[string]any)
@@ -55,7 +36,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 			someChildAdded := false
 
-			for _, key := range memberChildren {
+			for _, key := range parser.MemberChildren {
 				if sessions[*phoneNumber].AddedModels[key] {
 					someChildAdded = true
 					break
@@ -75,7 +56,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 				id = *mid
 
-				for _, model := range memberArrayChildren {
+				for _, model := range parser.MemberArrayChildren {
 					file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", model))
 
 					_, err = os.Stat(file)
@@ -114,7 +95,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 					}
 				}
 
-				for _, model := range memberChildren {
+				for _, model := range parser.MemberChildren {
 					file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", model))
 
 					_, err = os.Stat(file)

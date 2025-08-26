@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -183,7 +184,13 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 		os.MkdirAll(sessionFolder, 0755)
 	}
 
-	for _, key := range []string{"memberContact", "memberNominee", "memberOccupation", "memberBeneficiary"} {
+	models := []string{}
+
+	models = append(models, MemberArrayChildren...)
+
+	models = append(models, MemberChildren...)
+
+	for _, key := range models {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
 
 		_, err := os.Stat(filename)
@@ -196,7 +203,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 			continue
 		}
 
-		if key == "memberBeneficiary" {
+		if slices.Contains(MemberArrayChildren, key) {
 			data := []map[string]any{}
 			err = json.Unmarshal(content, &data)
 			if err != nil {
