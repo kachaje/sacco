@@ -1,40 +1,40 @@
 enterBusinessName:
-    inputIdentifier: businessName
-    nextScreen: enterTradingArea
-    order: 3
-    text:
-        en: Business Name
-    type: inputScreen
+  inputIdentifier: businessName
+  nextScreen: enterTradingArea
+  order: 3
+  text:
+    en: Business Name
+  type: inputScreen
 enterBusinessNature:
-    inputIdentifier: businessNature
-    nextScreen: enterBusinessName
-    order: 2
-    text:
-        en: Business Nature
-    type: inputScreen
+  inputIdentifier: businessNature
+  nextScreen: enterBusinessName
+  order: 2
+  text:
+    en: Business Nature
+  type: inputScreen
 enterId:
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberId
+  type: hiddenField
 enterTradingArea:
-    inputIdentifier: tradingArea
-    nextScreen: formSummary
-    order: 4
-    text:
-        en: Trading Area
-    type: inputScreen
+  inputIdentifier: tradingArea
+  nextScreen: formSummary
+  order: 4
+  text:
+    en: Trading Area
+  type: inputScreen
 enterYearsInBusiness:
-    inputIdentifier: yearsInBusiness
-    nextScreen: enterBusinessNature
-    order: 1
-    text:
-        en: Years In Business
-    type: inputScreen
+  inputIdentifier: yearsInBusiness
+  nextScreen: enterBusinessNature
+  order: 1
+  text:
+    en: Years In Business
+  type: inputScreen
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterYearsInBusiness
 model: memberBusiness
