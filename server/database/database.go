@@ -193,7 +193,7 @@ func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFiel
 	}
 
 	if arrayFields == nil {
-		arrayFields = []string{"memberBeneficiary"}
+		arrayFields = MemberArrayChildren
 	}
 
 	if skipFields == nil {
@@ -220,7 +220,13 @@ func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFiel
 
 		memberId := member["id"]
 
-		for _, model := range []string{"memberContact", "memberNominee", "memberOccupation", "memberBeneficiary"} {
+		models := []string{}
+
+		models = append(models, MemberArrayChildren...)
+
+		models = append(models, MemberChildren...)
+
+		for _, model := range models {
 			if skipFields != nil && slices.Contains(skipFields, model) {
 				continue
 			}
