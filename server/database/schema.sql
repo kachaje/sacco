@@ -394,3 +394,59 @@ WHERE
   id = OLD.id;
 
 END;
+
+CREATE TABLE
+  IF NOT EXISTS user (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL,
+    name TEXT NOT NULL,
+    roleId INTEGER NOT NULL,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS userUpdated AFTER
+UPDATE ON user FOR EACH ROW BEGIN
+UPDATE user
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS role (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS userUpdated AFTER
+UPDATE ON user FOR EACH ROW BEGIN
+UPDATE user
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+INSERT INTO
+  role (name)
+VALUES
+  ("Member"),
+  ("Admin"),
+  ("Cashier"),
+  ("Accountant"),
+  ("Loans Officer"),
+  ("Manager");
+
+INSERT INTO
+  user (username, password, name, roleId)
+VALUES
+  ("admin", "NDMyMQo=", "Admin", 2);
