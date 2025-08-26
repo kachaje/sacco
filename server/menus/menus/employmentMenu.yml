@@ -25,13 +25,8 @@ fields:
       - id
       - memberId
       - memberLoanId
+      - memberOccupationId
       - jobVerified
-      - periodEmployedInMonths
-      - jobTitle
-      - employerName
-      - employerAddress
-      - employerPhone
-      - grossPay
       - grossVerified
       - netVerified
   "3":
