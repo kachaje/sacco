@@ -58,40 +58,24 @@ func NewSession(
 }
 
 func (s *Session) UpdateSessionFlags() error {
-	beneficiariesData := s.ReadFromMap("memberBeneficiary", 0)
-	if beneficiariesData != nil {
-		val, ok := beneficiariesData.([]any)
-		if ok && len(val) > 0 {
-			s.AddedModels["memberBeneficiary"] = true
-		} else {
-			val, ok := beneficiariesData.([]map[string]any)
+	for _, model := range MemberChildren {
+		data := s.ReadFromMap(model, 0)
+		if data != nil {
+			val, ok := data.(map[string]any)
 			if ok && len(val) > 0 {
-				s.AddedModels["memberBeneficiary"] = true
+				s.AddedModels[model] = true
 			}
 		}
 	}
 
-	contactDetailsData := s.ReadFromMap("memberContact", 0)
-	if contactDetailsData != nil {
-		val, ok := contactDetailsData.(map[string]any)
-		if ok && len(val) > 0 {
-			s.AddedModels["memberContact"] = true
-		}
-	}
-
-	nomineeDetailsData := s.ReadFromMap("memberNominee", 0)
-	if nomineeDetailsData != nil {
-		val, ok := nomineeDetailsData.(map[string]any)
-		if ok && len(val) > 0 {
-			s.AddedModels["memberNominee"] = true
-		}
-	}
-
-	occupationDetailsData := s.ReadFromMap("memberOccupation", 0)
-	if occupationDetailsData != nil {
-		val, ok := occupationDetailsData.(map[string]any)
-		if ok && len(val) > 0 {
-			s.AddedModels["memberOccupation"] = true
+	for _, model := range MemberArrayChildren {
+		data := s.ReadFromMap(model, 0)
+		if data != nil {
+			if val, ok := data.([]any); ok && len(val) > 0 {
+				s.AddedModels[model] = true
+			} else if val, ok := data.([]map[string]any); ok && len(val) > 0 {
+				s.AddedModels[model] = true
+			}
 		}
 	}
 
