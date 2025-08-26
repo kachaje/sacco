@@ -233,7 +233,7 @@ func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFiel
 
 			results, err := d.GenericModels[model].FilterBy(fmt.Sprintf(`WHERE memberId = %v AND active = 1`, memberId))
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf("model %s: %s", model, err.Error())
 			}
 
 			if len(results) > 0 {
