@@ -1,6 +1,7 @@
 package menutests
 
 import (
+	"fmt"
 	"reflect"
 	"sacco/server/menus"
 	"sacco/server/parser"
@@ -37,8 +38,38 @@ func TestMemberBeneficiaries(t *testing.T) {
 			data = val
 		}
 
+		localData := []map[string]any{}
+
+		for i := range 4 {
+			idLabel := fmt.Sprintf("id%d", i+1)
+			nameLabel := fmt.Sprintf("name%d", i+1)
+			contactLabel := fmt.Sprintf("contact%d", i+1)
+			percentageLabel := fmt.Sprintf("percentage%d", i+1)
+
+			if data[nameLabel] == nil {
+				break
+			}
+
+			row := map[string]any{}
+
+			if data[idLabel] != nil {
+				row["id"] = data[idLabel]
+			}
+			if data[nameLabel] != nil {
+				row["name"] = data[nameLabel]
+			}
+			if data[contactLabel] != nil {
+				row["contact"] = data[contactLabel]
+			}
+			if data[percentageLabel] != nil {
+				row["percentage"] = data[percentageLabel]
+			}
+
+			localData = append(localData, row)
+		}
+
 		session.UpdateActiveMemberData(map[string]any{
-			"memberBeneficiary": data,
+			"memberBeneficiary": localData,
 		}, 0)
 
 		session.AddedModels["memberBeneficiary"] = true

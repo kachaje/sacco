@@ -64,22 +64,10 @@ fields:
       en: Beneficiaries
     workflow: memberBeneficiary
     targetKeys:
-      - id1
-      - name1
-      - percentage1
-      - contact1
-      - id2
-      - name2
-      - percentage2
-      - contact2
-      - id3
-      - name3
-      - percentage3
-      - contact3
-      - id4
-      - name4
-      - percentage4
-      - contact4
+      - id
+      - name
+      - percentage
+      - contact
   "6":
     id: registration.6
     label:

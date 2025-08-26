@@ -207,12 +207,33 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				if m.TargetKeys[model] != nil {
 					targetKeys := m.TargetKeys[model]
 
+					updateArrayRow := func(row map[string]any, i int) {
+						for key, value := range row {
+							localKey := fmt.Sprintf("%s%d", key, i+1)
+
+							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[localKey] == nil {
+
+								session.WorkflowsMapping[workflow].Data[localKey] = fmt.Sprintf("%v", value)
+							}
+						}
+					}
+
 					if session.ActiveMemberData[workflow] != nil {
 						if val, ok := session.ActiveMemberData[workflow].(map[string]any); ok {
 							for key, value := range val {
 								if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
 									session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
 								}
+							}
+						} else if val, ok := session.ActiveMemberData[workflow].([]any); ok {
+							for i, row := range val {
+								if rowVal, ok := row.(map[string]any); ok {
+									updateArrayRow(rowVal, i)
+								}
+							}
+						} else if val, ok := session.ActiveMemberData[workflow].([]map[string]any); ok {
+							for i, row := range val {
+								updateArrayRow(row, i)
 							}
 						}
 					} else {
