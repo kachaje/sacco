@@ -444,7 +444,8 @@ func (m *Menus) bankingDetails(data map[string]any) string {
 func (m *Menus) viewMemberDetails(data map[string]any) string {
 	var session *parser.Session
 	var preferredLanguage *string
-	var response, phoneNumber, text, preferencesFolder, cacheFolder string
+	var response string
+	var phoneNumber, text, preferencesFolder, cacheFolder string
 
 	if data["session"] != nil {
 		if val, ok := data["session"].(*parser.Session); ok {
@@ -478,11 +479,7 @@ func (m *Menus) viewMemberDetails(data map[string]any) string {
 	}
 
 	if session != nil {
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else if strings.TrimSpace(text) == "99" {
+		if strings.TrimSpace(text) == "99" {
 			parentMenu := "main"
 
 			if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
