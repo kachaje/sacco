@@ -20,6 +20,10 @@ fields:
     label:
       en: Business Summary
     function: businessSummary
+  "99":
+    id: loan
+    label:
+      en: Cancel
   "00":
     id: main
     label:

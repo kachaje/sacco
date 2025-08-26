@@ -60,6 +60,7 @@ CON Business
 3. Next Year Projection
 4. Business Summary
 
+99. Cancel
 00. Main Menu
 	`
 
@@ -79,6 +80,7 @@ CON Employement
 2. Employement Verification
 3. Employement Summary
 
+99. Cancel
 00. Main Menu
 `
 

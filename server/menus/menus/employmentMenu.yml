@@ -15,6 +15,10 @@ fields:
     label:
       en: Employement Summary
     function: employmentSummary
+  "99":
+    id: loan
+    label:
+      en: Cancel
   "00":
     id: main
     label:
