@@ -1,110 +1,62 @@
-enterEmployerAddress:
-  inputIdentifier: employerAddress
-  nextScreen: enterEmployerPhone
-  order: 5
-  text:
-    en: Employer Address
-  type: inputScreen
-enterEmployerName:
-  inputIdentifier: employerName
-  nextScreen: enterEmployerAddress
-  order: 4
-  text:
-    en: Employer Name
-  type: inputScreen
-enterEmployerPhone:
-  inputIdentifier: employerPhone
-  nextScreen: enterGrossPay
-  order: 6
-  text:
-    en: Employer Phone
-  type: inputScreen
-enterGrossPay:
-  inputIdentifier: grossPay
-  nextScreen: enterGrossVerified
-  order: 7
-  text:
-    en: Gross Pay
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
 enterGrossVerified:
-  inputIdentifier: grossVerified
-  nextScreen: enterNetPay
-  options:
-    - label:
-        en: "Yes"
-      position: 1
-    - label:
-        en: "No"
-      position: 2
-  order: 8
-  text:
-    en: Gross Verified
-  type: inputScreen
+    inputIdentifier: grossVerified
+    nextScreen: enterNetVerified
+    options:
+        - label:
+            en: "Yes"
+          position: 1
+        - label:
+            en: "No"
+          position: 2
+    order: 2
+    text:
+        en: Gross Verified
+    type: inputScreen
 enterId:
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
-enterJobTitle:
-  inputIdentifier: jobTitle
-  nextScreen: enterEmployerName
-  order: 3
-  text:
-    en: Job Title
-  type: inputScreen
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
 enterJobVerified:
-  inputIdentifier: jobVerified
-  nextScreen: enterPeriodEmployedInMonths
-  options:
-    - label:
-        en: "Yes"
-      position: 1
-    - label:
-        en: "No"
-      position: 2
-  order: 1
-  text:
-    en: Job Verified
-  type: inputScreen
+    inputIdentifier: jobVerified
+    nextScreen: enterGrossVerified
+    options:
+        - label:
+            en: "Yes"
+          position: 1
+        - label:
+            en: "No"
+          position: 2
+    order: 1
+    text:
+        en: Job Verified
+    type: inputScreen
 enterMemberId:
-  hidden: true
-  inputIdentifier: memberId
-  type: hiddenField
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
 enterMemberLoanId:
-  hidden: true
-  inputIdentifier: memberLoanId
-  type: hiddenField
-enterNetPay:
-  inputIdentifier: netPay
-  nextScreen: enterNetVerified
-  order: 9
-  text:
-    en: Net Pay
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    hidden: true
+    inputIdentifier: memberLoanId
+    type: hiddenField
+enterMemberOccupationId:
+    hidden: true
+    inputIdentifier: memberOccupationId
+    type: hiddenField
 enterNetVerified:
-  inputIdentifier: netVerified
-  nextScreen: formSummary
-  options:
-    - label:
-        en: "Yes"
-      position: 1
-    - label:
-        en: "No"
-      position: 2
-  order: 10
-  text:
-    en: Net Verified
-  type: inputScreen
-enterPeriodEmployedInMonths:
-  inputIdentifier: periodEmployedInMonths
-  nextScreen: enterJobTitle
-  order: 2
-  text:
-    en: Period Employed In Months
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    inputIdentifier: netVerified
+    nextScreen: formSummary
+    options:
+        - label:
+            en: "Yes"
+          position: 1
+        - label:
+            en: "No"
+          position: 2
+    order: 3
+    text:
+        en: Net Verified
+    type: inputScreen
 formSummary:
-  type: quitScreen
+    type: quitScreen
 initialScreen: enterJobVerified
 model: memberOccupationVerification

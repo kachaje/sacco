@@ -1,31 +1,31 @@
 enterDescription:
-  inputIdentifier: description
-  nextScreen: enterValue
-  order: 1
-  text:
-    en: Description
-  type: inputScreen
+    inputIdentifier: description
+    nextScreen: enterValue
+    order: 1
+    text:
+        en: Description
+    type: inputScreen
 enterId:
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
 enterMemberId:
-  hidden: true
-  inputIdentifier: memberId
-  type: hiddenField
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
 enterMemberLoanId:
-  hidden: true
-  inputIdentifier: memberLoanId
-  type: hiddenField
+    hidden: true
+    inputIdentifier: memberLoanId
+    type: hiddenField
 enterValue:
-  inputIdentifier: value
-  nextScreen: formSummary
-  order: 2
-  text:
-    en: Value
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    inputIdentifier: value
+    nextScreen: formSummary
+    order: 2
+    text:
+        en: Value
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 formSummary:
-  type: quitScreen
+    type: quitScreen
 initialScreen: enterDescription
 model: memberLoanLiability
