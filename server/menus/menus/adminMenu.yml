@@ -4,16 +4,13 @@ fields:
     id: addUser
     label:
       en: Add User
-    targetKeys:
-      - username
-      - password
-      - role
     workflow: addUser
   "2":
     id: editUser
     label:
       en: Edit User
     targetKeys:
+      - name
       - id
       - username
       - password

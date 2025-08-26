@@ -395,7 +395,7 @@ CREATE TABLE
     username TEXT NOT NULL,
     password TEXT NOT NULL,
     name TEXT NOT NULL,
-    roleId INTEGER NOT NULL,
+    role TEXT NOT NULL,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP

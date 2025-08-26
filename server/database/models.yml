@@ -425,3 +425,23 @@ memberLoanApproval:
         hidden: true
     - denialOrPartialReason:
         adminOnly: true
+
+user:
+  fields:
+    - id:
+        hidden: true
+    - name:
+        required: true
+    - username:
+        required: true
+    - password:
+        required: true
+    - role:
+        required: true
+        options:
+          - Member
+          - Admin
+          - Cashier
+          - Accountant
+          - Loans Officer
+          - Manager
