@@ -199,9 +199,21 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		model := session.CurrentMenu
 		workflow := fmt.Sprintf("%v", m.Workflows[model])
 
-		if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) && session.WorkflowsMapping != nil &&
-			session.WorkflowsMapping[workflow] != nil {
-			session.WorkflowsMapping[workflow].Data["phoneNumber"] = phoneNumber
+		if session.ActiveMemberData != nil {
+			if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) && session.WorkflowsMapping != nil &&
+				session.WorkflowsMapping[workflow] != nil {
+				session.WorkflowsMapping[workflow].Data["phoneNumber"] = phoneNumber
+
+				if m.TargetKeys[model] != nil {
+					targetKeys := m.TargetKeys[model]
+
+					for key, value := range session.ActiveMemberData {
+						if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
+							session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
+						}
+					}
+				}
+			}
 		}
 
 		if session.WorkflowsMapping != nil &&
