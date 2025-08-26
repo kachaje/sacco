@@ -1,7 +1,7 @@
 package menutests
 
 import (
-	"fmt"
+	"reflect"
 	"sacco/server/menus"
 	"sacco/server/parser"
 	"sacco/utils"
@@ -11,7 +11,20 @@ import (
 func TestMemberBeneficiaries(t *testing.T) {
 	var data map[string]any
 
-	refData := map[string]any{}
+	refData := map[string]interface{}{
+		"contact1":    "P.O. Box 1",
+		"contact2":    "P.O. Box 2",
+		"contact3":    "P.O. Box 3",
+		"contact4":    "P.O. Box 4",
+		"name1":       "John Phiri",
+		"name2":       "Peter Banda",
+		"name3":       "Mirriam Jere",
+		"name4":       "Bornface Harawa",
+		"percentage1": "10",
+		"percentage2": "8",
+		"percentage3": "6",
+		"percentage4": "4",
+	}
 
 	phoneNumber := "0999888776"
 
@@ -24,9 +37,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 			data = val
 		}
 
-		session.UpdateActiveMemberData(data, 0)
-
-		session.UpdateSessionFlags()
+		session.AddedModels["memberBeneficiary"] = true
 
 		return nil
 	}
@@ -273,7 +284,56 @@ Contact:
 
 	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
 
-	fmt.Println(result)
+	target = `
+Summary
+- Name: John Phiri
+- Percentage: 10
+- Contact: P.O. Box 1
+- Name: Peter Banda
+- Percentage: 8
+- Contact: P.O. Box 2
+- Name: Mirriam Jere
+- Percentage: 6
+- Contact: P.O. Box 3
+- Name: Bornface Harawa
+- Percentage: 4
+- Contact: P.O. Box 4
 
-	_, _ = data, refData
+0. Submit
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "0"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+CON Choose Activity
+1. Member Details 
+2. Occupation Details 
+3. Contact Details 
+4. Next of Kin Details 
+5. Beneficiaries (*)
+6. View Member Details
+
+00. Main Menu
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	if data == nil {
+		t.Fatal("Test failed")
+	}
+
+	if !reflect.DeepEqual(data, refData) {
+		t.Fatal("Test failed")
+	}
 }
