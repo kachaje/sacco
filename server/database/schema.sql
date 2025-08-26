@@ -441,6 +441,6 @@ VALUES
   ("Manager");
 
 INSERT INTO
-  user (username, password, name, roleId)
+  user (username, password, name, role)
 VALUES
-  ("admin", "NDMyMQo=", "Admin", 2);
+  ("admin", "NDMyMQo=", "Admin", "Admin");

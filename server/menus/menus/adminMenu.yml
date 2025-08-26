@@ -4,7 +4,7 @@ fields:
     id: addUser
     label:
       en: Add User
-    workflow: addUser
+    workflow: user
   "2":
     id: editUser
     label:
@@ -13,9 +13,8 @@ fields:
       - name
       - id
       - username
-      - password
       - role
-    workflow: editUser
+    workflow: user
   "3":
     id: blockUser
     label:
@@ -23,7 +22,7 @@ fields:
     targetKeys:
       - id
       - username
-    workflow: blockUser
+    function: blockUser
   "00":
     id: main
     label:
