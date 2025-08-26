@@ -305,8 +305,12 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		} else {
 			if fnName, ok := m.Functions[session.CurrentMenu].(string); ok && m.FunctionsMap[fnName] != nil {
 				response = m.FunctionsMap[fnName](map[string]any{
-					"phoneNumber": phoneNumber,
-					"cacheFolder": cacheFolder,
+					"phoneNumber":       phoneNumber,
+					"cacheFolder":       cacheFolder,
+					"session":           session,
+					"preferredLanguage": preferredLanguage,
+					"preferencesFolder": preferencesFolder,
+					"text":              text,
 				})
 			} else {
 				response = fmt.Sprintf("Function %s not found\n\n", m.Functions[session.CurrentMenu]) +
@@ -430,10 +434,83 @@ func (m *Menus) bankingDetails(data map[string]any) string {
 }
 
 func (m *Menus) viewMemberDetails(data map[string]any) string {
-	var result string = "View Details\n\n" +
-		"00. Main Menu\n"
+	var session *parser.Session
+	var preferredLanguage *string
+	var response, phoneNumber, text, preferencesFolder, cacheFolder string
 
-	_ = data
+	if data["session"] != nil {
+		if val, ok := data["session"].(*parser.Session); ok {
+			session = val
+		}
+	}
+	if data["preferredLanguage"] != nil {
+		if val, ok := data["preferredLanguage"].(*string); ok {
+			preferredLanguage = val
+		}
+	}
+	if data["phoneNumber"] != nil {
+		if val, ok := data["phoneNumber"].(string); ok {
+			phoneNumber = val
+		}
+	}
+	if data["text"] != nil {
+		if val, ok := data["text"].(string); ok {
+			text = val
+		}
+	}
+	if data["preferencesFolder"] != nil {
+		if val, ok := data["preferencesFolder"].(string); ok {
+			preferencesFolder = val
+		}
+	}
+	if data["cacheFolder"] != nil {
+		if val, ok := data["cacheFolder"].(string); ok {
+			cacheFolder = val
+		}
+	}
 
-	return result
+	if session != nil {
+		if text == "00" {
+			session.CurrentMenu = "main"
+			text = "0"
+			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+		} else if strings.TrimSpace(text) == "99" {
+			parentMenu := "main"
+
+			if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
+				parentMenu = regexp.MustCompile(`\.\d+$`).ReplaceAllLiteralString(session.CurrentMenu, "")
+			}
+
+			session.CurrentMenu = parentMenu
+			text = ""
+			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+		} else {
+			data = LoadTemplateData(session.ActiveMemberData, templateData)
+
+			table := TabulateData(data)
+
+			tableString := strings.Join(table, "\n")
+
+			if preferredLanguage != nil && *preferredLanguage == "ny" {
+				response = "CON Zambiri za Membala\n" +
+					"\n" +
+					fmt.Sprintf("%s\n", tableString) +
+					"\n" +
+					"99. Basi\n" +
+					"00. Tiyambirenso"
+			} else {
+				response = "CON Member Details\n" +
+					"\n" +
+					fmt.Sprintf("%s\n", tableString) +
+					"\n" +
+					"99. Cancel\n" +
+					"00. Main Menu"
+			}
+		}
+	} else {
+		response = "Member Details\n\n" +
+			"00. Main Menu\n"
+	}
+
+	return response
 }
