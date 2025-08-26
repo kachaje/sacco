@@ -63,7 +63,7 @@ func HandleCommonModels(data any, model, phoneNumber, cacheFolder *string,
 				transactionDone = true
 			}
 
-			sessions[*phoneNumber].ActiveMemberData[*model] = val
+			sessions[*phoneNumber].ActiveData[*model] = val
 
 			sessions[*phoneNumber].AddedModels[*model] = true
 

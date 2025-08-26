@@ -92,6 +92,9 @@ func NewMenus(devMode *bool) *Menus {
 	m.FunctionsMap["viewMemberDetails"] = func(data map[string]any) string {
 		return m.viewMemberDetails(data)
 	}
+	m.FunctionsMap["devConsole"] = func(data map[string]any) string {
+		return m.devConsole(data)
+	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -241,7 +244,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		model := session.CurrentMenu
 		workflow := fmt.Sprintf("%v", m.Workflows[model])
 
-		if session.ActiveMemberData != nil {
+		if session.ActiveData != nil {
 			if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) && session.WorkflowsMapping != nil &&
 				session.WorkflowsMapping[workflow] != nil {
 				if m.TargetKeys[model] != nil {
@@ -258,26 +261,26 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 						}
 					}
 
-					if session.ActiveMemberData[workflow] != nil {
-						if val, ok := session.ActiveMemberData[workflow].(map[string]any); ok {
+					if session.ActiveData[workflow] != nil {
+						if val, ok := session.ActiveData[workflow].(map[string]any); ok {
 							for key, value := range val {
 								if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
 									session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
 								}
 							}
-						} else if val, ok := session.ActiveMemberData[workflow].([]any); ok {
+						} else if val, ok := session.ActiveData[workflow].([]any); ok {
 							for i, row := range val {
 								if rowVal, ok := row.(map[string]any); ok {
 									updateArrayRow(rowVal, i)
 								}
 							}
-						} else if val, ok := session.ActiveMemberData[workflow].([]map[string]any); ok {
+						} else if val, ok := session.ActiveData[workflow].([]map[string]any); ok {
 							for i, row := range val {
 								updateArrayRow(row, i)
 							}
 						}
 					} else {
-						for key, value := range session.ActiveMemberData {
+						for key, value := range session.ActiveData {
 							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
 								session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
 							}
@@ -564,7 +567,7 @@ func (m *Menus) viewMemberDetails(data map[string]any) string {
 			text = ""
 			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
-			data = LoadTemplateData(session.ActiveMemberData, templateData)
+			data = LoadTemplateData(session.ActiveData, templateData)
 
 			table := TabulateData(data)
 
@@ -590,6 +593,31 @@ func (m *Menus) viewMemberDetails(data map[string]any) string {
 		response = "Member Details\n\n" +
 			"00. Main Menu\n"
 	}
+
+	return response
+}
+
+func (m *Menus) devConsole(data map[string]any) string {
+	var text string
+	var response string
+
+	if data["text"] != nil {
+		if val, ok := data["text"].(string); ok {
+			text = val
+		}
+	}
+
+	switch text {
+	case "workflows":
+	case "addedModels":
+	case "activeData":
+	case "data":
+	case "memberId":
+	}
+
+	response = "Dev Console\n\n" +
+		fmt.Sprintf("%s\n\n", text) +
+		"00. Main Menu\n"
 
 	return response
 }

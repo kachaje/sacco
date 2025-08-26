@@ -299,9 +299,9 @@ func TestRerunFailedSaves(t *testing.T) {
 	var id int64 = 1
 
 	session := &parser.Session{
-		ActiveMemberData: map[string]any{},
-		MemberId:         &id,
-		AddedModels:      map[string]bool{},
+		ActiveData:  map[string]any{},
+		MemberId:    &id,
+		AddedModels: map[string]bool{},
 	}
 
 	sessions := make(map[string]*parser.Session)
@@ -349,9 +349,9 @@ func TestHandleBeneficiaries(t *testing.T) {
 
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
-			MemberId:         &id,
-			ActiveMemberData: map[string]any{},
-			AddedModels:      map[string]bool{},
+			MemberId:    &id,
+			ActiveData:  map[string]any{},
+			AddedModels: map[string]bool{},
 		},
 	}
 
@@ -445,8 +445,8 @@ func TestHandleMemberDetails(t *testing.T) {
 
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
-			MemberId:         &id,
-			ActiveMemberData: map[string]any{},
+			MemberId:   &id,
+			ActiveData: map[string]any{},
 			AddedModels: map[string]bool{
 				"memberContact":     true,
 				"memberNominee":     true,

@@ -23,7 +23,7 @@ type Session struct {
 
 	AddedModels map[string]bool
 
-	ActiveMemberData map[string]any
+	ActiveData map[string]any
 
 	QueryFn    func(string, []string, []string) (map[string]any, error)
 	SkipFields []string
@@ -39,7 +39,7 @@ func NewSession(
 		QueryFn:          queryFn,
 		Mu:               &sync.Mutex{},
 		AddedModels:      map[string]bool{},
-		ActiveMemberData: map[string]any{},
+		ActiveData:       map[string]any{},
 		Data:             map[string]string{},
 		SkipFields:       []string{"active"},
 		CurrentMenu:      "main",
@@ -129,7 +129,7 @@ func (s *Session) UpdateActiveMemberData(data map[string]any, retries int) {
 	}
 	defer s.Mu.Unlock()
 
-	s.ActiveMemberData = data
+	s.ActiveData = data
 }
 
 func (s *Session) WriteToMap(key string, value any, retries int) {
@@ -149,11 +149,11 @@ func (s *Session) WriteToMap(key string, value any, retries int) {
 	}
 	defer s.Mu.Unlock()
 
-	if s.ActiveMemberData == nil {
-		s.ActiveMemberData = map[string]any{}
+	if s.ActiveData == nil {
+		s.ActiveData = map[string]any{}
 	}
 
-	s.ActiveMemberData[key] = value
+	s.ActiveData[key] = value
 }
 
 func (s *Session) ReadFromMap(key string, retries int) any {
@@ -172,7 +172,7 @@ func (s *Session) ReadFromMap(key string, retries int) any {
 	}
 	defer s.Mu.Unlock()
 
-	return s.ActiveMemberData[key]
+	return s.ActiveData[key]
 }
 
 func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
@@ -224,12 +224,12 @@ func (s *Session) RefreshSession() (map[string]any, error) {
 	if s.PhoneNumber != "" && s.QueryFn != nil {
 		data, err := s.QueryFn(s.PhoneNumber, nil, s.SkipFields)
 		if err != nil {
-			return s.ActiveMemberData, err
+			return s.ActiveData, err
 		}
 
 		s.UpdateActiveMemberData(data, 0)
 
 		return data, nil
 	}
-	return s.ActiveMemberData, nil
+	return s.ActiveData, nil
 }
