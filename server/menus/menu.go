@@ -598,25 +598,97 @@ func (m *Menus) viewMemberDetails(data map[string]any) string {
 }
 
 func (m *Menus) devConsole(data map[string]any) string {
+	var session *parser.Session
 	var text string
-	var response string
+	var response, content string
 
+	if data["session"] != nil {
+		if val, ok := data["session"].(*parser.Session); ok {
+			session = val
+		}
+	}
 	if data["text"] != nil {
 		if val, ok := data["text"].(string); ok {
 			text = val
 		}
 	}
 
-	switch text {
-	case "workflows":
-	case "addedModels":
-	case "activeData":
-	case "data":
-	case "memberId":
+	if session != nil {
+		switch text {
+		case "1":
+			if session.WorkflowsMapping != nil {
+				data := map[string]any{}
+
+				for key, wflow := range session.WorkflowsMapping {
+					row := map[string]any{
+						"data":           wflow.Data,
+						"optionalFields": wflow.OptionalFields,
+						"screenOrder":    wflow.ScreenOrder,
+						"history":        wflow.History,
+					}
+
+					data[key] = row
+				}
+
+				payload, err := json.MarshalIndent(data, "", "  ")
+				if err != nil {
+					content = err.Error()
+				} else {
+					content = string(payload)
+				}
+			}
+		case "2":
+			if session.AddedModels != nil {
+				payload, err := json.MarshalIndent(session.AddedModels, "", "  ")
+				if err != nil {
+					content = err.Error()
+				} else {
+					content = string(payload)
+				}
+			}
+		case "3":
+			if session.ActiveData != nil {
+				payload, err := json.MarshalIndent(session.ActiveData, "", "  ")
+				if err != nil {
+					content = err.Error()
+				} else {
+					content = string(payload)
+				}
+			}
+		case "4":
+			if session.Data != nil {
+				payload, err := json.MarshalIndent(session.Data, "", "  ")
+				if err != nil {
+					content = err.Error()
+				} else {
+					content = string(payload)
+				}
+			}
+		case "5":
+			if session.MemberId != nil {
+				content = fmt.Sprint(*session.MemberId)
+			}
+		case "6":
+			content = session.SessionId
+		case "7":
+			content = session.PhoneNumber
+		default:
+			content = "Available Dumps:\n" +
+				"1. WorkflowsMapping\n" +
+				"2. AddedModels\n" +
+				"3. ActiveData\n" +
+				"4. Data\n" +
+				"5. MemberId\n" +
+				"6. SessionId\n" +
+				"7. PhoneNumber"
+		}
+	} else {
+		content = "No active session provided"
 	}
 
 	response = "Dev Console\n\n" +
-		fmt.Sprintf("%s\n\n", text) +
+		fmt.Sprintf("%s\n", content) +
+		"\n99. Cancel\n" +
 		"00. Main Menu\n"
 
 	return response
