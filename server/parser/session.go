@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sacco/server/database"
 	"slices"
 	"strconv"
 	"sync"
@@ -58,7 +59,7 @@ func NewSession(
 }
 
 func (s *Session) UpdateSessionFlags() error {
-	for _, model := range MemberChildren {
+	for _, model := range database.MemberChildren {
 		data := s.ReadFromMap(model, 0)
 		if data != nil {
 			val, ok := data.(map[string]any)
@@ -68,7 +69,7 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	for _, model := range MemberArrayChildren {
+	for _, model := range database.MemberArrayChildren {
 		data := s.ReadFromMap(model, 0)
 		if data != nil {
 			if val, ok := data.([]any); ok && len(val) > 0 {
@@ -170,9 +171,9 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 
 	models := []string{}
 
-	models = append(models, MemberArrayChildren...)
+	models = append(models, database.MemberArrayChildren...)
 
-	models = append(models, MemberChildren...)
+	models = append(models, database.MemberChildren...)
 
 	for _, key := range models {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
@@ -187,7 +188,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 			continue
 		}
 
-		if slices.Contains(MemberArrayChildren, key) {
+		if slices.Contains(database.MemberArrayChildren, key) {
 			data := []map[string]any{}
 			err = json.Unmarshal(content, &data)
 			if err != nil {

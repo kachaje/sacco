@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sacco/server/database"
 	"sacco/server/parser"
 	"sacco/utils"
 	"slices"
@@ -87,7 +88,7 @@ func SaveData(
 		return HandleMemberDetails(data, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder)
 
 	default:
-		if slices.Contains(parser.MemberChildren, *model) {
+		if slices.Contains(database.MemberChildren, *model) {
 			return HandleCommonModels(
 				data, model, phoneNumber, cacheFolder,
 				saveFunc, sessions, sessionFolder,

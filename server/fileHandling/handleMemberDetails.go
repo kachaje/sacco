@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sacco/server/database"
 	"sacco/server/parser"
 )
 
@@ -36,7 +37,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 			someChildAdded := false
 
-			for _, key := range parser.MemberChildren {
+			for _, key := range database.MemberChildren {
 				if sessions[*phoneNumber].AddedModels[key] {
 					someChildAdded = true
 					break
@@ -56,7 +57,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 				id = *mid
 
-				for _, model := range parser.MemberArrayChildren {
+				for _, model := range database.MemberArrayChildren {
 					file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", model))
 
 					_, err = os.Stat(file)
@@ -95,7 +96,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 					}
 				}
 
-				for _, model := range parser.MemberChildren {
+				for _, model := range database.MemberChildren {
 					file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", model))
 
 					_, err = os.Stat(file)
