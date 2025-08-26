@@ -11,7 +11,7 @@ import (
 func TestMemberBeneficiaries(t *testing.T) {
 	var data map[string]any
 
-	refData := map[string]interface{}{
+	refData := map[string]any{
 		"contact1":    "P.O. Box 1",
 		"contact2":    "P.O. Box 2",
 		"contact3":    "P.O. Box 3",
@@ -36,6 +36,10 @@ func TestMemberBeneficiaries(t *testing.T) {
 		if val, ok := a.(map[string]any); ok {
 			data = val
 		}
+
+		session.UpdateActiveMemberData(map[string]any{
+			"memberBeneficiary": data,
+		}, 0)
 
 		session.AddedModels["memberBeneficiary"] = true
 
@@ -331,6 +335,280 @@ CON Choose Activity
 
 	if data == nil {
 		t.Fatal("Test failed")
+	}
+
+	if !reflect.DeepEqual(data, refData) {
+		t.Fatal("Test failed")
+	}
+
+	text = "5"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Name: (John Phiri)
+
+01. Keep
+02. Skip
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Percentage: (10)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Contact: (P.O. Box 1)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Name: (Peter Banda)
+
+00. Main Menu
+01. Keep
+02. Skip
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Percentage: (8)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "20"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Contact: (P.O. Box 2)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "P.O. Box 348589, Lilongwe"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Name: (Mirriam Jere)
+
+00. Main Menu
+01. Keep
+02. Skip
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Percentage: (6)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Contact: (P.O. Box 3)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Name: (Bornface Harawa)
+
+00. Main Menu
+01. Keep
+02. Skip
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Percentage: (4)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Contact: (P.O. Box 4)
+
+00. Main Menu
+01. Keep
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "01"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+Summary
+- Name: John Phiri
+- Percentage: 10
+- Contact: P.O. Box 1
+- Name: Peter Banda
+- Percentage: 20
+- Contact: P.O. Box 348589, Lilongwe
+- Name: Mirriam Jere
+- Percentage: 6
+- Contact: P.O. Box 3
+- Name: Bornface Harawa
+- Percentage: 4
+- Contact: P.O. Box 4
+
+0. Submit
+00. Main Menu
+98. Back
+99. Cancel
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	text = "0"
+
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+
+	target = `
+CON Choose Activity
+1. Member Details 
+2. Occupation Details 
+3. Contact Details 
+4. Next of Kin Details 
+5. Beneficiaries (*)
+6. View Member Details
+
+00. Main Menu
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	refData = map[string]any{
+		"contact1":    "P.O. Box 1",
+		"contact2":    "P.O. Box 348589, Lilongwe",
+		"contact3":    "P.O. Box 3",
+		"contact4":    "P.O. Box 4",
+		"name1":       "John Phiri",
+		"name2":       "Peter Banda",
+		"name3":       "Mirriam Jere",
+		"name4":       "Bornface Harawa",
+		"percentage1": "10",
+		"percentage2": "20",
+		"percentage3": "6",
+		"percentage4": "4",
 	}
 
 	if !reflect.DeepEqual(data, refData) {

@@ -207,9 +207,19 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				if m.TargetKeys[model] != nil {
 					targetKeys := m.TargetKeys[model]
 
-					for key, value := range session.ActiveMemberData {
-						if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
-							session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
+					if session.ActiveMemberData[workflow] != nil {
+						if val, ok := session.ActiveMemberData[workflow].(map[string]any); ok {
+							for key, value := range val {
+								if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
+									session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
+								}
+							}
+						}
+					} else {
+						for key, value := range session.ActiveMemberData {
+							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[workflow].Data[key] == nil {
+								session.WorkflowsMapping[workflow].Data[key] = fmt.Sprintf("%v", value)
+							}
 						}
 					}
 				}
