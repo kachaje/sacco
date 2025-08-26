@@ -5,6 +5,16 @@ fields:
     label:
       en: Employement Details
     workflow: memberOccupation
+    targetKeys:
+      - employerAddress
+      - employerName
+      - employerPhone
+      - grossPay
+      - highestQualification
+      - jobTitle
+      - netPay
+      - periodEmployedInMonths
+      - id
   "2":
     id: employment.2
     label:
