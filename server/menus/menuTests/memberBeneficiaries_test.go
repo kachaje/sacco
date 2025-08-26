@@ -94,7 +94,8 @@ CON Welcome to Kaso SACCO
 3. Check Balance
 4. Banking Details
 5. Preferred Language
-6. Exit
+6. Administration
+7. Exit
 `
 
 	if utils.CleanString(result) != utils.CleanString(target) {
