@@ -24,6 +24,10 @@ fields:
       en: Preferred Language
     workflow: language
   "6":
+    id: admin
+    label:
+      en: Administration
+  "7":
     id: exit
     label:
       en: Exit
