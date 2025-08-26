@@ -316,6 +316,9 @@ memberLoan:
           - EMERGENCY
 
 memberLoanLiability:
+  settings:
+    hasLoops: true
+    totalLoops: 2
   fields:
     - id:
         hidden: true
@@ -325,6 +328,7 @@ memberLoanLiability:
         hidden: true
     - description:
         required: true
+        terminateBlockOnEmpty: true
     - value:
         required: true
         numericField: true

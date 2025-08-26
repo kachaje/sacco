@@ -11,17 +11,32 @@ fields:
       - memberLoanId
       - phoneNumber
       - loanAmount
-      - 
+      - repaymentPeriodInMonths
+      - loanPurpose
+      - loanType
   "2":
     id: loan.2
     label:
       en: Loan Liability
     workflow: memberLoanLiability
+    targetKeys:
+      - id
+      - memberId
+      - memberLoanId
+      - description
+      - value
   "3":
     id: loan.3
     label:
       en: Loan Security
-    workflow: memberLoanLiability
+    workflow: memberLoanSecurity
+    targetKeys:
+      - id
+      - memberId
+      - memberLoanId
+      - description
+      - value
+      - serialNumber
   "4":
     id: loan.4
     label:
