@@ -241,9 +241,9 @@ CREATE TABLE
   IF NOT EXISTS memberLoan (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    employeeNumber TEXT,
+    phoneNumber TEXT,
     loanAmount REAL,
-    repaymentPeriod REAL,
+    repaymentPeriodInMonths REAL,
     loanPurpose TEXT,
     loanType TEXT NOT NULL CHECK (
       loanType IN (

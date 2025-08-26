@@ -297,12 +297,12 @@ memberLoan:
         hidden: true
     - memberId:
         hidden: true
-    - employeeNumber:
+    - phoneNumber:
         required: true
     - loanAmount:
         required: true
         numericField: true
-    - repaymentPeriod:
+    - repaymentPeriodInMonths:
         required: true
         numericField: true
     - loanPurpose:
