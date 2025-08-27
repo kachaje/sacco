@@ -452,10 +452,16 @@ func (m *Menus) doExit(data map[string]any) string {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
+	var session *parser.Session
 	var phoneNumber string
 	var cacheFolder string
 
 	if data != nil {
+		if data["session"] != nil {
+			if val, ok := data["session"].(*parser.Session); ok {
+				session = val
+			}
+		}
 		if data["phoneNumber"] != nil {
 			if val, ok := data["phoneNumber"].(string); ok {
 				phoneNumber = val
@@ -466,6 +472,10 @@ func (m *Menus) doExit(data map[string]any) string {
 				cacheFolder = val
 			}
 		}
+
+		m.Cache = map[string]string{}
+		m.LastPrompt = "username"
+		session.SessionToken = nil
 
 		if phoneNumber != "" {
 			delete(Sessions, phoneNumber)
