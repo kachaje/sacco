@@ -1,62 +1,62 @@
 enterGrossVerified:
-  inputIdentifier: grossVerified
-  nextScreen: enterNetVerified
-  options:
-    - label:
-        en: "Yes"
-      position: 1
-    - label:
-        en: "No"
-      position: 2
-  order: 2
-  text:
-    en: Gross Verified
-  type: inputScreen
+    inputIdentifier: grossVerified
+    nextScreen: enterNetVerified
+    options:
+        - label:
+            en: "Yes"
+          position: 1
+        - label:
+            en: "No"
+          position: 2
+    order: 2
+    text:
+        en: Gross Verified
+    type: inputScreen
 enterId:
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
 enterJobVerified:
-  inputIdentifier: jobVerified
-  nextScreen: enterGrossVerified
-  options:
-    - label:
-        en: "Yes"
-      position: 1
-    - label:
-        en: "No"
-      position: 2
-  order: 1
-  text:
-    en: Job Verified
-  type: inputScreen
+    inputIdentifier: jobVerified
+    nextScreen: enterGrossVerified
+    options:
+        - label:
+            en: "Yes"
+          position: 1
+        - label:
+            en: "No"
+          position: 2
+    order: 1
+    text:
+        en: Job Verified
+    type: inputScreen
 enterMemberId:
-  hidden: true
-  inputIdentifier: memberId
-  type: hiddenField
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
 enterMemberLoanId:
-  hidden: true
-  inputIdentifier: memberLoanId
-  type: hiddenField
+    hidden: true
+    inputIdentifier: memberLoanId
+    type: hiddenField
 enterMemberOccupationId:
-  hidden: true
-  inputIdentifier: memberOccupationId
-  type: hiddenField
+    hidden: true
+    inputIdentifier: memberOccupationId
+    type: hiddenField
 enterNetVerified:
-  inputIdentifier: netVerified
-  nextScreen: formSummary
-  options:
-    - label:
-        en: "Yes"
-      position: 1
-    - label:
-        en: "No"
-      position: 2
-  order: 3
-  text:
-    en: Net Verified
-  type: inputScreen
+    inputIdentifier: netVerified
+    nextScreen: formSummary
+    options:
+        - label:
+            en: "Yes"
+          position: 1
+        - label:
+            en: "No"
+          position: 2
+    order: 3
+    text:
+        en: Net Verified
+    type: inputScreen
 formSummary:
-  type: quitScreen
+    type: quitScreen
 initialScreen: enterJobVerified
 model: memberOccupationVerification

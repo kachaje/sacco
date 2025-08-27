@@ -10,23 +10,23 @@ var (
 		"memberOccupationVerification",
 		"memberLoanApproval",
 	}
+	AccountTransactionArrayChildren = []string{
+		"accountJournal",
+	}
 	AccountArrayChildren = []string{
 		"accountJournal",
 		"accountTransaction",
 	}
-	AccountTransactionArrayChildren = []string{
-		"accountJournal",
-	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
-		"memberLoan",
-		"memberBusiness",
 		"memberShares",
 	}
 	MemberSingleChildren = []string{
 		"memberContact",
 		"memberNominee",
 		"memberOccupation",
+		"memberLoan",
+		"memberBusiness",
 	}
 	MemberBusinessArrayChildren = []string{
 		"memberLastYearBusinessHistory",

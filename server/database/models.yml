@@ -1,13 +1,13 @@
 member:
   hasMany:
     - memberBeneficiary
-    - memberLoan
-    - memberBusiness
     - memberShares
   hasOne:
     - memberContact
     - memberNominee
     - memberOccupation
+    - memberLoan
+    - memberBusiness
   fields:
     - id:
         hidden: true
