@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 	"unicode"
+	"unicode/utf8"
 
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/yaml.v3"
@@ -164,4 +165,17 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func CenterString(s string, width int) string {
+	runeCount := utf8.RuneCountInString(s)
+	if runeCount >= width {
+		return s
+	}
+
+	padding := width - runeCount
+	leftPadding := padding / 2
+	rightPadding := padding - leftPadding
+
+	return strings.Repeat(" ", leftPadding) + s + strings.Repeat(" ", rightPadding)
 }

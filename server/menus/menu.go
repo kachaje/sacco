@@ -917,10 +917,34 @@ func (m *Menus) login(data map[string]any) string {
 	return response
 }
 
-func (m *Menus) listUsers(data map[string]any) string {
-	var response string = "Users List\n\n00. Main Menu"
+func (m *Menus) listUsers(_ map[string]any) string {
+	var response, content string
 
-	_ = data
+	title := "Users List\n----------"
+
+	result, err := DB.SQLQuery("SELECT id, username, role FROM user WHERE active = 1")
+	if err != nil {
+		content = fmt.Sprintf("%s\n", err.Error())
+	} else {
+		rows := []string{
+			fmt.Sprintf("%2s | %-12s | %-10s", "id", "username", "role"),
+			"-----------------------------",
+		}
+
+		for _, row := range result {
+			id := fmt.Sprintf("%v", row["id"])
+			username := fmt.Sprintf("%v", row["username"])
+			role := fmt.Sprintf("%v", row["role"])
+
+			entry := fmt.Sprintf("%2s | %-12s | %-10s", id, username, role)
+
+			rows = append(rows, entry)
+		}
+
+		content = strings.Join(rows, "\n")
+	}
+
+	response = fmt.Sprintf("%s\n\n%s\n\n00. Main Menu\n", title, content)
 
 	return response
 }
