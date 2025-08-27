@@ -1,11 +1,22 @@
 package menus_test
 
 import (
+	"fmt"
 	"sacco/server/menus"
 	"sacco/server/parser"
 	"sacco/utils"
 	"testing"
 )
+
+func TestLogin(t *testing.T) {
+	m := menus.NewMenus(nil)
+
+	session := parser.NewSession(nil, nil, nil)
+
+	result := m.LoadMenu("main", session, "", "", "", "")
+
+	fmt.Println(result)
+}
 
 func TestMainMenu(t *testing.T) {
 	m := menus.NewMenus(nil)

@@ -15,6 +15,8 @@ import (
 	"slices"
 	"strings"
 	"sync"
+
+	"github.com/google/uuid"
 )
 
 //go:embed menus/*
@@ -43,6 +45,9 @@ type Menus struct {
 	mu sync.Mutex
 
 	DevModeActive bool
+
+	Cache      map[string]string
+	LastPrompt string
 }
 
 var menuTemplateData map[string]any
@@ -71,6 +76,9 @@ func NewMenus(devMode *bool) *Menus {
 		TargetKeys:    map[string][]string{},
 		LabelWorkflow: map[string]any{},
 		mu:            sync.Mutex{},
+
+		Cache:      map[string]string{},
+		LastPrompt: "username",
 	}
 
 	if devMode != nil {
@@ -100,6 +108,9 @@ func NewMenus(devMode *bool) *Menus {
 	}
 	m.FunctionsMap["memberLoansSummary"] = func(data map[string]any) string {
 		return m.memberLoansSummary(data)
+	}
+	m.FunctionsMap["login"] = func(data map[string]any) string {
+		return m.login(data)
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -209,6 +220,21 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 
 	if preferredLanguage != nil {
 		session.PreferredLanguage = *preferredLanguage
+	}
+
+	if session == nil {
+		return response
+	}
+
+	if session.SessionToken == nil {
+		return m.login(map[string]any{
+			"phoneNumber":       phoneNumber,
+			"cacheFolder":       cacheFolder,
+			"session":           session,
+			"preferredLanguage": preferredLanguage,
+			"preferencesFolder": preferencesFolder,
+			"text":              text,
+		})
 	}
 
 	keys := []string{}
@@ -786,6 +812,84 @@ func (m *Menus) memberLoansSummary(data map[string]any) string {
 	var response string = "Member Loans Summary\n\n00. Main Menu"
 
 	_ = data
+
+	return response
+}
+
+func (m *Menus) login(data map[string]any) string {
+	var session *parser.Session
+	var response string
+	var phoneNumber, text, preferencesFolder, cacheFolder string
+
+	if data["session"] != nil {
+		if val, ok := data["session"].(*parser.Session); ok {
+			session = val
+		}
+	}
+	if data["phoneNumber"] != nil {
+		if val, ok := data["phoneNumber"].(string); ok {
+			phoneNumber = val
+		}
+	}
+	if data["text"] != nil {
+		if val, ok := data["text"].(string); ok {
+			text = val
+		}
+	}
+	if data["preferencesFolder"] != nil {
+		if val, ok := data["preferencesFolder"].(string); ok {
+			preferencesFolder = val
+		}
+	}
+	if data["cacheFolder"] != nil {
+		if val, ok := data["cacheFolder"].(string); ok {
+			cacheFolder = val
+		}
+	}
+
+	if text == "" {
+		response = "Login\n\nEnter username:\n"
+	} else {
+		if m.LastPrompt == "username" {
+			m.Cache["username"] = text
+
+			m.LastPrompt = "password"
+
+			response = "Login\n\nEnter password:\n"
+		} else {
+			m.Cache["password"] = text
+
+			text = ""
+
+			result, err := DB.SQLQuery(fmt.Sprintf(`SELECT id, password, role FROM user WHERE username = "%v"`, m.Cache["username"]))
+			if err != nil {
+				response = err.Error()
+			} else {
+				if len(result) > 0 {
+					passHash := fmt.Sprintf("%v", result[0]["password"])
+
+					if utils.CheckPasswordHash(m.Cache["password"], passHash) {
+						token := uuid.NewString()
+						session.SessionToken = &token
+
+						session.CurrentMenu = "main"
+
+						return m.LoadMenu("main", session, phoneNumber, text, preferencesFolder, cacheFolder)
+					} else {
+						m.Cache = map[string]string{}
+						m.LastPrompt = "username"
+
+						response = "Login\n\nEnter username:\n"
+					}
+				} else {
+					m.Cache = map[string]string{}
+					m.LastPrompt = "username"
+
+					response = "Login\n\nEnter username:\n"
+				}
+			}
+		}
+	}
 
 	return response
 }

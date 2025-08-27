@@ -31,6 +31,8 @@ type Session struct {
 	SkipFields []string
 
 	Mu *sync.Mutex
+
+	SessionToken *string
 }
 
 func NewSession(

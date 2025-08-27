@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type Model struct {
@@ -37,16 +36,6 @@ func NewModel(
 	}
 
 	return m, nil
-}
-
-func (m *Model) HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	return string(bytes), err
-}
-
-func (m *Model) CheckPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
 }
 
 func (m *Model) AddRecord(data map[string]any) (*int64, error) {
@@ -78,7 +67,7 @@ func (m *Model) AddRecord(data map[string]any) (*int64, error) {
 		markers = append(markers, "?")
 
 		if strings.ToLower(key) == "password" {
-			password, err := m.HashPassword(fmt.Sprintf("%v", value))
+			password, err := utils.HashPassword(fmt.Sprintf("%v", value))
 			if err != nil {
 				return nil, err
 			}
@@ -119,7 +108,7 @@ func (m *Model) UpdateRecord(data map[string]any, id int64) error {
 		fields = append(fields, fmt.Sprintf("%s = ?", key))
 
 		if strings.ToLower(key) == "password" {
-			password, err := m.HashPassword(fmt.Sprintf("%v", value))
+			password, err := utils.HashPassword(fmt.Sprintf("%v", value))
 			if err != nil {
 				return err
 			}

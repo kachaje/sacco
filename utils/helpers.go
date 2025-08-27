@@ -12,6 +12,7 @@ import (
 	"time"
 	"unicode"
 
+	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/yaml.v3"
 )
 
@@ -153,4 +154,14 @@ func Index[T comparable](s []T, item T) int {
 		}
 	}
 	return -1
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
