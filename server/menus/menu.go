@@ -249,14 +249,35 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	}
 
 	if session.SessionToken == nil && !m.DemoMode {
-		return m.landing(map[string]any{
-			"phoneNumber":       phoneNumber,
-			"cacheFolder":       cacheFolder,
-			"session":           session,
-			"preferredLanguage": preferredLanguage,
-			"preferencesFolder": preferencesFolder,
-			"text":              text,
-		})
+		switch session.CurrentMenu {
+		case "signIn":
+			return m.signIn(map[string]any{
+				"phoneNumber":       phoneNumber,
+				"cacheFolder":       cacheFolder,
+				"session":           session,
+				"preferredLanguage": preferredLanguage,
+				"preferencesFolder": preferencesFolder,
+				"text":              text,
+			})
+		case "signUp":
+			return m.signUp(map[string]any{
+				"phoneNumber":       phoneNumber,
+				"cacheFolder":       cacheFolder,
+				"session":           session,
+				"preferredLanguage": preferredLanguage,
+				"preferencesFolder": preferencesFolder,
+				"text":              text,
+			})
+		default:
+			return m.landing(map[string]any{
+				"phoneNumber":       phoneNumber,
+				"cacheFolder":       cacheFolder,
+				"session":           session,
+				"preferredLanguage": preferredLanguage,
+				"preferencesFolder": preferencesFolder,
+				"text":              text,
+			})
+		}
 	}
 
 	keys := []string{}
@@ -879,6 +900,11 @@ func (m *Menus) signIn(data map[string]any) string {
 		}
 	}
 
+	if text == "00" {
+		session.CurrentMenu = "main"
+		return m.LoadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
+	}
+
 	if text == "" {
 		response = "Login\n\nEnter username:\n"
 	} else {
@@ -916,6 +942,8 @@ func (m *Menus) signIn(data map[string]any) string {
 			}
 		}
 	}
+
+	response = fmt.Sprintf("%s\n00. Main Menu\n", response)
 
 	return response
 }
@@ -1069,9 +1097,42 @@ func (m *Menus) changePassword(data map[string]any) string {
 }
 
 func (m *Menus) signUp(data map[string]any) string {
-	var response string = "Member Signup\n\n00. Main Menu"
+	var response string
+	var phoneNumber, text, preferencesFolder, cacheFolder string
+	var session *parser.Session
 
-	_ = data
+	if data["session"] != nil {
+		if val, ok := data["session"].(*parser.Session); ok {
+			session = val
+		}
+	}
+	if data["phoneNumber"] != nil {
+		if val, ok := data["phoneNumber"].(string); ok {
+			phoneNumber = val
+		}
+	}
+	if data["text"] != nil {
+		if val, ok := data["text"].(string); ok {
+			text = val
+		}
+	}
+	if data["preferencesFolder"] != nil {
+		if val, ok := data["preferencesFolder"].(string); ok {
+			preferencesFolder = val
+		}
+	}
+	if data["cacheFolder"] != nil {
+		if val, ok := data["cacheFolder"].(string); ok {
+			cacheFolder = val
+		}
+	}
+
+	if text == "00" {
+		session.CurrentMenu = "main"
+		return m.LoadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
+	}
+
+	response = "Member Signup\n\n00. Main Menu"
 
 	return response
 }
