@@ -432,6 +432,67 @@ WHERE
 
 END;
 
+CREATE TABLE
+  account (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    accountName TEXT NOT NULL,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS accountUpdated AFTER
+UPDATE ON account FOR EACH ROW BEGIN
+UPDATE account
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  financialTransaction (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    dateTimestamp TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    description text NOT NULL,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS financialTransactionUpdated AFTER
+UPDATE ON financialTransaction FOR EACH ROW BEGIN
+UPDATE financialTransaction
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  journal (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    financialTransactionId INTEGER NOT NULL,
+    accountId INTEGER NOT NULL,
+    amount REAL NOT NULL,
+    isCredit BOOLEAN NOT NULL,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS journalUpdated AFTER
+UPDATE ON journal FOR EACH ROW BEGIN
+UPDATE journal
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
 INSERT INTO
   role (name)
 VALUES

@@ -1,4 +1,13 @@
 member:
+  hasMany:
+    - memberBeneficiary
+    - memberLoan
+    - memberBusiness
+    - memberOccupation
+    - memberShares
+  hasOne:
+    - memberContact
+    - memberNominee
   fields:
     - id:
         hidden: true
@@ -56,6 +65,8 @@ member:
         hidden: true
 
 memberContact:
+  belongsTo:
+    - member
   fields:
     - id:
         hidden: true
@@ -104,6 +115,8 @@ memberContact:
           - Neno
 
 memberNominee:
+  belongsTo:
+    - member
   fields:
     - id:
         hidden: true
@@ -117,10 +130,15 @@ memberNominee:
         required: true
 
 memberOccupation:
+  belongsTo:
+    - member
+    - memberLoan
   fields:
     - id:
         hidden: true
     - memberId:
+        hidden: true
+    - memberLoanId:
         hidden: true
     - employerName:
         required: true
@@ -148,6 +166,8 @@ memberOccupation:
           - None
 
 memberBeneficiary:
+  belongsTo:
+    - member
   settings:
     hasLoops: true
     totalLoops: 4
@@ -165,10 +185,18 @@ memberBeneficiary:
         required: true
 
 memberBusiness:
+  hasMany:
+    - memberLastYearBusinessHistory
+    - memberNextYearBusinessProjection
+  belongsTo:
+    - member
+    - memberLoan
   fields:
     - id:
         hidden: true
     - memberId:
+        hidden: true
+    - memberLoanId:
         hidden: true
     - yearsInBusiness:
         required: true
@@ -180,6 +208,10 @@ memberBusiness:
         required: true
 
 memberLastYearBusinessHistory:
+  belongsTo:
+    - member
+    - memberLoan
+    - memberBusiness
   fields:
     - id:
         hidden: true
@@ -227,6 +259,10 @@ memberLastYearBusinessHistory:
         numericField: true
 
 memberNextYearBusinessProjection:
+  belongsTo:
+    - member
+    - memberLoan
+    - memberBusiness
   fields:
     - id:
         hidden: true
@@ -274,6 +310,8 @@ memberNextYearBusinessProjection:
         numericField: true
 
 memberShares:
+  belongsTo:
+    - member
   fields:
     - id:
         hidden: true
@@ -292,6 +330,16 @@ memberShares:
           - REDEEMABLE
 
 memberLoan:
+  hasOne:
+    - memberBusiness
+    - memberOccupation
+    - memberLoanLiability
+    - memberLoanSecurity
+    - memberLoanWitness
+    - memberOccupationVerification
+    - memberLoanApproval
+  belongsTo:
+    - member
   fields:
     - id:
         hidden: true
@@ -316,6 +364,9 @@ memberLoan:
           - EMERGENCY
 
 memberLoanLiability:
+  belongsTo:
+    - member
+    - memberLoan
   settings:
     hasLoops: true
     totalLoops: 2
@@ -334,6 +385,9 @@ memberLoanLiability:
         numericField: true
 
 memberLoanSecurity:
+  belongsTo:
+    - member
+    - memberLoan
   fields:
     - id:
         hidden: true
@@ -352,6 +406,9 @@ memberLoanSecurity:
         restartBlock: true
 
 memberLoanWitness:
+  belongsTo:
+    - member
+    - memberLoan
   fields:
     - id:
         hidden: true
@@ -370,6 +427,9 @@ memberLoanWitness:
         validationRule: "^\\d{4}-\\d{2}-\\d{2}$"
 
 memberOccupationVerification:
+  belongsTo:
+    - member
+    - memberLoan
   fields:
     - id:
         hidden: true
@@ -396,6 +456,9 @@ memberOccupationVerification:
           - No
 
 memberLoanApproval:
+  belongsTo:
+    - member
+    - memberLoan
   fields:
     - id:
         hidden: true
