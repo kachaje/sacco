@@ -316,15 +316,22 @@ func (d *Database) SQLQuery(query string) ([]map[string]any, error) {
 	return results, nil
 }
 
-func (d *Database) ValidatePassword(username, password string) bool {
+func (d *Database) ValidatePassword(username, password string) (*int64, bool) {
 	result, err := d.SQLQuery(fmt.Sprintf(`SELECT id, password, role FROM user WHERE username = "%v"`, username))
 	if err == nil && len(result) > 0 {
 		passHash := fmt.Sprintf("%v", result[0]["password"])
 
 		if utils.CheckPasswordHash(password, passHash) {
-			return true
+			var id int64
+
+			val, err := strconv.ParseInt(fmt.Sprintf("%v", result[0]["id"]), 10, 64)
+			if err == nil {
+				id = val
+			}
+
+			return &id, true
 		}
 	}
 
-	return false
+	return nil, false
 }

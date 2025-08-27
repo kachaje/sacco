@@ -887,9 +887,10 @@ func (m *Menus) login(data map[string]any) string {
 
 			text = ""
 
-			if DB.ValidatePassword(m.Cache["username"], m.Cache["password"]) {
+			if id, ok := DB.ValidatePassword(m.Cache["username"], m.Cache["password"]); ok {
 				token := uuid.NewString()
 				session.SessionToken = &token
+				session.SessionUserId = id
 
 				session.CurrentMenu = "main"
 
@@ -1027,13 +1028,22 @@ func (m *Menus) changePassword(data map[string]any) string {
 
 				response = newPassword("(Password Mismatch!)")
 			} else {
-				if DB.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]) {
-					session.Cache = map[string]string{}
-					session.LastPrompt = ""
+				if id, ok := DB.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]); ok {
+					err := DB.GenericModels["user"].UpdateRecord(map[string]any{
+						"password": session.Cache["newPassword"],
+					}, *id)
+					if err != nil {
+						response = fmt.Sprintf("Change Password\n"+
+							"-------------\n"+
+							"ERROR: %s\n\n00. Main Menu", err.Error())
+					} else {
+						session.Cache = map[string]string{}
+						session.LastPrompt = ""
 
-					response = "Change Password\n" +
-						"-------------\n" +
-						"Password Changed!\n\n00. Main Menu"
+						response = "Change Password\n" +
+							"-------------\n" +
+							"Password Changed!\n\n00. Main Menu"
+					}
 				} else {
 					m.LastPrompt = "currentPassword"
 
