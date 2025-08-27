@@ -125,6 +125,9 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 	m.FunctionsMap["editUser"] = func(data map[string]any) string {
 		return m.editUser(data)
 	}
+	m.FunctionsMap["changePassword"] = func(data map[string]any) string {
+		return m.changePassword(data)
+	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -959,6 +962,14 @@ func (m *Menus) blockUser(data map[string]any) string {
 
 func (m *Menus) editUser(data map[string]any) string {
 	var response string = "Edit User\n\n00. Main Menu"
+
+	_ = data
+
+	return response
+}
+
+func (m *Menus) changePassword(data map[string]any) string {
+	var response string = "Change Password\n\n00. Main Menu"
 
 	_ = data
 

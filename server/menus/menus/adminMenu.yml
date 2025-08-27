@@ -24,6 +24,11 @@ fields:
       - username
     function: blockUser
   "4":
+    id: changePassword
+    label:
+      en: Change Password
+    function: changePassword
+  "5":
     id: listUser
     label:
       en: Users List
