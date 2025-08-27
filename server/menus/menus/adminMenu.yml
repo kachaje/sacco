@@ -23,6 +23,11 @@ fields:
       - id
       - username
     function: blockUser
+  "4":
+    id: listUser
+    label:
+      en: Users List
+    funtion: listUsers
   "00":
     id: main
     label:
