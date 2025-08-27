@@ -418,7 +418,7 @@ END;
 CREATE TABLE
   IF NOT EXISTS user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     name TEXT NOT NULL,
     role TEXT NOT NULL,
@@ -440,7 +440,7 @@ END;
 CREATE TABLE
   IF NOT EXISTS role (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -459,7 +459,7 @@ END;
 CREATE TABLE
   IF NOT EXISTS account (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    accountName TEXT NOT NULL,
+    accountName TEXT NOT NULL UNIQUE,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -527,8 +527,8 @@ WHERE
 
 END;
 
-INSERT INTO
-  role (name)
+INSERT
+OR IGNORE INTO role (name)
 VALUES
   ("Member"),
   ("Admin"),
@@ -537,7 +537,7 @@ VALUES
   ("Loans Officer"),
   ("Manager");
 
-INSERT INTO
-  user (username, password, name, role)
+INSERT
+OR IGNORE INTO user (username, password, name, role)
 VALUES
   ("admin", "NDMyMQo=", "Admin", "Admin");
