@@ -43,8 +43,6 @@ var workflowsData map[string]map[string]any
 var preferencesFolder = filepath.Join(".", "settings")
 var cacheFolder = filepath.Join(".", "data", "cache")
 
-var db *database.Database
-
 var ctx context.Context
 
 var activeMenu *menus.Menus
@@ -111,10 +109,10 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	session, exists := menus.Sessions[phoneNumber]
 	if !exists {
-		session = parser.NewSession(db.MemberByPhoneNumber, &phoneNumber, &sessionID)
+		session = parser.NewSession(menus.DB.MemberByPhoneNumber, &phoneNumber, &sessionID)
 
 		for model, data := range workflowsData {
-			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, db.GenericsSaveData, menus.Sessions, nil)
+			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, menus.DB.GenericsSaveData, menus.Sessions, nil)
 		}
 
 		if preferredLanguage != nil {
@@ -264,7 +262,7 @@ func Main() {
 		os.MkdirAll(cacheFolder, 0755)
 	}
 
-	db = database.NewDatabase(dbname)
+	menus.DB = database.NewDatabase(dbname)
 
 	activeMenu = menus.NewMenus(&devMode)
 
@@ -297,7 +295,7 @@ func Main() {
 						for _, file := range files {
 							phoneNumber := file.Name()
 
-							filehandling.RerunFailedSaves(&phoneNumber, &cacheFolder, db.GenericsSaveData, menus.Sessions)
+							filehandling.RerunFailedSaves(&phoneNumber, &cacheFolder, menus.DB.GenericsSaveData, menus.Sessions)
 						}
 					}
 				}

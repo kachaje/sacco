@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sacco/server/database"
 	"sacco/server/parser"
 	"sacco/utils"
 	"slices"
@@ -24,6 +25,8 @@ var menuTemplateContent []byte
 
 //go:embed templates/member.template.json
 var templateContent []byte
+
+var DB *database.Database
 
 var Sessions map[string]*parser.Session
 var templateData map[string]any
@@ -231,10 +234,14 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 	}
 
-	menuRoot := session.CurrentMenu
+	var menuRoot string
 
-	if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
-		menuRoot = strings.Split(session.CurrentMenu, ".")[0]
+	if session != nil {
+		menuRoot = session.CurrentMenu
+
+		if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
+			menuRoot = strings.Split(session.CurrentMenu, ".")[0]
+		}
 	}
 
 	if slices.Contains(keys, text) {
@@ -335,68 +342,75 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				"00. Main Menu\n"
 		}
 
-	} else if session != nil && m.Functions[menuRoot] != nil {
-		if text == "00" {
-			session.CurrentMenu = "main"
-			text = "0"
-			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
-		} else {
-			if fnName, ok := m.Functions[menuRoot].(string); ok && m.FunctionsMap[fnName] != nil {
-				response = m.FunctionsMap[fnName](map[string]any{
-					"phoneNumber":       phoneNumber,
-					"cacheFolder":       cacheFolder,
-					"session":           session,
-					"preferredLanguage": preferredLanguage,
-					"preferencesFolder": preferencesFolder,
-					"text":              text,
-				})
-			} else {
-				response = fmt.Sprintf("Function %s not found\n\n", m.Functions[menuRoot]) +
-					"00. Main Menu\n"
-			}
-		}
 	} else {
-		newValues := []string{}
 
-		if m.LabelWorkflow[menuName] != nil && session != nil {
-			for _, value := range values {
-				if m.LabelWorkflow[menuName].(map[string]any)[value] != nil {
-					model := fmt.Sprintf("%v", m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["model"])
+		if session == nil {
+			return response
+		}
 
-					suffix := ""
-
-					if session.AddedModels[model] {
-						suffix = "(*)"
-					}
-
-					newValues = append(newValues, fmt.Sprintf("%s %s\n", strings.TrimSpace(value), suffix))
+		if session != nil && m.Functions[menuRoot] != nil {
+			if text == "00" {
+				session.CurrentMenu = "main"
+				text = "0"
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+			} else {
+				if fnName, ok := m.Functions[menuRoot].(string); ok && m.FunctionsMap[fnName] != nil {
+					response = m.FunctionsMap[fnName](map[string]any{
+						"phoneNumber":       phoneNumber,
+						"cacheFolder":       cacheFolder,
+						"session":           session,
+						"preferredLanguage": preferredLanguage,
+						"preferencesFolder": preferencesFolder,
+						"text":              text,
+					})
 				} else {
-					newValues = append(newValues, value)
+					response = fmt.Sprintf("Function %s not found\n\n", m.Functions[menuRoot]) +
+						"00. Main Menu\n"
 				}
 			}
 		} else {
-			newValues = values
+			newValues := []string{}
+
+			if m.LabelWorkflow[menuName] != nil && session != nil {
+				for _, value := range values {
+					if m.LabelWorkflow[menuName].(map[string]any)[value] != nil {
+						model := fmt.Sprintf("%v", m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["model"])
+
+						suffix := ""
+
+						if session.AddedModels[model] {
+							suffix = "(*)"
+						}
+
+						newValues = append(newValues, fmt.Sprintf("%s %s\n", strings.TrimSpace(value), suffix))
+					} else {
+						newValues = append(newValues, value)
+					}
+				}
+			} else {
+				newValues = values
+			}
+
+			slices.Sort(newValues)
+
+			index := utils.Index(newValues, "99. Cancel\n")
+
+			if index >= 0 {
+				newValues = append(newValues[:index], newValues[index+1:]...)
+
+				newValues = append(newValues, "\n99. Cancel")
+			}
+
+			index = utils.Index(newValues, "00. Main Menu\n")
+
+			if index >= 0 {
+				newValues = append(newValues[:index], newValues[index+1:]...)
+
+				newValues = append(newValues, "\n00. Main Menu\n")
+			}
+
+			response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(newValues, ""))
 		}
-
-		slices.Sort(newValues)
-
-		index := utils.Index(newValues, "99. Cancel\n")
-
-		if index >= 0 {
-			newValues = append(newValues[:index], newValues[index+1:]...)
-
-			newValues = append(newValues, "\n99. Cancel")
-		}
-
-		index = utils.Index(newValues, "00. Main Menu\n")
-
-		if index >= 0 {
-			newValues = append(newValues[:index], newValues[index+1:]...)
-
-			newValues = append(newValues, "\n00. Main Menu\n")
-		}
-
-		response = fmt.Sprintf("CON %s\n%s", m.Titles[menuName], strings.Join(newValues, ""))
 	}
 
 	return response
@@ -619,10 +633,11 @@ func (m *Menus) devConsole(data map[string]any) string {
 	}
 
 	if session != nil {
-		fmt.Println(session.CurrentMenu)
-
-		if session.CurrentMenu == "console" && regexp.MustCompile(`^\d+$`).MatchString(text) {
+		if text == "99" {
+			session.CurrentMenu = "console"
+		} else if session.CurrentMenu == "console" && regexp.MustCompile(`^\d+$`).MatchString(text) {
 			session.CurrentMenu = fmt.Sprintf("%s.%s", session.CurrentMenu, text)
+			text = ""
 		}
 
 		switch session.CurrentMenu {
@@ -701,7 +716,11 @@ func (m *Menus) devConsole(data map[string]any) string {
 		case "console.8":
 			title = "SQL Query"
 
-			fmt.Println(text)
+			// result, err :=
+
+			content = fmt.Sprintf(`query: %s
+
+response: %s`, text, "")
 
 		default:
 			session.CurrentMenu = "console"
@@ -722,7 +741,7 @@ func (m *Menus) devConsole(data map[string]any) string {
 
 	response = "Dev Console\n\n" +
 		title +
-		fmt.Sprintf("%s\n", content) +
+		fmt.Sprintf("\n\n%s\n", content) +
 		"\n99. Cancel\n" +
 		"00. Main Menu\n"
 

@@ -2,6 +2,7 @@ package menus_test
 
 import (
 	"sacco/server/menus"
+	"sacco/server/parser"
 	"sacco/utils"
 	"testing"
 )
@@ -9,7 +10,9 @@ import (
 func TestMainMenu(t *testing.T) {
 	m := menus.NewMenus(nil)
 
-	result := m.LoadMenu("main", nil, "", "", "", "")
+	session := parser.NewSession(nil, nil, nil)
+
+	result := m.LoadMenu("main", session, "", "", "", "")
 
 	target := `
 CON Welcome to Kaso SACCO
@@ -30,7 +33,9 @@ CON Welcome to Kaso SACCO
 func TestRegistrationSubMenu(t *testing.T) {
 	m := menus.NewMenus(nil)
 
-	result := m.LoadMenu("main", nil, "", "1", "", "")
+	session := parser.NewSession(nil, nil, nil)
+
+	result := m.LoadMenu("main", session, "", "1", "", "")
 
 	target := `
 CON Choose Activity
@@ -52,7 +57,9 @@ CON Choose Activity
 func TestBusinessMenu(t *testing.T) {
 	m := menus.NewMenus(nil)
 
-	result := m.LoadMenu("business", nil, "", "", "", "")
+	session := parser.NewSession(nil, nil, nil)
+
+	result := m.LoadMenu("business", session, "", "", "", "")
 
 	target := `
 CON Business
@@ -73,7 +80,9 @@ CON Business
 func TestEmployementMenu(t *testing.T) {
 	m := menus.NewMenus(nil)
 
-	result := m.LoadMenu("employment", nil, "", "", "", "")
+	session := parser.NewSession(nil, nil, nil)
+
+	result := m.LoadMenu("employment", session, "", "", "", "")
 
 	target := `
 CON Employement
@@ -93,7 +102,9 @@ CON Employement
 func TestLoanMenu(t *testing.T) {
 	m := menus.NewMenus(nil)
 
-	result := m.LoadMenu("loan", nil, "", "", "", "")
+	session := parser.NewSession(nil, nil, nil)
+
+	result := m.LoadMenu("loan", session, "", "", "", "")
 
 	target := `
 CON Loans
