@@ -113,8 +113,8 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 	m.FunctionsMap["memberLoansSummary"] = func(data map[string]any) string {
 		return m.memberLoansSummary(data)
 	}
-	m.FunctionsMap["login"] = func(data map[string]any) string {
-		return m.login(data)
+	m.FunctionsMap["signIn"] = func(data map[string]any) string {
+		return m.signIn(data)
 	}
 	m.FunctionsMap["listUsers"] = func(data map[string]any) string {
 		return m.listUsers(data)
@@ -127,6 +127,12 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 	}
 	m.FunctionsMap["changePassword"] = func(data map[string]any) string {
 		return m.changePassword(data)
+	}
+	m.FunctionsMap["signUp"] = func(data map[string]any) string {
+		return m.signUp(data)
+	}
+	m.FunctionsMap["landing"] = func(data map[string]any) string {
+		return m.landing(data)
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -243,7 +249,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	}
 
 	if session.SessionToken == nil && !m.DemoMode {
-		return m.login(map[string]any{
+		return m.landing(map[string]any{
 			"phoneNumber":       phoneNumber,
 			"cacheFolder":       cacheFolder,
 			"session":           session,
@@ -842,7 +848,7 @@ func (m *Menus) memberLoansSummary(data map[string]any) string {
 	return response
 }
 
-func (m *Menus) login(data map[string]any) string {
+func (m *Menus) signIn(data map[string]any) string {
 	var response string
 	var phoneNumber, text, preferencesFolder, cacheFolder string
 	var session *parser.Session
@@ -1057,6 +1063,69 @@ func (m *Menus) changePassword(data map[string]any) string {
 		m.LastPrompt = "currentPassword"
 
 		response = currentPassword("")
+	}
+
+	return response
+}
+
+func (m *Menus) signUp(data map[string]any) string {
+	var response string = "Member Signup\n\n00. Main Menu"
+
+	_ = data
+
+	return response
+}
+
+func (m *Menus) landing(data map[string]any) string {
+	var response string
+	var phoneNumber, text, preferencesFolder, cacheFolder string
+	var session *parser.Session
+
+	if data["session"] != nil {
+		if val, ok := data["session"].(*parser.Session); ok {
+			session = val
+		}
+	}
+	if data["phoneNumber"] != nil {
+		if val, ok := data["phoneNumber"].(string); ok {
+			phoneNumber = val
+		}
+	}
+	if data["text"] != nil {
+		if val, ok := data["text"].(string); ok {
+			text = val
+		}
+	}
+	if data["preferencesFolder"] != nil {
+		if val, ok := data["preferencesFolder"].(string); ok {
+			preferencesFolder = val
+		}
+	}
+	if data["cacheFolder"] != nil {
+		if val, ok := data["cacheFolder"].(string); ok {
+			cacheFolder = val
+		}
+	}
+
+	data = map[string]any{
+		"phoneNumber":       phoneNumber,
+		"cacheFolder":       cacheFolder,
+		"session":           session,
+		"preferencesFolder": preferencesFolder,
+		"text":              text,
+	}
+
+	switch text {
+	case "1":
+		session.CurrentMenu = "signIn"
+		return m.signIn(data)
+	case "2":
+		session.CurrentMenu = "signUp"
+		return m.signUp(data)
+	default:
+		response = "Welcome! Select Action\n\n" +
+			"1. Sign In\n" +
+			"2. Sign Up\n"
 	}
 
 	return response
