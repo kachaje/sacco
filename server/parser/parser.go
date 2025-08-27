@@ -500,7 +500,12 @@ func (w *WorkFlow) ResolveData(data map[string]any, preferCode bool) map[string]
 							}
 						}
 					} else {
-						result[key] = value
+						if strings.ToLower(key) == "password" && !preferCode {
+							result[key] = "********"
+							result["password.hidden"] = value
+						} else {
+							result[key] = value
+						}
 					}
 				}
 			}
@@ -618,7 +623,11 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 				var existingData string
 
 				if w.Data[id] != nil && fmt.Sprintf("%v", w.Data[id]) != "" {
-					existingData = fmt.Sprintf("(%v)", w.Data[id])
+					if strings.ToLower(id) == "password" {
+						existingData = "(*******)"
+					} else {
+						existingData = fmt.Sprintf("(%v)", w.Data[id])
+					}
 				}
 
 				title = fmt.Sprintf("%s: %s", dispLabel, existingData)
