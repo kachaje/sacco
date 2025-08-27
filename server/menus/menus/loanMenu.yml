@@ -78,7 +78,7 @@ fields:
   "8":
     id: memberLoansSummary
     label:
-      en: Member Loans
+      en: Member Loans Summary
     function: memberLoansSummary
   "00":
     id: main

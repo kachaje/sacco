@@ -115,6 +115,7 @@ CON Loans
 5. Loan Approvals
 6. Employment Details
 7. Business Details
+8. Member Loans Summary
 
 00. Main Menu
 	`
