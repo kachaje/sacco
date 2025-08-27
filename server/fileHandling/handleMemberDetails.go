@@ -37,7 +37,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 			someChildAdded := false
 
-			for _, key := range database.MemberChildren {
+			for _, key := range database.MemberSingleChildren {
 				if sessions[*phoneNumber].AddedModels[key] {
 					someChildAdded = true
 					break
@@ -96,7 +96,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 					}
 				}
 
-				for _, model := range database.MemberChildren {
+				for _, model := range database.MemberSingleChildren {
 					file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", model))
 
 					_, err = os.Stat(file)

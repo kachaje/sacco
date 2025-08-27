@@ -59,7 +59,7 @@ func NewSession(
 }
 
 func (s *Session) UpdateSessionFlags() error {
-	for _, model := range database.MemberChildren {
+	for _, model := range database.MemberSingleChildren {
 		data := s.ReadFromMap(model, 0)
 		if data != nil {
 			val, ok := data.(map[string]any)
@@ -173,7 +173,7 @@ func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
 
 	models = append(models, database.MemberArrayChildren...)
 
-	models = append(models, database.MemberChildren...)
+	models = append(models, database.MemberSingleChildren...)
 
 	for _, key := range models {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))

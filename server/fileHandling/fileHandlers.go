@@ -88,7 +88,7 @@ func SaveData(
 		return HandleMemberDetails(data, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder)
 
 	default:
-		if slices.Contains(database.MemberChildren, *model) {
+		if slices.Contains(database.MemberSingleChildren, *model) {
 			return HandleCommonModels(
 				data, model, phoneNumber, cacheFolder,
 				saveFunc, sessions, sessionFolder,

@@ -1,19 +1,15 @@
 enterAccountName:
-    inputIdentifier: accountName
-    nextScreen: formSummary
-    order: 1
-    text:
-        en: Account Name
-    type: inputScreen
+  inputIdentifier: accountName
+  nextScreen: formSummary
+  order: 1
+  text:
+    en: Account Name
+  type: inputScreen
 enterId:
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterAccountName
 model: account
-relationships:
-    hasMany:
-        - accountJournal
-        - accountTransaction

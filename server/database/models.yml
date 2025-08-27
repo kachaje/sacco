@@ -3,11 +3,11 @@ member:
     - memberBeneficiary
     - memberLoan
     - memberBusiness
-    - memberOccupation
     - memberShares
   hasOne:
     - memberContact
     - memberNominee
+    - memberOccupation
   fields:
     - id:
         hidden: true

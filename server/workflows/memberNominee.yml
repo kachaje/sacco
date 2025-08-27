@@ -1,34 +1,33 @@
 enterAddress:
-    inputIdentifier: address
-    nextScreen: formSummary
-    order: 3
-    text:
-        en: Address
-    type: inputScreen
+  inputIdentifier: address
+  nextScreen: formSummary
+  order: 3
+  text:
+    en: Address
+  type: inputScreen
 enterId:
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberId
+  type: hiddenField
 enterName:
-    inputIdentifier: name
-    nextScreen: enterPhoneNumber
-    order: 1
-    text:
-        en: Name
-    type: inputScreen
+  inputIdentifier: name
+  nextScreen: enterPhoneNumber
+  order: 1
+  text:
+    en: Name
+  type: inputScreen
 enterPhoneNumber:
-    inputIdentifier: phoneNumber
-    nextScreen: enterAddress
-    order: 2
-    text:
-        en: Phone Number
-    type: inputScreen
+  inputIdentifier: phoneNumber
+  nextScreen: enterAddress
+  order: 2
+  text:
+    en: Phone Number
+  type: inputScreen
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterName
 model: memberNominee
-relationships: {}

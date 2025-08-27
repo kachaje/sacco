@@ -1,10 +1,6 @@
 package database
 
 var (
-	MemberBusinessArrayChildren = []string{
-		"memberLastYearBusinessHistory",
-		"memberNextYearBusinessProjection",
-	}
 	MemberLoanSingleChildren = []string{
 		"memberBusiness",
 		"memberOccupation",
@@ -25,11 +21,15 @@ var (
 		"memberBeneficiary",
 		"memberLoan",
 		"memberBusiness",
-		"memberOccupation",
 		"memberShares",
 	}
 	MemberSingleChildren = []string{
 		"memberContact",
 		"memberNominee",
+		"memberOccupation",
+	}
+	MemberBusinessArrayChildren = []string{
+		"memberLastYearBusinessHistory",
+		"memberNextYearBusinessProjection",
 	}
 )

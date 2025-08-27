@@ -1,141 +1,140 @@
 enterEmail:
-    inputIdentifier: email
-    nextScreen: enterHomeVillage
-    optional: true
-    order: 3
-    text:
-        en: Email
-    type: inputScreen
+  inputIdentifier: email
+  nextScreen: enterHomeVillage
+  optional: true
+  order: 3
+  text:
+    en: Email
+  type: inputScreen
 enterHomeDistrict:
-    inputIdentifier: homeDistrict
-    nextScreen: formSummary
-    options:
-        - label:
-            en: Dedza
-          position: 1
-        - label:
-            en: Dowa
-          position: 2
-        - label:
-            en: Kasungu
-          position: 3
-        - label:
-            en: Lilongwe
-          position: 4
-        - label:
-            en: Mchinji
-          position: 5
-        - label:
-            en: Nkhotakota
-          position: 6
-        - label:
-            en: Ntcheu
-          position: 7
-        - label:
-            en: Ntchisi
-          position: 8
-        - label:
-            en: Salima
-          position: 9
-        - label:
-            en: Chitipa
-          position: 10
-        - label:
-            en: Karonga
-          position: 11
-        - label:
-            en: Likoma
-          position: 12
-        - label:
-            en: Mzimba
-          position: 13
-        - label:
-            en: Nkhata Bay
-          position: 14
-        - label:
-            en: Rumphi
-          position: 15
-        - label:
-            en: Balaka
-          position: 16
-        - label:
-            en: Blantyre
-          position: 17
-        - label:
-            en: Chikwawa
-          position: 18
-        - label:
-            en: Chiradzulu
-          position: 19
-        - label:
-            en: Machinga
-          position: 20
-        - label:
-            en: Mangochi
-          position: 21
-        - label:
-            en: Mulanje
-          position: 22
-        - label:
-            en: Mwanza
-          position: 23
-        - label:
-            en: Nsanje
-          position: 24
-        - label:
-            en: Thyolo
-          position: 25
-        - label:
-            en: Phalombe
-          position: 26
-        - label:
-            en: Zomba
-          position: 27
-        - label:
-            en: Neno
-          position: 28
-    order: 6
-    text:
-        en: Home District
-    type: inputScreen
+  inputIdentifier: homeDistrict
+  nextScreen: formSummary
+  options:
+    - label:
+        en: Dedza
+      position: 1
+    - label:
+        en: Dowa
+      position: 2
+    - label:
+        en: Kasungu
+      position: 3
+    - label:
+        en: Lilongwe
+      position: 4
+    - label:
+        en: Mchinji
+      position: 5
+    - label:
+        en: Nkhotakota
+      position: 6
+    - label:
+        en: Ntcheu
+      position: 7
+    - label:
+        en: Ntchisi
+      position: 8
+    - label:
+        en: Salima
+      position: 9
+    - label:
+        en: Chitipa
+      position: 10
+    - label:
+        en: Karonga
+      position: 11
+    - label:
+        en: Likoma
+      position: 12
+    - label:
+        en: Mzimba
+      position: 13
+    - label:
+        en: Nkhata Bay
+      position: 14
+    - label:
+        en: Rumphi
+      position: 15
+    - label:
+        en: Balaka
+      position: 16
+    - label:
+        en: Blantyre
+      position: 17
+    - label:
+        en: Chikwawa
+      position: 18
+    - label:
+        en: Chiradzulu
+      position: 19
+    - label:
+        en: Machinga
+      position: 20
+    - label:
+        en: Mangochi
+      position: 21
+    - label:
+        en: Mulanje
+      position: 22
+    - label:
+        en: Mwanza
+      position: 23
+    - label:
+        en: Nsanje
+      position: 24
+    - label:
+        en: Thyolo
+      position: 25
+    - label:
+        en: Phalombe
+      position: 26
+    - label:
+        en: Zomba
+      position: 27
+    - label:
+        en: Neno
+      position: 28
+  order: 6
+  text:
+    en: Home District
+  type: inputScreen
 enterHomeTraditionalAuthority:
-    inputIdentifier: homeTraditionalAuthority
-    nextScreen: enterHomeDistrict
-    order: 5
-    text:
-        en: Home Traditional Authority
-    type: inputScreen
+  inputIdentifier: homeTraditionalAuthority
+  nextScreen: enterHomeDistrict
+  order: 5
+  text:
+    en: Home Traditional Authority
+  type: inputScreen
 enterHomeVillage:
-    inputIdentifier: homeVillage
-    nextScreen: enterHomeTraditionalAuthority
-    order: 4
-    text:
-        en: Home Village
-    type: inputScreen
+  inputIdentifier: homeVillage
+  nextScreen: enterHomeTraditionalAuthority
+  order: 4
+  text:
+    en: Home Village
+  type: inputScreen
 enterId:
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberId
+  type: hiddenField
 enterPostalAddress:
-    inputIdentifier: postalAddress
-    nextScreen: enterResidentialAddress
-    order: 1
-    text:
-        en: Postal Address
-    type: inputScreen
+  inputIdentifier: postalAddress
+  nextScreen: enterResidentialAddress
+  order: 1
+  text:
+    en: Postal Address
+  type: inputScreen
 enterResidentialAddress:
-    inputIdentifier: residentialAddress
-    nextScreen: enterEmail
-    order: 2
-    text:
-        en: Residential Address
-    type: inputScreen
+  inputIdentifier: residentialAddress
+  nextScreen: enterEmail
+  order: 2
+  text:
+    en: Residential Address
+  type: inputScreen
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterPostalAddress
 model: memberContact
-relationships: {}

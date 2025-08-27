@@ -224,7 +224,7 @@ func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFiel
 
 		models = append(models, MemberArrayChildren...)
 
-		models = append(models, MemberChildren...)
+		models = append(models, MemberSingleChildren...)
 
 		for _, model := range models {
 			if skipFields != nil && slices.Contains(skipFields, model) {

@@ -12,9 +12,9 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 		"formSummary": map[string]any{
 			"type": "quitScreen",
 		},
-		"relationships": map[string][]string{},
 	}
 
+	relationships := map[string][]string{}
 	j := 0
 	lastTag := ""
 
@@ -43,7 +43,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 					}
 				}
 
-				data["relationships"].(map[string][]string)["hasMany"] = values
+				relationships["hasMany"] = values
 			}
 		}
 		if rawData["hasOne"] != nil {
@@ -56,7 +56,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 					}
 				}
 
-				data["relationships"].(map[string][]string)["hasOne"] = values
+				relationships["hasOne"] = values
 			}
 		}
 
@@ -159,5 +159,5 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 		return nil, nil, err
 	}
 
-	return yamlString, data["relationships"].(map[string][]string), nil
+	return yamlString, relationships, nil
 }

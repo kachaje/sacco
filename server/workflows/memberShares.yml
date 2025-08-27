@@ -1,43 +1,42 @@
 enterId:
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
+  hidden: true
+  inputIdentifier: memberId
+  type: hiddenField
 enterNumberOfShares:
-    inputIdentifier: numberOfShares
-    nextScreen: enterPricePerShare
-    order: 1
-    text:
-        en: Number Of Shares
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  inputIdentifier: numberOfShares
+  nextScreen: enterPricePerShare
+  order: 1
+  text:
+    en: Number Of Shares
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterPricePerShare:
-    inputIdentifier: pricePerShare
-    nextScreen: 'enterSharesType:'
-    order: 2
-    text:
-        en: Price Per Share
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
-'enterSharesType:':
-    inputIdentifier: 'sharesType:'
-    nextScreen: formSummary
-    options:
-        - label:
-            en: FIXED
-          position: 1
-        - label:
-            en: REDEEMABLE
-          position: 2
-    order: 3
-    text:
-        en: Shares Type
-    type: inputScreen
+  inputIdentifier: pricePerShare
+  nextScreen: "enterSharesType:"
+  order: 2
+  text:
+    en: Price Per Share
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
+"enterSharesType:":
+  inputIdentifier: "sharesType:"
+  nextScreen: formSummary
+  options:
+    - label:
+        en: FIXED
+      position: 1
+    - label:
+        en: REDEEMABLE
+      position: 2
+  order: 3
+  text:
+    en: Shares Type
+  type: inputScreen
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterNumberOfShares
 model: memberShares
-relationships: {}
