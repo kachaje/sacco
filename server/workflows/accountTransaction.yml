@@ -1,0 +1,26 @@
+enterAccountId:
+    hidden: true
+    inputIdentifier: accountId
+    type: hiddenField
+enterAccountTransactionDate:
+    hidden: true
+    inputIdentifier: accountTransactionDate
+    type: hiddenField
+enterDescription:
+    inputIdentifier: description
+    nextScreen: formSummary
+    order: 1
+    text:
+        en: Description
+    type: inputScreen
+enterId:
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
+formSummary:
+    type: quitScreen
+initialScreen: enterDescription
+model: accountTransaction
+relationships:
+    hasMany:
+        - accountJournal

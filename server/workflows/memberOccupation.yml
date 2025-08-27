@@ -62,6 +62,10 @@ enterMemberId:
     hidden: true
     inputIdentifier: memberId
     type: hiddenField
+enterMemberLoanId:
+    hidden: true
+    inputIdentifier: memberLoanId
+    type: hiddenField
 enterNetPay:
     inputIdentifier: netPay
     nextScreen: enterJobTitle
@@ -82,3 +86,4 @@ formSummary:
     type: quitScreen
 initialScreen: enterEmployerName
 model: memberOccupation
+relationships: {}

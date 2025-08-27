@@ -60,3 +60,4 @@ formSummary:
     type: quitScreen
 initialScreen: enterJobVerified
 model: memberOccupationVerification
+relationships: {}

@@ -37,3 +37,4 @@ formSummary:
     type: quitScreen
 initialScreen: enterDescription
 model: memberLoanSecurity
+relationships: {}

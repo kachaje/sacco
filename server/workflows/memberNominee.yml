@@ -31,3 +31,4 @@ formSummary:
     type: quitScreen
 initialScreen: enterName
 model: memberNominee
+relationships: {}

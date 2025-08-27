@@ -1,0 +1,33 @@
+enterAccountId:
+    hidden: true
+    inputIdentifier: accountId
+    type: hiddenField
+enterAccountTransactionId:
+    hidden: true
+    inputIdentifier: accountTransactionId
+    type: hiddenField
+enterCredit:
+    inputIdentifier: credit
+    nextScreen: formSummary
+    order: 2
+    text:
+        en: Credit
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
+enterDebit:
+    inputIdentifier: debit
+    nextScreen: enterCredit
+    order: 1
+    text:
+        en: Debit
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
+enterId:
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
+formSummary:
+    type: quitScreen
+initialScreen: enterDebit
+model: accountJournal
+relationships: {}

@@ -6,12 +6,13 @@ import (
 	"sacco/utils"
 )
 
-func Main(model, destinationFile string, sourceData map[string]any) (*string, error) {
+func Main(model, destinationFile string, sourceData map[string]any) (*string, map[string][]string, error) {
 	data := map[string]any{
 		"model": model,
 		"formSummary": map[string]any{
 			"type": "quitScreen",
 		},
+		"relationships": map[string][]string{},
 	}
 
 	j := 0
@@ -29,6 +30,33 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, er
 				} else if totalLoops, ok := val["totalLoops"].(float64); ok {
 					count = int(totalLoops)
 				}
+			}
+		}
+
+		if rawData["hasMany"] != nil {
+			if val, ok := rawData["hasMany"].([]any); ok {
+				values := []string{}
+
+				for _, v := range val {
+					if vs, ok := v.(string); ok {
+						values = append(values, vs)
+					}
+				}
+
+				data["relationships"].(map[string][]string)["hasMany"] = values
+			}
+		}
+		if rawData["hasOne"] != nil {
+			if val, ok := rawData["hasOne"].([]any); ok {
+				values := []string{}
+
+				for _, v := range val {
+					if vs, ok := v.(string); ok {
+						values = append(values, vs)
+					}
+				}
+
+				data["relationships"].(map[string][]string)["hasOne"] = values
 			}
 		}
 
@@ -123,13 +151,13 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, er
 
 	yamlString, err := utils.DumpYaml(data)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	err = os.WriteFile(destinationFile, []byte(*yamlString), 0644)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return yamlString, nil
+	return yamlString, data["relationships"].(map[string][]string), nil
 }

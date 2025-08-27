@@ -53,3 +53,4 @@ formSummary:
     type: quitScreen
 initialScreen: enterName
 model: user
+relationships: {}

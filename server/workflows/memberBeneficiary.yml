@@ -122,3 +122,4 @@ formSummary:
     type: quitScreen
 initialScreen: enterName1
 model: memberBeneficiary
+relationships: {}

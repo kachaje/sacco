@@ -60,3 +60,12 @@ formSummary:
     type: quitScreen
 initialScreen: enterPhoneNumber
 model: memberLoan
+relationships:
+    hasOne:
+        - memberBusiness
+        - memberOccupation
+        - memberLoanLiability
+        - memberLoanSecurity
+        - memberLoanWitness
+        - memberOccupationVerification
+        - memberLoanApproval
