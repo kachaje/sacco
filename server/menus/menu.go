@@ -237,16 +237,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 	}
 
-	var menuRoot string
-
-	if session != nil {
-		menuRoot = session.CurrentMenu
-
-		if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
-			menuRoot = strings.Split(session.CurrentMenu, ".")[0]
-		}
-	}
-
 	if slices.Contains(keys, text) {
 		target := text
 		text = "000"
@@ -346,9 +336,18 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 
 	} else {
+		var menuRoot string
 
-		if session == nil {
-			return response
+		if session != nil {
+			menuRoot = session.CurrentMenu
+
+			if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
+				menuRoot = strings.Split(session.CurrentMenu, ".")[0]
+			}
+
+			if m.Functions[menuRoot] == nil && m.Functions[session.CurrentMenu] != nil {
+				menuRoot = session.CurrentMenu
+			}
 		}
 
 		if session != nil && m.Functions[menuRoot] != nil {
@@ -784,7 +783,7 @@ response: %s`, text, payload)
 }
 
 func (m *Menus) memberLoansSummary(data map[string]any) string {
-	var response string
+	var response string = "Member Loans Summary\n\n00. Main Menu"
 
 	_ = data
 
