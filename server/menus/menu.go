@@ -919,21 +919,23 @@ func (m *Menus) listUsers(_ map[string]any) string {
 
 	title := "Users List\n----------"
 
-	result, err := DB.SQLQuery("SELECT id, username, role FROM user WHERE active = 1")
+	result, err := DB.SQLQuery("SELECT id, username, role, created_at, updated_at FROM user WHERE active = 1")
 	if err != nil {
 		content = fmt.Sprintf("%s\n", err.Error())
 	} else {
 		rows := []string{
-			fmt.Sprintf("%2s | %-12s | %-10s", "id", "username", "role"),
-			"-----------------------------",
+			fmt.Sprintf("%2s | %-10s | %-8s | %-20s | %-20s", "id", "username", "role", "created_at", "updated_at"),
+			strings.Repeat("-", 70),
 		}
 
 		for _, row := range result {
 			id := fmt.Sprintf("%v", row["id"])
 			username := fmt.Sprintf("%v", row["username"])
 			role := fmt.Sprintf("%v", row["role"])
+			createdAt := fmt.Sprintf("%v", row["created_at"])
+			updatedAt := fmt.Sprintf("%v", row["updated_at"])
 
-			entry := fmt.Sprintf("%2s | %-12s | %-10s", id, username, role)
+			entry := fmt.Sprintf("%2s | %-10s | %-8s | %-20s | %-20s", id, username, role, createdAt, updatedAt)
 
 			rows = append(rows, entry)
 		}
