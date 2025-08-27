@@ -716,11 +716,23 @@ func (m *Menus) devConsole(data map[string]any) string {
 		case "console.8":
 			title = "SQL Query"
 
-			// result, err :=
+			result, err := DB.SQLQuery(text)
+			if err != nil {
+				content = fmt.Sprintf(`query: %s
 
-			content = fmt.Sprintf(`query: %s
+response: %s`, text, err.Error())
+			} else {
+				payload, err := json.MarshalIndent(result, "", " ")
+				if err != nil {
+					content = fmt.Sprintf(`query: %s
 
-response: %s`, text, "")
+response: %s`, text, err.Error())
+				} else {
+					content = fmt.Sprintf(`query: %s
+
+response: %s`, text, payload)
+				}
+			}
 
 		default:
 			session.CurrentMenu = "console"

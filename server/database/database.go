@@ -274,3 +274,44 @@ func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFiel
 
 	return member, nil
 }
+
+func (d *Database) SQLQuery(query string) ([]map[string]any, error) {
+	rows, err := d.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	cols, err := rows.Columns()
+	if err != nil {
+		return nil, err
+	}
+
+	values := make([]any, len(cols))
+	scanArgs := make([]any, len(cols))
+
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	results := []map[string]any{}
+
+	for rows.Next() {
+		err = rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+
+		rowMap := make(map[string]any)
+		for i, col := range cols {
+			val := values[i]
+			if b, ok := val.([]byte); ok {
+				rowMap[col] = string(b)
+			} else {
+				rowMap[col] = val
+			}
+		}
+
+		results = append(results, rowMap)
+	}
+
+	return results, nil
+}
