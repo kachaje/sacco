@@ -14,7 +14,7 @@ fields:
       - id
       - username
       - role
-    workflow: user
+    function: editUser
   "3":
     id: blockUser
     label:
@@ -27,7 +27,7 @@ fields:
     id: listUser
     label:
       en: Users List
-    funtion: listUsers
+    function: listUsers
   "00":
     id: main
     label:
