@@ -42,11 +42,31 @@ fields:
     label:
       en: Loan Witness
     workflow: memberLoanWitness
+    targetKeys:
+      - id
+      - memberId
+      - memberLoanId
+      - name
+      - telephone
+      - address
+      - date
   "5":
     id: loan.5
     label:
       en: Loan Approvals
     workflow: loanApproval
+    targetKeys:
+      - id
+      - memberId
+      - memberLoanId
+      - loanStatus
+      - amountRecommended
+      - approvedBy
+      - approvalDate
+      - amountApproved
+      - verifiedBy
+      - dateVerified
+      - denialOrPartialReason
   "6":
     id: employment
     label:
@@ -55,6 +75,11 @@ fields:
     id: business
     label:
       en: Business Details
+  "8":
+    id: memberLoansSummary
+    label:
+      en: Member Loans
+    function: memberLoansSummary
   "00":
     id: main
     label:

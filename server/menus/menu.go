@@ -98,6 +98,9 @@ func NewMenus(devMode *bool) *Menus {
 	m.FunctionsMap["devConsole"] = func(data map[string]any) string {
 		return m.devConsole(data)
 	}
+	m.FunctionsMap["memberLoansSummary"] = func(data map[string]any) string {
+		return m.memberLoansSummary(data)
+	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -734,6 +737,25 @@ response: %s`, text, payload)
 				}
 			}
 
+		case "console.9":
+			title = "Member By PhoneNumber"
+
+			if text != "" {
+				result, err := DB.MemberByPhoneNumber(text, nil, nil)
+				if err != nil {
+					content = fmt.Sprintf("%s\n", err.Error())
+				} else {
+					payload, err := json.MarshalIndent(result, "", " ")
+					if err != nil {
+						content = fmt.Sprintf("%s\n", err.Error())
+					} else {
+						content = fmt.Sprintf("%s\n", payload)
+					}
+				}
+			} else {
+				content = ""
+			}
+
 		default:
 			session.CurrentMenu = "console"
 
@@ -745,7 +767,8 @@ response: %s`, text, payload)
 				"5. MemberId\n" +
 				"6. SessionId\n" +
 				"7. PhoneNumber\n" +
-				"8. SQL Query"
+				"8. SQL Query\n" +
+				"9. Member By PhoneNumber"
 		}
 	} else {
 		content = "No active session provided"
@@ -756,6 +779,14 @@ response: %s`, text, payload)
 		fmt.Sprintf("\n\n%s\n", content) +
 		"\n99. Cancel\n" +
 		"00. Main Menu\n"
+
+	return response
+}
+
+func (m *Menus) memberLoansSummary(data map[string]any) string {
+	var response string
+
+	_ = data
 
 	return response
 }
