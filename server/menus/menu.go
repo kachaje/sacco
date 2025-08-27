@@ -231,6 +231,12 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		}
 	}
 
+	menuRoot := session.CurrentMenu
+
+	if regexp.MustCompile(`\.\d+$`).MatchString(session.CurrentMenu) {
+		menuRoot = strings.Split(session.CurrentMenu, ".")[0]
+	}
+
 	if slices.Contains(keys, text) {
 		target := text
 		text = "000"
@@ -329,13 +335,13 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				"00. Main Menu\n"
 		}
 
-	} else if session != nil && m.Functions[session.CurrentMenu] != nil {
+	} else if session != nil && m.Functions[menuRoot] != nil {
 		if text == "00" {
 			session.CurrentMenu = "main"
 			text = "0"
 			return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
 		} else {
-			if fnName, ok := m.Functions[session.CurrentMenu].(string); ok && m.FunctionsMap[fnName] != nil {
+			if fnName, ok := m.Functions[menuRoot].(string); ok && m.FunctionsMap[fnName] != nil {
 				response = m.FunctionsMap[fnName](map[string]any{
 					"phoneNumber":       phoneNumber,
 					"cacheFolder":       cacheFolder,
@@ -345,7 +351,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 					"text":              text,
 				})
 			} else {
-				response = fmt.Sprintf("Function %s not found\n\n", m.Functions[session.CurrentMenu]) +
+				response = fmt.Sprintf("Function %s not found\n\n", m.Functions[menuRoot]) +
 					"00. Main Menu\n"
 			}
 		}
@@ -599,8 +605,7 @@ func (m *Menus) viewMemberDetails(data map[string]any) string {
 
 func (m *Menus) devConsole(data map[string]any) string {
 	var session *parser.Session
-	var text string
-	var response, content string
+	var response, content, text, title string
 
 	if data["session"] != nil {
 		if val, ok := data["session"].(*parser.Session); ok {
@@ -614,8 +619,16 @@ func (m *Menus) devConsole(data map[string]any) string {
 	}
 
 	if session != nil {
-		switch text {
-		case "1":
+		fmt.Println(session.CurrentMenu)
+
+		if session.CurrentMenu == "console" && regexp.MustCompile(`^\d+$`).MatchString(text) {
+			session.CurrentMenu = fmt.Sprintf("%s.%s", session.CurrentMenu, text)
+		}
+
+		switch session.CurrentMenu {
+		case "console.1":
+			title = "WorkflowsMapping"
+
 			if session.WorkflowsMapping != nil {
 				data := map[string]any{}
 
@@ -637,7 +650,9 @@ func (m *Menus) devConsole(data map[string]any) string {
 					content = string(payload)
 				}
 			}
-		case "2":
+		case "console.2":
+			title = "AddedModels"
+
 			if session.AddedModels != nil {
 				payload, err := json.MarshalIndent(session.AddedModels, "", "  ")
 				if err != nil {
@@ -646,7 +661,9 @@ func (m *Menus) devConsole(data map[string]any) string {
 					content = string(payload)
 				}
 			}
-		case "3":
+		case "console.3":
+			title = "ActiveData"
+
 			if session.ActiveData != nil {
 				payload, err := json.MarshalIndent(session.ActiveData, "", "  ")
 				if err != nil {
@@ -655,7 +672,9 @@ func (m *Menus) devConsole(data map[string]any) string {
 					content = string(payload)
 				}
 			}
-		case "4":
+		case "console.4":
+			title = "Data"
+
 			if session.Data != nil {
 				payload, err := json.MarshalIndent(session.Data, "", "  ")
 				if err != nil {
@@ -664,15 +683,29 @@ func (m *Menus) devConsole(data map[string]any) string {
 					content = string(payload)
 				}
 			}
-		case "5":
+		case "console.5":
+			title = "MemberId"
+
 			if session.MemberId != nil {
 				content = fmt.Sprint(*session.MemberId)
 			}
-		case "6":
+		case "console.6":
+			title = "SessionId"
+
 			content = session.SessionId
-		case "7":
+		case "console.7":
+			title = "PhoneNumber"
+
 			content = session.PhoneNumber
+
+		case "console.8":
+			title = "SQL Query"
+
+			fmt.Println(text)
+
 		default:
+			session.CurrentMenu = "console"
+
 			content = "Available Dumps:\n" +
 				"1. WorkflowsMapping\n" +
 				"2. AddedModels\n" +
@@ -680,13 +713,15 @@ func (m *Menus) devConsole(data map[string]any) string {
 				"4. Data\n" +
 				"5. MemberId\n" +
 				"6. SessionId\n" +
-				"7. PhoneNumber"
+				"7. PhoneNumber\n" +
+				"8. SQL Query"
 		}
 	} else {
 		content = "No active session provided"
 	}
 
 	response = "Dev Console\n\n" +
+		title +
 		fmt.Sprintf("%s\n", content) +
 		"\n99. Cancel\n" +
 		"00. Main Menu\n"
