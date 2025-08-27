@@ -19,7 +19,7 @@ func TestLogin(t *testing.T) {
 }
 
 func TestMainMenu(t *testing.T) {
-	demo := true 
+	demo := true
 
 	m := menus.NewMenus(nil, &demo)
 
@@ -44,7 +44,7 @@ CON Welcome to Kaso SACCO
 }
 
 func TestRegistrationSubMenu(t *testing.T) {
-	demo := true 
+	demo := true
 
 	m := menus.NewMenus(nil, &demo)
 
@@ -70,7 +70,7 @@ CON Choose Activity
 }
 
 func TestBusinessMenu(t *testing.T) {
-	demo := true 
+	demo := true
 
 	m := menus.NewMenus(nil, &demo)
 
@@ -95,7 +95,7 @@ CON Business
 }
 
 func TestEmployementMenu(t *testing.T) {
-	demo := true 
+	demo := true
 
 	m := menus.NewMenus(nil, &demo)
 
@@ -119,7 +119,7 @@ CON Employement
 }
 
 func TestLoanMenu(t *testing.T) {
-	demo := true 
+	demo := true
 
 	m := menus.NewMenus(nil, &demo)
 

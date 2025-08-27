@@ -887,39 +887,25 @@ func (m *Menus) login(data map[string]any) string {
 
 			text = ""
 
-			result, err := DB.SQLQuery(fmt.Sprintf(`SELECT id, password, role FROM user WHERE username = "%v"`, m.Cache["username"]))
-			if err != nil {
-				response = err.Error()
+			if DB.ValidatePassword(m.Cache["username"], m.Cache["password"]) {
+				token := uuid.NewString()
+				session.SessionToken = &token
+
+				session.CurrentMenu = "main"
+
+				username := fmt.Sprintf("%v", m.Cache["username"])
+
+				session.SessionUser = &username
+
+				m.Cache = map[string]string{}
+				m.LastPrompt = ""
+
+				return m.LoadMenu("main", session, phoneNumber, text, preferencesFolder, cacheFolder)
 			} else {
-				if len(result) > 0 {
-					passHash := fmt.Sprintf("%v", result[0]["password"])
+				m.Cache = map[string]string{}
+				m.LastPrompt = "username"
 
-					if utils.CheckPasswordHash(m.Cache["password"], passHash) {
-						token := uuid.NewString()
-						session.SessionToken = &token
-
-						session.CurrentMenu = "main"
-
-						username := fmt.Sprintf("%v", m.Cache["username"])
-
-						session.SessionUser = &username
-
-						m.Cache = map[string]string{}
-						m.LastPrompt = ""
-
-						return m.LoadMenu("main", session, phoneNumber, text, preferencesFolder, cacheFolder)
-					} else {
-						m.Cache = map[string]string{}
-						m.LastPrompt = "username"
-
-						response = "Login\n\nEnter username:\n"
-					}
-				} else {
-					m.Cache = map[string]string{}
-					m.LastPrompt = "username"
-
-					response = "Login\n\nEnter username:\n"
-				}
+				response = "Login\n\nEnter username:\n"
 			}
 		}
 	}
@@ -1041,13 +1027,18 @@ func (m *Menus) changePassword(data map[string]any) string {
 
 				response = newPassword("(Password Mismatch!)")
 			} else {
-				fmt.Println(*session.SessionUser, session.Cache)
+				if DB.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]) {
+					session.Cache = map[string]string{}
+					session.LastPrompt = ""
 
-				
+					response = "Change Password\n" +
+						"-------------\n" +
+						"Password Changed!\n\n00. Main Menu"
+				} else {
+					m.LastPrompt = "currentPassword"
 
-				response = "Change Password\n" +
-					"-------------\n" +
-					"Password Changed!\n\n00. Main Menu"
+					response = currentPassword("(Invalid credentials)")
+				}
 			}
 		}
 	default:
