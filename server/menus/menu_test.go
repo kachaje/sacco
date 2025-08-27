@@ -9,7 +9,7 @@ import (
 )
 
 func TestLogin(t *testing.T) {
-	m := menus.NewMenus(nil)
+	m := menus.NewMenus(nil, nil)
 
 	session := parser.NewSession(nil, nil, nil)
 
@@ -19,7 +19,9 @@ func TestLogin(t *testing.T) {
 }
 
 func TestMainMenu(t *testing.T) {
-	m := menus.NewMenus(nil)
+	demo := true 
+
+	m := menus.NewMenus(nil, &demo)
 
 	session := parser.NewSession(nil, nil, nil)
 
@@ -42,7 +44,9 @@ CON Welcome to Kaso SACCO
 }
 
 func TestRegistrationSubMenu(t *testing.T) {
-	m := menus.NewMenus(nil)
+	demo := true 
+
+	m := menus.NewMenus(nil, &demo)
 
 	session := parser.NewSession(nil, nil, nil)
 
@@ -66,7 +70,9 @@ CON Choose Activity
 }
 
 func TestBusinessMenu(t *testing.T) {
-	m := menus.NewMenus(nil)
+	demo := true 
+
+	m := menus.NewMenus(nil, &demo)
 
 	session := parser.NewSession(nil, nil, nil)
 
@@ -89,7 +95,9 @@ CON Business
 }
 
 func TestEmployementMenu(t *testing.T) {
-	m := menus.NewMenus(nil)
+	demo := true 
+
+	m := menus.NewMenus(nil, &demo)
 
 	session := parser.NewSession(nil, nil, nil)
 
@@ -111,7 +119,9 @@ CON Employement
 }
 
 func TestLoanMenu(t *testing.T) {
-	m := menus.NewMenus(nil)
+	demo := true 
+
+	m := menus.NewMenus(nil, &demo)
 
 	session := parser.NewSession(nil, nil, nil)
 

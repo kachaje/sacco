@@ -45,6 +45,7 @@ type Menus struct {
 	mu sync.Mutex
 
 	DevModeActive bool
+	DemoMode      bool
 
 	Cache      map[string]string
 	LastPrompt string
@@ -66,7 +67,7 @@ func init() {
 	Sessions = map[string]*parser.Session{}
 }
 
-func NewMenus(devMode *bool) *Menus {
+func NewMenus(devMode, demoMode *bool) *Menus {
 	m := &Menus{
 		ActiveMenus:   map[string]any{},
 		Titles:        map[string]string{},
@@ -83,6 +84,9 @@ func NewMenus(devMode *bool) *Menus {
 
 	if devMode != nil {
 		m.DevModeActive = *devMode
+	}
+	if demoMode != nil {
+		m.DemoMode = *demoMode
 	}
 
 	m.FunctionsMap["doExit"] = func(data map[string]any) string {
@@ -226,7 +230,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		return response
 	}
 
-	if session.SessionToken == nil {
+	if session.SessionToken == nil && !m.DemoMode {
 		return m.login(map[string]any{
 			"phoneNumber":       phoneNumber,
 			"cacheFolder":       cacheFolder,

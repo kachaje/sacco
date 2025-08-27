@@ -235,10 +235,12 @@ func Main() {
 	var dbname string = ":memory:"
 	var cancel context.CancelFunc
 	var devMode bool
+	var demoMode bool
 
 	flag.IntVar(&port, "p", port, "server port")
 	flag.StringVar(&dbname, "n", dbname, "database name")
 	flag.BoolVar(&devMode, "d", devMode, "dev mode")
+	flag.BoolVar(&demoMode, "o", demoMode, "demo mode")
 
 	flag.Parse()
 
@@ -264,7 +266,7 @@ func Main() {
 
 	menus.DB = database.NewDatabase(dbname)
 
-	activeMenu = menus.NewMenus(&devMode)
+	activeMenu = menus.NewMenus(&devMode, &demoMode)
 
 	http.HandleFunc("/ws", wsHandler)
 

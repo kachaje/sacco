@@ -94,7 +94,9 @@ func TestMembershipApplication(t *testing.T) {
 
 	text := ""
 
-	m := menus.NewMenus(nil)
+	demo := true 
+
+	m := menus.NewMenus(nil, &demo)
 
 	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
 
