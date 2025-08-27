@@ -843,9 +843,9 @@ func (m *Menus) memberLoansSummary(data map[string]any) string {
 }
 
 func (m *Menus) login(data map[string]any) string {
-	var session *parser.Session
 	var response string
 	var phoneNumber, text, preferencesFolder, cacheFolder string
+	var session *parser.Session
 
 	if data["session"] != nil {
 		if val, ok := data["session"].(*parser.Session); ok {
@@ -899,6 +899,13 @@ func (m *Menus) login(data map[string]any) string {
 						session.SessionToken = &token
 
 						session.CurrentMenu = "main"
+
+						username := fmt.Sprintf("%v", m.Cache["username"])
+
+						session.SessionUser = &username
+
+						m.Cache = map[string]string{}
+						m.LastPrompt = ""
 
 						return m.LoadMenu("main", session, phoneNumber, text, preferencesFolder, cacheFolder)
 					} else {
@@ -969,9 +976,85 @@ func (m *Menus) editUser(data map[string]any) string {
 }
 
 func (m *Menus) changePassword(data map[string]any) string {
-	var response string = "Change Password\n\n00. Main Menu"
+	var response, text string
+	var session *parser.Session
 
-	_ = data
+	if data["session"] != nil {
+		if val, ok := data["session"].(*parser.Session); ok {
+			session = val
+		}
+	}
+
+	if data["text"] != nil {
+		if val, ok := data["text"].(string); ok {
+			text = val
+		}
+	}
+
+	currentPassword := func(msg string) string {
+		return fmt.Sprintf("Change Password\n"+
+			"---------------\n\n"+
+			"Current Password %s\n", msg)
+	}
+	newPassword := func(msg string) string {
+		return fmt.Sprintf("Change Password\n"+
+			"---------------\n\n"+
+			"New Password %s\n", msg)
+	}
+	confirmPassword := func(msg string) string {
+		return fmt.Sprintf("Change Password\n"+
+			"---------------\n\n"+
+			"Confirm Password %s\n", msg)
+	}
+
+	switch m.LastPrompt {
+	case "currentPassword":
+		if text == "" {
+			response = currentPassword("(Required Field)")
+		} else {
+			session.Cache["currentPassword"] = text
+
+			m.LastPrompt = "newPassword"
+
+			response = newPassword("")
+		}
+	case "newPassword":
+		if text == "" {
+			response = newPassword("(Required Field)")
+		} else {
+			session.Cache["newPassword"] = text
+
+			m.LastPrompt = "confirmPassword"
+
+			response = confirmPassword("")
+		}
+	case "confirmPassword":
+		if text == "" {
+			response = confirmPassword("(Required Field)")
+		} else {
+			session.Cache["confirmPassword"] = text
+
+			text = ""
+
+			if session.Cache["newPassword"] != session.Cache["confirmPassword"] {
+				m.LastPrompt = "newPassword"
+
+				response = newPassword("(Password Mismatch!)")
+			} else {
+				fmt.Println(*session.SessionUser, session.Cache)
+
+				
+
+				response = "Change Password\n" +
+					"-------------\n" +
+					"Password Changed!\n\n00. Main Menu"
+			}
+		}
+	default:
+		m.LastPrompt = "currentPassword"
+
+		response = currentPassword("")
+	}
 
 	return response
 }

@@ -33,6 +33,10 @@ type Session struct {
 	Mu *sync.Mutex
 
 	SessionToken *string
+	SessionUser  *string
+
+	Cache      map[string]string
+	LastPrompt string
 }
 
 func NewSession(
@@ -48,6 +52,8 @@ func NewSession(
 		SkipFields:       []string{"active"},
 		CurrentMenu:      "main",
 		WorkflowsMapping: map[string]*WorkFlow{},
+		Cache:            map[string]string{},
+		LastPrompt:       "",
 	}
 
 	if phoneNumber != nil {
