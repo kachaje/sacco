@@ -10,7 +10,19 @@ import (
 	"sacco/server/parser"
 	"sacco/utils"
 	"slices"
+	"strconv"
 	"time"
+)
+
+var (
+	FloatFields = []string{
+		"netPay", "grossPay", "periodEmployedInMonths", "yearsInBusiness",
+		"totalIncome", "totalCostOfGoods", "employeesWages", "ownSalary",
+		"transport", "loanInterest", "utilities", "rentals", "otherCosts",
+		"totalCosts", "netProfitLoss", "numberOfShares", "pricePerShare",
+		"loanAmount", "repaymentPeriodInMonths", "amountRecommended",
+		"amountApproved", "value",
+	}
 )
 
 func CacheFile(filename string, data any, retries int) {
@@ -99,7 +111,39 @@ func SaveData(
 				saveFunc, sessions, sessionFolder,
 			)
 		} else {
-			fmt.Println("##########", *phoneNumber, data)
+			if val, ok := data.(map[string]any); ok {
+				filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", *model))
+
+				transactionDone := false
+
+				CacheFile(filename, val, 0)
+				defer func() {
+					if transactionDone {
+						os.Remove(filename)
+					}
+				}()
+
+				for _, key := range FloatFields {
+					if val[key] != nil {
+						nv, ok := val[key].(string)
+						if ok {
+							real, err := strconv.ParseFloat(nv, 64)
+							if err == nil {
+								val[key] = real
+							}
+						}
+					}
+				}
+
+				_, err := saveFunc(val, *model, 0)
+				if err != nil {
+					return err
+				}
+
+				transactionDone = true
+			} else {
+				fmt.Println("##########", *model, *phoneNumber, data)
+			}
 		}
 	}
 

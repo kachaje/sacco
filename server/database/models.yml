@@ -503,6 +503,7 @@ user:
         required: true
     - password:
         required: true
+        numericField: true
     - role:
         required: true
         options:

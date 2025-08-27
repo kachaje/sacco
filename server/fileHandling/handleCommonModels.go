@@ -28,14 +28,7 @@ func HandleCommonModels(data any, model, phoneNumber, cacheFolder *string,
 			}
 		}()
 
-		for _, key := range []string{
-			"netPay", "grossPay", "periodEmployedInMonths", "yearsInBusiness",
-			"totalIncome", "totalCostOfGoods", "employeesWages", "ownSalary",
-			"transport", "loanInterest", "utilities", "rentals", "otherCosts",
-			"totalCosts", "netProfitLoss", "numberOfShares", "pricePerShare",
-			"loanAmount", "repaymentPeriod", "amountRecommended",
-			"amountApproved", "value",
-		} {
+		for _, key := range FloatFields {
 			if val[key] != nil {
 				nv, ok := val[key].(string)
 				if ok {

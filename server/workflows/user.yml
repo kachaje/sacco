@@ -16,6 +16,7 @@ enterPassword:
     text:
         en: Password
     type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterRole:
     inputIdentifier: role
     nextScreen: formSummary
