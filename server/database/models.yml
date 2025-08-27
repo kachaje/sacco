@@ -512,3 +512,45 @@ user:
           - Accountant
           - Loans Officer
           - Manager
+
+account:
+  hasMany:
+    - accountJournal
+    - accountTransaction
+  fields:
+    - id:
+        hidden: true
+    - accountName:
+        required: true
+
+accountTransaction:
+  hasMany:
+    - accountJournal
+  belongsTo:
+    - account
+  fields:
+    - id:
+        hidden: true
+    - accountTransactionDate:
+        hidden: true
+    - accountId:
+        hidden: true
+    - description:
+        required: true
+
+accountJournal:
+  belongsTo:
+    - account
+  fields:
+    - id:
+        hidden: true
+    - accountId:
+        hidden: true
+    - accountTransactionId:
+        hidden: true
+    - debit:
+        numericField: true
+        required: true
+    - credit:
+        numericField: true
+        required: true

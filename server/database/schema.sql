@@ -457,7 +457,7 @@ WHERE
 END;
 
 CREATE TABLE
-  account (
+  IF NOT EXISTS account (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     accountName TEXT NOT NULL,
     active INTEGER DEFAULT 1,
@@ -476,18 +476,18 @@ WHERE
 END;
 
 CREATE TABLE
-  financialTransaction (
+  IF NOT EXISTS accountTransaction (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    dateTimestamp TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    accountTransactionDate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     description text NOT NULL,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
-CREATE TRIGGER IF NOT EXISTS financialTransactionUpdated AFTER
-UPDATE ON financialTransaction FOR EACH ROW BEGIN
-UPDATE financialTransaction
+CREATE TRIGGER IF NOT EXISTS accountTransactionUpdated AFTER
+UPDATE ON accountTransaction FOR EACH ROW BEGIN
+UPDATE accountTransaction
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
@@ -496,22 +496,30 @@ WHERE
 END;
 
 CREATE TABLE
-  journal (
+  IF NOT EXISTS accountJournal (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    financialTransactionId INTEGER NOT NULL,
+    accountTransactionId INTEGER NOT NULL,
     accountId INTEGER NOT NULL,
-    amount REAL NOT NULL,
-    isCredit BOOLEAN NOT NULL,
+    debit REAL NOT NULL,
+    credit REAL NOT NULL,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (financialTransactionId) REFERENCES financialTransaction (id) ON DELETE CASCADE,
-    FOREIGN KEY (accountId) REFERENCES account (id) ON DELETE CASCADE
+    FOREIGN KEY (accountTransactionId) REFERENCES accountTransaction (id) ON DELETE CASCADE,
+    FOREIGN KEY (accountId) REFERENCES account (id) ON DELETE CASCADE,
+    CHECK (
+      debit >= 0
+      AND credit >= 0
+    ),
+    CHECK (
+      debit > 0
+      OR credit > 0
+    )
   );
 
-CREATE TRIGGER IF NOT EXISTS journalUpdated AFTER
-UPDATE ON journal FOR EACH ROW BEGIN
-UPDATE journal
+CREATE TRIGGER IF NOT EXISTS accountJournalUpdated AFTER
+UPDATE ON accountJournal FOR EACH ROW BEGIN
+UPDATE accountJournal
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
