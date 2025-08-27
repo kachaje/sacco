@@ -540,4 +540,4 @@ VALUES
 INSERT
 OR IGNORE INTO user (username, password, name, role)
 VALUES
-  ("admin", "NDMyMQo=", "Admin", "Admin");
+  ("admin", "$2a$10$Xo4x3KiCkB3xGKvaCI4Hn.Be95DEiaIT3lbvHx/kOmyx7IqGY6ILK", "Admin", "Admin");
