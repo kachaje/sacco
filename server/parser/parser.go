@@ -162,10 +162,19 @@ func NewWorkflow(
 	return w
 }
 
-func (w *WorkFlow) CalculateFormulae() {
+func (w *WorkFlow) CalculateFormulae() error {
 	for key, value := range w.FormulaFields {
-		fmt.Println(key, value)
+		tokens := GetTokens(value)
+
+		result, err := ResultFromFormulae(tokens, w.Data)
+		if err != nil {
+			return err
+		}
+
+		w.Data[key] = *result
 	}
+
+	return nil
 }
 
 func (w *WorkFlow) GetNode(screen string) map[string]any {

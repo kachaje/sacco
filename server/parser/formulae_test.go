@@ -102,10 +102,29 @@ func TestCalculateFormulae(t *testing.T) {
 		"utilities":        "35000",
 		"rentals":          "50000",
 		"otherCosts":       "0",
+		"totalIncome":      "2000000",
 	}
 
 	wf.FormulaFields["totalCosts"] = "SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
 	wf.FormulaFields["netProfitLoss"] = "DIFF({{totalIncome}},{{totalCosts}})"
 
 	wf.CalculateFormulae()
+
+	target := map[string]any{
+		"employeesWages":   "500000",
+		"loanInterest":     "0",
+		"netProfitLoss":    265000.0,
+		"otherCosts":       "0",
+		"ownSalary":        "100000",
+		"rentals":          "50000",
+		"totalCostOfGoods": "1000000",
+		"totalCosts":       1735000.0,
+		"totalIncome":      "2000000",
+		"transport":        "50000",
+		"utilities":        "35000",
+	}
+
+	if !reflect.DeepEqual(wf.Data, target) {
+		t.Fatal("Test failed")
+	}
 }

@@ -50,6 +50,8 @@ func ResultFromFormulae(tokens, data map[string]any) (*float64, error) {
 				terms = append(terms, val)
 			}
 		}
+	} else if val, ok := tokens["terms"].([]string); ok {
+		terms = append(terms, val...)
 	}
 
 	switch strings.ToUpper(op) {
