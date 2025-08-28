@@ -19,33 +19,19 @@ var (
 )
 
 func init() {
-	FunctionsMap["doExit"] = DoExit
-
-	FunctionsMap["businessSummary"] = BusinessSummary
-
-	FunctionsMap["employmentSummary"] = EmploymentSummary
-
-	FunctionsMap["checkBalance"] = CheckBalance
-
 	FunctionsMap["bankingDetails"] = BankingDetails
-
-	FunctionsMap["viewMemberDetails"] = ViewMemberDetails
-
-	FunctionsMap["devConsole"] = DevConsole
-
-	FunctionsMap["memberLoansSummary"] = MemberLoansSummary
-
-	FunctionsMap["signIn"] = SignIn
-
-	FunctionsMap["listUsers"] = ListUsers
-
 	FunctionsMap["blockUser"] = BlockUser
-
-	FunctionsMap["editUser"] = EditUser
-
+	FunctionsMap["businessSummary"] = BusinessSummary
 	FunctionsMap["changePassword"] = ChangePassword
-
-	FunctionsMap["signUp"] = SignUp
-
+	FunctionsMap["checkBalance"] = CheckBalance
+	FunctionsMap["devConsole"] = DevConsole
+	FunctionsMap["doExit"] = DoExit
+	FunctionsMap["editUser"] = EditUser
+	FunctionsMap["employmentSummary"] = EmploymentSummary
 	FunctionsMap["landing"] = Landing
+	FunctionsMap["listUsers"] = ListUsers
+	FunctionsMap["memberLoansSummary"] = MemberLoansSummary
+	FunctionsMap["signIn"] = SignIn
+	FunctionsMap["signUp"] = SignUp
+	FunctionsMap["viewMemberDetails"] = ViewMemberDetails
 }
