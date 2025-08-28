@@ -31,6 +31,7 @@ type WorkFlow struct {
 	CurrentModel       string
 	CurrentSessionId   string
 	ScreenIdMap        map[string]string
+	FormulaFields      map[string]string
 	ScreenOrder        map[int]string
 	SubmitCallback     func(
 		d any, m *string, p *string, c *string, f *string,
@@ -84,6 +85,7 @@ func NewWorkflow(
 		SubmitCallback:  callbackFunc,
 		History:         map[int]string{},
 		HistoryIndex:    -1,
+		FormulaFields:   map[string]string{},
 	}
 
 	if sessions != nil {
@@ -126,8 +128,12 @@ func NewWorkflow(
 				if row["inputIdentifier"] != nil {
 					id := fmt.Sprintf("%v", row["inputIdentifier"])
 
-					if row["hidden"] == nil {
+					if row["hidden"] == nil && row["readOnly"] == nil {
 						w.ScreenIdMap[id] = key
+					}
+
+					if row["formula"] != nil {
+						w.FormulaFields[id] = row["formula"].(string)
 					}
 
 					if row["order"] != nil {
