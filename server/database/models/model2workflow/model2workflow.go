@@ -114,6 +114,14 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 									data[tag].(map[string]any)["adminOnly"] = true
 								}
 
+								if value["readOnly"] != nil {
+									data[tag].(map[string]any)["readOnly"] = true
+								}
+
+								if value["formula"] != nil {
+									data[tag].(map[string]any)["formula"] = true
+								}
+
 								if value["options"] != nil {
 									if opts, ok := value["options"].([]any); ok {
 										options := []any{}
