@@ -28,6 +28,43 @@ func TestGetTokens(t *testing.T) {
 	}
 }
 
+func TestResultFromFormulae(t *testing.T) {
+	tokens := map[string]any{
+		"op": "SUM",
+		"terms": []any{
+			"totalCostOfGoods",
+			"employeesWages",
+			"ownSalary",
+			"transport",
+			"loanInterest",
+			"utilities",
+			"rentals",
+			"otherCosts",
+		},
+	}
+	data := map[string]any{
+		"totalCostOfGoods": "1000000",
+		"employeesWages":   "500000",
+		"ownSalary":        "100000",
+		"transport":        "50000",
+		"loanInterest":     "0",
+		"utilities":        "35000",
+		"rentals":          "50000",
+		"otherCosts":       "0",
+	}
+
+	result, err := parser.ResultFromFormulae(tokens, data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	target := 1735000.00
+
+	if *result != target {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", target, *result)
+	}
+}
+
 func TestCalculateFormulae(t *testing.T) {
 	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 

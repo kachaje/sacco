@@ -1,7 +1,10 @@
 package parser
 
 import (
+	"fmt"
 	"regexp"
+	"strconv"
+	"strings"
 )
 
 func GetTokens(query string) map[string]any {
@@ -24,4 +27,42 @@ func GetTokens(query string) map[string]any {
 	}
 
 	return result
+}
+
+func ResultFromFormulae(tokens, data map[string]any) (*float64, error) {
+	var result float64
+	var op string
+	var terms []string
+
+	if tokens["op"] == nil {
+		return nil, fmt.Errorf("missing required op token")
+	}
+	if tokens["terms"] == nil {
+		return nil, fmt.Errorf("missing required terms token")
+	}
+
+	if val, ok := tokens["op"].(string); ok {
+		op = val
+	}
+	if val, ok := tokens["terms"].([]any); ok {
+		for _, term := range val {
+			if val, ok := term.(string); ok {
+				terms = append(terms, val)
+			}
+		}
+	}
+
+	switch strings.ToUpper(op) {
+	case "SUM":
+		for _, term := range terms {
+			if data[term] != nil {
+				val, err := strconv.ParseFloat(fmt.Sprintf("%v", data[term]), 64)
+				if err == nil {
+					result += val
+				}
+			}
+		}
+	}
+
+	return &result, nil
 }
