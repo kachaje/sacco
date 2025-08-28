@@ -28,7 +28,7 @@ func TestGetTokens(t *testing.T) {
 	}
 }
 
-func TestResultFromFormulae(t *testing.T) {
+func TestResultFromFormulaeSUM(t *testing.T) {
 	tokens := map[string]any{
 		"op": "SUM",
 		"terms": []any{
@@ -59,6 +59,31 @@ func TestResultFromFormulae(t *testing.T) {
 	}
 
 	target := 1735000.00
+
+	if *result != target {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", target, *result)
+	}
+}
+
+func TestResultFromFormulaeDIFF(t *testing.T) {
+	tokens := map[string]any{
+		"op": "DIFF",
+		"terms": []any{
+			"totalIncome",
+			"totalCostOfGoods",
+		},
+	}
+	data := map[string]any{
+		"totalCostOfGoods": "1735000.00",
+		"totalIncome":      "2000000",
+	}
+
+	result, err := parser.ResultFromFormulae(tokens, data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	target := 265000.0
 
 	if *result != target {
 		t.Fatalf("Test failed. Expected: %v; Actual: %v", target, *result)

@@ -62,6 +62,19 @@ func ResultFromFormulae(tokens, data map[string]any) (*float64, error) {
 				}
 			}
 		}
+	case "DIFF":
+		for i, term := range terms {
+			if data[term] != nil {
+				val, err := strconv.ParseFloat(fmt.Sprintf("%v", data[term]), 64)
+				if err == nil {
+					if i == 0 {
+						result += val
+					} else {
+						result -= val
+					}
+				}
+			}
+		}
 	}
 
 	return &result, nil
