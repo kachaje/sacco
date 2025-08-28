@@ -102,8 +102,13 @@ func SaveData(
 	default:
 		models := []string{}
 
-		models = append(models, database.MemberSingleChildren...)
-		models = append(models, database.MemberArrayChildren...)
+		for _, group := range database.ArrayChildren {
+			models = append(models, group...)
+		}
+
+		for _, group := range database.SingleChildren {
+			models = append(models, group...)
+		}
 
 		if slices.Contains(models, *model) {
 			return HandleCommonModels(
