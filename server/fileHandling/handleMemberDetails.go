@@ -57,78 +57,81 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 				id = *mid
 
-				for _, model := range database.MemberArrayChildren {
+				models := []string{}
+
+				models = append(models, database.MemberArrayChildren...)
+
+				models = append(models, database.MemberSingleChildren...)
+
+				for _, model := range models {
 					file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", model))
 
 					_, err = os.Stat(file)
 					if !os.IsNotExist(err) {
-						fileData := []map[string]any{}
+						fileArrayData := []map[string]any{}
+						fileFlatData := map[string]any{}
 
 						content, err := os.ReadFile(file)
 						if err != nil {
 							log.Printf("server.HandleMemberDetails:%s\n", err.Error())
 						} else {
-							err = json.Unmarshal(content, &fileData)
+							err = json.Unmarshal(content, &fileArrayData)
 							if err != nil {
-								log.Printf("server.HandleMemberDetails:%s\n", err.Error())
+								err = json.Unmarshal(content, &fileFlatData)
+								if err != nil {
+									log.Printf("server.HandleMemberDetails:%s\n", err.Error())
+								}
 							}
 						}
 
-						if len(fileData) > 0 {
-							for i := range fileData {
-								fileData[i]["memberId"] = id
+						if len(fileArrayData) > 0 {
+							for i := range fileArrayData {
+								fileArrayData[i]["memberId"] = id
 
-								_, err = saveFunc(fileData[i], model, 0)
+								mid, err = saveFunc(fileArrayData[i], model, 0)
 								if err != nil {
 									log.Printf("server.HandleMemberDetails:%s\n", err.Error())
 									continue
 								}
+
+								switch model {
+								case "memberBusiness":
+									sessions[*phoneNumber].MemberBusinessId = mid
+								case "memberLoan":
+									sessions[*phoneNumber].MemberLoanId = mid
+								}
 							}
 
-							memberData[model] = fileData
+							memberData[model] = fileArrayData
 
 							if os.Getenv("DEBUG") == "true" {
-								CacheFile(file, fileData, 0)
+								CacheFile(file, fileArrayData, 0)
 							} else {
 								os.Remove(file)
 							}
-						}
-					}
-				}
+						} else if len(fileFlatData) > 0 {
+							fileFlatData["memberId"] = id
 
-				for _, model := range database.MemberSingleChildren {
-					file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", model))
-
-					_, err = os.Stat(file)
-					if !os.IsNotExist(err) {
-						fileData := map[string]any{}
-
-						content, err := os.ReadFile(file)
-						if err != nil {
-							log.Printf("server.HandleMemberDetails:%s\n", err.Error())
-						} else {
-							err = json.Unmarshal(content, &fileData)
-							if err != nil {
-								log.Printf("server.HandleMemberDetails:%s\n", err.Error())
-							}
-						}
-
-						if len(fileData) > 0 {
-							fileData["memberId"] = id
-
-							_, err = saveFunc(fileData, model, 0)
+							mid, err = saveFunc(fileFlatData, model, 0)
 							if err != nil {
 								log.Printf("server.HandleMemberDetails:%s\n", err.Error())
 								continue
 							}
-						}
 
-						memberData[model] = fileData
+							switch model {
+							case "memberBusiness":
+								sessions[*phoneNumber].MemberBusinessId = mid
+							case "memberLoan":
+								sessions[*phoneNumber].MemberLoanId = mid
+							}
 
-						if os.Getenv("DEBUG") == "true" {
-							CacheFile(file, fileData, 0)
-						} else {
-							os.Remove(file)
+							memberData[model] = fileFlatData
+
+							if os.Getenv("DEBUG") == "true" {
+								CacheFile(file, fileFlatData, 0)
+							} else {
+								os.Remove(file)
+							}
 						}
 					}
 				}
