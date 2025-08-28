@@ -1,9 +1,32 @@
 package parser_test
 
 import (
+	"reflect"
 	"sacco/server/parser"
 	"testing"
 )
+
+func TestGetTokens(t *testing.T) {
+	target := map[string]any{
+		"op": "SUM",
+		"terms": []any{
+			"totalCostOfGoods",
+			"employeesWages",
+			"ownSalary",
+			"transport",
+			"loanInterest",
+			"utilities",
+			"rentals",
+			"otherCosts",
+		},
+	}
+
+	result := parser.GetTokens("SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})")
+
+	if reflect.DeepEqual(target, result) {
+		t.Fatal("Test failed")
+	}
+}
 
 func TestCalculateFormulae(t *testing.T) {
 	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil, nil, nil)
