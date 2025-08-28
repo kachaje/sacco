@@ -17,6 +17,7 @@ import (
 	"sacco/server/database"
 	filehandling "sacco/server/fileHandling"
 	"sacco/server/menus"
+	menufuncs "sacco/server/menus/menuFuncs"
 	"sacco/server/parser"
 	"sacco/utils"
 	"strings"
@@ -104,7 +105,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Received USSD request: SessionID=%s, ServiceCode=%s, PhoneNumber=%s, Text=%s",
 		sessionID, serviceCode, phoneNumber, text)
 
-	preferredLanguage := menus.CheckPreferredLanguage(phoneNumber, preferencesFolder)
+	preferredLanguage := menufuncs.CheckPreferredLanguage(phoneNumber, preferencesFolder)
 
 	mu.Lock()
 	session, exists := menus.Sessions[phoneNumber]

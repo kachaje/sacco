@@ -1,4 +1,4 @@
-package menus
+package menufuncs
 
 import (
 	"encoding/json"

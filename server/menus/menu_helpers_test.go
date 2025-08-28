@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"sacco/server/menus"
+	menufuncs "sacco/server/menus/menuFuncs"
 	"sacco/utils"
 	"strings"
 	"testing"
@@ -49,7 +49,7 @@ func TestLoadTemplateData(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result := menus.LoadTemplateData(data, templateData)
+	result := menufuncs.LoadTemplateData(data, templateData)
 
 	if !reflect.DeepEqual(targetData, result) {
 		t.Fatal("Test failed")
@@ -76,7 +76,7 @@ func TestTabulateData(t *testing.T) {
 
 	target := string(content)
 
-	result := menus.TabulateData(data)
+	result := menufuncs.TabulateData(data)
 
 	if os.Getenv("DEBUG") == "true" {
 		fmt.Println(strings.Join(result, "\n"))
