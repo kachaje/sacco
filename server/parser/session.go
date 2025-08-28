@@ -18,6 +18,8 @@ type Session struct {
 
 	PreferredLanguage string
 	MemberId          *int64
+	MemberBusinessId  *int64
+	MemberLoanId      *int64
 	SessionId         string
 	PhoneNumber       string
 
