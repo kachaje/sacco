@@ -154,7 +154,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 			memberData["id"] = id
 
-			sessions[*phoneNumber].UpdateActiveMemberData(memberData, 0)
+			sessions[*phoneNumber].UpdateActiveData(memberData, 0)
 
 			sessions[*phoneNumber].RefreshSession()
 

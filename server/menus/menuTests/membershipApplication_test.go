@@ -82,7 +82,7 @@ func TestMembershipApplication(t *testing.T) {
 			data = val
 		}
 
-		session.UpdateActiveMemberData(data, 0)
+		session.UpdateActiveData(data, 0)
 
 		session.UpdateSessionFlags()
 

@@ -69,7 +69,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 			localData = append(localData, row)
 		}
 
-		session.UpdateActiveMemberData(map[string]any{
+		session.UpdateActiveData(map[string]any{
 			"memberBeneficiary": localData,
 		}, 0)
 

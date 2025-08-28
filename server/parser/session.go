@@ -111,7 +111,7 @@ func (s *Session) UpdateSessionFlags() error {
 	return nil
 }
 
-func (s *Session) UpdateActiveMemberData(data map[string]any, retries int) {
+func (s *Session) UpdateActiveData(data map[string]any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	if s.Mu == nil {
@@ -122,7 +122,7 @@ func (s *Session) UpdateActiveMemberData(data map[string]any, retries int) {
 	if !done {
 		if retries < 3 {
 			retries++
-			s.UpdateActiveMemberData(data, retries)
+			s.UpdateActiveData(data, retries)
 			return
 		}
 	}
@@ -213,10 +213,15 @@ func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 			data := []map[string]any{}
 			err = json.Unmarshal(content, &data)
 			if err != nil {
-				continue
+				data := map[string]any{}
+				err = json.Unmarshal(content, &data)
+				if err != nil {
+					continue
+				}
+				s.WriteToMap(key, data, 0)
+			} else {
+				s.WriteToMap(key, data, 0)
 			}
-
-			s.WriteToMap(key, data, 0)
 		} else {
 			data := map[string]any{}
 			err = json.Unmarshal(content, &data)
@@ -240,7 +245,7 @@ func (s *Session) RefreshSession() (map[string]any, error) {
 			return s.ActiveData, err
 		}
 
-		s.UpdateActiveMemberData(data, 0)
+		s.UpdateActiveData(data, 0)
 
 		return data, nil
 	}
