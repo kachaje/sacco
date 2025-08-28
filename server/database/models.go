@@ -1,8 +1,21 @@
 package database
 
 var (
+	AccountArrayChildren = []string{
+		"accountJournal",
+		"accountTransaction",
+	}
 	AccountTransactionArrayChildren = []string{
 		"accountJournal",
+	}
+	MemberLoanSingleChildren = []string{
+		"memberBusiness",
+		"memberOccupation",
+		"memberLoanLiability",
+		"memberLoanSecurity",
+		"memberLoanWitness",
+		"memberOccupationVerification",
+		"memberLoanApproval",
 	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
@@ -14,19 +27,6 @@ var (
 		"memberOccupation",
 		"memberLoan",
 		"memberBusiness",
-	}
-	MemberLoanSingleChildren = []string{
-		"memberBusiness",
-		"memberOccupation",
-		"memberLoanLiability",
-		"memberLoanSecurity",
-		"memberLoanWitness",
-		"memberOccupationVerification",
-		"memberLoanApproval",
-	}
-	AccountArrayChildren = []string{
-		"accountJournal",
-		"accountTransaction",
 	}
 	MemberBusinessArrayChildren = []string{
 		"memberLastYearBusinessHistory",
