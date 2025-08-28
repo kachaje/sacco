@@ -72,7 +72,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return m.businessSummary(data)
 	}
 	m.FunctionsMap["employmentSummary"] = func(data map[string]any) string {
-		return m.employmentSummary(data)
+		return menufuncs.EmploymentSummary(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["checkBalance"] = func(data map[string]any) string {
 		return menufuncs.CheckBalance(m.LoadMenu, DB, data)
@@ -527,13 +527,5 @@ func (m *Menus) businessSummary(data map[string]any) string {
 
 	_ = data
 
-	return result
-}
-
-func (m *Menus) employmentSummary(data map[string]any) string {
-	var result string = "Employment Summary\n\n" +
-		"00. Main Menu\n"
-
-	_ = data
 	return result
 }
