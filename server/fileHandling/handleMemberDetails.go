@@ -158,7 +158,7 @@ func HandleMemberDetails(data any, phoneNumber, cacheFolder *string,
 
 			sessions[*phoneNumber].RefreshSession()
 
-			sessions[*phoneNumber].LoadMemberCache(*phoneNumber, *cacheFolder)
+			sessions[*phoneNumber].LoadCacheData(*phoneNumber, *cacheFolder)
 		}
 	}
 

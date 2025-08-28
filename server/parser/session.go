@@ -170,7 +170,7 @@ func (s *Session) ReadFromMap(key string, retries int) any {
 	return s.ActiveData[key]
 }
 
-func (s *Session) LoadMemberCache(phoneNumber, cacheFolder string) error {
+func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	_, err := os.Stat(sessionFolder)
