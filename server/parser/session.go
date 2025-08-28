@@ -72,8 +72,7 @@ func (s *Session) UpdateSessionFlags() error {
 		for _, model := range group {
 			data := s.ReadFromMap(model, 0)
 			if data != nil {
-				val, ok := data.(map[string]any)
-				if ok && len(val) > 0 {
+				if val, ok := data.(map[string]any); ok && len(val) > 0 {
 					s.AddedModels[model] = true
 				}
 			}
@@ -87,6 +86,8 @@ func (s *Session) UpdateSessionFlags() error {
 				if val, ok := data.([]any); ok && len(val) > 0 {
 					s.AddedModels[model] = true
 				} else if val, ok := data.([]map[string]any); ok && len(val) > 0 {
+					s.AddedModels[model] = true
+				} else if val, ok := data.(map[string]any); ok && len(val) > 0 {
 					s.AddedModels[model] = true
 				}
 			}
