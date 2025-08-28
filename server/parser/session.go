@@ -68,23 +68,27 @@ func NewSession(
 }
 
 func (s *Session) UpdateSessionFlags() error {
-	for _, model := range database.MemberSingleChildren {
-		data := s.ReadFromMap(model, 0)
-		if data != nil {
-			val, ok := data.(map[string]any)
-			if ok && len(val) > 0 {
-				s.AddedModels[model] = true
+	for _, group := range database.SingleChildren {
+		for _, model := range group {
+			data := s.ReadFromMap(model, 0)
+			if data != nil {
+				val, ok := data.(map[string]any)
+				if ok && len(val) > 0 {
+					s.AddedModels[model] = true
+				}
 			}
 		}
 	}
 
-	for _, model := range database.MemberArrayChildren {
-		data := s.ReadFromMap(model, 0)
-		if data != nil {
-			if val, ok := data.([]any); ok && len(val) > 0 {
-				s.AddedModels[model] = true
-			} else if val, ok := data.([]map[string]any); ok && len(val) > 0 {
-				s.AddedModels[model] = true
+	for _, group := range database.ArrayChildren {
+		for _, model := range group {
+			data := s.ReadFromMap(model, 0)
+			if data != nil {
+				if val, ok := data.([]any); ok && len(val) > 0 {
+					s.AddedModels[model] = true
+				} else if val, ok := data.([]map[string]any); ok && len(val) > 0 {
+					s.AddedModels[model] = true
+				}
 			}
 		}
 	}
@@ -180,9 +184,17 @@ func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 
 	models := []string{}
 
-	models = append(models, database.MemberArrayChildren...)
+	arraysModels := []string{}
 
-	models = append(models, database.MemberSingleChildren...)
+	for _, group := range database.ArrayChildren {
+		arraysModels = append(arraysModels, group...)
+
+		models = append(models, group...)
+	}
+
+	for _, group := range database.SingleChildren {
+		models = append(models, group...)
+	}
 
 	for _, key := range models {
 		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
@@ -197,7 +209,7 @@ func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 			continue
 		}
 
-		if slices.Contains(database.MemberArrayChildren, key) {
+		if slices.Contains(arraysModels, key) {
 			data := []map[string]any{}
 			err = json.Unmarshal(content, &data)
 			if err != nil {
