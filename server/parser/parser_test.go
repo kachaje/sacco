@@ -497,13 +497,9 @@ func TestSubmit(t *testing.T) {
 		"maritalStatus": "2",
 	}
 
-	node := wf.NextNode("formSummary")
+	wf.CurrentScreen = "formSummary"
 
-	if node == nil {
-		t.Fatal("Test failed")
-	}
-
-	node = wf.NextNode("0")
+	node := wf.NextNode("0")
 
 	if node != nil {
 		t.Fatal("Test failed")
@@ -702,28 +698,6 @@ Actual: %s`, target, result)
 
 	if !called {
 		t.Fatal("Test failed")
-	}
-}
-
-func TestNavMain(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil, nil, nil)
-
-	wf.NavNext("")
-
-	wf.NavNext("1")
-
-	target := "enterFirstName"
-
-	if wf.CurrentScreen != target {
-		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
-	}
-
-	wf.NavMain()
-
-	target = "initialScreen"
-
-	if wf.CurrentScreen != target {
-		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
 	}
 }
 

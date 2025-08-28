@@ -129,7 +129,7 @@ func NewWorkflow(
 				if row["inputIdentifier"] != nil {
 					id := fmt.Sprintf("%v", row["inputIdentifier"])
 
-					if row["hidden"] == nil && row["readOnly"] == nil {
+					if row["hidden"] == nil {
 						w.ScreenIdMap[id] = key
 					}
 
@@ -295,29 +295,31 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 		return nil
 	case "0":
-		// Submit
-		if w.SubmitCallback != nil {
-			data := w.ResolveData(w.Data, true)
+		if w.CurrentScreen == "formSummary" {
+			// Submit
+			if w.SubmitCallback != nil {
+				data := w.ResolveData(w.Data, true)
 
-			if w.Data["id"] != nil {
-				data["id"] = w.Data["id"]
+				if w.Data["id"] != nil {
+					data["id"] = w.Data["id"]
+				}
+
+				w.SubmitCallback(
+					data, &w.CurrentModel, &w.CurrentPhoneNumber,
+					&w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data,
+				)
 			}
 
-			w.SubmitCallback(
-				data, &w.CurrentModel, &w.CurrentPhoneNumber,
-				&w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data,
-			)
+			w.CurrentScreen = INITIAL_SCREEN
+			w.CurrentLanguage = LANG_EN
+			w.PreviousScreen = ""
+			w.History = map[int]string{}
+			w.HistoryIndex = -1
+
+			w.Data = map[string]any{}
+
+			return nil
 		}
-
-		w.CurrentScreen = INITIAL_SCREEN
-		w.CurrentLanguage = LANG_EN
-		w.PreviousScreen = ""
-		w.History = map[int]string{}
-		w.HistoryIndex = -1
-
-		w.Data = map[string]any{}
-
-		return nil
 	case "00":
 		// Main Menu
 		w.Data = map[string]any{}
@@ -712,14 +714,6 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 
 func (w *WorkFlow) NavNext(input string) string {
 	node := w.NextNode(input)
-
-	label := w.GetLabel(node, w.CurrentScreen)
-
-	return label
-}
-
-func (w *WorkFlow) NavMain() string {
-	node := w.NextNode("0")
 
 	label := w.GetLabel(node, w.CurrentScreen)
 
