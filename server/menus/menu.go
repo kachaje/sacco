@@ -110,7 +110,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return menufuncs.DevConsole(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["memberLoansSummary"] = func(data map[string]any) string {
-		return m.memberLoansSummary(data)
+		return menufuncs.MemberLoansSummary(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["signIn"] = func(data map[string]any) string {
 		return menufuncs.SignIn(m.LoadMenu, DB, data)
@@ -699,14 +699,6 @@ func (m *Menus) viewMemberDetails(data map[string]any) string {
 		response = "Member Details\n\n" +
 			"00. Main Menu\n"
 	}
-
-	return response
-}
-
-func (m *Menus) memberLoansSummary(data map[string]any) string {
-	var response string = "Member Loans Summary\n\n00. Main Menu"
-
-	_ = data
 
 	return response
 }
