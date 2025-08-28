@@ -112,7 +112,16 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return menufuncs.Landing(m.LoadMenu, data)
 	}
 
-	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
+	err := m.populateMenus()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return m
+}
+
+func (m *Menus) populateMenus() error {
+	return fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -205,11 +214,6 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 
 		return nil
 	})
-	if err != nil {
-		log.Panic(err)
-	}
-
-	return m
 }
 
 func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string) string {
