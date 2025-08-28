@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"log"
 	"regexp"
 	"sort"
 	"strconv"
@@ -496,6 +497,11 @@ func (w *WorkFlow) OptionValue(options []any, input string) (string, *string) {
 
 func (w *WorkFlow) ResolveData(data map[string]any, preferCode bool) map[string]any {
 	result := map[string]any{}
+
+	err := w.CalculateFormulae()
+	if err != nil {
+		log.Println(err)
+	}
 
 	for key, value := range data {
 		nodeId := w.ScreenIdMap[key]
