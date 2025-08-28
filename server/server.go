@@ -98,8 +98,10 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	phoneNumber := r.FormValue("phoneNumber")
 	text := r.FormValue("text")
 
+	defaultPhoneNumber := "000000000"
+
 	if phoneNumber == "" {
-		phoneNumber = "default"
+		phoneNumber = defaultPhoneNumber
 	}
 
 	log.Printf("Received USSD request: SessionID=%s, ServiceCode=%s, PhoneNumber=%s, Text=%s",
@@ -124,23 +126,21 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	mu.Unlock()
 
-	if phoneNumber != "default" {
-		go func() {
-			_, err := session.RefreshSession()
-			if err == nil {
-				session.UpdateSessionFlags()
-			} else {
-				if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {
-					log.Println(err)
-				}
+	go func() {
+		_, err := session.RefreshSession()
+		if err == nil {
+			session.UpdateSessionFlags()
+		} else {
+			if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {
+				log.Println(err)
 			}
+		}
 
-			err = session.LoadMemberCache(phoneNumber, cacheFolder)
-			if err != nil {
-				log.Printf("server.ussdHandler: %s", err.Error())
-			}
-		}()
-	}
+		err = session.LoadMemberCache(phoneNumber, cacheFolder)
+		if err != nil {
+			log.Printf("server.ussdHandler: %s", err.Error())
+		}
+	}()
 
 	response := activeMenu.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
 

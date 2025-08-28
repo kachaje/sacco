@@ -31,7 +31,7 @@ func clearScreen() {
 
 func Main() {
 	var port int64 = 8080
-	var phoneNumber string = "cli"
+	var phoneNumber string = "1234567890"
 	var silentMode bool
 
 	flag.Int64Var(&port, "p", port, "server port")
