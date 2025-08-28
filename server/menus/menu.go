@@ -21,11 +21,17 @@ var menuFiles embed.FS
 var funcsMap map[string]func(map[string]any) string
 
 type Menus struct {
-	ActiveMenus   map[string]any
-	Titles        map[string]string
-	Workflows     map[string]any
-	Functions     map[string]any
-	FunctionsMap  map[string]func(map[string]any) string
+	ActiveMenus  map[string]any
+	Titles       map[string]string
+	Workflows    map[string]any
+	Functions    map[string]any
+	FunctionsMap map[string]func(
+		func(
+			string, *parser.Session,
+			string, string, string, string,
+		) string,
+		map[string]any,
+	) string
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
 
@@ -46,11 +52,17 @@ func init() {
 
 func NewMenus(devMode, demoMode *bool) *Menus {
 	m := &Menus{
-		ActiveMenus:   map[string]any{},
-		Titles:        map[string]string{},
-		Workflows:     map[string]any{},
-		Functions:     map[string]any{},
-		FunctionsMap:  map[string]func(map[string]any) string{},
+		ActiveMenus: map[string]any{},
+		Titles:      map[string]string{},
+		Workflows:   map[string]any{},
+		Functions:   map[string]any{},
+		FunctionsMap: map[string]func(
+			func(
+				string, *parser.Session,
+				string, string, string, string,
+			) string,
+			map[string]any,
+		) string{},
 		TargetKeys:    map[string][]string{},
 		LabelWorkflow: map[string]any{},
 		mu:            sync.Mutex{},
@@ -66,51 +78,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		m.DemoMode = *demoMode
 	}
 
-	m.FunctionsMap["doExit"] = func(data map[string]any) string {
-		return menufuncs.DoExit(m.LoadMenu, data)
-	}
-	m.FunctionsMap["businessSummary"] = func(data map[string]any) string {
-		return menufuncs.BusinessSummary(m.LoadMenu, data)
-	}
-	m.FunctionsMap["employmentSummary"] = func(data map[string]any) string {
-		return menufuncs.EmploymentSummary(m.LoadMenu, data)
-	}
-	m.FunctionsMap["checkBalance"] = func(data map[string]any) string {
-		return menufuncs.CheckBalance(m.LoadMenu, data)
-	}
-	m.FunctionsMap["bankingDetails"] = func(data map[string]any) string {
-		return menufuncs.BankingDetails(m.LoadMenu, data)
-	}
-	m.FunctionsMap["viewMemberDetails"] = func(data map[string]any) string {
-		return menufuncs.ViewMemberDetails(m.LoadMenu, data)
-	}
-	m.FunctionsMap["devConsole"] = func(data map[string]any) string {
-		return menufuncs.DevConsole(m.LoadMenu, data)
-	}
-	m.FunctionsMap["memberLoansSummary"] = func(data map[string]any) string {
-		return menufuncs.MemberLoansSummary(m.LoadMenu, data)
-	}
-	m.FunctionsMap["signIn"] = func(data map[string]any) string {
-		return menufuncs.SignIn(m.LoadMenu, data)
-	}
-	m.FunctionsMap["listUsers"] = func(data map[string]any) string {
-		return menufuncs.ListUsers(m.LoadMenu, data)
-	}
-	m.FunctionsMap["blockUser"] = func(data map[string]any) string {
-		return menufuncs.BlockUser(m.LoadMenu, data)
-	}
-	m.FunctionsMap["editUser"] = func(data map[string]any) string {
-		return menufuncs.EditUser(m.LoadMenu, data)
-	}
-	m.FunctionsMap["changePassword"] = func(data map[string]any) string {
-		return menufuncs.ChangePassword(m.LoadMenu, data)
-	}
-	m.FunctionsMap["signUp"] = func(data map[string]any) string {
-		return menufuncs.SignUp(m.LoadMenu, data)
-	}
-	m.FunctionsMap["landing"] = func(data map[string]any) string {
-		return menufuncs.Landing(m.LoadMenu, data)
-	}
+	m.FunctionsMap = menufuncs.FunctionsMap
 
 	err := m.populateMenus()
 	if err != nil {
@@ -413,14 +381,16 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
 			} else {
 				if fnName, ok := m.Functions[menuRoot].(string); ok && m.FunctionsMap[fnName] != nil {
-					response = m.FunctionsMap[fnName](map[string]any{
-						"phoneNumber":       phoneNumber,
-						"cacheFolder":       cacheFolder,
-						"session":           session,
-						"preferredLanguage": preferredLanguage,
-						"preferencesFolder": preferencesFolder,
-						"text":              text,
-					})
+					response = m.FunctionsMap[fnName](
+						m.LoadMenu,
+						map[string]any{
+							"phoneNumber":       phoneNumber,
+							"cacheFolder":       cacheFolder,
+							"session":           session,
+							"preferredLanguage": preferredLanguage,
+							"preferencesFolder": preferencesFolder,
+							"text":              text,
+						})
 				} else {
 					response = fmt.Sprintf("Function %s not found\n\n", m.Functions[menuRoot]) +
 						"00. Main Menu\n"
