@@ -27,7 +27,7 @@ func TestLoadTemplateData(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	content, err = os.ReadFile(filepath.Join(".", "templates", "member.template.json"))
+	content, err = os.ReadFile(filepath.Join(".", "menuFuncs", "templates", "member.template.json"))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -2,7 +2,6 @@ package menus
 
 import (
 	"embed"
-	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log"
@@ -21,16 +20,10 @@ import (
 //go:embed menus/*
 var menuFiles embed.FS
 
-//go:embed templates/member.template.json
-var menuTemplateContent []byte
-
-//go:embed templates/member.template.json
-var templateContent []byte
-
-var DB *database.Database
-
-var Sessions map[string]*parser.Session
-var templateData map[string]any
+var (
+	DB       *database.Database
+	Sessions = map[string]*parser.Session{}
+)
 
 type Menus struct {
 	ActiveMenus   map[string]any
@@ -48,22 +41,6 @@ type Menus struct {
 
 	Cache      map[string]string
 	LastPrompt string
-}
-
-var menuTemplateData map[string]any
-
-func init() {
-	err := json.Unmarshal(menuTemplateContent, &menuTemplateData)
-	if err != nil {
-		log.Fatalf("server.menus.init: %s", err.Error())
-	}
-
-	err = json.Unmarshal(templateContent, &templateData)
-	if err != nil {
-		log.Fatalf("server.menus.init: %s", err.Error())
-	}
-
-	Sessions = map[string]*parser.Session{}
 }
 
 func NewMenus(devMode, demoMode *bool) *Menus {
@@ -104,8 +81,6 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return menufuncs.BankingDetails(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["viewMemberDetails"] = func(data map[string]any) string {
-		data["templateData"] = templateData
-
 		return menufuncs.ViewMemberDetails(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["devConsole"] = func(data map[string]any) string {

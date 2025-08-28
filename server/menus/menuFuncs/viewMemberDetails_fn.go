@@ -1,12 +1,28 @@
 package menufuncs
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"regexp"
 	"sacco/server/database"
 	"sacco/server/parser"
 	"strings"
+
+	_ "embed"
 )
+
+//go:embed templates/member.template.json
+var templateContent []byte
+
+var templateData map[string]any
+
+func init() {
+	err := json.Unmarshal(templateContent, &templateData)
+	if err != nil {
+		log.Fatalf("server.menus.init: %s", err.Error())
+	}
+}
 
 func ViewMemberDetails(
 	loadMenu func(
@@ -20,7 +36,6 @@ func ViewMemberDetails(
 	var preferredLanguage *string
 	var response string
 	var phoneNumber, text, preferencesFolder, cacheFolder string
-	var templateData map[string]any
 
 	if data["session"] != nil {
 		if val, ok := data["session"].(*parser.Session); ok {
