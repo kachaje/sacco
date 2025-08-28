@@ -15,8 +15,11 @@ func SignIn(
 	data map[string]any,
 ) string {
 	var response string
-	var phoneNumber, text, preferencesFolder, cacheFolder string
+	var phoneNumber, text, preferencesFolder, cacheFolder, content string
 	var session *parser.Session
+
+	title := "Login\n\n"
+	footer := "\n00. Main Menu\n"
 
 	if data["session"] != nil {
 		if val, ok := data["session"].(*parser.Session); ok {
@@ -49,15 +52,29 @@ func SignIn(
 		return loadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
 	}
 
-	if text == "" {
-		response = "Login\n\nEnter username:\n"
-	} else {
-		if session.LastPrompt == "username" {
+	askUsername := func(msg string) string {
+		return fmt.Sprintf("Username: %s\n", msg)
+	}
+	askPassword := func(msg string) string {
+		return fmt.Sprintf("PIN Code: %s\n", msg)
+	}
+
+	switch session.LastPrompt {
+	case "username":
+		if text == "" {
+			content = askUsername("(Required Field)")
+		} else {
 			session.Cache["username"] = text
+
+			text = ""
 
 			session.LastPrompt = "password"
 
-			response = "Login\n\nEnter password:\n"
+			content = askPassword("")
+		}
+	case "password":
+		if text == "" {
+			content = askPassword("(Required Field)")
 		} else {
 			session.Cache["password"] = text
 
@@ -82,12 +99,16 @@ func SignIn(
 				session.Cache = map[string]string{}
 				session.LastPrompt = "username"
 
-				response = "Login\n\nEnter username:\n"
+				content = askUsername("(Invalid credentials)")
 			}
 		}
+	default:
+		session.LastPrompt = "username"
+
+		content = askUsername("")
 	}
 
-	response = fmt.Sprintf("%s\n00. Main Menu\n", response)
+	response = fmt.Sprintf("%s%s%s", title, content, footer)
 
 	return response
 }
