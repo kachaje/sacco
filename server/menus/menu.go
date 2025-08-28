@@ -16,8 +16,6 @@ import (
 	"slices"
 	"strings"
 	"sync"
-
-	"github.com/google/uuid"
 )
 
 //go:embed menus/*
@@ -115,7 +113,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return m.memberLoansSummary(data)
 	}
 	m.FunctionsMap["signIn"] = func(data map[string]any) string {
-		return m.signIn(data)
+		return menufuncs.SignIn(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["listUsers"] = func(data map[string]any) string {
 		return m.listUsers(data)
@@ -133,7 +131,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return menufuncs.SignUp(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["landing"] = func(data map[string]any) string {
-		return m.landing(data)
+		return menufuncs.Landing(m.LoadMenu, DB, data)
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -252,14 +250,16 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	if session.SessionToken == nil && !m.DemoMode {
 		switch session.CurrentMenu {
 		case "signIn":
-			return m.signIn(map[string]any{
-				"phoneNumber":       phoneNumber,
-				"cacheFolder":       cacheFolder,
-				"session":           session,
-				"preferredLanguage": preferredLanguage,
-				"preferencesFolder": preferencesFolder,
-				"text":              text,
-			})
+			return menufuncs.SignIn(
+				m.LoadMenu, DB,
+				map[string]any{
+					"phoneNumber":       phoneNumber,
+					"cacheFolder":       cacheFolder,
+					"session":           session,
+					"preferredLanguage": preferredLanguage,
+					"preferencesFolder": preferencesFolder,
+					"text":              text,
+				})
 		case "signUp":
 			return menufuncs.SignUp(
 				m.LoadMenu, DB,
@@ -272,14 +272,16 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 					"text":              text,
 				})
 		default:
-			return m.landing(map[string]any{
-				"phoneNumber":       phoneNumber,
-				"cacheFolder":       cacheFolder,
-				"session":           session,
-				"preferredLanguage": preferredLanguage,
-				"preferencesFolder": preferencesFolder,
-				"text":              text,
-			})
+			return menufuncs.Landing(
+				m.LoadMenu, DB,
+				map[string]any{
+					"phoneNumber":       phoneNumber,
+					"cacheFolder":       cacheFolder,
+					"session":           session,
+					"preferredLanguage": preferredLanguage,
+					"preferencesFolder": preferencesFolder,
+					"text":              text,
+				})
 		}
 	}
 
@@ -709,85 +711,6 @@ func (m *Menus) memberLoansSummary(data map[string]any) string {
 	return response
 }
 
-func (m *Menus) signIn(data map[string]any) string {
-	var response string
-	var phoneNumber, text, preferencesFolder, cacheFolder string
-	var session *parser.Session
-
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
-	if data["phoneNumber"] != nil {
-		if val, ok := data["phoneNumber"].(string); ok {
-			phoneNumber = val
-		}
-	}
-	if data["text"] != nil {
-		if val, ok := data["text"].(string); ok {
-			text = val
-		}
-	}
-	if data["preferencesFolder"] != nil {
-		if val, ok := data["preferencesFolder"].(string); ok {
-			preferencesFolder = val
-		}
-	}
-	if data["cacheFolder"] != nil {
-		if val, ok := data["cacheFolder"].(string); ok {
-			cacheFolder = val
-		}
-	}
-
-	if text == "00" {
-		session.CurrentMenu = "main"
-		return m.LoadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
-	}
-
-	if text == "" {
-		response = "Login\n\nEnter username:\n"
-	} else {
-		if m.LastPrompt == "username" {
-			m.Cache["username"] = text
-
-			m.LastPrompt = "password"
-
-			response = "Login\n\nEnter password:\n"
-		} else {
-			m.Cache["password"] = text
-
-			text = ""
-
-			if id, ok := DB.ValidatePassword(m.Cache["username"], m.Cache["password"]); ok {
-				token := uuid.NewString()
-				session.SessionToken = &token
-				session.SessionUserId = id
-
-				session.CurrentMenu = "main"
-
-				username := fmt.Sprintf("%v", m.Cache["username"])
-
-				session.SessionUser = &username
-
-				m.Cache = map[string]string{}
-				m.LastPrompt = ""
-
-				return m.LoadMenu("main", session, phoneNumber, text, preferencesFolder, cacheFolder)
-			} else {
-				m.Cache = map[string]string{}
-				m.LastPrompt = "username"
-
-				response = "Login\n\nEnter username:\n"
-			}
-		}
-	}
-
-	response = fmt.Sprintf("%s\n00. Main Menu\n", response)
-
-	return response
-}
-
 func (m *Menus) listUsers(_ map[string]any) string {
 	var response, content string
 
@@ -931,67 +854,6 @@ func (m *Menus) changePassword(data map[string]any) string {
 		m.LastPrompt = "currentPassword"
 
 		response = currentPassword("")
-	}
-
-	return response
-}
-
-func (m *Menus) landing(data map[string]any) string {
-	var response string
-	var phoneNumber, text, preferencesFolder, cacheFolder string
-	var session *parser.Session
-
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
-	if data["phoneNumber"] != nil {
-		if val, ok := data["phoneNumber"].(string); ok {
-			phoneNumber = val
-		}
-	}
-	if data["text"] != nil {
-		if val, ok := data["text"].(string); ok {
-			text = val
-		}
-	}
-	if data["preferencesFolder"] != nil {
-		if val, ok := data["preferencesFolder"].(string); ok {
-			preferencesFolder = val
-		}
-	}
-	if data["cacheFolder"] != nil {
-		if val, ok := data["cacheFolder"].(string); ok {
-			cacheFolder = val
-		}
-	}
-
-	data = map[string]any{
-		"phoneNumber":       phoneNumber,
-		"cacheFolder":       cacheFolder,
-		"session":           session,
-		"preferencesFolder": preferencesFolder,
-		"text":              text,
-	}
-
-	session.LastPrompt = ""
-	session.Cache = map[string]string{}
-
-	switch text {
-	case "1":
-		session.CurrentMenu = "signIn"
-		data["text"] = ""
-		return m.signIn(data)
-	case "2":
-		session.CurrentMenu = "signUp"
-		session.LastPrompt = "username"
-		data["text"] = ""
-		return menufuncs.SignUp(m.LoadMenu, DB, data)
-	default:
-		response = "Welcome! Select Action\n\n" +
-			"1. Sign In\n" +
-			"2. Sign Up\n"
 	}
 
 	return response
