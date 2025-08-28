@@ -81,7 +81,20 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 								"inputIdentifier": fmt.Sprintf("%s%v", key, suffix),
 							}
 
-							if value["hidden"] == nil {
+							if value["readOnly"] != nil {
+								data[tag].(map[string]any)["readOnly"] = true
+								data[tag].(map[string]any)["type"] = "inputScreen"
+
+								text := utils.IdentifierToLabel(key)
+
+								data[tag].(map[string]any)["text"] = map[string]any{
+									"en": text,
+								}
+
+								if value["formula"] != nil {
+									data[tag].(map[string]any)["formula"] = value["formula"].(string)
+								}
+							} else if value["hidden"] == nil {
 								j++
 
 								text := utils.IdentifierToLabel(key)
@@ -112,10 +125,6 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 
 								if value["adminOnly"] != nil {
 									data[tag].(map[string]any)["adminOnly"] = true
-								}
-
-								if value["readOnly"] != nil {
-									data[tag].(map[string]any)["readOnly"] = true
 								}
 
 								if value["formula"] != nil {

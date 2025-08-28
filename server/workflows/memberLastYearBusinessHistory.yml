@@ -41,16 +41,13 @@ enterMemberLoanId:
 enterNetProfitLoss:
     formula: DIFF({{totalIncome}},{{totalCosts}})
     inputIdentifier: netProfitLoss
-    nextScreen: formSummary
-    order: 12
     readOnly: true
     text:
         en: Net Profit Loss
     type: inputScreen
-    validationRule: ^\d+\.*\d*$
 enterOtherCosts:
     inputIdentifier: otherCosts
-    nextScreen: enterTotalCosts
+    nextScreen: formSummary
     optional: true
     order: 10
     text:
@@ -84,13 +81,10 @@ enterTotalCostOfGoods:
 enterTotalCosts:
     formula: SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
     inputIdentifier: totalCosts
-    nextScreen: enterNetProfitLoss
-    order: 11
     readOnly: true
     text:
         en: Total Costs
     type: inputScreen
-    validationRule: ^\d+\.*\d*$
 enterTotalIncome:
     inputIdentifier: totalIncome
     nextScreen: enterTotalCostOfGoods
