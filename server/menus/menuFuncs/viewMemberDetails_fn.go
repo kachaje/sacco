@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"sacco/server/database"
 	"sacco/server/parser"
 	"strings"
 
@@ -29,7 +28,6 @@ func ViewMemberDetails(
 		menuName string, session *parser.Session,
 		phoneNumber, text, preferencesFolder, cacheFolder string,
 	) string,
-	db *database.Database,
 	data map[string]any,
 ) string {
 	var session *parser.Session

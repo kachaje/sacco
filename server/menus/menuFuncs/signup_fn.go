@@ -3,7 +3,6 @@ package menufuncs
 import (
 	"fmt"
 	"regexp"
-	"sacco/server/database"
 	"sacco/server/parser"
 	"slices"
 )
@@ -13,7 +12,6 @@ func SignUp(
 		menuName string, session *parser.Session,
 		phoneNumber, text, preferencesFolder, cacheFolder string,
 	) string,
-	db *database.Database,
 	data map[string]any,
 ) string {
 	var response string
@@ -71,7 +69,7 @@ func SignUp(
 	if session.LastPrompt == "username" &&
 		slices.Contains([]string{"", "000"}, text) &&
 		regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) {
-		if !db.UsernameFree(phoneNumber) {
+		if !DB.UsernameFree(phoneNumber) {
 			session.LastPrompt = "username"
 
 			content = askUsername(fmt.Sprintf("(%s already taken)", phoneNumber))
@@ -88,7 +86,7 @@ func SignUp(
 			if text == "" {
 				content = askUsername("(Required Field)")
 			} else {
-				if !db.UsernameFree(text) {
+				if !DB.UsernameFree(text) {
 					session.LastPrompt = "username"
 
 					content = askUsername(fmt.Sprintf("(%s already taken)", text))
@@ -135,7 +133,7 @@ func SignUp(
 
 					content = askNewPassword("(password mismatch)")
 				} else {
-					_, err := db.GenericModels["user"].AddRecord(map[string]any{
+					_, err := DB.GenericModels["user"].AddRecord(map[string]any{
 						"name":     session.Cache["name"],
 						"username": session.Cache["username"],
 						"password": session.Cache["password"],

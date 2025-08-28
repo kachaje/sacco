@@ -2,7 +2,6 @@ package menufuncs
 
 import (
 	"fmt"
-	"sacco/server/database"
 	"sacco/server/parser"
 
 	"github.com/google/uuid"
@@ -13,7 +12,6 @@ func SignIn(
 		menuName string, session *parser.Session,
 		phoneNumber, text, preferencesFolder, cacheFolder string,
 	) string,
-	db *database.Database,
 	data map[string]any,
 ) string {
 	var response string
@@ -65,7 +63,7 @@ func SignIn(
 
 			text = ""
 
-			if id, ok := db.ValidatePassword(session.Cache["username"], session.Cache["password"]); ok {
+			if id, ok := DB.ValidatePassword(session.Cache["username"], session.Cache["password"]); ok {
 				token := uuid.NewString()
 				session.SessionToken = &token
 				session.SessionUserId = id

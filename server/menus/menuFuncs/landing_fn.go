@@ -1,7 +1,6 @@
 package menufuncs
 
 import (
-	"sacco/server/database"
 	"sacco/server/parser"
 )
 
@@ -9,7 +8,6 @@ func Landing(loadMenu func(
 	menuName string, session *parser.Session,
 	phoneNumber, text, preferencesFolder, cacheFolder string,
 ) string,
-	db *database.Database,
 	data map[string]any,
 ) string {
 	var response string
@@ -57,12 +55,12 @@ func Landing(loadMenu func(
 	case "1":
 		session.CurrentMenu = "signIn"
 		data["text"] = ""
-		return SignIn(loadMenu, db, data)
+		return SignIn(loadMenu, data)
 	case "2":
 		session.CurrentMenu = "signUp"
 		session.LastPrompt = "username"
 		data["text"] = ""
-		return SignUp(loadMenu, db, data)
+		return SignUp(loadMenu, data)
 	default:
 		response = "Welcome! Select Action\n\n" +
 			"1. Sign In\n" +

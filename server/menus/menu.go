@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"io/fs"
 	"log"
-	"os"
 	"path/filepath"
 	"regexp"
-	"sacco/server/database"
 	menufuncs "sacco/server/menus/menuFuncs"
 	"sacco/server/parser"
 	"sacco/utils"
@@ -19,11 +17,6 @@ import (
 
 //go:embed menus/*
 var menuFiles embed.FS
-
-var (
-	DB       *database.Database
-	Sessions = map[string]*parser.Session{}
-)
 
 type Menus struct {
 	ActiveMenus   map[string]any
@@ -66,49 +59,49 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 	}
 
 	m.FunctionsMap["doExit"] = func(data map[string]any) string {
-		return m.doExit(data)
+		return menufuncs.DoExit(m.LoadMenu, data)
 	}
 	m.FunctionsMap["businessSummary"] = func(data map[string]any) string {
-		return menufuncs.BusinessSummary(m.LoadMenu, DB, data)
+		return menufuncs.BusinessSummary(m.LoadMenu, data)
 	}
 	m.FunctionsMap["employmentSummary"] = func(data map[string]any) string {
-		return menufuncs.EmploymentSummary(m.LoadMenu, DB, data)
+		return menufuncs.EmploymentSummary(m.LoadMenu, data)
 	}
 	m.FunctionsMap["checkBalance"] = func(data map[string]any) string {
-		return menufuncs.CheckBalance(m.LoadMenu, DB, data)
+		return menufuncs.CheckBalance(m.LoadMenu, data)
 	}
 	m.FunctionsMap["bankingDetails"] = func(data map[string]any) string {
-		return menufuncs.BankingDetails(m.LoadMenu, DB, data)
+		return menufuncs.BankingDetails(m.LoadMenu, data)
 	}
 	m.FunctionsMap["viewMemberDetails"] = func(data map[string]any) string {
-		return menufuncs.ViewMemberDetails(m.LoadMenu, DB, data)
+		return menufuncs.ViewMemberDetails(m.LoadMenu, data)
 	}
 	m.FunctionsMap["devConsole"] = func(data map[string]any) string {
-		return menufuncs.DevConsole(m.LoadMenu, DB, data)
+		return menufuncs.DevConsole(m.LoadMenu, data)
 	}
 	m.FunctionsMap["memberLoansSummary"] = func(data map[string]any) string {
-		return menufuncs.MemberLoansSummary(m.LoadMenu, DB, data)
+		return menufuncs.MemberLoansSummary(m.LoadMenu, data)
 	}
 	m.FunctionsMap["signIn"] = func(data map[string]any) string {
-		return menufuncs.SignIn(m.LoadMenu, DB, data)
+		return menufuncs.SignIn(m.LoadMenu, data)
 	}
 	m.FunctionsMap["listUsers"] = func(data map[string]any) string {
-		return menufuncs.ListUsers(m.LoadMenu, DB, data)
+		return menufuncs.ListUsers(m.LoadMenu, data)
 	}
 	m.FunctionsMap["blockUser"] = func(data map[string]any) string {
-		return menufuncs.BlockUser(m.LoadMenu, DB, data)
+		return menufuncs.BlockUser(m.LoadMenu, data)
 	}
 	m.FunctionsMap["editUser"] = func(data map[string]any) string {
-		return menufuncs.EditUser(m.LoadMenu, DB, data)
+		return menufuncs.EditUser(m.LoadMenu, data)
 	}
 	m.FunctionsMap["changePassword"] = func(data map[string]any) string {
-		return menufuncs.ChangePassword(m.LoadMenu, DB, data)
+		return menufuncs.ChangePassword(m.LoadMenu, data)
 	}
 	m.FunctionsMap["signUp"] = func(data map[string]any) string {
-		return menufuncs.SignUp(m.LoadMenu, DB, data)
+		return menufuncs.SignUp(m.LoadMenu, data)
 	}
 	m.FunctionsMap["landing"] = func(data map[string]any) string {
-		return menufuncs.Landing(m.LoadMenu, DB, data)
+		return menufuncs.Landing(m.LoadMenu, data)
 	}
 
 	err := fs.WalkDir(menuFiles, ".", func(file string, d fs.DirEntry, err error) error {
@@ -228,7 +221,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		switch session.CurrentMenu {
 		case "signIn":
 			return menufuncs.SignIn(
-				m.LoadMenu, DB,
+				m.LoadMenu,
 				map[string]any{
 					"phoneNumber":       phoneNumber,
 					"cacheFolder":       cacheFolder,
@@ -239,7 +232,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				})
 		case "signUp":
 			return menufuncs.SignUp(
-				m.LoadMenu, DB,
+				m.LoadMenu,
 				map[string]any{
 					"phoneNumber":       phoneNumber,
 					"cacheFolder":       cacheFolder,
@@ -250,7 +243,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				})
 		default:
 			return menufuncs.Landing(
-				m.LoadMenu, DB,
+				m.LoadMenu,
 				map[string]any{
 					"phoneNumber":       phoneNumber,
 					"cacheFolder":       cacheFolder,
@@ -467,56 +460,4 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	}
 
 	return response
-}
-
-func (m *Menus) doExit(data map[string]any) string {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-
-	var session *parser.Session
-	var phoneNumber string
-	var cacheFolder string
-
-	if data != nil {
-		if data["session"] != nil {
-			if val, ok := data["session"].(*parser.Session); ok {
-				session = val
-			}
-		}
-		if data["phoneNumber"] != nil {
-			if val, ok := data["phoneNumber"].(string); ok {
-				phoneNumber = val
-			}
-		}
-		if data["cacheFolder"] != nil {
-			if val, ok := data["cacheFolder"].(string); ok {
-				cacheFolder = val
-			}
-		}
-
-		m.Cache = map[string]string{}
-		m.LastPrompt = "username"
-		session.SessionToken = nil
-
-		if phoneNumber != "" {
-			delete(Sessions, phoneNumber)
-
-			if cacheFolder != "" {
-				folderName := filepath.Join(cacheFolder, phoneNumber)
-
-				_, err := os.Stat(folderName)
-				if !os.IsNotExist(err) {
-					files, err := os.ReadDir(folderName)
-					if err == nil && len(files) == 0 {
-						err = os.RemoveAll(folderName)
-						if err != nil {
-							log.Printf("server.menus.menu.removeFolder: %s\n", err.Error())
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return "END Thank you for using our service"
 }

@@ -2,7 +2,6 @@ package menufuncs
 
 import (
 	"fmt"
-	"sacco/server/database"
 	"sacco/server/parser"
 	"strings"
 )
@@ -12,14 +11,13 @@ func ListUsers(
 		menuName string, session *parser.Session,
 		phoneNumber, text, preferencesFolder, cacheFolder string,
 	) string,
-	db *database.Database,
 	data map[string]any,
 ) string {
 	var response, content string
 
 	title := "Users List\n----------"
 
-	result, err := db.SQLQuery("SELECT id, username, role, created_at, updated_at FROM user WHERE active = 1")
+	result, err := DB.SQLQuery("SELECT id, username, role, created_at, updated_at FROM user WHERE active = 1")
 	if err != nil {
 		content = fmt.Sprintf("%s\n", err.Error())
 	} else {

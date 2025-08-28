@@ -2,7 +2,6 @@ package menufuncs
 
 import (
 	"fmt"
-	"sacco/server/database"
 	"sacco/server/parser"
 )
 
@@ -11,7 +10,6 @@ func ChangePassword(
 		menuName string, session *parser.Session,
 		phoneNumber, text, preferencesFolder, cacheFolder string,
 	) string,
-	db *database.Database,
 	data map[string]any,
 ) string {
 	var response, text, content string
@@ -75,8 +73,8 @@ func ChangePassword(
 
 				content = newPassword("(Password Mismatch!)")
 			} else {
-				if id, ok := db.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]); ok {
-					err := db.GenericModels["user"].UpdateRecord(map[string]any{
+				if id, ok := DB.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]); ok {
+					err := DB.GenericModels["user"].UpdateRecord(map[string]any{
 						"password": session.Cache["newPassword"],
 					}, *id)
 					if err != nil {

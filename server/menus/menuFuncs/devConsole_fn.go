@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"regexp"
-	"sacco/server/database"
 	"sacco/server/parser"
 )
 
@@ -13,7 +12,6 @@ func DevConsole(
 		menuName string, session *parser.Session,
 		phoneNumber, text, preferencesFolder, cacheFolder string,
 	) string,
-	db *database.Database,
 	data map[string]any,
 ) string {
 	var session *parser.Session
@@ -114,7 +112,7 @@ func DevConsole(
 		case "console.8":
 			title = "SQL Query"
 
-			result, err := db.SQLQuery(text)
+			result, err := DB.SQLQuery(text)
 			if err != nil {
 				content = fmt.Sprintf(`query: %s
 
@@ -136,7 +134,7 @@ response: %s`, text, payload)
 			title = "Member By PhoneNumber"
 
 			if text != "" {
-				result, err := db.MemberByPhoneNumber(text, nil, nil)
+				result, err := DB.MemberByPhoneNumber(text, nil, nil)
 				if err != nil {
 					content = fmt.Sprintf("%s\n", err.Error())
 				} else {
