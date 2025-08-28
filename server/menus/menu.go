@@ -18,8 +18,6 @@ import (
 //go:embed menus/*
 var menuFiles embed.FS
 
-var funcsMap map[string]func(map[string]any) string
-
 type Menus struct {
 	ActiveMenus  map[string]any
 	Titles       map[string]string
@@ -42,12 +40,6 @@ type Menus struct {
 
 	Cache      map[string]string
 	LastPrompt string
-}
-
-func init() {
-	funcsMap = map[string]func(map[string]any) string{}
-
-	fmt.Println(funcsMap)
 }
 
 func NewMenus(devMode, demoMode *bool) *Menus {
