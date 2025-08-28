@@ -34,6 +34,7 @@ type WorkFlow struct {
 	ScreenIdMap        map[string]string
 	FormulaFields      map[string]string
 	ScreenOrder        map[int]string
+	ReadOnlyFields     []string
 	SubmitCallback     func(
 		d any, m *string, p *string, c *string, f *string,
 		addFn func(
@@ -87,6 +88,7 @@ func NewWorkflow(
 		History:         map[int]string{},
 		HistoryIndex:    -1,
 		FormulaFields:   map[string]string{},
+		ReadOnlyFields:  []string{},
 	}
 
 	if sessions != nil {
@@ -133,6 +135,10 @@ func NewWorkflow(
 						w.ScreenIdMap[id] = key
 					}
 
+					if row["readOnly"] != nil {
+						w.ReadOnlyFields = append(w.ReadOnlyFields, id)
+					}
+
 					if row["formula"] != nil {
 						w.FormulaFields[id] = row["formula"].(string)
 					}
@@ -172,7 +178,7 @@ func (w *WorkFlow) CalculateFormulae() error {
 			return err
 		}
 
-		w.Data[key] = *result
+		w.Data[key] = fmt.Sprintf("%0.2f", *result)
 	}
 
 	return nil
@@ -615,6 +621,13 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 			for _, i := range indices {
 				key := w.ScreenOrder[i]
 
+				if data[key] != nil {
+					dispLabel := w.LoadLabel(key)
+
+					result = append(result, fmt.Sprintf("- %s: %v", dispLabel, data[key]))
+				}
+			}
+			for _, key := range w.ReadOnlyFields {
 				if data[key] != nil {
 					dispLabel := w.LoadLabel(key)
 
