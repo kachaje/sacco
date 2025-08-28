@@ -1,21 +1,29 @@
 package menus_test
 
 import (
-	"fmt"
 	"sacco/server/menus"
 	"sacco/server/parser"
 	"sacco/utils"
 	"testing"
 )
 
-func TestLogin(t *testing.T) {
+func TestLanding(t *testing.T) {
 	m := menus.NewMenus(nil, nil)
 
 	session := parser.NewSession(nil, nil, nil)
 
 	result := m.LoadMenu("main", session, "", "", "", "")
 
-	fmt.Println(result)
+	target := `
+Welcome! Select Action
+
+1. Sign In
+2. Sign Up
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
 }
 
 func TestMainMenu(t *testing.T) {
