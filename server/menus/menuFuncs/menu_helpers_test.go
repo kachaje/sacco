@@ -1,4 +1,4 @@
-package menus_test
+package menufuncs_test
 
 import (
 	"encoding/json"
@@ -17,7 +17,7 @@ func TestLoadTemplateData(t *testing.T) {
 	templateData := map[string]any{}
 	targetData := map[string]any{}
 
-	content, err := os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.json"))
+	content, err := os.ReadFile(filepath.Join("..", "..", "database", "models", "fixtures", "member.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,7 +27,7 @@ func TestLoadTemplateData(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	content, err = os.ReadFile(filepath.Join(".", "menuFuncs", "templates", "member.template.json"))
+	content, err = os.ReadFile(filepath.Join(".", "templates", "member.template.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,7 +39,7 @@ func TestLoadTemplateData(t *testing.T) {
 
 	delete(templateData, "1. OFFICIAL DETAILS")
 
-	content, err = os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.template.output.json"))
+	content, err = os.ReadFile(filepath.Join("..", "..", "database", "models", "fixtures", "member.template.output.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -59,7 +59,7 @@ func TestLoadTemplateData(t *testing.T) {
 func TestTabulateData(t *testing.T) {
 	data := map[string]any{}
 
-	content, err := os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.template.output.json"))
+	content, err := os.ReadFile(filepath.Join("..", "..", "database", "models", "fixtures", "member.template.output.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -69,7 +69,7 @@ func TestTabulateData(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	content, err = os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "member.txt"))
+	content, err = os.ReadFile(filepath.Join("..", "..", "database", "models", "fixtures", "member.txt"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,7 +81,7 @@ func TestTabulateData(t *testing.T) {
 	if os.Getenv("DEBUG") == "true" {
 		fmt.Println(strings.Join(result, "\n"))
 
-		os.WriteFile(filepath.Join("..", "database", "models", "fixtures", "member.txt"), []byte(strings.Join(result, "\n")), 0644)
+		os.WriteFile(filepath.Join("..", "..", "database", "models", "fixtures", "member.txt"), []byte(strings.Join(result, "\n")), 0644)
 	}
 
 	if utils.CleanString(target) != utils.CleanString(strings.Join(result, "\n")) {

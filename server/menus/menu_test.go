@@ -1,4 +1,4 @@
-package menufuncs_test
+package menus_test
 
 import (
 	"fmt"
