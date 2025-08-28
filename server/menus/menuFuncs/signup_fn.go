@@ -1,13 +1,21 @@
-package menus
+package menusfuncs
 
 import (
 	"fmt"
 	"regexp"
+	"sacco/server/database"
 	"sacco/server/parser"
 	"slices"
 )
 
-func (m *Menus) signUp(data map[string]any) string {
+func SignUp(
+	loadMenu func(
+		menuName string, session *parser.Session,
+		phoneNumber, text, preferencesFolder, cacheFolder string,
+	) string,
+	db *database.Database,
+	data map[string]any,
+) string {
 	var response string
 	var phoneNumber, text, preferencesFolder, cacheFolder string
 	var session *parser.Session
@@ -44,7 +52,7 @@ func (m *Menus) signUp(data map[string]any) string {
 
 	if text == "00" {
 		session.CurrentMenu = "main"
-		return m.LoadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
+		return loadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
 	}
 
 	askUsername := func(msg string) string {
@@ -63,7 +71,7 @@ func (m *Menus) signUp(data map[string]any) string {
 	if session.LastPrompt == "username" &&
 		slices.Contains([]string{"", "000"}, text) &&
 		regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) {
-		if !DB.UsernameFree(phoneNumber) {
+		if !db.UsernameFree(phoneNumber) {
 			session.LastPrompt = "username"
 
 			content = askUsername(fmt.Sprintf("(%s already taken)", phoneNumber))
@@ -80,7 +88,7 @@ func (m *Menus) signUp(data map[string]any) string {
 			if text == "" {
 				content = askUsername("(Required Field)")
 			} else {
-				if !DB.UsernameFree(text) {
+				if !db.UsernameFree(text) {
 					session.LastPrompt = "username"
 
 					content = askUsername(fmt.Sprintf("(%s already taken)", text))
@@ -127,7 +135,7 @@ func (m *Menus) signUp(data map[string]any) string {
 
 					content = askNewPassword("(password mismatch)")
 				} else {
-					_, err := DB.GenericModels["user"].AddRecord(map[string]any{
+					_, err := db.GenericModels["user"].AddRecord(map[string]any{
 						"name":     session.Cache["name"],
 						"username": session.Cache["username"],
 						"password": session.Cache["password"],

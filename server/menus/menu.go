@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sacco/server/database"
+	menusfuncs "sacco/server/menus/menuFuncs"
 	"sacco/server/parser"
 	"sacco/utils"
 	"slices"
@@ -129,7 +130,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return m.changePassword(data)
 	}
 	m.FunctionsMap["signUp"] = func(data map[string]any) string {
-		return m.signUp(data)
+		return menusfuncs.SignUp(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["landing"] = func(data map[string]any) string {
 		return m.landing(data)
@@ -260,14 +261,16 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				"text":              text,
 			})
 		case "signUp":
-			return m.signUp(map[string]any{
-				"phoneNumber":       phoneNumber,
-				"cacheFolder":       cacheFolder,
-				"session":           session,
-				"preferredLanguage": preferredLanguage,
-				"preferencesFolder": preferencesFolder,
-				"text":              text,
-			})
+			return menusfuncs.SignUp(
+				m.LoadMenu, DB,
+				map[string]any{
+					"phoneNumber":       phoneNumber,
+					"cacheFolder":       cacheFolder,
+					"session":           session,
+					"preferredLanguage": preferredLanguage,
+					"preferencesFolder": preferencesFolder,
+					"text":              text,
+				})
 		default:
 			return m.landing(map[string]any{
 				"phoneNumber":       phoneNumber,
@@ -1147,7 +1150,7 @@ func (m *Menus) landing(data map[string]any) string {
 		session.CurrentMenu = "signUp"
 		session.LastPrompt = "username"
 		data["text"] = ""
-		return m.signUp(data)
+		return menusfuncs.SignUp(m.LoadMenu, DB, data)
 	default:
 		response = "Welcome! Select Action\n\n" +
 			"1. Sign In\n" +
