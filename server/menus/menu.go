@@ -125,7 +125,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return m.editUser(data)
 	}
 	m.FunctionsMap["changePassword"] = func(data map[string]any) string {
-		return m.changePassword(data)
+		return menufuncs.ChangePassword(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["signUp"] = func(data map[string]any) string {
 		return menufuncs.SignUp(m.LoadMenu, DB, data)
@@ -757,104 +757,6 @@ func (m *Menus) editUser(data map[string]any) string {
 	var response string = "Edit User\n\n00. Main Menu"
 
 	_ = data
-
-	return response
-}
-
-func (m *Menus) changePassword(data map[string]any) string {
-	var response, text string
-	var session *parser.Session
-
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
-
-	if data["text"] != nil {
-		if val, ok := data["text"].(string); ok {
-			text = val
-		}
-	}
-
-	currentPassword := func(msg string) string {
-		return fmt.Sprintf("Change Password\n"+
-			"---------------\n\n"+
-			"Current Password %s\n", msg)
-	}
-	newPassword := func(msg string) string {
-		return fmt.Sprintf("Change Password\n"+
-			"---------------\n\n"+
-			"New Password %s\n", msg)
-	}
-	confirmPassword := func(msg string) string {
-		return fmt.Sprintf("Change Password\n"+
-			"---------------\n\n"+
-			"Confirm Password %s\n", msg)
-	}
-
-	switch m.LastPrompt {
-	case "currentPassword":
-		if text == "" {
-			response = currentPassword("(Required Field)")
-		} else {
-			session.Cache["currentPassword"] = text
-
-			m.LastPrompt = "newPassword"
-
-			response = newPassword("")
-		}
-	case "newPassword":
-		if text == "" {
-			response = newPassword("(Required Field)")
-		} else {
-			session.Cache["newPassword"] = text
-
-			m.LastPrompt = "confirmPassword"
-
-			response = confirmPassword("")
-		}
-	case "confirmPassword":
-		if text == "" {
-			response = confirmPassword("(Required Field)")
-		} else {
-			session.Cache["confirmPassword"] = text
-
-			text = ""
-
-			if session.Cache["newPassword"] != session.Cache["confirmPassword"] {
-				m.LastPrompt = "newPassword"
-
-				response = newPassword("(Password Mismatch!)")
-			} else {
-				if id, ok := DB.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]); ok {
-					err := DB.GenericModels["user"].UpdateRecord(map[string]any{
-						"password": session.Cache["newPassword"],
-					}, *id)
-					if err != nil {
-						response = fmt.Sprintf("Change Password\n"+
-							"-------------\n"+
-							"ERROR: %s\n\n00. Main Menu", err.Error())
-					} else {
-						session.Cache = map[string]string{}
-						session.LastPrompt = ""
-
-						response = "Change Password\n" +
-							"-------------\n" +
-							"Password Changed!\n\n00. Main Menu"
-					}
-				} else {
-					m.LastPrompt = "currentPassword"
-
-					response = currentPassword("(Invalid credentials)")
-				}
-			}
-		}
-	default:
-		m.LastPrompt = "currentPassword"
-
-		response = currentPassword("")
-	}
 
 	return response
 }
