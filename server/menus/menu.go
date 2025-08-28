@@ -69,7 +69,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return m.doExit(data)
 	}
 	m.FunctionsMap["businessSummary"] = func(data map[string]any) string {
-		return m.businessSummary(data)
+		return menufuncs.BusinessSummary(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["employmentSummary"] = func(data map[string]any) string {
 		return menufuncs.EmploymentSummary(m.LoadMenu, DB, data)
@@ -519,13 +519,4 @@ func (m *Menus) doExit(data map[string]any) string {
 	}
 
 	return "END Thank you for using our service"
-}
-
-func (m *Menus) businessSummary(data map[string]any) string {
-	var result string = "Business Summary\n\n" +
-		"00. Main Menu\n"
-
-	_ = data
-
-	return result
 }
