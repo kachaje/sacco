@@ -1,4 +1,4 @@
-package menusfuncs
+package menufuncs
 
 import (
 	"fmt"
