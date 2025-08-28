@@ -32,4 +32,16 @@ var (
 		"memberLastYearBusinessHistory",
 		"memberNextYearBusinessProjection",
 	}
+
+	SingleChildren = map[string][]string{
+		"MemberLoanSingleChildren": MemberLoanSingleChildren,
+		"MemberSingleChildren":     MemberSingleChildren,
+	}
+
+	ArrayChildren = map[string][]string{
+		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
+		"MemberArrayChildren":             MemberArrayChildren,
+		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
+		"AccountArrayChildren":            AccountArrayChildren,
+	}
 )
