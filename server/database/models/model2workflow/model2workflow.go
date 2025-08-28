@@ -119,7 +119,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 								}
 
 								if value["formula"] != nil {
-									data[tag].(map[string]any)["formula"] = true
+									data[tag].(map[string]any)["formula"] = value["formula"].(string)
 								}
 
 								if value["options"] != nil {
