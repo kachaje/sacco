@@ -335,3 +335,12 @@ func (d *Database) ValidatePassword(username, password string) (*int64, bool) {
 
 	return nil, false
 }
+
+func (d *Database) UsernameFree(username string) bool {
+	result, err := d.SQLQuery(fmt.Sprintf(`SELECT id, role FROM user WHERE username = "%v"`, username))
+	if err == nil && len(result) > 0 {
+		return false
+	}
+
+	return true
+}
