@@ -162,6 +162,12 @@ func NewWorkflow(
 	return w
 }
 
+func (w *WorkFlow) CalculateFormulae() {
+	for key, value := range w.FormulaFields {
+		fmt.Println(key, value)
+	}
+}
+
 func (w *WorkFlow) GetNode(screen string) map[string]any {
 	if w.Tree[screen] != nil {
 		node, ok := w.Tree[screen].(map[string]any)
