@@ -1,21 +1,12 @@
 package database
 
 var (
-	AccountArrayChildren = []string{
-		"accountJournal",
-		"accountTransaction",
-	}
 	AccountTransactionArrayChildren = []string{
 		"accountJournal",
 	}
-	MemberLoanSingleChildren = []string{
-		"memberBusiness",
-		"memberOccupation",
-		"memberLoanLiability",
-		"memberLoanSecurity",
-		"memberLoanWitness",
-		"memberOccupationVerification",
-		"memberLoanApproval",
+	AccountArrayChildren = []string{
+		"accountJournal",
+		"accountTransaction",
 	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
@@ -32,16 +23,23 @@ var (
 		"memberLastYearBusinessHistory",
 		"memberNextYearBusinessProjection",
 	}
-
-	SingleChildren = map[string][]string{
-		"MemberLoanSingleChildren": MemberLoanSingleChildren,
-		"MemberSingleChildren":     MemberSingleChildren,
+	MemberLoanSingleChildren = []string{
+		"memberBusiness",
+		"memberOccupation",
+		"memberLoanLiability",
+		"memberLoanSecurity",
+		"memberLoanWitness",
+		"memberOccupationVerification",
+		"memberLoanApproval",
 	}
-
+	SingleChildren = map[string][]string{
+		"MemberSingleChildren":     MemberSingleChildren,
+		"MemberLoanSingleChildren": MemberLoanSingleChildren,
+	}
 	ArrayChildren = map[string][]string{
-		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
-		"MemberArrayChildren":             MemberArrayChildren,
 		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
 		"AccountArrayChildren":            AccountArrayChildren,
+		"MemberArrayChildren":             MemberArrayChildren,
+		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 	}
 )

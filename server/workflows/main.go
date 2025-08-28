@@ -124,6 +124,9 @@ func buildWorkflows() {
 
 	script := []string{}
 
+	arraysGroup := []string{}
+	singlesGroup := []string{}
+
 	for key, value := range relationships {
 		model := utils.CapitalizeFirstLetter(key)
 
@@ -141,6 +144,8 @@ func buildWorkflows() {
 
 				if len(row) > 0 {
 					script = append(script, row)
+
+					arraysGroup = append(arraysGroup, fmt.Sprintf(`"%sArrayChildren": %sArrayChildren,`, model, model))
 				}
 			}
 			if len(val["hasOne"]) > 0 {
@@ -157,6 +162,8 @@ func buildWorkflows() {
 
 				if len(row) > 0 {
 					script = append(script, row)
+
+					singlesGroup = append(singlesGroup, fmt.Sprintf(`"%sSingleChildren": %sSingleChildren,`, model, model))
 				}
 			}
 		}
@@ -168,8 +175,14 @@ func buildWorkflows() {
 	
 	var (
 	%s
+	SingleChildren = map[string][]string{
+		%s
+	}
+	ArrayChildren = map[string][]string{
+		%s
+	}
 	)
-	`, strings.Join(script, "\n")))
+	`, strings.Join(script, "\n"), strings.Join(singlesGroup, "\n"), strings.Join(arraysGroup, "\n")))
 	if err != nil {
 		panic(err)
 	}
