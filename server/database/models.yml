@@ -254,9 +254,11 @@ memberLastYearBusinessHistory:
     - totalCosts:
         required: true
         numericField: true
+        formula: "SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
     - netProfitLoss:
         required: true
         numericField: true
+        formula: "DIFF({{totalIncome}},{{totalCosts}})"
 
 memberNextYearBusinessProjection:
   belongsTo:
@@ -305,9 +307,11 @@ memberNextYearBusinessProjection:
     - totalCosts:
         required: true
         numericField: true
+        formula: "SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
     - netProfitLoss:
         required: true
         numericField: true
+        formula: "DIFF({{totalIncome}},{{totalCosts}})"
 
 memberShares:
   belongsTo:
