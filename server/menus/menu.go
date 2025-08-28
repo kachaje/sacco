@@ -107,7 +107,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return m.viewMemberDetails(data)
 	}
 	m.FunctionsMap["devConsole"] = func(data map[string]any) string {
-		return menufuncs.DevConsole(DB, data)
+		return menufuncs.DevConsole(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["memberLoansSummary"] = func(data map[string]any) string {
 		return m.memberLoansSummary(data)
@@ -122,7 +122,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		return m.blockUser(data)
 	}
 	m.FunctionsMap["editUser"] = func(data map[string]any) string {
-		return m.editUser(data)
+		return menufuncs.EditUser(m.LoadMenu, DB, data)
 	}
 	m.FunctionsMap["changePassword"] = func(data map[string]any) string {
 		return menufuncs.ChangePassword(m.LoadMenu, DB, data)
@@ -713,14 +713,6 @@ func (m *Menus) memberLoansSummary(data map[string]any) string {
 
 func (m *Menus) blockUser(data map[string]any) string {
 	var response string = "Block User\n\n00. Main Menu"
-
-	_ = data
-
-	return response
-}
-
-func (m *Menus) editUser(data map[string]any) string {
-	var response string = "Edit User\n\n00. Main Menu"
 
 	_ = data
 

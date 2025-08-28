@@ -8,7 +8,14 @@ import (
 	"sacco/server/parser"
 )
 
-func DevConsole(db *database.Database, data map[string]any) string {
+func DevConsole(
+	loadMenu func(
+		menuName string, session *parser.Session,
+		phoneNumber, text, preferencesFolder, cacheFolder string,
+	) string,
+	db *database.Database,
+	data map[string]any,
+) string {
 	var session *parser.Session
 	var response, content, text, title string
 
