@@ -108,7 +108,9 @@ func TestCalculateFormulae(t *testing.T) {
 	wf.FormulaFields["totalCosts"] = "SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
 	wf.FormulaFields["netProfitLoss"] = "DIFF({{totalIncome}},{{totalCosts}})"
 
-	wf.CalculateFormulae()
+	wait := make(chan bool, 1)
+
+	wf.CalculateFormulae(wait)
 
 	target := map[string]any{
 		"employeesWages":   "500000",

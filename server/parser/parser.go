@@ -169,7 +169,11 @@ func NewWorkflow(
 	return w
 }
 
-func (w *WorkFlow) CalculateFormulae() error {
+func (w *WorkFlow) CalculateFormulae(wait chan bool) error {
+	defer func() {
+		wait <- true
+	}()
+
 	for key, value := range w.FormulaFields {
 		tokens := GetTokens(value)
 
@@ -506,7 +510,10 @@ func (w *WorkFlow) OptionValue(options []any, input string) (string, *string) {
 func (w *WorkFlow) ResolveData(data map[string]any, preferCode bool) map[string]any {
 	result := map[string]any{}
 
-	err := w.CalculateFormulae()
+	wait := make(chan bool, 1)
+
+	err := w.CalculateFormulae(wait)
+	<-wait
 	if err != nil {
 		log.Println(err)
 	}
