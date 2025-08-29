@@ -293,3 +293,42 @@ func GetSkippedRefIds(data, refData []map[string]any) []map[string]any {
 
 	return result
 }
+
+
+func CacheFile(filename string, data any, retries int) {
+	time.Sleep(time.Duration(retries) * time.Second)
+
+	if FileLocked(filename) {
+		if retries < 5 {
+			retries++
+
+			CacheFile(filename, data, retries)
+			return
+		}
+	}
+	_, err := LockFile(filename)
+	if err != nil {
+		log.Printf("server.Cachefile.1: %s", err.Error())
+		retries = 0
+
+		CacheFile(filename, data, retries)
+		return
+	}
+	defer func() {
+		err := UnLockFile(filename)
+		if err != nil {
+			log.Printf("server.Cachefile.2: %s", err.Error())
+		}
+	}()
+
+	payload, err := json.MarshalIndent(data, "", "  ")
+	if err == nil {
+		err = os.WriteFile(filename, payload, 0644)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	} else {
+		log.Println(err)
+	}
+}
