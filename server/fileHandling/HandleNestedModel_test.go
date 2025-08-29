@@ -1,6 +1,7 @@
 package filehandling_test
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -243,6 +244,102 @@ func TestComplexNestedModel(t *testing.T) {
 		"memberId":            1,
 		"memberNomineeId":     3,
 		"memberOccupationId":  4,
+	}
+
+	if !reflect.DeepEqual(target, session.GlobalIds) {
+		t.Fatalf("Test failed")
+	}
+}
+
+func TestChildNestedModel(t *testing.T) {
+	phoneNumber := "0999888777"
+	cacheFolder := filepath.Join(".", "tmp11", "cache")
+
+	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
+
+	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
+
+	defer func() {
+		os.RemoveAll(filepath.Join(".", "tmp11"))
+	}()
+
+	session := &parser.Session{
+		AddedModels: map[string]bool{},
+		GlobalIds: map[string]int64{
+			"memberId":     16,
+			"memberLoanId": 13,
+		},
+	}
+
+	sessions := make(map[string]*parser.Session)
+
+	sessions[phoneNumber] = session
+
+	count := 0
+
+	saveFunc := func(
+		data map[string]any,
+		model string,
+		retries int,
+	) (*int64, error) {
+		if data["memberId"] == nil {
+			return nil, fmt.Errorf("missing required field memberId")
+		}
+		if data["memberLoanId"] == nil {
+			return nil, fmt.Errorf("missing required field memberLoanId")
+		}
+
+		count++
+
+		var id int64 = int64(count)
+
+		data["id"] = id
+
+		return &id, nil
+	}
+
+	model := "memberOccupation"
+
+	sessions[phoneNumber].AddedModels["member"] = true
+
+	data := map[string]any{
+		"employerAddress":        "Kanengo",
+		"employerName":           "SOBO",
+		"employerPhone":          "01282373737",
+		"grossPay":               100000,
+		"highestQualification":   "Secondary",
+		"jobTitle":               "Driver",
+		"netPay":                 90000,
+		"periodEmployedInMonths": "36",
+	}
+
+	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, file := range []string{
+		"memberContact.json",
+		"memberOccupation.json",
+		"memberBeneficiary.json",
+		"memberNominee.json",
+	} {
+		filename := filepath.Join(cacheFolder, phoneNumber, file)
+
+		_, err = os.Stat(filename)
+		if !os.IsNotExist(err) {
+			t.Fatalf("Test failed. Expected file %s to be deleted by now", filename)
+		}
+	}
+
+	if count != 1 {
+		t.Fatalf("Test failed. Expected: 1; Actual: %v", count)
+	}
+
+	target := map[string]int64{
+		"memberOccupationId": 1,
+		"memberId":           16,
+		"memberLoanId":       13,
 	}
 
 	if !reflect.DeepEqual(target, session.GlobalIds) {

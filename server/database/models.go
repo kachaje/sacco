@@ -82,4 +82,16 @@ var (
 		"loanInterest",
 		"totalCosts",
 	}
+	ParentModels = map[string][]string{
+		"memberContact": {
+			"member",
+		},
+		"memberNominee": {
+			"member",
+		},
+		"memberOccupation": {
+			"member",
+			"memberLoan",
+		},
+	}
 )

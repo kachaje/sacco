@@ -78,6 +78,15 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 				return fmt.Errorf("server.HandleNestedModel.%s:missing saveFunc", *model)
 			}
 
+			if database.ParentModels[*model] != nil {
+				for _, value := range database.ParentModels[*model] {
+					key := fmt.Sprintf("%sId", value)
+					if sessions[*phoneNumber].GlobalIds[key] > 0 {
+						modelData[key] = sessions[*phoneNumber].GlobalIds[key]
+					}
+				}
+			}
+
 			mid, err := saveFunc(modelData, *model, 0)
 			if err != nil {
 				log.Println(err)
