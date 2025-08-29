@@ -114,35 +114,11 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					}
 				}()
 
-				someChildAdded := false
-
-				capName := utils.CapitalizeFirstLetter(*model)
-
-				groupSingleName := fmt.Sprintf("%sSingleChildren", capName)
-				groupArrayName := fmt.Sprintf("%sArrayChildren", capName)
-
-				models := []string{}
-
-				if database.SingleChildren[groupSingleName] != nil {
-					models = append(models, database.SingleChildren[groupSingleName]...)
-				}
-
-				if database.ArrayChildren[groupArrayName] != nil {
-					models = append(models, database.ArrayChildren[groupArrayName]...)
-				}
-
 				if saveFunc == nil {
 					return fmt.Errorf("server.HandleNestedModel.%s:missing saveFunc", *model)
 				}
 
 				if sessions[*phoneNumber] != nil {
-					for _, key := range models {
-						if sessions[*phoneNumber].AddedModels[key] {
-							someChildAdded = true
-							break
-						}
-					}
-
 					if sessions[*phoneNumber].GlobalIds == nil {
 						sessions[*phoneNumber].GlobalIds = map[string]int64{}
 					}
@@ -184,78 +160,57 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					id = *mid
 
 					modelData["id"] = id
-				}
 
-				if someChildAdded {
+					capName := utils.CapitalizeFirstLetter(*model)
+
+					groupSingleName := fmt.Sprintf("%sSingleChildren", capName)
+					groupArrayName := fmt.Sprintf("%sArrayChildren", capName)
+
+					models := []string{}
+
+					if database.SingleChildren[groupSingleName] != nil {
+						models = append(models, database.SingleChildren[groupSingleName]...)
+					}
+
+					if database.ArrayChildren[groupArrayName] != nil {
+						models = append(models, database.ArrayChildren[groupArrayName]...)
+					}
+
 					for _, childModel := range models {
-						file := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", childModel))
+						childRows, err := CacheDataByModel(childModel, sessionFolder)
+						if err != nil {
+							log.Println(err)
+							continue
+						}
 
-						_, err = os.Stat(file)
-						if !os.IsNotExist(err) {
-							fileArrayData := []map[string]any{}
-							fileFlatData := map[string]any{}
+						for _, row := range childRows {
+							childData, ok := row["data"].(map[string]any)
+							if ok {
+								filename, ok := row["filename"].(string)
+								if ok {
+									parentId := fmt.Sprintf("%sId", *model)
 
-							content, err := os.ReadFile(file)
-							if err != nil {
-								log.Printf("server.HandleNestedModel:%s\n", err.Error())
-							} else {
-								err = json.Unmarshal(content, &fileArrayData)
-								if err != nil {
-									err = json.Unmarshal(content, &fileFlatData)
+									childData[parentId] = id
+
+									lid, err := saveFunc(childData, childModel, 0)
 									if err != nil {
-										log.Printf("server.HandleNestedModel:%s\n", err.Error())
-									}
-								}
-							}
-
-							if len(fileArrayData) > 0 {
-								for i := range fileArrayData {
-									fileArrayData[i][fmt.Sprintf("%sId", *model)] = id
-
-									mid, err = saveFunc(fileArrayData[i], childModel, 0)
-									if err != nil {
-										log.Printf("server.HandleNestedModel:%s\n", err.Error())
+										log.Println(err)
 										continue
 									}
 
-									fileArrayData[i]["id"] = *mid
+									childKey := fmt.Sprintf("%sId", childModel)
+									sessions[*phoneNumber].GlobalIds[childKey] = *lid
+
+									if os.Getenv("DEBUG") != "true" {
+										os.Remove(filepath.Join(sessionFolder, filename))
+									}
 								}
-
-								modelData[childModel] = fileArrayData
-
-								if os.Getenv("DEBUG") == "true" {
-									CacheFile(file, fileArrayData, 0)
-								} else {
-									os.Remove(file)
-								}
-							} else if len(fileFlatData) > 0 {
-								fileFlatData[fmt.Sprintf("%sId", *model)] = id
-
-								mid, err = saveFunc(fileFlatData, childModel, 0)
-								if err != nil {
-									log.Printf("server.HandleNestedModel:%s\n", err.Error())
-									continue
-								}
-
-								fileFlatData["id"] = *mid
-
-								modelData[childModel] = fileFlatData
-
-								if os.Getenv("DEBUG") == "true" {
-									CacheFile(file, fileFlatData, 0)
-								} else {
-									os.Remove(file)
-								}
-							}
-
-							if sessions[*phoneNumber] != nil {
-								sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", childModel)] = *mid
 							}
 						}
 					}
-				}
 
-				transactionDone = true
+					transactionDone = true
+				}
 			}
 
 			if sessions != nil && sessions[*phoneNumber] != nil {
@@ -302,9 +257,21 @@ func CacheDataByModel(filterModel, sessionFolder string) ([]map[string]any, erro
 		}
 
 		if data := map[string]any{}; json.Unmarshal(content, &data) == nil {
-			result = append(result, data)
+			result = append(result, map[string]any{
+				"data":     data,
+				"filename": filename,
+			})
 		} else if data := []map[string]any{}; json.Unmarshal(content, &data) == nil {
-			result = append(result, data...)
+			rows := []map[string]any{}
+
+			for _, row := range data {
+				rows = append(rows, map[string]any{
+					"data":     row,
+					"filename": filename,
+				})
+			}
+
+			result = append(result, rows...)
 		}
 
 		return nil

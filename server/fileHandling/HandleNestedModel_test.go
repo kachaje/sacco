@@ -601,14 +601,20 @@ func TestCacheDataByModel(t *testing.T) {
 
 	target := []map[string]any{
 		{
-			"contact":    "0888777444",
-			"name":       "John Phiri",
-			"percentage": 10.0,
+			"data": map[string]any{
+				"contact":    "0888777444",
+				"name":       "John Phiri",
+				"percentage": 10.0,
+			},
+			"filename": "memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
 		},
 		{
-			"contact":    "07746635653",
-			"name":       "Jean Banda",
-			"percentage": 5.0,
+			"data": map[string]any{
+				"contact":    "07746635653",
+				"name":       "Jean Banda",
+				"percentage": 5.0,
+			},
+			"filename": "memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
 		},
 	}
 
@@ -623,12 +629,15 @@ func TestCacheDataByModel(t *testing.T) {
 
 	target = []map[string]any{
 		{
-			"homeDistrict":             "Lilongwe",
-			"homeTraditionalAuthority": "Kalolo",
-			"homeVillage":              "Kalulu",
-			"phoneNumber":              "0999888777",
-			"postalAddress":            "P.O. Box 1",
-			"residentialAddress":       "Area 49",
+			"data": map[string]any{
+				"homeDistrict":             "Lilongwe",
+				"homeTraditionalAuthority": "Kalolo",
+				"homeVillage":              "Kalulu",
+				"phoneNumber":              "0999888777",
+				"postalAddress":            "P.O. Box 1",
+				"residentialAddress":       "Area 49",
+			},
+			"filename": "memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
 		},
 	}
 
