@@ -6,7 +6,7 @@ import (
 	"sacco/utils"
 )
 
-func Main(model, destinationFile string, sourceData map[string]any) (*string, map[string][]string, map[string]bool, error) {
+func Main(model, destinationFile string, sourceData map[string]any) (*string, map[string][]string, map[string]bool, []string, error) {
 	data := map[string]any{
 		"model": model,
 		"formSummary": map[string]any{
@@ -14,6 +14,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 		},
 	}
 
+	parentModels := []string{}
 	floatFields := map[string]bool{}
 	relationships := map[string][]string{}
 	j := 0
@@ -58,6 +59,19 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 				}
 
 				relationships["hasOne"] = values
+			}
+		}
+		if rawData["belongsTo"] != nil {
+			if val, ok := rawData["belongsTo"].([]any); ok {
+				values := []string{}
+
+				for _, v := range val {
+					if vs, ok := v.(string); ok {
+						values = append(values, fmt.Sprintf(`"%s",`, vs))
+					}
+				}
+
+				parentModels = values
 			}
 		}
 
@@ -175,13 +189,13 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 
 	yamlString, err := utils.DumpYaml(data)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, nil, nil, err
 	}
 
 	err = os.WriteFile(destinationFile, []byte(*yamlString), 0644)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, nil, nil, err
 	}
 
-	return yamlString, relationships, floatFields, nil
+	return yamlString, relationships, floatFields, parentModels, nil
 }

@@ -109,15 +109,22 @@ func buildWorkflows() {
 	}
 
 	relationships := map[string]any{}
+	parentModels := []string{}
 	floatFields := []string{}
 
 	for model := range data {
 		targetFile := filepath.Join(workingFolder, fmt.Sprintf("%s.yml", model))
 
-		_, row, floats, err := model2workflow.Main(model, targetFile, data)
+		_, row, floats, parents, err := model2workflow.Main(model, targetFile, data)
 		if err != nil {
 			log.Panic(err)
 		}
+
+		entry := fmt.Sprintf(`"%s": {
+			%s
+		},`, model, strings.Join(parents, "\n"))
+
+		parentModels = append(parentModels, entry)
 
 		for key := range floats {
 			if !slices.Contains(floatFields, key) {
@@ -192,11 +199,15 @@ func buildWorkflows() {
 	FloatFields = []string{
 		%s
 	}
+	ParentModels = map[string][]string{
+		%s
+	}
 	)`,
 		strings.Join(script, "\n"),
 		strings.Join(singlesGroup, "\n"),
 		strings.Join(arraysGroup, "\n"),
 		strings.Join(floatFields, "\n"),
+		strings.Join(parentModels, "\n"),
 	))
 	if err != nil {
 		panic(err)
