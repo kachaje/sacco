@@ -323,10 +323,6 @@ func TestHandleBeneficiaries(t *testing.T) {
 	db := database.NewDatabase(dbname)
 	defer func() {
 		db.Close()
-
-		if _, err := os.Stat("memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json"); !os.IsNotExist(err) {
-			os.Remove("memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json")
-		}
 	}()
 
 	data := map[string]any{
@@ -345,6 +341,14 @@ func TestHandleBeneficiaries(t *testing.T) {
 	phoneNumber := "0999888777"
 	cacheFolder := "./tmp"
 
+	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
+
+	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
+
+	defer func() {
+		os.RemoveAll(cacheFolder)
+	}()
+
 	var id int64 = 1
 
 	sessions := map[string]*parser.Session{
@@ -355,7 +359,9 @@ func TestHandleBeneficiaries(t *testing.T) {
 		},
 	}
 
-	err := filehandling.HandleBeneficiaries(data, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, nil, "")
+	model := "memberBeneficiary"
+
+	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

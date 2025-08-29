@@ -78,12 +78,6 @@ func SaveData(
 			}
 		}
 
-	// case "memberBeneficiary":
-	// 	return HandleBeneficiaries(data, phoneNumber, cacheFolder, saveFunc, sessions, refData, sessionFolder)
-
-	// case "member":
-	// 	return HandleMemberDetails(data, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder)
-
 	default:
 		return HandleNestedModel(data, model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, refData)
 	}
