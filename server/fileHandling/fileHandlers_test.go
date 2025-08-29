@@ -441,22 +441,16 @@ func TestHandleMemberDetails(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	var id int64
-
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
-			MemberId:   &id,
-			ActiveData: map[string]any{},
-			AddedModels: map[string]bool{
-				"memberContact":     true,
-				"memberNominee":     true,
-				"memberOccupation":  true,
-				"memberBeneficiary": true,
-			},
+			ActiveData:  map[string]any{},
+			AddedModels: map[string]bool{},
 		},
 	}
 
-	err := filehandling.HandleMemberDetails(data, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder)
+	model := "member"
+
+	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

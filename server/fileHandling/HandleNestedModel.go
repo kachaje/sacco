@@ -12,6 +12,7 @@ import (
 	"sacco/server/database"
 	"sacco/server/parser"
 	"sacco/utils"
+	"slices"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -167,13 +168,19 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					groupArrayName := fmt.Sprintf("%sArrayChildren", capName)
 
 					models := []string{}
+					arrayModels := []string{}
+					singleModels := []string{}
 
 					if database.SingleChildren[groupSingleName] != nil {
 						models = append(models, database.SingleChildren[groupSingleName]...)
+
+						singleModels = append(singleModels, database.SingleChildren[groupSingleName]...)
 					}
 
 					if database.ArrayChildren[groupArrayName] != nil {
 						models = append(models, database.ArrayChildren[groupArrayName]...)
+
+						arrayModels = append(arrayModels, database.ArrayChildren[groupArrayName]...)
 					}
 
 					for _, childModel := range models {
@@ -200,6 +207,20 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 
 									childKey := fmt.Sprintf("%sId", childModel)
 									sessions[*phoneNumber].GlobalIds[childKey] = *lid
+
+									if sessions[*phoneNumber].ActiveData == nil {
+										sessions[*phoneNumber].ActiveData = map[string]any{}
+									}
+
+									if slices.Contains(arrayModels, childModel) {
+										if sessions[*phoneNumber].ActiveData[childModel] == nil {
+											sessions[*phoneNumber].ActiveData[childModel] = []map[string]any{}
+										}
+
+										sessions[*phoneNumber].ActiveData[childModel] = append(sessions[*phoneNumber].ActiveData[childModel].([]map[string]any), childData)
+									} else if slices.Contains(singleModels, childModel) {
+										sessions[*phoneNumber].ActiveData[childModel] = childData
+									}
 
 									if os.Getenv("DEBUG") != "true" {
 										os.Remove(filepath.Join(sessionFolder, filename))
