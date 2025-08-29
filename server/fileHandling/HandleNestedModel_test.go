@@ -346,3 +346,31 @@ func TestChildNestedModel(t *testing.T) {
 		t.Fatalf("Test failed")
 	}
 }
+
+func TestUnpackDataDefault(t *testing.T) {
+	data := map[string]any{}
+	target := []map[string]any{}
+
+	for i := range 4 {
+		row := map[string]any{}
+
+		for _, key := range []string{"id", "name", "value"} {
+			label := fmt.Sprintf("%s%d", key, i+1)
+			value := fmt.Sprintf("%s%d", key, i+1)
+
+			data[label] = value
+			row[key] = value
+		}
+
+		target = append(target, row)
+	}
+
+	result, err := filehandling.UnpackData(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(result, target) {
+		t.Fatal("Test failed")
+	}
+}

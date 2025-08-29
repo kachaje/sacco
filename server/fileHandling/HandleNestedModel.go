@@ -178,3 +178,9 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 
 	return nil
 }
+
+func UnpackData(data map[string]any) ([]map[string]any, error) {
+	var result []map[string]any
+
+	return result, nil
+}
