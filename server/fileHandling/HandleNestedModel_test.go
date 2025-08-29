@@ -377,4 +377,22 @@ func TestUnpackData(t *testing.T) {
 	if len(result[0]) != len(target[0]) {
 		t.Fatalf("Test failed. Expected: %v; Actual: %v", len(target[0]), len(result[0]))
 	}
+
+	data = map[string]any{
+		"id":    "1",
+		"name":  "test",
+		"value": "something",
+	}
+	target = []map[string]any{}
+
+	target = append(target, data)
+
+	result, err = filehandling.UnpackData(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(target, result) {
+		t.Fatal("Test failed")
+	}
 }
