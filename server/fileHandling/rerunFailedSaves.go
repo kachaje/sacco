@@ -3,12 +3,13 @@ package filehandling
 import (
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sacco/server/parser"
 	"sacco/utils"
-	"strconv"
 )
 
 func RerunFailedSaves(phoneNumber, cacheFolder *string,
@@ -40,99 +41,51 @@ func RerunFailedSaves(phoneNumber, cacheFolder *string,
 			}
 		}()
 
-		targetFiles := []string{
-			"member",
-			"memberContact",
-			"memberNominee",
-			"memberOccupation",
-			"memberBeneficiary",
-		}
+		err := filepath.WalkDir(sessionFolder, func(fullpath string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if d.IsDir() {
+				return nil
+			}
 
-		for _, target := range targetFiles {
-			filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", target))
+			filename := filepath.Base(fullpath)
 
-			// Priority is on writes this this can wait
 			if utils.FileLocked(filename) {
-				continue
+				return nil
 			}
 
-			_, err := os.Stat(filename)
-			if !os.IsNotExist(err) {
-				content, err := os.ReadFile(filename)
+			re := regexp.MustCompile(`\.[a-z0-9-]+\.json$`)
+
+			if !re.MatchString(filename) {
+				return nil
+			}
+
+			model := re.ReplaceAllLiteralString(filename, "")
+
+			content, err := os.ReadFile(fullpath)
+			if err != nil {
+				return err
+			}
+
+			if data := map[string]any{}; json.Unmarshal(content, &data) == nil {
+				err := HandleNestedModel(data, &model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, nil)
 				if err != nil {
-					log.Printf("server.RerunFailedSaves.1: %s", err.Error())
-					continue
+					return err
 				}
-
-				log.Printf("server.RerunFailedSaves: Retrying to save %s\n", target)
-
-				if target == "memberBeneficiary" {
-					rawData := []map[string]any{}
-
-					err = json.Unmarshal(content, &rawData)
+			} else if data := []map[string]any{}; json.Unmarshal(content, &data) == nil {
+				for _, row := range data {
+					err := HandleNestedModel(row, &model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, nil)
 					if err != nil {
-						log.Printf("server.RerunFailedSaves.2: %s", err.Error())
-						continue
-					}
-
-					data := map[string]any{}
-
-					for i, row := range rawData {
-						index := i + 1
-
-						nameLabel := fmt.Sprintf("name%v", index)
-						percentLabel := fmt.Sprintf("percentage%v", index)
-						contactLabel := fmt.Sprintf("contact%v", index)
-						idLabel := fmt.Sprintf("id%v", index)
-						memberIdLabel := fmt.Sprintf("memberId%v", index)
-
-						if row["name"] != nil {
-							data[nameLabel] = fmt.Sprintf("%v", row["name"])
-						}
-						if row["contact"] != nil {
-							data[contactLabel] = fmt.Sprintf("%v", row["contact"])
-						}
-						if row["percentage"] != nil {
-							v, err := strconv.ParseFloat(fmt.Sprintf("%v", row["percentage"]), 64)
-							if err == nil {
-								data[percentLabel] = v
-							}
-						}
-						if row["id"] != nil {
-							v, err := strconv.ParseInt(fmt.Sprintf("%v", row["id"]), 10, 64)
-							if err == nil {
-								data[idLabel] = v
-							}
-						}
-						if row["memberId"] != nil {
-							v, err := strconv.ParseInt(fmt.Sprintf("%v", row["memberId"]), 10, 64)
-							if err == nil {
-								data[memberIdLabel] = v
-							}
-						}
-					}
-
-					err = SaveData(data, &target, phoneNumber, cacheFolder, nil, saveFunc, sessions, nil)
-					if err != nil {
-						log.Printf("server.RerunFailedSaves.3: %s", err.Error())
-						continue
-					}
-				} else {
-					data := map[string]any{}
-
-					err = json.Unmarshal(content, &data)
-					if err != nil {
-						log.Printf("server.RerunFailedSaves.4: %s", err.Error())
-						continue
-					}
-
-					err = SaveData(data, &target, phoneNumber, cacheFolder, nil, saveFunc, sessions, nil)
-					if err != nil {
-						log.Printf("server.RerunFailedSaves.5: %s", err.Error())
-						continue
+						return err
 					}
 				}
 			}
+
+			return nil
+		})
+		if err != nil {
+			return err
 		}
 	}
 
