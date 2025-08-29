@@ -13,14 +13,14 @@ import (
 func TestSimpleNestedModel(t *testing.T) {
 	phoneNumber := "0999888777"
 	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
-	cacheFolder := filepath.Join(".", "tmp5", "cache")
+	cacheFolder := filepath.Join(".", "tmp15", "cache")
 
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
 
 	defer func() {
-		os.RemoveAll(filepath.Join(".", "tmp5"))
+		os.RemoveAll(filepath.Join(".", "tmp15"))
 	}()
 
 	for _, file := range []string{
@@ -123,14 +123,14 @@ func TestSimpleNestedModel(t *testing.T) {
 func TestComplexNestedModel(t *testing.T) {
 	phoneNumber := "0999888777"
 	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
-	cacheFolder := filepath.Join(".", "tmp1", "cache")
+	cacheFolder := filepath.Join(".", "tmp10", "cache")
 
 	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
 
 	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
 
 	defer func() {
-		os.RemoveAll(filepath.Join(".", "tmp1"))
+		os.RemoveAll(filepath.Join(".", "tmp10"))
 	}()
 
 	for _, file := range []string{
