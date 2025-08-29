@@ -42,4 +42,13 @@ var (
 		"AccountArrayChildren":            AccountArrayChildren,
 		"MemberArrayChildren":             MemberArrayChildren,
 	}
+	
+	FloatFields = []string{
+		"netPay", "grossPay", "periodEmployedInMonths", "yearsInBusiness",
+		"totalIncome", "totalCostOfGoods", "employeesWages", "ownSalary",
+		"transport", "loanInterest", "utilities", "rentals", "otherCosts",
+		"totalCosts", "netProfitLoss", "numberOfShares", "pricePerShare",
+		"loanAmount", "repaymentPeriodInMonths", "amountRecommended",
+		"amountApproved", "value",
+	}
 )

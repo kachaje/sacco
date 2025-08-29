@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sacco/server/database"
 	"sacco/server/parser"
 	"strconv"
 )
@@ -28,7 +29,7 @@ func HandleCommonModels(data any, model, phoneNumber, cacheFolder *string,
 			}
 		}()
 
-		for _, key := range FloatFields {
+		for _, key := range database.FloatFields {
 			if val[key] != nil {
 				nv, ok := val[key].(string)
 				if ok {

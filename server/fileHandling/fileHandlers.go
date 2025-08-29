@@ -14,17 +14,6 @@ import (
 	"time"
 )
 
-var (
-	FloatFields = []string{
-		"netPay", "grossPay", "periodEmployedInMonths", "yearsInBusiness",
-		"totalIncome", "totalCostOfGoods", "employeesWages", "ownSalary",
-		"transport", "loanInterest", "utilities", "rentals", "otherCosts",
-		"totalCosts", "netProfitLoss", "numberOfShares", "pricePerShare",
-		"loanAmount", "repaymentPeriodInMonths", "amountRecommended",
-		"amountApproved", "value",
-	}
-)
-
 func CacheFile(filename string, data any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
@@ -128,7 +117,7 @@ func SaveData(
 					}
 				}()
 
-				for _, key := range FloatFields {
+				for _, key := range database.FloatFields {
 					if val[key] != nil {
 						nv, ok := val[key].(string)
 						if ok {
