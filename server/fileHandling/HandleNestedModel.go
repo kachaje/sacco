@@ -121,6 +121,8 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 									log.Printf("server.HandleNestedModel:%s\n", err.Error())
 									continue
 								}
+
+								fileArrayData[i]["id"] = *mid
 							}
 
 							modelData[childModel] = fileArrayData
@@ -138,6 +140,8 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 								log.Printf("server.HandleNestedModel:%s\n", err.Error())
 								continue
 							}
+
+							fileFlatData["id"] = *mid
 
 							modelData[childModel] = fileFlatData
 
