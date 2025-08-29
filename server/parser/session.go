@@ -23,6 +23,8 @@ type Session struct {
 	SessionId         string
 	PhoneNumber       string
 
+	GlobalIds map[string]int64
+
 	WorkflowsMapping map[string]*WorkFlow
 
 	AddedModels map[string]bool
@@ -57,6 +59,7 @@ func NewSession(
 		WorkflowsMapping: map[string]*WorkFlow{},
 		Cache:            map[string]string{},
 		LastPrompt:       "",
+		GlobalIds:        map[string]int64{},
 	}
 
 	if phoneNumber != nil {
