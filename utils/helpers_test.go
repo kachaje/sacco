@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sacco/utils"
 	"testing"
 )
@@ -174,5 +175,120 @@ func TestIndex(t *testing.T) {
 
 	if result != -1 {
 		t.Fatalf("Test failed. Expected: -1; Actual: %d", result)
+	}
+}
+
+func TestUnpackData(t *testing.T) {
+	data := map[string]any{}
+	target := []map[string]any{}
+
+	for i := range 4 {
+		row := map[string]any{}
+
+		for _, key := range []string{"id", "name", "value"} {
+			label := fmt.Sprintf("%s%d", key, i+1)
+			value := fmt.Sprintf("%s%d", key, i+1)
+
+			data[label] = value
+			row[key] = value
+		}
+
+		target = append(target, row)
+	}
+
+	result := utils.UnpackData(data)
+
+	if len(result) != len(target) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", len(target), len(result))
+	}
+
+	if len(result[0]) != len(target[0]) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", len(target[0]), len(result[0]))
+	}
+
+	data = map[string]any{
+		"id":    "1",
+		"name":  "test",
+		"value": "something",
+	}
+	target = []map[string]any{}
+
+	target = append(target, data)
+
+	result = utils.UnpackData(data)
+
+	if !reflect.DeepEqual(target, result) {
+		t.Fatal("Test failed")
+	}
+}
+
+func TestGetSkippedRefIds(t *testing.T) {
+	refData := []map[string]any{
+		{
+			"contact":    "P.O. Box 2",
+			"id":         2,
+			"memberId":   1,
+			"name":       "Benefator 2",
+			"percentage": 8,
+		},
+		{
+			"contact":    "P.O. Box 3",
+			"id":         3,
+			"memberId":   1,
+			"name":       "Benefator 3",
+			"percentage": 5,
+		},
+		{
+			"contact":    "P.O. Box 4",
+			"id":         4,
+			"memberId":   1,
+			"name":       "Benefator 4",
+			"percentage": 2,
+		},
+		{
+			"contact":    "P.O. Box 1",
+			"id":         1,
+			"memberId":   1,
+			"name":       "Benefator 1",
+			"percentage": 10,
+		},
+	}
+	data := []map[string]any{
+		{
+			"contact":    "P.O. Box 5678",
+			"id":         2,
+			"memberId":   1,
+			"name":       "Benefator 2",
+			"percentage": 25,
+		},
+		{
+			"contact":    "P.O. Box 1234",
+			"id":         1,
+			"memberId":   1,
+			"name":       "Benefator 1",
+			"percentage": 35,
+		},
+	}
+
+	result := utils.GetSkippedRefIds(data, refData)
+
+	target := []map[string]any{
+		{
+			"contact":    "P.O. Box 3",
+			"id":         3,
+			"memberId":   1,
+			"name":       "Benefator 3",
+			"percentage": 5},
+		{
+			"contact":    "P.O. Box 4",
+			"id":         4,
+			"memberId":   1,
+			"name":       "Benefator 4",
+			"percentage": 2,
+		},
+	}
+
+	if !reflect.DeepEqual(target, result) {
+		t.Fatal("Test failed")
 	}
 }

@@ -1,14 +1,11 @@
 package filehandling
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
-	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sacco/server/database"
 	"sacco/server/parser"
 	"sacco/utils"
@@ -18,69 +15,15 @@ import (
 	"github.com/google/uuid"
 )
 
-func UnpackData(data map[string]any) []map[string]any {
-	result := []map[string]any{}
-	rows := map[string]map[string]any{}
-
-	for key, value := range data {
-		re := regexp.MustCompile(`^(.+)(\d+)$`)
-
-		if re.MatchString(key) {
-			parts := re.FindAllStringSubmatch(key, -1)[0]
-
-			field := parts[1]
-			index := parts[2]
-
-			if rows[index] == nil {
-				rows[index] = map[string]any{}
-			}
-
-			rows[index][field] = value
-		} else {
-			rows["1"] = data
-			break
-		}
-	}
-
-	for _, row := range rows {
-		result = append(result, row)
-	}
-
-	return result
-}
-
-func GetSkippedRefIds(data, refData []map[string]any) []map[string]any {
-	result := []map[string]any{}
-
-	for _, row := range refData {
-		if row["id"] != nil {
-			id := fmt.Sprintf("%v", row["id"])
-			found := false
-
-			for _, child := range data {
-				if child["id"] != nil && id == fmt.Sprintf("%v", child["id"]) {
-					found = true
-					break
-				}
-			}
-			if !found {
-				result = append(result, row)
-			}
-		}
-	}
-
-	return result
-}
-
 func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string, refData map[string]any) error {
 	if rawData, ok := data.(map[string]any); ok {
-		dataRows := UnpackData(rawData)
+		dataRows := utils.UnpackData(rawData)
 
 		if refData != nil {
-			unpackedRefData := UnpackData(refData)
+			unpackedRefData := utils.UnpackData(refData)
 
-			missingIds := GetSkippedRefIds(dataRows, unpackedRefData)
+			missingIds := utils.GetSkippedRefIds(dataRows, unpackedRefData)
 
 			for _, row := range missingIds {
 				row["active"] = 0
@@ -184,7 +127,7 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					}
 
 					for _, childModel := range models {
-						childRows, err := CacheDataByModel(childModel, sessionFolder)
+						childRows, err := utils.CacheDataByModel(childModel, sessionFolder)
 						if err != nil {
 							log.Println(err)
 							continue
@@ -245,61 +188,4 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 	}
 
 	return nil
-}
-
-func CacheDataByModel(filterModel, sessionFolder string) ([]map[string]any, error) {
-	result := []map[string]any{}
-
-	err := filepath.WalkDir(sessionFolder, func(fullpath string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if d.IsDir() {
-			return nil
-		}
-
-		filename := filepath.Base(fullpath)
-
-		re := regexp.MustCompile(`\.[a-z0-9-]+\.json$`)
-
-		if !re.MatchString(filename) {
-			return nil
-		}
-
-		model := re.ReplaceAllLiteralString(filename, "")
-
-		if model != filterModel {
-			return nil
-		}
-
-		content, err := os.ReadFile(fullpath)
-		if err != nil {
-			return err
-		}
-
-		if data := map[string]any{}; json.Unmarshal(content, &data) == nil {
-			result = append(result, map[string]any{
-				"data":     data,
-				"filename": filename,
-			})
-		} else if data := []map[string]any{}; json.Unmarshal(content, &data) == nil {
-			rows := []map[string]any{}
-
-			for _, row := range data {
-				rows = append(rows, map[string]any{
-					"data":     row,
-					"filename": filename,
-				})
-			}
-
-			result = append(result, rows...)
-		}
-
-		return nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
 }
