@@ -47,9 +47,14 @@ func UnpackData(data map[string]any) []map[string]any {
 }
 
 func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
-	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
+	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string, refData map[string]any) error {
 	if rawData, ok := data.(map[string]any); ok {
 		dataRows := UnpackData(rawData)
+
+		if refData != nil {
+			// TODO: Need to handle overidden data
+			fmt.Println("############", refData)
+		}
 
 		for _, modelData := range dataRows {
 			if sessions[*phoneNumber] != nil && model != nil {
@@ -105,6 +110,13 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					return fmt.Errorf("server.HandleNestedModel.%s:missing saveFunc", *model)
 				}
 
+				if sessions[*phoneNumber].GlobalIds == nil {
+					sessions[*phoneNumber].GlobalIds = map[string]int64{}
+				}
+				if sessions[*phoneNumber].AddedModels == nil {
+					sessions[*phoneNumber].AddedModels = map[string]bool{}
+				}
+
 				if database.ParentModels[*model] != nil {
 					for _, value := range database.ParentModels[*model] {
 						key := fmt.Sprintf("%sId", value)
@@ -120,13 +132,23 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					return err
 				}
 
-				sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
+				var id int64
 
-				sessions[*phoneNumber].AddedModels[*model] = true
+				if mid == nil && modelData["id"] != nil {
+					val, err := strconv.ParseInt(fmt.Sprintf("%v", modelData["id"]), 10, 64)
+					if err == nil {
+						mid = &val
+					}
+				}
+				if mid != nil {
+					sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
 
-				id := *mid
+					sessions[*phoneNumber].AddedModels[*model] = true
 
-				modelData["id"] = id
+					id = *mid
+
+					modelData["id"] = id
+				}
 
 				if someChildAdded {
 					for _, childModel := range models {
@@ -198,11 +220,13 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 				transactionDone = true
 			}
 
-			sessions[*phoneNumber].UpdateActiveData(modelData, 0)
+			if sessions != nil && sessions[*phoneNumber] != nil {
+				sessions[*phoneNumber].UpdateActiveData(modelData, 0)
 
-			sessions[*phoneNumber].RefreshSession()
+				sessions[*phoneNumber].RefreshSession()
 
-			sessions[*phoneNumber].LoadCacheData(*phoneNumber, *cacheFolder)
+				sessions[*phoneNumber].LoadCacheData(*phoneNumber, *cacheFolder)
+			}
 		}
 	}
 

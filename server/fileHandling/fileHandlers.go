@@ -2,15 +2,11 @@ package filehandling
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
-	"sacco/server/database"
 	"sacco/server/parser"
 	"sacco/utils"
-	"slices"
-	"strconv"
 	"time"
 )
 
@@ -82,63 +78,14 @@ func SaveData(
 			}
 		}
 
-	case "memberBeneficiary":
-		return HandleBeneficiaries(data, phoneNumber, cacheFolder, saveFunc, sessions, refData, sessionFolder)
+	// case "memberBeneficiary":
+	// 	return HandleBeneficiaries(data, phoneNumber, cacheFolder, saveFunc, sessions, refData, sessionFolder)
 
-	case "member":
-		return HandleMemberDetails(data, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder)
+	// case "member":
+	// 	return HandleMemberDetails(data, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder)
 
 	default:
-		models := []string{}
-
-		for _, group := range database.ArrayChildren {
-			models = append(models, group...)
-		}
-
-		for _, group := range database.SingleChildren {
-			models = append(models, group...)
-		}
-
-		if slices.Contains(models, *model) {
-			return HandleCommonModels(
-				data, model, phoneNumber, cacheFolder,
-				saveFunc, sessions, sessionFolder,
-			)
-		} else {
-			if val, ok := data.(map[string]any); ok {
-				filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", *model))
-
-				transactionDone := false
-
-				CacheFile(filename, val, 0)
-				defer func() {
-					if transactionDone {
-						os.Remove(filename)
-					}
-				}()
-
-				for _, key := range database.FloatFields {
-					if val[key] != nil {
-						nv, ok := val[key].(string)
-						if ok {
-							real, err := strconv.ParseFloat(nv, 64)
-							if err == nil {
-								val[key] = real
-							}
-						}
-					}
-				}
-
-				_, err := saveFunc(val, *model, 0)
-				if err != nil {
-					return err
-				}
-
-				transactionDone = true
-			} else {
-				fmt.Println("##########", *model, *phoneNumber, data)
-			}
-		}
+		return HandleNestedModel(data, model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, refData)
 	}
 
 	return nil
