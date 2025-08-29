@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -268,4 +269,49 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 	}
 
 	return nil
+}
+
+func CacheDataByModel(filterModel, sessionFolder string) ([]map[string]any, error) {
+	result := []map[string]any{}
+
+	err := filepath.WalkDir(sessionFolder, func(fullpath string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+
+		filename := filepath.Base(fullpath)
+
+		re := regexp.MustCompile(`\.[a-z0-9-]+\.json$`)
+
+		if !re.MatchString(filename) {
+			return nil
+		}
+
+		model := re.ReplaceAllLiteralString(filename, "")
+
+		if model != filterModel {
+			return nil
+		}
+
+		content, err := os.ReadFile(fullpath)
+		if err != nil {
+			return err
+		}
+
+		if data := map[string]any{}; json.Unmarshal(content, &data) == nil {
+			result = append(result, data)
+		} else if data := []map[string]any{}; json.Unmarshal(content, &data) == nil {
+			result = append(result, data...)
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

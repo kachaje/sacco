@@ -547,3 +547,92 @@ func TestGetSkippedRefIds(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 }
+
+func TestCacheDataByModel(t *testing.T) {
+	phoneNumber := "0999888777"
+	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
+	folder := "tmp11"
+	cacheFolder := filepath.Join(".", folder, "cache")
+
+	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
+
+	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
+
+	defer func() {
+		os.RemoveAll(filepath.Join(".", folder))
+	}()
+
+	for _, file := range []string{
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
+	} {
+		src, err := os.Open(filepath.Join(sourceFolder, file))
+		if err != nil {
+			t.Fatal(err)
+			continue
+		}
+		defer src.Close()
+
+		dst, err := os.Create(filepath.Join(cacheFolder, phoneNumber, file))
+		if err != nil {
+			t.Fatal(err)
+			continue
+		}
+		defer dst.Close()
+
+		_, err = io.Copy(dst, src)
+		if err != nil {
+			t.Fatal(err)
+			continue
+		}
+
+		_, err = os.Stat(dst.Name())
+		if os.IsNotExist(err) {
+			t.Fatalf("Test failed. Failed to create %s", dst.Name())
+		}
+	}
+
+	result, err := filehandling.CacheDataByModel("memberBeneficiary", sessionFolder)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	target := []map[string]any{
+		{
+			"contact":    "0888777444",
+			"name":       "John Phiri",
+			"percentage": 10.0,
+		},
+		{
+			"contact":    "07746635653",
+			"name":       "Jean Banda",
+			"percentage": 5.0,
+		},
+	}
+
+	if !reflect.DeepEqual(result, target) {
+		t.Fatal("Test failed")
+	}
+
+	result, err = filehandling.CacheDataByModel("memberContact", sessionFolder)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	target = []map[string]any{
+		{
+			"homeDistrict":             "Lilongwe",
+			"homeTraditionalAuthority": "Kalolo",
+			"homeVillage":              "Kalulu",
+			"phoneNumber":              "0999888777",
+			"postalAddress":            "P.O. Box 1",
+			"residentialAddress":       "Area 49",
+		},
+	}
+
+	if !reflect.DeepEqual(result, target) {
+		t.Fatal("Test failed")
+	}
+}
