@@ -363,7 +363,7 @@ func TestHandleBeneficiaries(t *testing.T) {
 
 	model := "memberBeneficiary"
 
-	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -458,7 +458,7 @@ func TestHandleMemberDetails(t *testing.T) {
 
 	model := "member"
 
-	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -620,7 +620,7 @@ func TestSimpleNestedModel(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -738,7 +738,7 @@ func TestComplexNestedModel(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -836,7 +836,7 @@ func TestChildNestedModel(t *testing.T) {
 		"periodEmployedInMonths": "36",
 	}
 
-	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -915,7 +915,7 @@ func TestArrayChildData(t *testing.T) {
 
 	model := "member"
 
-	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -935,7 +935,7 @@ func TestArrayChildData(t *testing.T) {
 
 	model = "memberBeneficiary"
 
-	err = filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err = filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

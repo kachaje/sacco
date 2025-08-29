@@ -69,13 +69,13 @@ func RerunFailedSaves(phoneNumber, cacheFolder *string,
 			}
 
 			if data := map[string]any{}; json.Unmarshal(content, &data) == nil {
-				err := HandleNestedModel(data, &model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, nil)
+				err := SaveModelData(data, &model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, nil)
 				if err != nil {
 					return err
 				}
 			} else if data := []map[string]any{}; json.Unmarshal(content, &data) == nil {
 				for _, row := range data {
-					err := HandleNestedModel(row, &model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, nil)
+					err := SaveModelData(row, &model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, nil)
 					if err != nil {
 						return err
 					}

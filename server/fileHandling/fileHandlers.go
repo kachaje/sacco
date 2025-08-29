@@ -16,7 +16,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
+func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string, refData map[string]any) error {
 	if rawData, ok := data.(map[string]any); ok {
 		dataRows := utils.UnpackData(rawData)
@@ -60,7 +60,7 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 				}()
 
 				if saveFunc == nil {
-					return fmt.Errorf("server.HandleNestedModel.%s:missing saveFunc", *model)
+					return fmt.Errorf("server.SaveModelData.%s:missing saveFunc", *model)
 				}
 
 				if sessions[*phoneNumber] != nil {
@@ -222,7 +222,7 @@ func SaveData(
 		}
 
 	default:
-		return HandleNestedModel(data, model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, refData)
+		return SaveModelData(data, model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, refData)
 	}
 
 	return nil
