@@ -35,9 +35,17 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 
 		for _, modelData := range dataRows {
 			if model != nil {
-				filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.%s.json", *model, uuid.NewString()))
+				revision := uuid.NewString()
 
-				fmt.Println("########", filename, modelData)
+				if modelData["revision"] != nil {
+					if val, ok := modelData["revision"].(string); ok {
+						revision = val
+					}
+				}
+
+				modelData["revision"] = revision
+
+				filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.%s.json", *model, revision))
 
 				transactionDone := false
 
@@ -53,8 +61,10 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 					}
 				}
 
-				// By default cache the data first in case we lose database connection
-				utils.CacheFile(filename, modelData, 0)
+				if _, err := os.Stat(filename); os.IsNotExist(err) {
+					// By default cache the data first in case we lose database connection
+					utils.CacheFile(filename, modelData, 0)
+				}
 				defer func() {
 					if transactionDone || flag.Lookup("test.v") != nil {
 						os.Remove(filename)
