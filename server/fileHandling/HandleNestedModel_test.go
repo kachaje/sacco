@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"sacco/server/database"
 	filehandling "sacco/server/fileHandling"
 	"sacco/server/parser"
 	"testing"
@@ -388,5 +389,90 @@ func TestUnpackData(t *testing.T) {
 
 	if !reflect.DeepEqual(target, result) {
 		t.Fatal("Test failed")
+	}
+}
+
+func TestArrayChildData(t *testing.T) {
+	dbname := ":memory:"
+	db := database.NewDatabase(dbname)
+	defer func() {
+		db.Close()
+	}()
+
+	phoneNumber := "0999888777"
+	cacheFolder := "./tmpArrData"
+
+	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
+
+	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
+
+	defer func() {
+		os.RemoveAll(filepath.Join(cacheFolder))
+	}()
+
+	sessions := map[string]*parser.Session{
+		phoneNumber: {
+			GlobalIds:   map[string]int64{},
+			ActiveData:  map[string]any{},
+			AddedModels: map[string]bool{},
+		},
+	}
+
+	data := map[string]any{
+		"dateOfBirth":       "1999-09-01",
+		"phoneNumber":       "09999999999",
+		"fileNumber":        "",
+		"firstName":         "Mary",
+		"gender":            "Female",
+		"id":                1,
+		"lastName":          "Banda",
+		"maritalStatus":     "Single",
+		"nationalId":        "DHFYR8475",
+		"oldFileNumber":     "",
+		"otherName":         "",
+		"title":             "Miss",
+		"utilityBillNumber": "29383746",
+		"utilityBillType":   "ESCOM",
+	}
+
+	model := "member"
+
+	err := filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data = map[string]any{
+		"contact1":    "P.O. Box 1234",
+		"id1":         1,
+		"memberId1":   1,
+		"name1":       "Benefator 1",
+		"percentage1": 35,
+		"contact2":    "P.O. Box 5678",
+		"id2":         2,
+		"memberId2":   1,
+		"name2":       "Benefator 2",
+		"percentage2": 25,
+	}
+
+	model = "memberBeneficiary"
+
+	err = filehandling.HandleNestedModel(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !sessions[phoneNumber].AddedModels["memberBeneficiary"] {
+		t.Fatalf("Test failed. Expected: true; Actual: %v",
+			sessions[phoneNumber].AddedModels["memberBeneficiary"])
+	}
+
+	result, err := db.GenericModels["memberBeneficiary"].FilterBy("WHERE active=1")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) != 2 {
+		t.Fatalf("Test failed. Expected: 2; Actual: %v", len(result))
 	}
 }

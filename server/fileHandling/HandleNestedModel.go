@@ -122,6 +122,8 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 
 				sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
 
+				sessions[*phoneNumber].AddedModels[*model] = true
+
 				id := *mid
 
 				modelData["id"] = id
