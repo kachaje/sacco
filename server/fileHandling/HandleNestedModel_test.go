@@ -365,10 +365,7 @@ func TestUnpackData(t *testing.T) {
 		target = append(target, row)
 	}
 
-	result, err := filehandling.UnpackData(data)
-	if err != nil {
-		t.Fatal(err)
-	}
+	result := filehandling.UnpackData(data)
 
 	if len(result) != len(target) {
 		t.Fatalf("Test failed. Expected: %v; Actual: %v", len(target), len(result))
@@ -387,10 +384,7 @@ func TestUnpackData(t *testing.T) {
 
 	target = append(target, data)
 
-	result, err = filehandling.UnpackData(data)
-	if err != nil {
-		t.Fatal(err)
-	}
+	result = filehandling.UnpackData(data)
 
 	if !reflect.DeepEqual(target, result) {
 		t.Fatal("Test failed")

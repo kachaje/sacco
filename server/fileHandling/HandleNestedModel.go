@@ -11,23 +11,15 @@ import (
 	"sacco/server/parser"
 	"sacco/utils"
 	"strconv"
+
+	"github.com/google/uuid"
 )
 
 func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string) error {
 	if modelData, ok := data.(map[string]any); ok {
-		var id int64
-
-		_ = id
-
-		if phoneNumber != nil && *phoneNumber != "default" {
-			if modelData["phoneNumber"] == nil {
-				modelData["phoneNumber"] = *phoneNumber
-			}
-		}
-
 		if sessions[*phoneNumber] != nil && model != nil {
-			filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", *model))
+			filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.%s.json", *model, uuid.NewString()))
 
 			transactionDone := false
 
@@ -96,7 +88,7 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 
 			sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
 
-			id = *mid
+			id := *mid
 
 			modelData["id"] = id
 
@@ -167,20 +159,20 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 				}
 			}
 
+			sessions[*phoneNumber].UpdateActiveData(modelData, 0)
+
+			sessions[*phoneNumber].RefreshSession()
+
+			sessions[*phoneNumber].LoadCacheData(*phoneNumber, *cacheFolder)
+
 			transactionDone = true
 		}
-
-		sessions[*phoneNumber].UpdateActiveData(modelData, 0)
-
-		sessions[*phoneNumber].RefreshSession()
-
-		sessions[*phoneNumber].LoadCacheData(*phoneNumber, *cacheFolder)
 	}
 
 	return nil
 }
 
-func UnpackData(data map[string]any) ([]map[string]any, error) {
+func UnpackData(data map[string]any) []map[string]any {
 	result := []map[string]any{}
 	rows := map[string]map[string]any{}
 
@@ -208,5 +200,5 @@ func UnpackData(data map[string]any) ([]map[string]any, error) {
 		result = append(result, row)
 	}
 
-	return result, nil
+	return result
 }
