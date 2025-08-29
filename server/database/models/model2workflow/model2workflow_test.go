@@ -34,7 +34,7 @@ func TestModel2WorkflowBasic(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, _, err := model2workflow.Main(model, dstFile, data)
+	result, _, _, err := model2workflow.Main(model, dstFile, data)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func TestModel2WorkflowComplex(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result, _, err := model2workflow.Main(model, dstFile, data)
+	result, _, _, err := model2workflow.Main(model, dstFile, data)
 	if err != nil {
 		t.Fatal(err)
 	}

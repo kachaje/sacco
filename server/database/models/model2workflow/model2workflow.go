@@ -6,7 +6,7 @@ import (
 	"sacco/utils"
 )
 
-func Main(model, destinationFile string, sourceData map[string]any) (*string, map[string][]string, error) {
+func Main(model, destinationFile string, sourceData map[string]any) (*string, map[string][]string, map[string]bool, error) {
 	data := map[string]any{
 		"model": model,
 		"formSummary": map[string]any{
@@ -14,6 +14,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 		},
 	}
 
+	floatFields := map[string]bool{}
 	relationships := map[string][]string{}
 	j := 0
 	lastTag := ""
@@ -94,6 +95,10 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 								if value["formula"] != nil {
 									data[tag].(map[string]any)["formula"] = value["formula"].(string)
 								}
+
+								if value["numericField"] != nil {
+									floatFields[key] = true
+								}
 							} else if value["hidden"] == nil {
 								j++
 
@@ -113,6 +118,8 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 
 								if value["numericField"] != nil {
 									data[tag].(map[string]any)["validationRule"] = "^\\d+\\.*\\d*$"
+
+									floatFields[key] = true
 								}
 
 								if value["validationRule"] != nil {
@@ -168,13 +175,13 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 
 	yamlString, err := utils.DumpYaml(data)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
 	err = os.WriteFile(destinationFile, []byte(*yamlString), 0644)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
-	return yamlString, relationships, nil
+	return yamlString, relationships, floatFields, nil
 }

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"sacco/server/database/models/model2workflow"
 	"sacco/utils"
+	"slices"
 	"strings"
 )
 
@@ -108,13 +109,20 @@ func buildWorkflows() {
 	}
 
 	relationships := map[string]any{}
+	floatFields := []string{}
 
 	for model := range data {
 		targetFile := filepath.Join(workingFolder, fmt.Sprintf("%s.yml", model))
 
-		_, row, err := model2workflow.Main(model, targetFile, data)
+		_, row, floats, err := model2workflow.Main(model, targetFile, data)
 		if err != nil {
 			log.Panic(err)
+		}
+
+		for key := range floats {
+			if !slices.Contains(floatFields, key) {
+				floatFields = append(floatFields, fmt.Sprintf(`"%s",`, key))
+			}
 		}
 
 		if len(row) > 0 {
@@ -181,8 +189,15 @@ func buildWorkflows() {
 	ArrayChildren = map[string][]string{
 		%s
 	}
-	)
-	`, strings.Join(script, "\n"), strings.Join(singlesGroup, "\n"), strings.Join(arraysGroup, "\n")))
+	FloatFields = []string{
+		%s
+	}
+	)`,
+		strings.Join(script, "\n"),
+		strings.Join(singlesGroup, "\n"),
+		strings.Join(arraysGroup, "\n"),
+		strings.Join(floatFields, "\n"),
+	))
 	if err != nil {
 		panic(err)
 	}

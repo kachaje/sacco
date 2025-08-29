@@ -1,25 +1,12 @@
 package database
 
 var (
-	MemberLoanSingleChildren = []string{
-		"memberBusiness",
-		"memberOccupation",
-		"memberLoanLiability",
-		"memberLoanSecurity",
-		"memberLoanWitness",
-		"memberOccupationVerification",
-		"memberLoanApproval",
-	}
-	AccountTransactionArrayChildren = []string{
-		"accountJournal",
-	}
-	MemberBusinessArrayChildren = []string{
-		"memberLastYearBusinessHistory",
-		"memberNextYearBusinessProjection",
-	}
 	AccountArrayChildren = []string{
 		"accountJournal",
 		"accountTransaction",
+	}
+	AccountTransactionArrayChildren = []string{
+		"accountJournal",
 	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
@@ -32,23 +19,67 @@ var (
 		"memberLoan",
 		"memberBusiness",
 	}
+	MemberBusinessArrayChildren = []string{
+		"memberLastYearBusinessHistory",
+		"memberNextYearBusinessProjection",
+	}
+	MemberLoanSingleChildren = []string{
+		"memberBusiness",
+		"memberOccupation",
+		"memberLoanLiability",
+		"memberLoanSecurity",
+		"memberLoanWitness",
+		"memberOccupationVerification",
+		"memberLoanApproval",
+	}
 	SingleChildren = map[string][]string{
-		"MemberLoanSingleChildren": MemberLoanSingleChildren,
 		"MemberSingleChildren":     MemberSingleChildren,
+		"MemberLoanSingleChildren": MemberLoanSingleChildren,
 	}
 	ArrayChildren = map[string][]string{
-		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
-		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 		"AccountArrayChildren":            AccountArrayChildren,
+		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
 		"MemberArrayChildren":             MemberArrayChildren,
+		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 	}
-	
 	FloatFields = []string{
-		"netPay", "grossPay", "periodEmployedInMonths", "yearsInBusiness",
-		"totalIncome", "totalCostOfGoods", "employeesWages", "ownSalary",
-		"transport", "loanInterest", "utilities", "rentals", "otherCosts",
-		"totalCosts", "netProfitLoss", "numberOfShares", "pricePerShare",
-		"loanAmount", "repaymentPeriodInMonths", "amountRecommended",
-		"amountApproved", "value",
+		"amountRecommended",
+		"amountApproved",
+		"debit",
+		"credit",
+		"loanAmount",
+		"repaymentPeriodInMonths",
+		"value",
+		"password",
+		"numberOfShares",
+		"pricePerShare",
+		"value",
+		"grossPay",
+		"netPay",
+		"periodEmployedInMonths",
+		"employeesWages",
+		"loanInterest",
+		"utilities",
+		"rentals",
+		"netProfitLoss",
+		"totalIncome",
+		"totalCostOfGoods",
+		"ownSalary",
+		"transport",
+		"otherCosts",
+		"totalCosts",
+		"financialYear",
+		"totalIncome",
+		"totalCostOfGoods",
+		"employeesWages",
+		"ownSalary",
+		"utilities",
+		"rentals",
+		"otherCosts",
+		"netProfitLoss",
+		"financialYear",
+		"transport",
+		"loanInterest",
+		"totalCosts",
 	}
 )
