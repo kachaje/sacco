@@ -2,6 +2,7 @@ package filehandling
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -46,8 +47,8 @@ func UnpackData(data map[string]any) []map[string]any {
 	return result
 }
 
-func GetSkippedRefIds(data, refData []map[string]any) []string {
-	result := []string{}
+func GetSkippedRefIds(data, refData []map[string]any) []map[string]any {
+	result := []map[string]any{}
 
 	for _, row := range refData {
 		if row["id"] != nil {
@@ -61,7 +62,7 @@ func GetSkippedRefIds(data, refData []map[string]any) []string {
 				}
 			}
 			if !found {
-				result = append(result, id)
+				result = append(result, row)
 			}
 		}
 	}
@@ -77,17 +78,17 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 		if refData != nil {
 			unpackedRefData := UnpackData(refData)
 
-			payload, _ := json.MarshalIndent(unpackedRefData, "", "  ")
+			missingIds := GetSkippedRefIds(dataRows, unpackedRefData)
 
-			fmt.Println(string(payload))
+			for _, row := range missingIds {
+				row["active"] = 0
 
-			payload, _ = json.MarshalIndent(dataRows, "", "  ")
-
-			fmt.Println(string(payload))
+				dataRows = append(dataRows, row)
+			}
 		}
 
 		for _, modelData := range dataRows {
-			if sessions[*phoneNumber] != nil && model != nil {
+			if model != nil {
 				filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.%s.json", *model, uuid.NewString()))
 
 				transactionDone := false
@@ -107,7 +108,7 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 				// By default cache the data first in case we lose database connection
 				CacheFile(filename, modelData, 0)
 				defer func() {
-					if transactionDone {
+					if transactionDone || flag.Lookup("test.v") != nil {
 						os.Remove(filename)
 					}
 				}()
@@ -129,29 +130,31 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					models = append(models, database.ArrayChildren[groupArrayName]...)
 				}
 
-				for _, key := range models {
-					if sessions[*phoneNumber].AddedModels[key] {
-						someChildAdded = true
-						break
-					}
-				}
-
 				if saveFunc == nil {
 					return fmt.Errorf("server.HandleNestedModel.%s:missing saveFunc", *model)
 				}
 
-				if sessions[*phoneNumber].GlobalIds == nil {
-					sessions[*phoneNumber].GlobalIds = map[string]int64{}
-				}
-				if sessions[*phoneNumber].AddedModels == nil {
-					sessions[*phoneNumber].AddedModels = map[string]bool{}
-				}
+				if sessions[*phoneNumber] != nil {
+					for _, key := range models {
+						if sessions[*phoneNumber].AddedModels[key] {
+							someChildAdded = true
+							break
+						}
+					}
 
-				if database.ParentModels[*model] != nil {
-					for _, value := range database.ParentModels[*model] {
-						key := fmt.Sprintf("%sId", value)
-						if sessions[*phoneNumber].GlobalIds[key] > 0 {
-							modelData[key] = sessions[*phoneNumber].GlobalIds[key]
+					if sessions[*phoneNumber].GlobalIds == nil {
+						sessions[*phoneNumber].GlobalIds = map[string]int64{}
+					}
+					if sessions[*phoneNumber].AddedModels == nil {
+						sessions[*phoneNumber].AddedModels = map[string]bool{}
+					}
+
+					if database.ParentModels[*model] != nil {
+						for _, value := range database.ParentModels[*model] {
+							key := fmt.Sprintf("%sId", value)
+							if sessions[*phoneNumber].GlobalIds[key] > 0 {
+								modelData[key] = sessions[*phoneNumber].GlobalIds[key]
+							}
 						}
 					}
 				}
@@ -171,9 +174,11 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 					}
 				}
 				if mid != nil {
-					sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
+					if sessions[*phoneNumber] != nil {
+						sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
 
-					sessions[*phoneNumber].AddedModels[*model] = true
+						sessions[*phoneNumber].AddedModels[*model] = true
+					}
 
 					id = *mid
 
@@ -242,7 +247,9 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 								}
 							}
 
-							sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", childModel)] = *mid
+							if sessions[*phoneNumber] != nil {
+								sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", childModel)] = *mid
+							}
 						}
 					}
 				}
