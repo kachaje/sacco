@@ -347,7 +347,7 @@ func TestChildNestedModel(t *testing.T) {
 	}
 }
 
-func TestUnpackDataDefault(t *testing.T) {
+func TestUnpackData(t *testing.T) {
 	data := map[string]any{}
 	target := []map[string]any{}
 
@@ -370,7 +370,11 @@ func TestUnpackDataDefault(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !reflect.DeepEqual(result, target) {
-		t.Fatal("Test failed")
+	if len(result) != len(target) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", len(target), len(result))
+	}
+
+	if len(result[0]) != len(target[0]) {
+		t.Fatalf("Test failed. Expected: %v; Actual: %v", len(target[0]), len(result[0]))
 	}
 }

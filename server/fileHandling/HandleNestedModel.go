@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sacco/server/database"
 	"sacco/server/parser"
 	"sacco/utils"
@@ -180,7 +181,32 @@ func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 }
 
 func UnpackData(data map[string]any) ([]map[string]any, error) {
-	var result []map[string]any
+	result := []map[string]any{}
+	rows := map[string]map[string]any{}
+
+	for key, value := range data {
+		re := regexp.MustCompile(`^(.+)(\d+)$`)
+
+		if re.MatchString(key) {
+			parts := re.FindAllStringSubmatch(key, -1)[0]
+
+			field := parts[1]
+			index := parts[2]
+
+			if rows[index] == nil {
+				rows[index] = map[string]any{}
+			}
+
+			rows[index][field] = value
+		} else {
+			rows["1"] = data
+			break
+		}
+	}
+
+	for _, row := range rows {
+		result = append(result, row)
+	}
 
 	return result, nil
 }
