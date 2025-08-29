@@ -46,14 +46,44 @@ func UnpackData(data map[string]any) []map[string]any {
 	return result
 }
 
+func GetSkippedRefIds(data, refData []map[string]any) []string {
+	result := []string{}
+
+	for _, row := range refData {
+		if row["id"] != nil {
+			id := fmt.Sprintf("%v", row["id"])
+			found := false
+
+			for _, child := range data {
+				if child["id"] != nil && id == fmt.Sprintf("%v", child["id"]) {
+					found = true
+					break
+				}
+			}
+			if !found {
+				result = append(result, id)
+			}
+		}
+	}
+
+	return result
+}
+
 func HandleNestedModel(data any, model, phoneNumber, cacheFolder *string,
 	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string, refData map[string]any) error {
 	if rawData, ok := data.(map[string]any); ok {
 		dataRows := UnpackData(rawData)
 
 		if refData != nil {
-			// TODO: Need to handle overidden data
-			fmt.Println("############", refData)
+			unpackedRefData := UnpackData(refData)
+
+			payload, _ := json.MarshalIndent(unpackedRefData, "", "  ")
+
+			fmt.Println(string(payload))
+
+			payload, _ = json.MarshalIndent(dataRows, "", "  ")
+
+			fmt.Println(string(payload))
 		}
 
 		for _, modelData := range dataRows {

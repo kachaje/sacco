@@ -476,3 +476,60 @@ func TestArrayChildData(t *testing.T) {
 		t.Fatalf("Test failed. Expected: 2; Actual: %v", len(result))
 	}
 }
+
+func TestGetSkippedRefIds(t *testing.T) {
+	refData := []map[string]any{
+		{
+			"contact":    "P.O. Box 2",
+			"id":         2,
+			"memberId":   1,
+			"name":       "Benefator 2",
+			"percentage": 8,
+		},
+		{
+			"contact":    "P.O. Box 3",
+			"id":         3,
+			"memberId":   1,
+			"name":       "Benefator 3",
+			"percentage": 5,
+		},
+		{
+			"contact":    "P.O. Box 4",
+			"id":         4,
+			"memberId":   1,
+			"name":       "Benefator 4",
+			"percentage": 2,
+		},
+		{
+			"contact":    "P.O. Box 1",
+			"id":         1,
+			"memberId":   1,
+			"name":       "Benefator 1",
+			"percentage": 10,
+		},
+	}
+	data := []map[string]any{
+		{
+			"contact":    "P.O. Box 5678",
+			"id":         2,
+			"memberId":   1,
+			"name":       "Benefator 2",
+			"percentage": 25,
+		},
+		{
+			"contact":    "P.O. Box 1234",
+			"id":         1,
+			"memberId":   1,
+			"name":       "Benefator 1",
+			"percentage": 35,
+		},
+	}
+
+	result := filehandling.GetSkippedRefIds(data, refData)
+
+	target := []string{"3", "4"}
+
+	if !reflect.DeepEqual(target, result) {
+		t.Fatal("Test failed")
+	}
+}
