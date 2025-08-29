@@ -294,7 +294,6 @@ func GetSkippedRefIds(data, refData []map[string]any) []map[string]any {
 	return result
 }
 
-
 func CacheFile(filename string, data any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 

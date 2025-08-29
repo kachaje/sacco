@@ -298,11 +298,8 @@ func TestRerunFailedSaves(t *testing.T) {
 		return nil, nil
 	}
 
-	var id int64 = 1
-
 	session := &parser.Session{
 		ActiveData:  map[string]any{},
-		MemberId:    &id,
 		AddedModels: map[string]bool{},
 	}
 
@@ -351,11 +348,8 @@ func TestHandleBeneficiaries(t *testing.T) {
 		os.RemoveAll(cacheFolder)
 	}()
 
-	var id int64 = 1
-
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
-			MemberId:    &id,
 			ActiveData:  map[string]any{},
 			AddedModels: map[string]bool{},
 		},

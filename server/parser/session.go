@@ -2,14 +2,12 @@ package parser
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sacco/server/database"
 	"slices"
-	"strconv"
 	"sync"
 	"time"
 )
@@ -19,9 +17,6 @@ type Session struct {
 	Data        map[string]string
 
 	PreferredLanguage string
-	MemberId          *int64
-	MemberBusinessId  *int64
-	MemberLoanId      *int64
 	SessionId         string
 	PhoneNumber       string
 
@@ -98,16 +93,6 @@ func (s *Session) UpdateSessionFlags() error {
 					s.AddedModels[model] = true
 				}
 			}
-		}
-	}
-
-	idData := s.ReadFromMap("id", 0)
-	if idData != nil {
-		val := fmt.Sprintf("%v", idData)
-
-		id, err := strconv.ParseInt(val, 10, 64)
-		if err == nil {
-			s.MemberId = &id
 		}
 	}
 
