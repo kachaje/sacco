@@ -100,6 +100,18 @@ func DevConsole(
 			if session.MemberId != nil {
 				content = fmt.Sprint(*session.MemberId)
 			}
+		case "console.10":
+			title = "MemberBusinessId"
+
+			if session.MemberBusinessId != nil {
+				content = fmt.Sprint(*session.MemberBusinessId)
+			}
+		case "console.11":
+			title = "MemberLoanId"
+
+			if session.MemberLoanId != nil {
+				content = fmt.Sprint(*session.MemberLoanId)
+			}
 		case "console.6":
 			title = "SessionId"
 
@@ -161,7 +173,9 @@ response: %s`, text, payload)
 				"6. SessionId\n" +
 				"7. PhoneNumber\n" +
 				"8. SQL Query\n" +
-				"9. Member By PhoneNumber"
+				"9. Member By PhoneNumber\n" +
+				"10. MemberBusinessId\n" +
+				"11. MemberLoanId"
 		}
 	} else {
 		content = "No active session provided"
