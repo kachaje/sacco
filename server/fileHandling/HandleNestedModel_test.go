@@ -527,7 +527,21 @@ func TestGetSkippedRefIds(t *testing.T) {
 
 	result := filehandling.GetSkippedRefIds(data, refData)
 
-	target := []string{"3", "4"}
+	target := []map[string]any{
+		{
+			"contact":    "P.O. Box 3",
+			"id":         3,
+			"memberId":   1,
+			"name":       "Benefator 3",
+			"percentage": 5},
+		{
+			"contact":    "P.O. Box 4",
+			"id":         4,
+			"memberId":   1,
+			"name":       "Benefator 4",
+			"percentage": 2,
+		},
+	}
 
 	if !reflect.DeepEqual(target, result) {
 		t.Fatal("Test failed")
