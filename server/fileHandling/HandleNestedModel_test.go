@@ -26,7 +26,7 @@ func TestSimpleNestedModel(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"memberOccupation.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {
@@ -104,10 +104,10 @@ func TestSimpleNestedModel(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		filename := filepath.Join(cacheFolder, phoneNumber, file)
 
@@ -136,10 +136,10 @@ func TestComplexNestedModel(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {
@@ -222,10 +222,10 @@ func TestComplexNestedModel(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		filename := filepath.Join(cacheFolder, phoneNumber, file)
 
@@ -320,10 +320,10 @@ func TestChildNestedModel(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		filename := filepath.Join(cacheFolder, phoneNumber, file)
 
