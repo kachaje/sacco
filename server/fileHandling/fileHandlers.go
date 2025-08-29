@@ -37,6 +37,8 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 			if model != nil {
 				filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.%s.json", *model, uuid.NewString()))
 
+				fmt.Println("########", filename, modelData)
+
 				transactionDone := false
 
 				for _, key := range database.FloatFields {
@@ -60,7 +62,8 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 				}()
 
 				if saveFunc == nil {
-					return fmt.Errorf("server.SaveModelData.%s:missing saveFunc", *model)
+					log.Printf("server.SaveModelData.%s:missing saveFunc\n", *model)
+					continue
 				}
 
 				if sessions[*phoneNumber] != nil {
@@ -84,7 +87,7 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 				mid, err := saveFunc(modelData, *model, 0)
 				if err != nil {
 					log.Println(err)
-					return err
+					continue
 				}
 
 				var id int64
