@@ -1,12 +1,11 @@
 package parser
 
 import (
-	"encoding/json"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"sacco/server/database"
-	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -202,42 +201,18 @@ func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 		models = append(models, group...)
 	}
 
-	for _, key := range models {
-		filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.json", key))
-
-		_, err := os.Stat(filename)
-		if os.IsNotExist(err) {
-			continue
-		}
-
-		content, err := os.ReadFile(filename)
+	err = filepath.WalkDir(sessionFolder, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			continue
+			return err
+		}
+		if d.IsDir() {
+			return nil
 		}
 
-		if slices.Contains(arraysModels, key) {
-			data := []map[string]any{}
-			err = json.Unmarshal(content, &data)
-			if err != nil {
-				data := map[string]any{}
-				err = json.Unmarshal(content, &data)
-				if err != nil {
-					continue
-				}
-				s.WriteToMap(key, data, 0)
-			} else {
-				s.WriteToMap(key, data, 0)
-			}
-		} else {
-			data := map[string]any{}
-			err = json.Unmarshal(content, &data)
-			if err != nil {
-				continue
-			}
+		fmt.Println(path)
 
-			s.WriteToMap(key, data, 0)
-		}
-	}
+		return nil
+	})
 
 	s.UpdateSessionFlags()
 
