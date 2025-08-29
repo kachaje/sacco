@@ -24,7 +24,7 @@ func TestSaveDataOne(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"memberOccupation.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {
@@ -102,10 +102,10 @@ func TestSaveDataOne(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		filename := filepath.Join(cacheFolder, phoneNumber, file)
 
@@ -128,10 +128,10 @@ func TestSaveDataAll(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {
@@ -212,10 +212,10 @@ func TestSaveDataAll(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		filename := filepath.Join(cacheFolder, phoneNumber, file)
 
@@ -260,7 +260,7 @@ func TestRerunFailedSaves(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = os.WriteFile(filepath.Join(sessionFolder, "memberBeneficiary.json"), payload, 0644)
+	err = os.WriteFile(filepath.Join(sessionFolder, "memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json"), payload, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -279,7 +279,7 @@ func TestRerunFailedSaves(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = os.WriteFile(filepath.Join(sessionFolder, "memberContact.json"), payload, 0644)
+	err = os.WriteFile(filepath.Join(sessionFolder, "memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json"), payload, 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -324,8 +324,8 @@ func TestHandleBeneficiaries(t *testing.T) {
 	defer func() {
 		db.Close()
 
-		if _, err := os.Stat("memberBeneficiary.json"); !os.IsNotExist(err) {
-			os.Remove("memberBeneficiary.json")
+		if _, err := os.Stat("memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json"); !os.IsNotExist(err) {
+			os.Remove("memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json")
 		}
 	}()
 
@@ -393,10 +393,10 @@ func TestHandleMemberDetails(t *testing.T) {
 	}()
 
 	for _, file := range []string{
-		"memberContact.json",
-		"memberOccupation.json",
-		"memberBeneficiary.json",
-		"memberNominee.json",
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
 		src, err := os.Open(filepath.Join(sourceFolder, file))
 		if err != nil {
