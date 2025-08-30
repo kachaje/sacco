@@ -6,6 +6,7 @@ import (
 	"sacco/server/parser"
 	"sacco/utils"
 	"testing"
+	"time"
 )
 
 func TestGetTokens(t *testing.T) {
@@ -113,6 +114,8 @@ func TestCalculateFormulae(t *testing.T) {
 	wait := make(chan bool, 1)
 
 	wf.CalculateFormulae(wait)
+
+	time.Sleep(1 * time.Second)
 
 	target := map[string]any{
 		"employeesWages":   "500000",
