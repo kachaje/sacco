@@ -12,19 +12,28 @@ import (
 //go:embed models/fixtures/sample.sql
 var sampleScript string
 
-func TestFullRecord(t *testing.T) {
+func setupDb() (*database.Database, error) {
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
-	defer db.Close()
 
 	_, err := db.DB.Exec(sampleScript)
 	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func TestFullRecord(t *testing.T) {
+	db, err := setupDb()
+	if err != nil {
 		t.Fatal(err)
 	}
+	defer db.Close()
 
 	phoneNumber := "09999999999"
 
-	result, err := db.FullRecord(phoneNumber)
+	result, err := db.FullMemberRecord(phoneNumber)
 	if err != nil {
 		t.Fatal(err)
 	}
