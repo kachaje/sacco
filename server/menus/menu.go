@@ -187,9 +187,13 @@ func (m *Menus) populateMenus() error {
 
 								parentIds := []string{}
 
-								if data["parentIds"] != nil {
-									if val, ok := data["parentIds"].([]string); ok {
+								if WorkflowsData[v]["parentIds"] != nil {
+									if val, ok := WorkflowsData[v]["parentIds"].([]string); ok {
 										parentIds = val
+									} else if val, ok := WorkflowsData[v]["parentIds"].([]any); ok {
+										for _, vc := range val {
+											parentIds = append(parentIds, fmt.Sprintf("%v", vc))
+										}
 									}
 								}
 
