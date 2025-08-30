@@ -72,11 +72,10 @@ func TestRegistrationSubMenu(t *testing.T) {
 	target := `
 CON Choose Activity
 1. Member Details
-2. Occupation Details
-3. Contact Details
-4. Next of Kin Details
-5. Beneficiaries
-6. View Member Details
+2. Contact Details
+3. Next of Kin Details
+4. Beneficiaries
+5. View Member Details
 
 00. Main Menu
 	`
