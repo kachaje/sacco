@@ -145,7 +145,6 @@ func TestEmployementMenu(t *testing.T) {
 	target = `
 CON Employement
 1. Employement Details
-2. Employement Verification
 3. Employement Summary
 
 99. Cancel

@@ -279,8 +279,8 @@ func TestChildNestedModel(t *testing.T) {
 		model string,
 		retries int,
 	) (*int64, error) {
-		if data["memberId"] == nil {
-			return nil, fmt.Errorf("missing required field memberId")
+		if data["memberLoanId"] == nil {
+			return nil, fmt.Errorf("missing required field memberLoanId")
 		}
 
 		count++

@@ -139,7 +139,6 @@ func TestGenericsSaveData(t *testing.T) {
 	defer db.Close()
 
 	data := map[string]any{
-		"memberId":        1,
 		"yearsInBusiness": 1,
 		"businessNature":  "Vendor",
 		"businessName":    "Vendors Galore",
@@ -184,7 +183,6 @@ func TestGenericModel(t *testing.T) {
 	defer db.Close()
 
 	data := map[string]any{
-		"memberId":        1,
 		"yearsInBusiness": 1,
 		"businessNature":  "Vendor",
 		"businessName":    "Vendors Galore",
