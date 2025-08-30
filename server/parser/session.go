@@ -128,9 +128,14 @@ func (s *Session) UpdateSessionFlags() error {
 		}
 	}
 
-	nameData := s.ReadFromMap("firstName", 0)
-	if nameData != nil {
+	idData := s.ReadFromMap("id", 0)
+	if idData != nil {
 		s.AddedModels["member"] = true
+
+		id, err := strconv.ParseInt(fmt.Sprintf("%v", idData), 10, 64)
+		if err == nil {
+			s.GlobalIds["memberId"] = id
+		}
 	}
 
 	return nil
