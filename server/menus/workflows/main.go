@@ -14,7 +14,7 @@ import (
 )
 
 func buildFuncs() {
-	folder := filepath.Join("..", "menus", "menufuncs")
+	folder := filepath.Join("..", "menufuncs")
 
 	rows := []string{}
 
@@ -72,7 +72,7 @@ func init() {
 }
 `, strings.Join(rows, "\n"))
 
-	filename := filepath.Join("..", "menus", "menufuncs", "menufuncs.go")
+	filename := filepath.Join("..", "menufuncs", "menufuncs.go")
 
 	rawData, err := format.Source([]byte(content))
 	if err != nil {
@@ -98,7 +98,7 @@ func buildWorkflows() {
 		log.Panic(err)
 	}
 
-	content, err := os.ReadFile(filepath.Join("..", "database", "models.yml"))
+	content, err := os.ReadFile(filepath.Join("..", "..", "database", "models.yml"))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -192,7 +192,7 @@ func buildWorkflows() {
 		}
 	}
 
-	targetName := filepath.Join("..", "database", "models.go")
+	targetName := filepath.Join("..", "..", "database", "models.go")
 
 	content, err = format.Source(fmt.Appendf(nil, `package database
 	

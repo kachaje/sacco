@@ -2,6 +2,7 @@ package menus
 
 import (
 	"embed"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log"
@@ -14,6 +15,9 @@ import (
 	"strings"
 	"sync"
 )
+
+//go:embed workflows/*
+var RawWorkflows embed.FS
 
 //go:embed menus/*
 var menuFiles embed.FS
@@ -40,6 +44,47 @@ type Menus struct {
 
 	Cache      map[string]string
 	LastPrompt string
+}
+
+var WorkflowsData map[string]map[string]any
+
+func init() {
+	var err error
+
+	WorkflowsData = map[string]map[string]any{}
+
+	err = fs.WalkDir(RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if d.IsDir() {
+			return nil
+		}
+
+		if !strings.HasSuffix(file, ".yml") {
+			return nil
+		}
+
+		content, err := RawWorkflows.ReadFile(file)
+		if err != nil {
+			return err
+		}
+
+		data, err := utils.LoadYaml(string(content))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		model := strings.Split(filepath.Base(file), ".")[0]
+
+		WorkflowsData[model] = data
+
+		return nil
+	})
+	if err != nil {
+		log.Panic(err)
+	}
 }
 
 func NewMenus(devMode, demoMode *bool) *Menus {
@@ -140,9 +185,21 @@ func (m *Menus) populateMenus() error {
 							if v, ok := val["workflow"].(string); ok {
 								m.Workflows[id] = v
 
+								parentIds := []string{}
+
+								if data["parentIds"] != nil {
+									if val, ok := data["parentIds"].([]string); ok {
+										parentIds = val
+									}
+								}
+
 								m.LabelWorkflow[group].(map[string]any)[value] = map[string]any{
 									"model": v,
 									"id":    id,
+								}
+
+								if len(parentIds) > 0 {
+									m.LabelWorkflow[group].(map[string]any)[value].(map[string]any)["parentsIds"] = parentIds
 								}
 							}
 						}
@@ -386,6 +443,10 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 			}
 		} else {
 			newValues := []string{}
+
+			payload, _ := json.MarshalIndent(m.LabelWorkflow, "", "  ")
+
+			fmt.Println(string(payload))
 
 			if m.LabelWorkflow[menuName] != nil && session != nil {
 				for _, value := range values {

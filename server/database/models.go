@@ -10,6 +10,13 @@ var (
 		"memberOccupationVerification",
 		"memberLoanApproval",
 	}
+	AccountArrayChildren = []string{
+		"accountJournal",
+		"accountTransaction",
+	}
+	AccountTransactionArrayChildren = []string{
+		"accountJournal",
+	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
 		"memberShares",
@@ -21,83 +28,65 @@ var (
 		"memberLoan",
 		"memberBusiness",
 	}
-	AccountTransactionArrayChildren = []string{
-		"accountJournal",
-	}
 	MemberBusinessArrayChildren = []string{
 		"memberLastYearBusinessHistory",
 		"memberNextYearBusinessProjection",
-	}
-	AccountArrayChildren = []string{
-		"accountJournal",
-		"accountTransaction",
 	}
 	SingleChildren = map[string][]string{
 		"MemberLoanSingleChildren": MemberLoanSingleChildren,
 		"MemberSingleChildren":     MemberSingleChildren,
 	}
 	ArrayChildren = map[string][]string{
-		"MemberArrayChildren":             MemberArrayChildren,
-		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
-		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 		"AccountArrayChildren":            AccountArrayChildren,
+		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
+		"MemberArrayChildren":             MemberArrayChildren,
+		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 	}
 	FloatFields = []string{
-		"netPay",
-		"periodEmployedInMonths",
-		"grossPay",
-		"totalCostOfGoods",
-		"rentals",
-		"netProfitLoss",
+		"totalCosts",
 		"totalIncome",
 		"employeesWages",
 		"ownSalary",
-		"transport",
 		"loanInterest",
 		"utilities",
-		"otherCosts",
-		"totalCosts",
+		"netProfitLoss",
 		"financialYear",
+		"totalCostOfGoods",
+		"transport",
+		"rentals",
+		"otherCosts",
 		"numberOfShares",
 		"pricePerShare",
 		"loanAmount",
 		"repaymentPeriodInMonths",
-		"value",
-		"utilities",
-		"otherCosts",
-		"totalCosts",
-		"totalIncome",
-		"ownSalary",
-		"transport",
+		"password",
+		"grossPay",
+		"netPay",
+		"periodEmployedInMonths",
+		"financialYear",
 		"loanInterest",
 		"rentals",
 		"netProfitLoss",
-		"financialYear",
+		"totalIncome",
 		"totalCostOfGoods",
 		"employeesWages",
+		"ownSalary",
+		"transport",
+		"utilities",
+		"otherCosts",
+		"totalCosts",
 		"value",
 		"amountRecommended",
 		"amountApproved",
-		"password",
-		"credit",
+		"value",
 		"debit",
+		"credit",
 	}
 	ParentModels = map[string][]string{
-		"memberBusiness": {
-			"member",
-			"memberLoan",
-		},
-		"memberContact": {
+		"memberNominee": {
 			"member",
 		},
-		"memberOccupation": {
-			"member",
-			"memberLoan",
-		},
-		"memberBeneficiary": {
-			"member",
-		},
-		"memberLastYearBusinessHistory": {
+		"memberNextYearBusinessProjection": {
 			"member",
 			"memberLoan",
 			"memberBusiness",
@@ -108,15 +97,21 @@ var (
 		"memberLoan": {
 			"member",
 		},
-		"memberLoanSecurity": {
+		"accountTransaction": {
+			"account",
+		},
+		"memberOccupation": {
 			"member",
 			"memberLoan",
 		},
-		"memberOccupationVerification": {
+		"memberLoanWitness": {
 			"member",
 			"memberLoan",
 		},
-		"memberNextYearBusinessProjection": {
+		"memberContact": {
+			"member",
+		},
+		"memberLastYearBusinessHistory": {
 			"member",
 			"memberLoan",
 			"memberBusiness",
@@ -129,17 +124,22 @@ var (
 			"member",
 			"memberLoan",
 		},
-		"accountJournal": {
-			"account",
-		},
-		"memberNominee": {
+		"memberBeneficiary": {
 			"member",
 		},
-		"memberLoanWitness": {
+		"memberBusiness": {
 			"member",
 			"memberLoan",
 		},
-		"accountTransaction": {
+		"memberLoanSecurity": {
+			"member",
+			"memberLoan",
+		},
+		"memberOccupationVerification": {
+			"member",
+			"memberLoan",
+		},
+		"accountJournal": {
 			"account",
 		},
 	}

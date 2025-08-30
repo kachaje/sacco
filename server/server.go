@@ -2,11 +2,9 @@ package server
 
 import (
 	"bytes"
-	"embed"
 	"flag"
 	"fmt"
 	"io"
-	"io/fs"
 	"log"
 	"net/http"
 	"net/url"
@@ -24,6 +22,8 @@ import (
 
 	"html/template"
 
+	_ "embed"
+
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
@@ -31,57 +31,13 @@ import (
 //go:embed index.html
 var indexHTML string
 
-//go:embed workflows/*
-var RawWorkflows embed.FS
-
 var mu sync.Mutex
 var port int
 var demoMode bool
 
-var workflowsData map[string]map[string]any
-
 var preferencesFolder = filepath.Join(".", "settings")
 
 var activeMenu *menus.Menus
-
-func init() {
-	var err error
-
-	workflowsData = map[string]map[string]any{}
-
-	err = fs.WalkDir(RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if d.IsDir() {
-			return nil
-		}
-
-		if !strings.HasSuffix(file, ".yml") {
-			return nil
-		}
-
-		content, err := RawWorkflows.ReadFile(file)
-		if err != nil {
-			return err
-		}
-
-		data, err := utils.LoadYaml(string(content))
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		model := strings.Split(filepath.Base(file), ".")[0]
-
-		workflowsData[model] = data
-
-		return nil
-	})
-	if err != nil {
-		log.Panic(err)
-	}
-}
 
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.FormValue("sessionId")
@@ -105,7 +61,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	if !exists {
 		session = parser.NewSession(menufuncs.DB.MemberByPhoneNumber, &phoneNumber, &sessionID)
 
-		for model, data := range workflowsData {
+		for model, data := range menus.WorkflowsData {
 			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &preferencesFolder, menufuncs.DB.GenericsSaveData, menufuncs.Sessions, nil)
 		}
 

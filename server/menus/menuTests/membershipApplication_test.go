@@ -5,7 +5,6 @@ import (
 	"log"
 	"path/filepath"
 	"reflect"
-	"sacco/server"
 	"sacco/server/menus"
 	menufuncs "sacco/server/menus/menuFuncs"
 	"sacco/server/parser"
@@ -21,7 +20,7 @@ func init() {
 
 	workflowsData = map[string]map[string]any{}
 
-	err = fs.WalkDir(server.RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
+	err = fs.WalkDir(menus.RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -34,7 +33,7 @@ func init() {
 			return nil
 		}
 
-		content, err := server.RawWorkflows.ReadFile(file)
+		content, err := menus.RawWorkflows.ReadFile(file)
 		if err != nil {
 			return err
 		}
