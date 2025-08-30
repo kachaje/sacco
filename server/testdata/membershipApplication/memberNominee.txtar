@@ -20,7 +20,7 @@ stdout 'Name:'
 stdout 'Phone Number:'
 stdout 'Address:'
 stdout '- Name: John Banda'
-stdout '4\. Next of Kin Details \(\*\)'
+stdout '3\. Next of Kin Details \(\*\)'
 stdout 'First Name:'
 stdout 'Last Name:'
 stdout 'Other Name'
@@ -38,7 +38,7 @@ stdout 'Name: \(John Banda\)'
 stdout 'Phone Number: \(0888999780\)'
 stdout 'Address: \(P.O. Box 1\)'
 stdout '- Name: Jean Banda'
-stdout '4\. Next of Kin Details \(\*\)'
+stdout '3\. Next of Kin Details \(\*\)'
 stdout 'Welcome to Kaso SACCO'
 
 -- input.txt --
@@ -56,7 +56,7 @@ DHSGH3837
 1
 938374838
 0
-4
+3
 John Banda
 0888999780
 P.O. Box 1
@@ -74,7 +74,7 @@ DHSGH3837
 1
 938374838
 0
-4
+3
 Jean Banda
 0888999780
 P.O. Box 1
