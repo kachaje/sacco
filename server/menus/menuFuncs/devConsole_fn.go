@@ -110,16 +110,20 @@ func DevConsole(
 			id := session.SessionId
 			username := ""
 			userId := ""
+			role := ""
 
 			if session.SessionUser != nil {
 				username = *session.SessionUser
+			}
+			if session.SessionUserRole != nil {
+				role = *session.SessionUserRole
 			}
 			if session.SessionUserId != nil {
 				userId = fmt.Sprint(*session.SessionUserId)
 			}
 
-			content = fmt.Sprintf("sessionId: %s\nsessioUser: %s\nsessionUserId: %v\n",
-				id, username, userId,
+			content = fmt.Sprintf("sessionId: %s\nsessioUser: %s\nsessionUserId: %v\nuserRole: %s\n",
+				id, username, userId, role,
 			)
 		case "console.7":
 			title = "PhoneNumber"
