@@ -61,7 +61,7 @@ var (
 	FunctionsMap = map[string]func(
 		func(
 			string, *parser.Session,
-			string, string, string, string,
+			string, string, string,
 		) string,
 		map[string]any,
 	) string{}
