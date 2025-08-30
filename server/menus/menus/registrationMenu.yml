@@ -21,21 +21,6 @@ fields:
   "2":
     id: registration.2
     label:
-      en: Occupation Details
-    workflow: memberOccupation
-    targetKeys:
-      - employerAddress
-      - employerName
-      - employerPhone
-      - grossPay
-      - highestQualification
-      - jobTitle
-      - netPay
-      - periodEmployedInMonths
-      - id
-  "3":
-    id: registration.3
-    label:
       en: Contact Details
     workflow: memberContact
     targetKeys:
@@ -47,8 +32,8 @@ fields:
       - homeVillage
       - homeTraditionalAuthority
       - homeDistrict
-  "4":
-    id: registration.4
+  "3":
+    id: registration.3
     label:
       en: Next of Kin Details
     workflow: memberNominee
@@ -58,8 +43,8 @@ fields:
       - name
       - phoneNumber
       - address
-  "5":
-    id: registration.5
+  "4":
+    id: registration.4
     label:
       en: Beneficiaries
     workflow: memberBeneficiary
@@ -68,8 +53,8 @@ fields:
       - name
       - percentage
       - contact
-  "6":
-    id: registration.6
+  "5":
+    id: registration.5
     label:
       en: View Member Details
     function: viewMemberDetails
