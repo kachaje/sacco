@@ -63,25 +63,6 @@ VALUES
   (1, "John Banda", "0888888888", "Same as member");
 
 INSERT INTO
-  memberOccupation (
-    memberId,
-    employerName,
-    netPay,
-    jobTitle,
-    employerAddress,
-    highestQualification
-  )
-VALUES
-  (
-    1,
-    "Sunseed Oil",
-    72000,
-    "Driver",
-    "Kanengo, Lilongwe",
-    "Secondary"
-  );
-
-INSERT INTO
   memberBeneficiary (memberId, name, percentage, contact)
 VALUES
   (1, "Benefator 1", 10, "P.O. Box 1"),
