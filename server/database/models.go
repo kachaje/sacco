@@ -1,6 +1,10 @@
 package database
 
 var (
+	MemberBusinessArrayChildren = []string{
+		"memberLastYearBusinessHistory",
+		"memberNextYearBusinessProjection",
+	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
 		"memberShares",
@@ -19,9 +23,9 @@ var (
 		"memberOccupationVerification",
 		"memberLoanApproval",
 	}
-	MemberBusinessArrayChildren = []string{
-		"memberLastYearBusinessHistory",
-		"memberNextYearBusinessProjection",
+	AccountArrayChildren = []string{
+		"accountJournal",
+		"accountTransaction",
 	}
 	AccountTransactionArrayChildren = []string{
 		"accountJournal",
@@ -29,109 +33,105 @@ var (
 	MemberOccupationSingleChildren = []string{
 		"memberOccupationVerification",
 	}
-	AccountArrayChildren = []string{
-		"accountJournal",
-		"accountTransaction",
-	}
 	SingleChildren = map[string][]string{
 		"MemberSingleChildren":           MemberSingleChildren,
 		"MemberLoanSingleChildren":       MemberLoanSingleChildren,
 		"MemberOccupationSingleChildren": MemberOccupationSingleChildren,
 	}
 	ArrayChildren = map[string][]string{
-		"MemberArrayChildren":             MemberArrayChildren,
 		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
-		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
+		"MemberArrayChildren":             MemberArrayChildren,
 		"AccountArrayChildren":            AccountArrayChildren,
+		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
 	}
 	FloatFields = []string{
-		"repaymentPeriodInMonths",
-		"loanAmount",
-		"totalCostOfGoods",
-		"employeesWages",
-		"rentals",
-		"otherCosts",
-		"totalCosts",
-		"ownSalary",
-		"transport",
-		"loanInterest",
-		"utilities",
-		"netProfitLoss",
-		"financialYear",
-		"totalIncome",
-		"value",
-		"value",
-		"amountApproved",
-		"amountRecommended",
-		"password",
-		"debit",
-		"credit",
-		"totalCosts",
-		"netProfitLoss",
-		"totalIncome",
-		"totalCostOfGoods",
-		"employeesWages",
-		"transport",
-		"otherCosts",
-		"financialYear",
-		"ownSalary",
-		"loanInterest",
-		"utilities",
-		"rentals",
 		"grossPay",
 		"netPay",
 		"periodEmployedInMonths",
+		"password",
+		"financialYear",
+		"totalIncome",
+		"employeesWages",
+		"transport",
+		"loanInterest",
+		"utilities",
+		"otherCosts",
+		"totalCosts",
+		"totalCostOfGoods",
+		"ownSalary",
+		"rentals",
+		"netProfitLoss",
 		"numberOfShares",
 		"pricePerShare",
+		"loanAmount",
+		"repaymentPeriodInMonths",
+		"value",
+		"amountRecommended",
+		"amountApproved",
+		"employeesWages",
+		"transport",
+		"utilities",
+		"rentals",
+		"netProfitLoss",
+		"financialYear",
+		"totalCostOfGoods",
+		"ownSalary",
+		"loanInterest",
+		"otherCosts",
+		"totalCosts",
+		"totalIncome",
+		"value",
+		"debit",
+		"credit",
 	}
 	ParentModels = map[string][]string{
-		"memberNominee": {
+		"memberContact": {
 			"member",
 		},
-		"memberLoan": {
-			"member",
-		},
-		"memberBeneficiary": {
-			"member",
-		},
-		"memberNextYearBusinessProjection": {
-			"memberBusiness",
-		},
-		"memberLoanLiability": {
+		"memberOccupation": {
 			"memberLoan",
 		},
-		"memberLoanSecurity": {
+		"memberBusiness": {
 			"memberLoan",
 		},
 		"memberLoanWitness": {
 			"memberLoan",
 		},
-		"memberLoanApproval": {
-			"memberLoan",
+		"memberOccupationVerification": {
+			"memberOccupation",
 		},
-		"accountJournal": {
-			"account",
-		},
-		"memberContact": {
+		"memberBeneficiary": {
 			"member",
-		},
-		"memberBusiness": {
-			"memberLoan",
 		},
 		"memberLastYearBusinessHistory": {
 			"memberBusiness",
 		},
-		"memberOccupationVerification": {
-			"memberOccupation",
+		"memberShares": {
+			"member",
+		},
+		"memberLoan": {
+			"member",
+		},
+		"memberLoanLiability": {
+			"memberLoan",
+		},
+		"memberLoanApproval": {
+			"memberLoan",
+		},
+		"memberNominee": {
+			"member",
+		},
+		"memberNextYearBusinessProjection": {
+			"memberBusiness",
+		},
+		"memberLoanSecurity": {
+			"memberLoan",
 		},
 		"accountTransaction": {
 			"account",
 		},
-		"memberOccupation": {
-			"memberLoan",
-		},
-		"memberShares": {
-			"member",
+		"accountJournal": {
+			"account",
 		},
 	}
 )

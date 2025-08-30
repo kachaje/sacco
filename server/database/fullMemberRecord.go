@@ -19,7 +19,7 @@ func (d *Database) LoadSingleChildren(parentKey, model string, parentId int64) (
 
 			results, err := d.GenericModels[childModel].FilterBy(fmt.Sprintf(`WHERE %s = %v AND active = 1 ORDER by updated_at DESC LIMIT 1`, parentKey, parentId))
 			if err != nil {
-				log.Println(err)
+				log.Println("LoadSingleChildren 1:", childModel, err)
 				continue
 			}
 
@@ -33,7 +33,7 @@ func (d *Database) LoadSingleChildren(parentKey, model string, parentId int64) (
 				if id, err := strconv.ParseInt(fmt.Sprintf("%v", row["id"]), 10, 64); err == nil {
 					result, err := d.LoadModelChildren(childModel, id)
 					if err != nil {
-						log.Println(err)
+						log.Println("LoadSingleChildren 2:", childModel, err)
 					} else {
 						maps.Copy(row, result)
 					}
@@ -58,7 +58,7 @@ func (d *Database) LoadArrayChildren(parentKey, model string, parentId int64) (m
 
 			results, err := d.GenericModels[childModel].FilterBy(fmt.Sprintf(`WHERE %s = %v AND active = 1`, parentKey, parentId))
 			if err != nil {
-				log.Println(err)
+				log.Println("LoadArrayChildren 1:", childModel, err)
 				continue
 			}
 
@@ -74,7 +74,7 @@ func (d *Database) LoadArrayChildren(parentKey, model string, parentId int64) (m
 					if id, err := strconv.ParseInt(fmt.Sprintf("%v", row["id"]), 10, 64); err == nil {
 						result, err := d.LoadModelChildren(childModel, id)
 						if err != nil {
-							log.Println(err)
+							log.Println("LoadArrayChildren 2:", childModel, err)
 						} else {
 							maps.Copy(row, result)
 						}
@@ -133,7 +133,14 @@ func (d *Database) FullMemberRecord(phoneNumber string) (map[string]any, error) 
 	}
 
 	if len(results) > 0 {
-		data = results[0]
+		if id, err := strconv.ParseInt(fmt.Sprintf("%v", results[0]["id"]), 10, 64); err == nil {
+			result, err := d.LoadModelChildren("member", id)
+			if err != nil {
+				return nil, err
+			}
+
+			data = result
+		}
 	} else {
 		return nil, fmt.Errorf("no match found")
 	}

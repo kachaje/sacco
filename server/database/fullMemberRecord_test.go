@@ -2,8 +2,10 @@ package database_test
 
 import (
 	"encoding/json"
-	"fmt"
+	"os"
+	"path/filepath"
 	"sacco/server/database"
+	"sacco/utils"
 	"testing"
 
 	_ "embed"
@@ -38,10 +40,17 @@ func TestLoadModelChildren(t *testing.T) {
 
 	payload, _ := json.MarshalIndent(result, "", "  ")
 
-	fmt.Println(string(payload))
+	target, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "sample.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if utils.CleanScript(payload) != utils.CleanScript(target) {
+		t.Fatal("Test failed")
+	}
 }
 
-func TestFullRecord(t *testing.T) {
+func TestFullMemberRecord(t *testing.T) {
 	db, err := setupDb()
 	if err != nil {
 		t.Fatal(err)
@@ -57,5 +66,12 @@ func TestFullRecord(t *testing.T) {
 
 	payload, _ := json.MarshalIndent(result, "", "  ")
 
-	fmt.Println(string(payload))
+	target, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "sample.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if utils.CleanScript(payload) != utils.CleanScript(target) {
+		t.Fatal("Test failed")
+	}
 }
