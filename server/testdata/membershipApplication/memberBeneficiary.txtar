@@ -3,6 +3,19 @@ stdin input.txt
 exec wscli -p 8396 -n 0888999784
 stdout 'Welcome to Kaso SACCO'
 stdout 'Choose Activity'
+stdout 'First Name:'
+stdout 'Last Name:'
+stdout 'Other Name'
+stdout 'Gender:'
+stdout 'Phone Number: \(0888999784\)'
+stdout 'Title:'
+stdout 'Marital Status:'
+stdout 'Date Of Birth:'
+stdout 'National Id:'
+stdout 'Utility Bill Type:'
+stdout 'Utility Bill Number:'
+stdout 'Summary'
+stdout '1. Member Details \(\*\)'
 stdout 'Name:'
 stdout 'Percentage:'
 stdout 'Contact:'
@@ -27,6 +40,19 @@ stdout 'Welcome to Kaso SACCO'
 
 -- input.txt --
 1
+1
+Mary
+Banda
+02
+1
+01
+3
+2
+1999-09-01
+DHSGH3837
+1
+938374838
+0
 5
 John Banda
 10
