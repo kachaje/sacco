@@ -259,8 +259,10 @@ func UnpackData(data map[string]any) []map[string]any {
 
 			rows[index][field] = value
 		} else {
-			rows["1"] = data
-			break
+			if len(rows) == 0 {
+				rows["1"] = data
+				break
+			}
 		}
 	}
 
