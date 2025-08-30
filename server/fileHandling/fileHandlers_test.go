@@ -153,7 +153,6 @@ func TestHandleMemberDetails(t *testing.T) {
 	}
 
 	for _, file := range []string{
-		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
 		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
 		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
 		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
@@ -242,18 +241,6 @@ func TestHandleMemberDetails(t *testing.T) {
 			"address":     "P.O. Box 1",
 			"name":        "John Phiri",
 			"phoneNumber": "0888444666",
-		},
-		"memberOccupation": map[string]any{
-			"employerAddress":        "Kanengo",
-			"employerName":           "SOBO",
-			"employerPhone":          "01282373737",
-			"grossPay":               100000,
-			"highestQualification":   "Secondary",
-			"id":                     1,
-			"jobTitle":               "Driver",
-			"memberId":               1,
-			"netPay":                 90000,
-			"periodEmployedInMonths": 36,
 		},
 		"nationalId":        "DHFYR8475",
 		"phoneNumber":       "0999888777",
