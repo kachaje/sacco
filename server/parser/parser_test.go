@@ -149,7 +149,10 @@ func TestNodeOptions(t *testing.T) {
 func TestNextNode(t *testing.T) {
 	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 
-	result := wf.NextNode("")
+	result, err := wf.NextNode("")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if result == nil {
 		t.Fatal("Test failed")
@@ -169,7 +172,10 @@ func TestNextNode(t *testing.T) {
 		t.Fatalf("Test failed. Expected: 'initialScreen'; Actual: '%v'", wf.PreviousScreen)
 	}
 
-	result = wf.NextNode("3")
+	result, err = wf.NextNode("3")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	for _, key := range []string{"type", "text", "options", "inputIdentifier", "nextScreen"} {
 		if result[key] == nil {
@@ -201,7 +207,10 @@ func TestNextNode(t *testing.T) {
 
 	wf.CurrentScreen = "enterLanguage"
 
-	result = wf.NextNode("1")
+	result, err = wf.NextNode("1")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	for _, key := range []string{"type", "text", "inputIdentifier", "nextScreen"} {
 		if result[key] == nil {
@@ -318,7 +327,10 @@ func TestLoadLabel(t *testing.T) {
 func TestGetLabel(t *testing.T) {
 	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 
-	node := wf.NextNode("")
+	node, err := wf.NextNode("")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if node == nil {
 		t.Fatal("Test failed")
@@ -394,7 +406,10 @@ func TestGotoMenu(t *testing.T) {
 		"maritalStatus": "2",
 	}
 
-	node := wf.NextNode("formSummary")
+	node, err := wf.NextNode("formSummary")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if node == nil {
 		t.Fatal("Test failed")
@@ -438,13 +453,19 @@ func TestCancel(t *testing.T) {
 		"maritalStatus": "2",
 	}
 
-	node := wf.NextNode("formSummary")
+	node, err := wf.NextNode("formSummary")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if node == nil {
 		t.Fatal("Test failed")
 	}
 
-	node = wf.NextNode("99")
+	node, err = wf.NextNode("99")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if node != nil {
 		t.Fatal("Test failed")
@@ -499,7 +520,10 @@ func TestSubmit(t *testing.T) {
 
 	wf.CurrentScreen = "formSummary"
 
-	node := wf.NextNode("0")
+	node, err := wf.NextNode("0")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if node != nil {
 		t.Fatal("Test failed")
@@ -714,7 +738,10 @@ func TestBack(t *testing.T) {
 		t.Fatalf("Test failed. Expected: %s; Actual: %s", target, wf.CurrentScreen)
 	}
 
-	node := wf.NextNode("98")
+	node, err := wf.NextNode("98")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if node == nil {
 		t.Fatal("Test failed")

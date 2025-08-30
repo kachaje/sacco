@@ -44,8 +44,7 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 				}
 
 				if saveFunc == nil {
-					log.Printf("server.SaveModelData.%s:missing saveFunc\n", *model)
-					continue
+					return fmt.Errorf("server.SaveModelData.%s:missing saveFunc", *model)
 				}
 
 				if sessions[*phoneNumber] != nil {
@@ -68,8 +67,7 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 
 				mid, err := saveFunc(modelData, *model, 0)
 				if err != nil {
-					log.Println(err)
-					continue
+					return err
 				}
 
 				var id int64

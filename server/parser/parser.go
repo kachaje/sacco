@@ -284,7 +284,7 @@ func (w *WorkFlow) CheckLanguage() {
 	}
 }
 
-func (w *WorkFlow) NextNode(input string) map[string]any {
+func (w *WorkFlow) NextNode(input string) (map[string]any, error) {
 	var node map[string]any
 	var nextScreen string
 	var ok bool
@@ -303,7 +303,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.History = map[int]string{}
 		w.HistoryIndex = -1
 
-		return nil
+		return nil, nil
 	case "0":
 		if w.CurrentScreen == "formSummary" {
 			// Submit
@@ -314,10 +314,14 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 					data["id"] = w.Data["id"]
 				}
 
-				w.SubmitCallback(
+				err := w.SubmitCallback(
 					data, &w.CurrentModel, &w.CurrentPhoneNumber,
 					&w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data,
 				)
+				if err != nil {
+					log.Println(err)
+					return nil, err
+				}
 			}
 
 			w.CurrentScreen = INITIAL_SCREEN
@@ -328,7 +332,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 			w.Data = map[string]any{}
 
-			return nil
+			return nil, nil
 		}
 	case "00":
 		// Main Menu
@@ -339,7 +343,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 		w.History = map[int]string{}
 		w.HistoryIndex = -1
 
-		return nil
+		return nil, nil
 	case "98":
 		if w.PreviousScreen != "" {
 			nextScreen = w.PreviousScreen
@@ -360,7 +364,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 			node = w.GetNode(nextScreen)
 
-			return node
+			return node, nil
 		}
 	}
 
@@ -393,7 +397,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 					valid, nextRoute := w.InputIncluded(input, val)
 
 					if !valid {
-						return node
+						return node, nil
 					}
 
 					if nextRoute != "" {
@@ -414,7 +418,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 						w.HistoryIndex++
 
-						return node
+						return node, nil
 					}
 				}
 
@@ -440,13 +444,13 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 						re := regexp.MustCompile(val)
 
 						if !re.MatchString(input) {
-							return node
+							return node, nil
 						}
 					}
 				}
 
 				if node["optional"] == nil && len(strings.TrimSpace(input)) == 0 {
-					return node
+					return node, nil
 				}
 
 				if node != nil && node["inputIdentifier"] != nil {
@@ -473,7 +477,7 @@ func (w *WorkFlow) NextNode(input string) map[string]any {
 
 	w.HistoryIndex++
 
-	return node
+	return node, nil
 }
 
 func (w *WorkFlow) OptionValue(options []any, input string) (string, *string) {
@@ -733,7 +737,10 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 }
 
 func (w *WorkFlow) NavNext(input string) string {
-	node := w.NextNode(input)
+	node, err := w.NextNode(input)
+	if err != nil {
+		return err.Error()
+	}
 
 	label := w.GetLabel(node, w.CurrentScreen)
 
