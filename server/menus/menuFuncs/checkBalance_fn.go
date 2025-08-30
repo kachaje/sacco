@@ -7,7 +7,7 @@ import (
 func CheckBalance(
 	loadMenu func(
 		menuName string, session *parser.Session,
-		phoneNumber, text, preferencesFolder, cacheFolder string,
+		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
 ) string {

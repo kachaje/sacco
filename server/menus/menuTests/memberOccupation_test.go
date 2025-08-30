@@ -53,7 +53,7 @@ func TestMemberOccupation(t *testing.T) {
 
 	m := menus.NewMenus(nil, &demo)
 
-	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target := `
 CON Welcome to Kaso SACCO
@@ -72,7 +72,7 @@ CON Welcome to Kaso SACCO
 
 	text = "1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity
@@ -92,7 +92,7 @@ CON Choose Activity
 
 	text = "2"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Employer Name: 
@@ -106,7 +106,7 @@ Employer Name:
 
 	text = "SOBO"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Gross Pay: 
@@ -122,7 +122,7 @@ Gross Pay:
 
 	text = "100000"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Net Pay: 
@@ -138,7 +138,7 @@ Net Pay:
 
 	text = "90000"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Job Title: 
@@ -154,7 +154,7 @@ Job Title:
 
 	text = "Driver"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Employer Address: 
@@ -170,7 +170,7 @@ Employer Address:
 
 	text = "Kanengo"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Employer Phone: 
@@ -186,7 +186,7 @@ Employer Phone:
 
 	text = "01789987"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Period Employed In Months: 
@@ -202,7 +202,7 @@ Period Employed In Months:
 
 	text = "36"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Highest Qualification: 
@@ -222,7 +222,7 @@ Highest Qualification:
 
 	text = "2"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Summary
@@ -247,7 +247,7 @@ Summary
 
 	text = "0"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity
@@ -275,7 +275,7 @@ CON Choose Activity
 
 	text = "2"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Employer Name: (SOBO)
@@ -290,7 +290,7 @@ Employer Name: (SOBO)
 
 	text = "Limbe Leaf"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Gross Pay: (100000)
@@ -307,7 +307,7 @@ Gross Pay: (100000)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Net Pay: (90000)
@@ -324,7 +324,7 @@ Net Pay: (90000)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Job Title: (Driver)
@@ -341,7 +341,7 @@ Job Title: (Driver)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Employer Address: (Kanengo)
@@ -358,7 +358,7 @@ Employer Address: (Kanengo)
 
 	text = "P.O. Box 1678, Kanengo"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Employer Phone: (01789987)
@@ -375,7 +375,7 @@ Employer Phone: (01789987)
 
 	text = "09884746363"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Period Employed In Months: (36)
@@ -392,7 +392,7 @@ Period Employed In Months: (36)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Highest Qualification: (Secondary)
@@ -413,7 +413,7 @@ Highest Qualification: (Secondary)
 
 	text = "1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Summary
@@ -438,7 +438,7 @@ Summary
 
 	text = "0"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity

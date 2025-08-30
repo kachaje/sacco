@@ -12,7 +12,7 @@ func TestLanding(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	result := m.LoadMenu("main", session, "", "", "", "")
+	result := m.LoadMenu("main", session, "", "", "")
 
 	target := `
 Welcome! Select Action
@@ -33,7 +33,7 @@ func TestMainMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	result := m.LoadMenu("main", session, "", "", "", "")
+	result := m.LoadMenu("main", session, "", "", "")
 
 	target := `
 CON Welcome to Kaso SACCO
@@ -58,7 +58,7 @@ func TestRegistrationSubMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	result := m.LoadMenu("main", session, "", "1", "", "")
+	result := m.LoadMenu("main", session, "", "1", "")
 
 	target := `
 CON Choose Activity
@@ -84,7 +84,7 @@ func TestBusinessMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	result := m.LoadMenu("business", session, "", "", "", "")
+	result := m.LoadMenu("business", session, "", "", "")
 
 	target := `
 CON Business
@@ -109,7 +109,7 @@ func TestEmployementMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	result := m.LoadMenu("employment", session, "", "", "", "")
+	result := m.LoadMenu("employment", session, "", "", "")
 
 	target := `
 CON Employement
@@ -133,7 +133,7 @@ func TestLoanMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	result := m.LoadMenu("loan", session, "", "", "", "")
+	result := m.LoadMenu("loan", session, "", "", "")
 
 	target := `
 CON Loans

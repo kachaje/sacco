@@ -99,7 +99,7 @@ func TestMembershipApplication(t *testing.T) {
 
 	m := menus.NewMenus(nil, &demo)
 
-	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target := `
 CON Welcome to Kaso SACCO
@@ -118,7 +118,7 @@ CON Welcome to Kaso SACCO
 
 	text = "1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity
@@ -138,7 +138,7 @@ CON Choose Activity
 
 	text = "1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 First Name: 
@@ -152,7 +152,7 @@ First Name:
 
 	text = "Mary"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Last Name: 
@@ -168,7 +168,7 @@ Last Name:
 
 	text = "Banda"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Other Name: 
@@ -185,7 +185,7 @@ Other Name:
 
 	text = "02"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Gender: 
@@ -203,7 +203,7 @@ Gender:
 
 	text = "1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Phone Number: (0999888777)
@@ -220,7 +220,7 @@ Phone Number: (0999888777)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Title: 
@@ -243,7 +243,7 @@ Title:
 
 	text = "3"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Marital Status: 
@@ -263,7 +263,7 @@ Marital Status:
 
 	text = "2"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Date Of Birth: 
@@ -279,7 +279,7 @@ Date Of Birth:
 
 	text = "1999-09-01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 National Id: 
@@ -295,7 +295,7 @@ National Id:
 
 	text = "DHDG57636"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Utility Bill Type: 
@@ -313,7 +313,7 @@ Utility Bill Type:
 
 	text = "1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Utility Bill Number: 
@@ -329,7 +329,7 @@ Utility Bill Number:
 
 	text = "98383727"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Summary
@@ -356,7 +356,7 @@ Summary
 
 	text = "0"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity

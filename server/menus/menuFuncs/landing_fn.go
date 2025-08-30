@@ -6,12 +6,12 @@ import (
 
 func Landing(loadMenu func(
 	menuName string, session *parser.Session,
-	phoneNumber, text, preferencesFolder, cacheFolder string,
+	phoneNumber, text, preferencesFolder string,
 ) string,
 	data map[string]any,
 ) string {
 	var response string
-	var phoneNumber, text, preferencesFolder, cacheFolder string
+	var phoneNumber, text, preferencesFolder string
 	var session *parser.Session
 
 	if data["session"] != nil {
@@ -34,15 +34,9 @@ func Landing(loadMenu func(
 			preferencesFolder = val
 		}
 	}
-	if data["cacheFolder"] != nil {
-		if val, ok := data["cacheFolder"].(string); ok {
-			cacheFolder = val
-		}
-	}
 
 	data = map[string]any{
 		"phoneNumber":       phoneNumber,
-		"cacheFolder":       cacheFolder,
 		"session":           session,
 		"preferencesFolder": preferencesFolder,
 		"text":              text,

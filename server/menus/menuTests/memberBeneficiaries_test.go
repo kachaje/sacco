@@ -88,7 +88,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 
 	m := menus.NewMenus(nil, &demo)
 
-	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result := m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target := `
 CON Welcome to Kaso SACCO
@@ -107,7 +107,7 @@ CON Welcome to Kaso SACCO
 
 	text = "1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity
@@ -127,7 +127,7 @@ CON Choose Activity
 
 	text = "5"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: 
@@ -142,7 +142,7 @@ Name:
 
 	text = "John Phiri"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: 
@@ -158,7 +158,7 @@ Percentage:
 
 	text = "10"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: 
@@ -174,7 +174,7 @@ Contact:
 
 	text = "P.O. Box 1"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: 
@@ -191,7 +191,7 @@ Name:
 
 	text = "Peter Banda"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: 
@@ -207,7 +207,7 @@ Percentage:
 
 	text = "8"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: 
@@ -223,7 +223,7 @@ Contact:
 
 	text = "P.O. Box 2"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: 
@@ -240,7 +240,7 @@ Name:
 
 	text = "Mirriam Jere"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: 
@@ -256,7 +256,7 @@ Percentage:
 
 	text = "6"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: 
@@ -272,7 +272,7 @@ Contact:
 
 	text = "P.O. Box 3"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: 
@@ -289,7 +289,7 @@ Name:
 
 	text = "Bornface Harawa"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: 
@@ -305,7 +305,7 @@ Percentage:
 
 	text = "4"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: 
@@ -321,7 +321,7 @@ Contact:
 
 	text = "P.O. Box 4"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Summary
@@ -350,7 +350,7 @@ Summary
 
 	text = "0"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity
@@ -378,7 +378,7 @@ CON Choose Activity
 
 	text = "5"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: (John Phiri)
@@ -394,7 +394,7 @@ Name: (John Phiri)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: (10)
@@ -411,7 +411,7 @@ Percentage: (10)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: (P.O. Box 1)
@@ -428,7 +428,7 @@ Contact: (P.O. Box 1)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: (Peter Banda)
@@ -446,7 +446,7 @@ Name: (Peter Banda)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: (8)
@@ -463,7 +463,7 @@ Percentage: (8)
 
 	text = "20"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: (P.O. Box 2)
@@ -480,7 +480,7 @@ Contact: (P.O. Box 2)
 
 	text = "P.O. Box 348589, Lilongwe"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: (Mirriam Jere)
@@ -498,7 +498,7 @@ Name: (Mirriam Jere)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: (6)
@@ -515,7 +515,7 @@ Percentage: (6)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: (P.O. Box 3)
@@ -532,7 +532,7 @@ Contact: (P.O. Box 3)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Name: (Bornface Harawa)
@@ -550,7 +550,7 @@ Name: (Bornface Harawa)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Percentage: (4)
@@ -567,7 +567,7 @@ Percentage: (4)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Contact: (P.O. Box 4)
@@ -584,7 +584,7 @@ Contact: (P.O. Box 4)
 
 	text = "01"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 Summary
@@ -613,7 +613,7 @@ Summary
 
 	text = "0"
 
-	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "", "")
+	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
 CON Choose Activity

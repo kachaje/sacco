@@ -26,7 +26,7 @@ type Menus struct {
 	FunctionsMap map[string]func(
 		func(
 			string, *parser.Session,
-			string, string, string, string,
+			string, string, string,
 		) string,
 		map[string]any,
 	) string
@@ -51,7 +51,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 		FunctionsMap: map[string]func(
 			func(
 				string, *parser.Session,
-				string, string, string, string,
+				string, string, string,
 			) string,
 			map[string]any,
 		) string{},
@@ -176,7 +176,7 @@ func (m *Menus) populateMenus() error {
 	})
 }
 
-func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, text, preferencesFolder, cacheFolder string) string {
+func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, text, preferencesFolder string) string {
 	var response string
 
 	preferredLanguage := menufuncs.CheckPreferredLanguage(phoneNumber, preferencesFolder)
@@ -196,7 +196,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				m.LoadMenu,
 				map[string]any{
 					"phoneNumber":       phoneNumber,
-					"cacheFolder":       cacheFolder,
 					"session":           session,
 					"preferredLanguage": preferredLanguage,
 					"preferencesFolder": preferencesFolder,
@@ -207,7 +206,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				m.LoadMenu,
 				map[string]any{
 					"phoneNumber":       phoneNumber,
-					"cacheFolder":       cacheFolder,
 					"session":           session,
 					"preferredLanguage": preferredLanguage,
 					"preferencesFolder": preferencesFolder,
@@ -218,7 +216,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				m.LoadMenu,
 				map[string]any{
 					"phoneNumber":       phoneNumber,
-					"cacheFolder":       cacheFolder,
 					"session":           session,
 					"preferredLanguage": preferredLanguage,
 					"preferencesFolder": preferencesFolder,
@@ -261,7 +258,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 			session.CurrentMenu = kv[target]
 		}
 
-		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder, cacheFolder)
+		return m.LoadMenu(kv[target], session, phoneNumber, text, preferencesFolder)
 	} else if session != nil && m.Workflows[session.CurrentMenu] != nil {
 		workingMenu := session.CurrentMenu
 		model := fmt.Sprintf("%v", m.Workflows[workingMenu])
@@ -323,7 +320,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 			if text == "00" {
 				session.CurrentMenu = "main"
 				text = "0"
-				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder)
 			} else if strings.TrimSpace(response) == "" {
 				if text == "0" {
 					session.AddedModels[model] = true
@@ -338,13 +335,13 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				session.CurrentMenu = parentMenu
 				text = ""
 
-				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder)
 			}
 		} else {
 			if text == "00" {
 				session.CurrentMenu = "main"
 				text = "0"
-				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder)
 			}
 
 			response = "NOT IMPLEMENTED YET\n\n" +
@@ -370,14 +367,13 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 			if text == "00" {
 				session.CurrentMenu = "main"
 				text = "0"
-				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+				return m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder)
 			} else {
 				if fnName, ok := m.Functions[menuRoot].(string); ok && m.FunctionsMap[fnName] != nil {
 					response = m.FunctionsMap[fnName](
 						m.LoadMenu,
 						map[string]any{
 							"phoneNumber":       phoneNumber,
-							"cacheFolder":       cacheFolder,
 							"session":           session,
 							"preferredLanguage": preferredLanguage,
 							"preferencesFolder": preferencesFolder,

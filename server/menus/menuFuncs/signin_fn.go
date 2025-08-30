@@ -10,12 +10,12 @@ import (
 func SignIn(
 	loadMenu func(
 		menuName string, session *parser.Session,
-		phoneNumber, text, preferencesFolder, cacheFolder string,
+		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
 ) string {
 	var response string
-	var phoneNumber, text, preferencesFolder, cacheFolder, content string
+	var phoneNumber, text, preferencesFolder, content string
 	var session *parser.Session
 
 	title := "Login\n\n"
@@ -41,15 +41,10 @@ func SignIn(
 			preferencesFolder = val
 		}
 	}
-	if data["cacheFolder"] != nil {
-		if val, ok := data["cacheFolder"].(string); ok {
-			cacheFolder = val
-		}
-	}
 
 	if text == "00" {
 		session.CurrentMenu = "main"
-		return loadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
+		return loadMenu("main", session, phoneNumber, "", preferencesFolder)
 	}
 
 	askUsername := func(msg string) string {
@@ -94,7 +89,7 @@ func SignIn(
 				session.Cache = map[string]string{}
 				session.LastPrompt = ""
 
-				return loadMenu("main", session, phoneNumber, text, preferencesFolder, cacheFolder)
+				return loadMenu("main", session, phoneNumber, text, preferencesFolder)
 			} else {
 				session.Cache = map[string]string{}
 				session.LastPrompt = "username"

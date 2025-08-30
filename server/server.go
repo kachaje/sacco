@@ -84,11 +84,6 @@ func init() {
 	if err != nil {
 		log.Panic(err)
 	}
-
-	_, err = os.Stat(cacheFolder)
-	if !os.IsNotExist(err) {
-		os.MkdirAll(cacheFolder, 0755)
-	}
 }
 
 func ussdHandler(w http.ResponseWriter, r *http.Request) {
@@ -136,7 +131,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	response := activeMenu.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
+	response := activeMenu.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder)
 
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, response)
@@ -252,11 +247,6 @@ func Main() {
 	_, err = os.Stat(preferencesFolder)
 	if os.IsNotExist(err) {
 		os.MkdirAll(preferencesFolder, 0755)
-	}
-
-	_, err = os.Stat(cacheFolder)
-	if os.IsNotExist(err) {
-		os.MkdirAll(cacheFolder, 0755)
 	}
 
 	menufuncs.DB = database.NewDatabase(dbname)

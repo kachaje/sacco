@@ -10,12 +10,12 @@ import (
 func SignUp(
 	loadMenu func(
 		menuName string, session *parser.Session,
-		phoneNumber, text, preferencesFolder, cacheFolder string,
+		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
 ) string {
 	var response string
-	var phoneNumber, text, preferencesFolder, cacheFolder string
+	var phoneNumber, text, preferencesFolder string
 	var session *parser.Session
 	var content string
 
@@ -42,15 +42,10 @@ func SignUp(
 			preferencesFolder = val
 		}
 	}
-	if data["cacheFolder"] != nil {
-		if val, ok := data["cacheFolder"].(string); ok {
-			cacheFolder = val
-		}
-	}
 
 	if text == "00" {
 		session.CurrentMenu = "main"
-		return loadMenu("main", session, phoneNumber, "", preferencesFolder, cacheFolder)
+		return loadMenu("main", session, phoneNumber, "", preferencesFolder)
 	}
 
 	askUsername := func(msg string) string {
