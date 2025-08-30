@@ -32,6 +32,11 @@ func TestMemberBeneficiaries(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
+	session.GlobalIds = map[string]int64{
+		"memberId":     1,
+		"memberLoanId": 1,
+	}
+
 	menufuncs.Sessions[phoneNumber] = session
 
 	callbackFn := func(a any, s1, s2, s3 *string, f func(map[string]any, string, int) (*int64, error), m1 map[string]*parser.Session, m2 map[string]any) error {

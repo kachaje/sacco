@@ -58,6 +58,11 @@ func TestRegistrationSubMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
+	session.GlobalIds = map[string]int64{
+		"memberId":     1,
+		"memberLoanId": 1,
+	}
+
 	result := m.LoadMenu("main", session, "", "1", "")
 
 	target := `
@@ -83,6 +88,12 @@ func TestBusinessMenu(t *testing.T) {
 	m := menus.NewMenus(nil, &demo)
 
 	session := parser.NewSession(nil, nil, nil)
+
+	session.GlobalIds = map[string]int64{
+		"memberId":         1,
+		"memberLoanId":     1,
+		"memberBusinessId": 1,
+	}
 
 	result := m.LoadMenu("business", session, "", "", "")
 
@@ -149,6 +160,12 @@ func TestLoanMenu(t *testing.T) {
 	m := menus.NewMenus(nil, &demo)
 
 	session := parser.NewSession(nil, nil, nil)
+
+	session.GlobalIds = map[string]int64{
+		"memberId":         1,
+		"memberLoanId":     1,
+		"memberBusinessId": 1,
+	}
 
 	result := m.LoadMenu("loan", session, "", "", "")
 
