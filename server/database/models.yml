@@ -2,12 +2,10 @@ member:
   hasMany:
     - memberBeneficiary
     - memberShares
+    - memberLoan
   hasOne:
     - memberContact
     - memberNominee
-    - memberOccupation
-    - memberLoan
-    - memberBusiness
   fields:
     - id:
         hidden: true
@@ -130,13 +128,12 @@ memberNominee:
         required: true
 
 memberOccupation:
+  hasOne:
+    - memberOccupationVerification
   belongsTo:
-    - member
     - memberLoan
   fields:
     - id:
-        hidden: true
-    - memberId:
         hidden: true
     - memberLoanId:
         hidden: true
@@ -191,12 +188,9 @@ memberBusiness:
     - memberLastYearBusinessHistory
     - memberNextYearBusinessProjection
   belongsTo:
-    - member
     - memberLoan
   fields:
     - id:
-        hidden: true
-    - memberId:
         hidden: true
     - memberLoanId:
         hidden: true
@@ -211,17 +205,11 @@ memberBusiness:
 
 memberLastYearBusinessHistory:
   belongsTo:
-    - member
-    - memberLoan
     - memberBusiness
   fields:
     - id:
         hidden: true
-    - memberId:
-        hidden: true
     - memberBusinessId:
-        hidden: true
-    - memberLoanId:
         hidden: true
     - financialYear:
         required: true
@@ -264,17 +252,11 @@ memberLastYearBusinessHistory:
 
 memberNextYearBusinessProjection:
   belongsTo:
-    - member
-    - memberLoan
     - memberBusiness
   fields:
     - id:
         hidden: true
-    - memberId:
-        hidden: true
     - memberBusinessId:
-        hidden: true
-    - memberLoanId:
         hidden: true
     - financialYear:
         required: true
@@ -371,15 +353,12 @@ memberLoan:
 
 memberLoanLiability:
   belongsTo:
-    - member
     - memberLoan
   settings:
     hasLoops: true
     totalLoops: 2
   fields:
     - id:
-        hidden: true
-    - memberId:
         hidden: true
     - memberLoanId:
         hidden: true
@@ -392,12 +371,9 @@ memberLoanLiability:
 
 memberLoanSecurity:
   belongsTo:
-    - member
     - memberLoan
   fields:
     - id:
-        hidden: true
-    - memberId:
         hidden: true
     - memberLoanId:
         hidden: true
@@ -413,12 +389,9 @@ memberLoanSecurity:
 
 memberLoanWitness:
   belongsTo:
-    - member
     - memberLoan
   fields:
     - id:
-        hidden: true
-    - memberId:
         hidden: true
     - memberLoanId:
         hidden: true
@@ -434,14 +407,9 @@ memberLoanWitness:
 
 memberOccupationVerification:
   belongsTo:
-    - member
-    - memberLoan
+    - memberOccupation
   fields:
     - id:
-        hidden: true
-    - memberId:
-        hidden: true
-    - memberLoanId:
         hidden: true
     - memberOccupationId:
         hidden: true
@@ -463,12 +431,9 @@ memberOccupationVerification:
 
 memberLoanApproval:
   belongsTo:
-    - member
     - memberLoan
   fields:
     - id:
-        hidden: true
-    - memberId:
         hidden: true
     - memberLoanId:
         hidden: true

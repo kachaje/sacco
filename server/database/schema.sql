@@ -84,7 +84,6 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberOccupation (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberLoanId INTEGER NOT NULL,
     employerName TEXT,
     employerAddress TEXT,
@@ -97,7 +96,7 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE
+    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
 
 CREATE TRIGGER IF NOT EXISTS memberOccupationUpdated AFTER
@@ -136,7 +135,6 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberBusiness (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberLoanId INTEGER NOT NULL,
     yearsInBusiness REAL,
     businessNature TEXT,
@@ -145,7 +143,7 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE
+    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
 
 CREATE TRIGGER IF NOT EXISTS memberBusinessUpdated AFTER
@@ -161,9 +159,7 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberLastYearBusinessHistory (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberBusinessId INTEGER NOT NULL,
-    memberLoanId INTEGER NOT NULL,
     financialYear TEXT,
     totalIncome REAL,
     totalCostOfGoods REAL,
@@ -179,9 +175,7 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE,
-    FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE,
-    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
+    FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE
   );
 
 CREATE TRIGGER IF NOT EXISTS memberLastYearBusinessHistoryUpdated AFTER
@@ -197,9 +191,7 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberNextYearBusinessProjection (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberBusinessId INTEGER NOT NULL,
-    memberLoanId INTEGER NOT NULL,
     financialYear TEXT,
     totalIncome REAL,
     totalCostOfGoods REAL,
@@ -215,9 +207,7 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE,
-    FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE,
-    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
+    FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE
   );
 
 CREATE TRIGGER IF NOT EXISTS memberNextYearBusinessProjectionUpdated AFTER
@@ -288,7 +278,6 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberLoanApproval (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberLoanId INTEGER NOT NULL,
     loanStatus TEXT NOT NULL CHECK (loanStatus IN ('PENDING', 'APPROVED', 'REJECTED')),
     amountRecommended REAL,
@@ -301,7 +290,6 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE,
     FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
 
@@ -318,14 +306,12 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberLoanLiability (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberLoanId INTEGER NOT NULL,
     description TEXT,
     value REAL,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE,
     FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
 
@@ -342,7 +328,6 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberLoanSecurity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberLoanId INTEGER NOT NULL,
     description TEXT,
     value REAL,
@@ -350,7 +335,6 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE,
     FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
 
@@ -367,7 +351,6 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberLoanWitness (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
     memberLoanId INTEGER NOT NULL,
     name TEXT,
     telephone TEXT,
@@ -376,7 +359,6 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE,
     FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
 
@@ -393,8 +375,6 @@ END;
 CREATE TABLE
   IF NOT EXISTS memberOccupationVerification (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memberId INTEGER NOT NULL,
-    memberLoanId INTEGER NOT NULL,
     memberOccupationId INTEGER NOT NULL,
     jobVerified TEXT NOT NULL CHECK (jobVerified IN ('Yes', 'No')) DEFAULT 'No',
     grossVerified TEXT NOT NULL CHECK (grossVerified IN ('Yes', 'No')) DEFAULT 'No',
@@ -402,8 +382,6 @@ CREATE TABLE
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE,
-    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE,
     FOREIGN KEY (memberOccupationId) REFERENCES memberOccupation (id) ON DELETE CASCADE
   );
 
@@ -542,4 +520,9 @@ VALUES
 INSERT
 OR IGNORE INTO user (username, password, name, role)
 VALUES
-  ("admin", "$2a$10$Xo4x3KiCkB3xGKvaCI4Hn.Be95DEiaIT3lbvHx/kOmyx7IqGY6ILK", "Admin", "Admin");
+  (
+    "admin",
+    "$2a$10$Xo4x3KiCkB3xGKvaCI4Hn.Be95DEiaIT3lbvHx/kOmyx7IqGY6ILK",
+    "Admin",
+    "Admin"
+  );
