@@ -24,7 +24,7 @@ stdout 'Percentage:'
 stdout 'Contact:'
 stdout 'Name:'
 stdout '- Name: John Banda'
-stdout '5\. Beneficiaries \(\*\)'
+stdout '4\. Beneficiaries \(\*\)'
 stdout 'Name: \('
 stdout 'Percentage: \('
 stdout 'Contact: \('
@@ -35,7 +35,7 @@ stdout 'Name:'
 stdout 'Percentage:'
 stdout 'Contact:'
 stdout '- Name: Peter Paul'
-stdout '5\. Beneficiaries \(\*\)'
+stdout '4\. Beneficiaries \(\*\)'
 stdout 'Welcome to Kaso SACCO'
 
 -- input.txt --
@@ -53,16 +53,16 @@ DHSGH3837
 1
 938374838
 0
-5
+4
 John Banda
 10
 0999999999
 Jean Phiri
-5
+4
 0888888888
 02
 0
-5
+4
 01
 01
 01
