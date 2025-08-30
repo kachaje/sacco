@@ -106,9 +106,21 @@ func DevConsole(
 				}
 			}
 		case "console.6":
-			title = "SessionId"
+			title = "Session Details"
+			id := session.SessionId
+			username := ""
+			userId := ""
 
-			content = session.SessionId
+			if session.SessionUser != nil {
+				username = *session.SessionUser
+			}
+			if session.SessionUserId != nil {
+				username = fmt.Sprint(*session.SessionUserId)
+			}
+
+			content = fmt.Sprintf("sessionId: %s\nsessioUser: %s\nsessionUserId: %v\n",
+				id, username, userId,
+			)
 		case "console.7":
 			title = "PhoneNumber"
 
@@ -163,7 +175,7 @@ response: %s`, text, payload)
 				"3. ActiveData\n" +
 				"4. Data\n" +
 				"5. Global IDs\n" +
-				"6. SessionId\n" +
+				"6. Session Details\n" +
 				"7. PhoneNumber\n" +
 				"8. SQL Query\n" +
 				"9. Member By PhoneNumber"
