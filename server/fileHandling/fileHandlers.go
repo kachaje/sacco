@@ -80,7 +80,9 @@ func SaveModelData(data any, model, phoneNumber *string,
 				}
 				if mid != nil {
 					if sessions[*phoneNumber] != nil {
-						sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
+						if len(dataRows) == 1 {
+							sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
+						}
 
 						sessions[*phoneNumber].AddedModels[*model] = true
 					}
