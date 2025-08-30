@@ -735,7 +735,7 @@ func (w *WorkFlow) GetLabel(node map[string]any, input string) string {
 func (w *WorkFlow) NavNext(input string) string {
 	node, err := w.NextNode(input)
 	if err != nil {
-		return err.Error()
+		return "Transaction error\n\n00. Main Menu\n"
 	}
 
 	label := w.GetLabel(node, w.CurrentScreen)
