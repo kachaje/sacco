@@ -2,7 +2,6 @@ package server
 
 import (
 	"bytes"
-	"context"
 	"embed"
 	"flag"
 	"fmt"
@@ -41,9 +40,6 @@ var port int
 var workflowsData map[string]map[string]any
 
 var preferencesFolder = filepath.Join(".", "settings")
-var cacheFolder = filepath.Join(".", "data", "cache")
-
-var ctx context.Context
 
 var activeMenu *menus.Menus
 
@@ -223,7 +219,6 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 func Main() {
 	var err error
 	var dbname string = ":memory:"
-	var cancel context.CancelFunc
 	var devMode bool
 	var demoMode bool
 
@@ -241,15 +236,17 @@ func Main() {
 		}
 	}
 
-	ctx, cancel = context.WithCancel(context.Background())
-	defer cancel()
-
 	_, err = os.Stat(preferencesFolder)
 	if os.IsNotExist(err) {
 		os.MkdirAll(preferencesFolder, 0755)
 	}
 
 	menufuncs.DB = database.NewDatabase(dbname)
+
+	_, err = menufuncs.DB.DB.Exec("PRAGMA journal_mode=WAL")
+	if err != nil {
+		panic(err)
+	}
 
 	activeMenu = menus.NewMenus(&devMode, &demoMode)
 

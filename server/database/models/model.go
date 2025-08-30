@@ -140,6 +140,7 @@ func (m *Model) loadRows(rows *sql.Rows) ([]map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	values := make([]any, len(cols))
 	scanArgs := make([]any, len(cols))
