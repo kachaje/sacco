@@ -24,6 +24,23 @@ func setupDb() (*database.Database, error) {
 	return db, nil
 }
 
+func TestLoadModelChildren(t *testing.T) {
+	db, err := setupDb()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	result, err := db.LoadModelChildren("member", 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	payload, _ := json.MarshalIndent(result, "", "  ")
+
+	fmt.Println(string(payload))
+}
+
 func TestFullRecord(t *testing.T) {
 	db, err := setupDb()
 	if err != nil {

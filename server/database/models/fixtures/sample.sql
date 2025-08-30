@@ -45,6 +45,25 @@ INSERT INTO
 VALUES
   (
     1,
+    "P.O. Box 3200, Blantyre",
+    "Chilomoni, Blantrye",
+    "Thumba",
+    "Kabudula",
+    "Lilongwe"
+  );
+
+INSERT INTO
+  memberContact (
+    memberId,
+    postalAddress,
+    residentialAddress,
+    homeVillage,
+    homeTraditionalAuthority,
+    homeDistrict
+  )
+VALUES
+  (
+    1,
     "P.O. Box 1000, Lilongwe",
     "Area 2, Lilongwe",
     "Songwe",
@@ -61,6 +80,4 @@ INSERT INTO
   memberBeneficiary (memberId, name, percentage, contact)
 VALUES
   (1, "Benefator 1", 10, "P.O. Box 1"),
-  (1, "Benefator 2", 8, "P.O. Box 2"),
-  (1, "Benefator 3", 5, "P.O. Box 3"),
-  (1, "Benefator 4", 2, "P.O. Box 4");
+  (1, "Benefator 2", 8, "P.O. Box 2");
