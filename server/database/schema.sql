@@ -85,6 +85,7 @@ CREATE TABLE
   IF NOT EXISTS memberOccupation (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     employerName TEXT,
     employerAddress TEXT,
     employerPhone TEXT,
@@ -136,6 +137,7 @@ CREATE TABLE
   IF NOT EXISTS memberBusiness (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
+    memberLoanId INTEGER NOT NULL,
     yearsInBusiness REAL,
     businessNature TEXT,
     businessName TEXT,
