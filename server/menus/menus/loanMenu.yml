@@ -19,6 +19,8 @@ fields:
     label:
       en: Loan Liability
     workflow: memberLoanLiability
+    allowedRoles:
+      - admin
     targetKeys:
       - id
       - memberId
@@ -30,6 +32,8 @@ fields:
     label:
       en: Loan Security
     workflow: memberLoanSecurity
+    allowedRoles:
+      - admin
     targetKeys:
       - id
       - memberId
@@ -42,6 +46,8 @@ fields:
     label:
       en: Loan Witness
     workflow: memberLoanWitness
+    allowedRoles:
+      - admin
     targetKeys:
       - id
       - memberId
@@ -55,6 +61,8 @@ fields:
     label:
       en: Loan Approvals
     workflow: loanApproval
+    allowedRoles:
+      - admin
     targetKeys:
       - id
       - memberId

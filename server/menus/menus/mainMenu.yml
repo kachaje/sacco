@@ -34,6 +34,9 @@ fields:
     function: doExit
   "8":
     id: console
+    allowedRoles:
+      - admin
+      - dev
     label:
       en: Dev Console
     function: devConsole
