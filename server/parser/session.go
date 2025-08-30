@@ -2,12 +2,14 @@ package parser
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sacco/server/database"
 	"slices"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -76,6 +78,15 @@ func (s *Session) UpdateSessionFlags() error {
 			if data != nil {
 				if val, ok := data.(map[string]any); ok && len(val) > 0 {
 					s.AddedModels[model] = true
+
+					if s.GlobalIds == nil {
+						s.GlobalIds = map[string]int64{}
+					}
+
+					id, err := strconv.ParseInt(fmt.Sprintf("%v", val["id"]), 10, 64)
+					if err == nil {
+						s.GlobalIds[fmt.Sprintf("%sId", model)] = id
+					}
 				}
 			}
 		}
@@ -87,10 +98,31 @@ func (s *Session) UpdateSessionFlags() error {
 			if data != nil {
 				if val, ok := data.([]any); ok && len(val) > 0 {
 					s.AddedModels[model] = true
+
+					if len(val) > 0 {
+						if v, ok := val[0].(map[string]any); ok {
+							id, err := strconv.ParseInt(fmt.Sprintf("%v", v), 10, 64)
+							if err == nil {
+								s.GlobalIds[fmt.Sprintf("%sId", model)] = id
+							}
+						}
+					}
 				} else if val, ok := data.([]map[string]any); ok && len(val) > 0 {
 					s.AddedModels[model] = true
+
+					if len(val) > 0 {
+						id, err := strconv.ParseInt(fmt.Sprintf("%v", val[0]), 10, 64)
+						if err == nil {
+							s.GlobalIds[fmt.Sprintf("%sId", model)] = id
+						}
+					}
 				} else if val, ok := data.(map[string]any); ok && len(val) > 0 {
 					s.AddedModels[model] = true
+
+					id, err := strconv.ParseInt(fmt.Sprintf("%v", val["id"]), 10, 64)
+					if err == nil {
+						s.GlobalIds[fmt.Sprintf("%sId", model)] = id
+					}
 				}
 			}
 		}
