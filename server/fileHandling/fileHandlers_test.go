@@ -55,7 +55,7 @@ func TestSaveDataOne(t *testing.T) {
 		"utilityBillType":   "ESCOM",
 	}
 
-	err := filehandling.SaveData(data, &model, &phoneNumber, nil, nil, saveFunc, sessions, nil)
+	err := filehandling.SaveData(data, &model, &phoneNumber, nil, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,15 +82,6 @@ func TestHandleBeneficiaries(t *testing.T) {
 	}
 
 	phoneNumber := "0999888777"
-	cacheFolder := "./tmp"
-
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
-
-	defer func() {
-		os.RemoveAll(cacheFolder)
-	}()
 
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
@@ -101,7 +92,7 @@ func TestHandleBeneficiaries(t *testing.T) {
 
 	model := "memberBeneficiary"
 
-	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, db.GenericsSaveData, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,19 +114,11 @@ func TestHandleBeneficiaries(t *testing.T) {
 
 func TestHandleMemberDetails(t *testing.T) {
 	phoneNumber := "0999888777"
-	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
-	cacheFolder := filepath.Join(".", "tmp5", "cache")
-
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	os.MkdirAll(sessionFolder, 0755)
 
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
 	defer func() {
 		db.Close()
-
-		os.RemoveAll(filepath.Join(".", "tmp5"))
 	}()
 
 	data := map[string]any{
@@ -164,7 +147,7 @@ func TestHandleMemberDetails(t *testing.T) {
 
 	model := "member"
 
-	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, db.GenericsSaveData, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -175,7 +158,7 @@ func TestHandleMemberDetails(t *testing.T) {
 		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
 		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
 	} {
-		content, err := os.ReadFile(filepath.Join(sourceFolder, file))
+		content, err := os.ReadFile(filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber, file))
 		if err != nil {
 			t.Fatal(err)
 			continue
@@ -194,7 +177,7 @@ func TestHandleMemberDetails(t *testing.T) {
 			for _, row := range data {
 				row["memberId"] = 1
 
-				err = filehandling.SaveModelData(row, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+				err = filehandling.SaveModelData(row, &model, &phoneNumber, db.GenericsSaveData, sessions, nil)
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -209,7 +192,7 @@ func TestHandleMemberDetails(t *testing.T) {
 
 			data["memberId"] = 1
 
-			err = filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+			err = filehandling.SaveModelData(data, &model, &phoneNumber, db.GenericsSaveData, sessions, nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -289,15 +272,6 @@ func TestHandleMemberDetails(t *testing.T) {
 
 func TestChildNestedModel(t *testing.T) {
 	phoneNumber := "0999888777"
-	cacheFolder := filepath.Join(".", "tmp11", "cache")
-
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
-
-	defer func() {
-		os.RemoveAll(filepath.Join(".", "tmp11"))
-	}()
 
 	session := &parser.Session{
 		AddedModels: map[string]bool{},
@@ -349,23 +323,9 @@ func TestChildNestedModel(t *testing.T) {
 		"periodEmployedInMonths": "36",
 	}
 
-	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, saveFunc, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
-	}
-
-	for _, file := range []string{
-		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
-		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
-		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
-		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
-	} {
-		filename := filepath.Join(cacheFolder, phoneNumber, file)
-
-		_, err = os.Stat(filename)
-		if !os.IsNotExist(err) {
-			t.Fatalf("Test failed. Expected file %s to be deleted by now", filename)
-		}
 	}
 
 	if count != 1 {
@@ -391,15 +351,6 @@ func TestArrayChildData(t *testing.T) {
 	}()
 
 	phoneNumber := "0999888777"
-	cacheFolder := "./tmpArrData"
-
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
-
-	defer func() {
-		os.RemoveAll(filepath.Join(cacheFolder))
-	}()
 
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
@@ -428,7 +379,7 @@ func TestArrayChildData(t *testing.T) {
 
 	model := "member"
 
-	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err := filehandling.SaveModelData(data, &model, &phoneNumber, db.GenericsSaveData, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -448,7 +399,7 @@ func TestArrayChildData(t *testing.T) {
 
 	model = "memberBeneficiary"
 
-	err = filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+	err = filehandling.SaveModelData(data, &model, &phoneNumber, db.GenericsSaveData, sessions, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -280,29 +280,6 @@ func Main() {
 		}
 	})
 
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			default:
-				if _, err := os.Stat(cacheFolder); !os.IsNotExist(err) {
-					files, err := os.ReadDir(cacheFolder)
-
-					if err == nil {
-						for _, file := range files {
-							phoneNumber := file.Name()
-
-							filehandling.RerunFailedSaves(&phoneNumber, &cacheFolder, menufuncs.DB.GenericsSaveData, menufuncs.Sessions)
-						}
-					}
-				}
-
-				time.Sleep(60 * time.Second)
-			}
-		}
-	}()
-
 	http.HandleFunc("/ussd", ussdHandler)
 	log.Printf("USSD server listening on :%d\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))

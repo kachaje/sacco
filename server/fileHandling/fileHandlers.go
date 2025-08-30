@@ -12,8 +12,8 @@ import (
 	"strconv"
 )
 
-func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
-	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, sessionFolder string, refData map[string]any) error {
+func SaveModelData(data any, model, phoneNumber *string,
+	saveFunc func(map[string]any, string, int) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
 	if rawData, ok := data.(map[string]any); ok {
 		dataRows := utils.UnpackData(rawData)
 
@@ -103,14 +103,12 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 }
 
 func SaveData(
-	data any, model, phoneNumber, cacheFolder, preferenceFolder *string,
+	data any, model, phoneNumber, preferenceFolder *string,
 	saveFunc func(
 		map[string]any,
 		string,
 		int,
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
-	var sessionFolder string
-
 	switch *model {
 	case "language":
 		val, ok := data.(map[string]any)
@@ -124,7 +122,7 @@ func SaveData(
 		}
 
 	default:
-		return SaveModelData(data, model, phoneNumber, cacheFolder, saveFunc, sessions, sessionFolder, refData)
+		return SaveModelData(data, model, phoneNumber, saveFunc, sessions, refData)
 	}
 
 	return nil

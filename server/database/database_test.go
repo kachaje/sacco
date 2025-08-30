@@ -103,7 +103,7 @@ func TestDatabaseMemberBeneficiaries(t *testing.T) {
 
 	model := "memberBeneficiary"
 
-	err = filehandling.SaveData(update, &model, &phoneNumber, nil, nil, db.GenericsSaveData, nil, memberBeneficiary)
+	err = filehandling.SaveData(update, &model, &phoneNumber, nil, db.GenericsSaveData, nil, memberBeneficiary)
 	if err != nil {
 		t.Fatal(err)
 	}
