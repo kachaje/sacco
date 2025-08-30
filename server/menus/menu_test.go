@@ -111,7 +111,24 @@ func TestEmployementMenu(t *testing.T) {
 
 	result := m.LoadMenu("employment", session, "", "", "")
 
-	target := `
+	target := `CON Employement
+3. Employement Summary
+
+99. Cancel
+00. Main Menu`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	session.GlobalIds = map[string]int64{
+		"memberId":     1,
+		"memberLoanId": 1,
+	}
+
+	result = m.LoadMenu("employment", session, "", "", "")
+
+	target = `
 CON Employement
 1. Employement Details
 2. Employement Verification

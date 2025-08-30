@@ -2,7 +2,6 @@ package menus
 
 import (
 	"embed"
-	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log"
@@ -448,10 +447,6 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		} else {
 			newValues := []string{}
 
-			payload, _ := json.MarshalIndent(m.LabelWorkflow, "", "  ")
-
-			fmt.Println(string(payload))
-
 			if m.LabelWorkflow[menuName] != nil && session != nil {
 				for _, value := range values {
 					if m.LabelWorkflow[menuName].(map[string]any)[value] != nil {
@@ -461,6 +456,38 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 
 						if session.AddedModels[model] {
 							suffix = "(*)"
+						}
+
+						if m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentsIds"] != nil {
+							found := true
+
+							if val, ok := m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentsIds"].([]any); ok {
+								for _, key := range val {
+									if session == nil || session.GlobalIds == nil {
+										found = false
+									} else {
+										found = session.GlobalIds[fmt.Sprintf("%v", key)] != 0
+									}
+									if !found {
+										break
+									}
+								}
+							} else if val, ok := m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentsIds"].([]string); ok {
+								for _, key := range val {
+									if session == nil || session.GlobalIds == nil {
+										found = false
+									} else {
+										found = session.GlobalIds[fmt.Sprintf("%v", key)] != 0
+									}
+									if !found {
+										break
+									}
+								}
+							}
+
+							if !found {
+								continue
+							}
 						}
 
 						newValues = append(newValues, fmt.Sprintf("%s %s\n", strings.TrimSpace(value), suffix))
