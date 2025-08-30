@@ -40,3 +40,5 @@ formSummary:
     type: quitScreen
 initialScreen: enterNumberOfShares
 model: memberShares
+parentIds:
+    - memberId

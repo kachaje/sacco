@@ -86,3 +86,6 @@ formSummary:
     type: quitScreen
 initialScreen: enterEmployerName
 model: memberOccupation
+parentIds:
+    - memberId
+    - memberLoanId

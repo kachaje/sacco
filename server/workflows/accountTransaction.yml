@@ -21,3 +21,5 @@ formSummary:
     type: quitScreen
 initialScreen: enterDescription
 model: accountTransaction
+parentIds:
+    - accountId

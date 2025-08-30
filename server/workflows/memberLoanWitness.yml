@@ -43,3 +43,6 @@ formSummary:
     type: quitScreen
 initialScreen: enterName
 model: memberLoanWitness
+parentIds:
+    - memberId
+    - memberLoanId

@@ -60,3 +60,5 @@ formSummary:
     type: quitScreen
 initialScreen: enterPhoneNumber
 model: memberLoan
+parentIds:
+    - memberId

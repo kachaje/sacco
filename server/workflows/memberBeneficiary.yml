@@ -1,3 +1,19 @@
+enterActive1:
+    hidden: true
+    inputIdentifier: active1
+    type: hiddenField
+enterActive2:
+    hidden: true
+    inputIdentifier: active2
+    type: hiddenField
+enterActive3:
+    hidden: true
+    inputIdentifier: active3
+    type: hiddenField
+enterActive4:
+    hidden: true
+    inputIdentifier: active4
+    type: hiddenField
 enterContact1:
     inputIdentifier: contact1
     nextScreen: enterName2
@@ -122,3 +138,5 @@ formSummary:
     type: quitScreen
 initialScreen: enterName1
 model: memberBeneficiary
+parentIds:
+    - memberId

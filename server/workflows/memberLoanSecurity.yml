@@ -37,3 +37,6 @@ formSummary:
     type: quitScreen
 initialScreen: enterDescription
 model: memberLoanSecurity
+parentIds:
+    - memberId
+    - memberLoanId

@@ -113,3 +113,7 @@ formSummary:
     type: quitScreen
 initialScreen: enterFinancialYear
 model: memberLastYearBusinessHistory
+parentIds:
+    - memberId
+    - memberLoanId
+    - memberBusinessId

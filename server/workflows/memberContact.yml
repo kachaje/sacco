@@ -138,3 +138,5 @@ formSummary:
     type: quitScreen
 initialScreen: enterPostalAddress
 model: memberContact
+parentIds:
+    - memberId

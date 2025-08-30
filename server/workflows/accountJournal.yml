@@ -30,3 +30,5 @@ formSummary:
     type: quitScreen
 initialScreen: enterDebit
 model: accountJournal
+parentIds:
+    - accountId

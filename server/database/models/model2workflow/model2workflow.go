@@ -67,7 +67,7 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 
 				for _, v := range val {
 					if vs, ok := v.(string); ok {
-						values = append(values, fmt.Sprintf(`"%s",`, vs))
+						values = append(values, vs)
 					}
 				}
 
@@ -87,6 +87,16 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 					for key, rawValue := range val {
 						if value, ok := rawValue.(map[string]any); ok {
 							tag := fmt.Sprintf("enter%s%v", utils.CapitalizeFirstLetter(key), suffix)
+
+							if len(parentModels) > 0 {
+								parentIds := []string{}
+
+								for _, name := range parentModels {
+									parentIds = append(parentIds, fmt.Sprintf("%sId", name))
+								}
+
+								data["parentIds"] = parentIds
+							}
 
 							if data["initialScreen"] == nil && value["hidden"] == nil {
 								data["initialScreen"] = tag

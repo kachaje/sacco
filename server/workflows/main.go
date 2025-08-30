@@ -120,11 +120,19 @@ func buildWorkflows() {
 			log.Panic(err)
 		}
 
-		entry := fmt.Sprintf(`"%s": {
-			%s
-		},`, model, strings.Join(parents, "\n"))
+		if len(parents) > 0 {
+			values := []string{}
 
-		parentModels = append(parentModels, entry)
+			for _, key := range parents {
+				values = append(values, fmt.Sprintf(`"%s",`, key))
+			}
+
+			entry := fmt.Sprintf(`"%s": {
+			%s
+		},`, model, strings.Join(values, "\n"))
+
+			parentModels = append(parentModels, entry)
+		}
 
 		for key := range floats {
 			if !slices.Contains(floatFields, key) {

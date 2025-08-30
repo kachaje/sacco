@@ -58,3 +58,6 @@ formSummary:
     type: quitScreen
 initialScreen: enterDescription1
 model: memberLoanLiability
+parentIds:
+    - memberId
+    - memberLoanId

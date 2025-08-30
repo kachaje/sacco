@@ -31,3 +31,5 @@ formSummary:
     type: quitScreen
 initialScreen: enterName
 model: memberNominee
+parentIds:
+    - memberId

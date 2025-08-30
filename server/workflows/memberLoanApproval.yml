@@ -82,3 +82,6 @@ formSummary:
     type: quitScreen
 initialScreen: enterLoanStatus
 model: memberLoanApproval
+parentIds:
+    - memberId
+    - memberLoanId
