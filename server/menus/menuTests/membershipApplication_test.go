@@ -77,7 +77,7 @@ func TestMembershipApplication(t *testing.T) {
 
 	menufuncs.Sessions[phoneNumber] = session
 
-	callbackFn := func(a any, s1, s2, s3, s4 *string, f func(map[string]any, string, int) (*int64, error), m1 map[string]*parser.Session, m2 map[string]any) error {
+	callbackFn := func(a any, s1, s2, s3 *string, f func(map[string]any, string, int) (*int64, error), m1 map[string]*parser.Session, m2 map[string]any) error {
 		if val, ok := a.(map[string]any); ok {
 			data = val
 		}
@@ -90,7 +90,7 @@ func TestMembershipApplication(t *testing.T) {
 	}
 
 	for model, data := range workflowsData {
-		session.WorkflowsMapping[model] = parser.NewWorkflow(data, callbackFn, nil, &phoneNumber, nil, nil, nil, nil, menufuncs.Sessions, nil)
+		session.WorkflowsMapping[model] = parser.NewWorkflow(data, callbackFn, nil, &phoneNumber, nil, nil, nil, menufuncs.Sessions, nil)
 	}
 
 	text := ""

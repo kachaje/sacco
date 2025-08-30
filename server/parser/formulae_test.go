@@ -91,7 +91,7 @@ func TestResultFromFormulaeDIFF(t *testing.T) {
 }
 
 func TestCalculateFormulae(t *testing.T) {
-	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+	wf := parser.NewWorkflow(data, nil, nil, nil, nil, nil, nil, nil, nil)
 
 	wf.Data = map[string]any{
 		"totalCostOfGoods": "1000000",

@@ -22,7 +22,6 @@ import (
 	"sacco/utils"
 	"strings"
 	"sync"
-	"time"
 
 	"html/template"
 
@@ -115,7 +114,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		session = parser.NewSession(menufuncs.DB.MemberByPhoneNumber, &phoneNumber, &sessionID)
 
 		for model, data := range workflowsData {
-			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &cacheFolder, &preferencesFolder, menufuncs.DB.GenericsSaveData, menufuncs.Sessions, nil)
+			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &preferencesFolder, menufuncs.DB.GenericsSaveData, menufuncs.Sessions, nil)
 		}
 
 		if preferredLanguage != nil {

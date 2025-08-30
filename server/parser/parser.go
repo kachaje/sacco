@@ -36,7 +36,7 @@ type WorkFlow struct {
 	ScreenOrder        map[int]string
 	ReadOnlyFields     []string
 	SubmitCallback     func(
-		d any, m *string, p *string, c *string, f *string,
+		d any, m *string, p *string, f *string,
 		addFn func(
 			map[string]any,
 			string,
@@ -47,7 +47,6 @@ type WorkFlow struct {
 	) error
 	History          map[int]string
 	HistoryIndex     int
-	CacheFolder      string
 	PreferenceFolder string
 	AddFunc          func(
 		map[string]any,
@@ -61,7 +60,7 @@ type WorkFlow struct {
 func NewWorkflow(
 	tree map[string]any,
 	callbackFunc func(
-		any, *string, *string, *string, *string,
+		any, *string, *string, *string,
 		func(
 			map[string]any,
 			string,
@@ -70,7 +69,7 @@ func NewWorkflow(
 		map[string]*Session,
 		map[string]any,
 	) error,
-	preferredLanguage, phoneNumber, sessionId, cacheFolder, preferenceFolder *string, addFunc func(
+	preferredLanguage, phoneNumber, sessionId, preferenceFolder *string, addFunc func(
 		map[string]any,
 		string,
 		int,
@@ -96,9 +95,6 @@ func NewWorkflow(
 	}
 	if addFunc != nil {
 		w.AddFunc = addFunc
-	}
-	if cacheFolder != nil {
-		w.CacheFolder = *cacheFolder
 	}
 	if preferenceFolder != nil {
 		w.PreferenceFolder = *preferenceFolder
@@ -316,7 +312,7 @@ func (w *WorkFlow) NextNode(input string) (map[string]any, error) {
 
 				err := w.SubmitCallback(
 					data, &w.CurrentModel, &w.CurrentPhoneNumber,
-					&w.CacheFolder, &w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data,
+					&w.PreferenceFolder, w.AddFunc, w.Sessions, w.Data,
 				)
 				if err != nil {
 					log.Println(err)
