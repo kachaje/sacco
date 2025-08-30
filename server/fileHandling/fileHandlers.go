@@ -111,15 +111,6 @@ func SaveData(
 	) (*int64, error), sessions map[string]*parser.Session, refData map[string]any) error {
 	var sessionFolder string
 
-	if cacheFolder != nil {
-		sessionFolder = filepath.Join(*cacheFolder, *phoneNumber)
-
-		_, err := os.Stat(sessionFolder)
-		if os.IsNotExist(err) {
-			os.MkdirAll(sessionFolder, 0755)
-		}
-	}
-
 	switch *model {
 	case "language":
 		val, ok := data.(map[string]any)
