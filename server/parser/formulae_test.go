@@ -1,8 +1,10 @@
 package parser_test
 
 import (
+	"encoding/json"
 	"reflect"
 	"sacco/server/parser"
+	"sacco/utils"
 	"testing"
 )
 
@@ -127,6 +129,10 @@ func TestCalculateFormulae(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(wf.Data, target) {
-		t.Fatal("Test failed")
+		diff := utils.GetMapDiff(wf.Data, target)
+
+		payload, _ := json.MarshalIndent(diff, "", "  ")
+
+		t.Fatalf("Test failed. Diff: %s\n", payload)
 	}
 }

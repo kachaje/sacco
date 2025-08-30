@@ -6,16 +6,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"reflect"
 	"sort"
 	"strconv"
 )
-
-type DiffResult struct {
-	Added   map[string]any
-	Removed map[string]any
-	Changed map[string]any
-}
 
 func CheckPreferredLanguage(phoneNumber, preferencesFolder string) *string {
 	settingsFile := filepath.Join(preferencesFolder, phoneNumber)
@@ -49,51 +42,6 @@ func CheckPreferredLanguage(phoneNumber, preferencesFolder string) *string {
 	}
 
 	return nil
-}
-
-func GetMapDiff(map1, map2 map[string]any) DiffResult {
-	diff := DiffResult{
-		Added:   make(map[string]any),
-		Removed: make(map[string]any),
-		Changed: make(map[string]any),
-	}
-
-	for key, val1 := range map1 {
-		if val2, ok := map2[key]; !ok {
-			diff.Removed[key] = val1
-		} else {
-			if nestedMap1, isMap1 := val1.(map[string]any); isMap1 {
-				if nestedMap2, isMap2 := val2.(map[string]any); isMap2 {
-					nestedDiff := GetMapDiff(nestedMap1, nestedMap2)
-					if len(nestedDiff.Added) > 0 || len(nestedDiff.Removed) > 0 || len(nestedDiff.Changed) > 0 {
-						diff.Changed[key] = nestedDiff
-					}
-				} else {
-					diff.Changed[key] = map[string]any{
-						"old":     val1,
-						"new":     val2,
-						"oldType": reflect.TypeOf(val1).String(),
-						"newType": reflect.TypeOf(val2).String(),
-					}
-				}
-			} else if !reflect.DeepEqual(val1, val2) {
-				diff.Changed[key] = map[string]any{
-					"old":     val1,
-					"new":     val2,
-					"oldType": reflect.TypeOf(val1).String(),
-					"newType": reflect.TypeOf(val2).String(),
-				}
-			}
-		}
-	}
-
-	for key, val2 := range map2 {
-		if _, ok := map1[key]; !ok {
-			diff.Added[key] = val2
-		}
-	}
-
-	return diff
 }
 
 func LoadTemplateData(data map[string]any, template map[string]any) map[string]any {
