@@ -2,7 +2,6 @@ package filehandling
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,10 +9,7 @@ import (
 	"sacco/server/database"
 	"sacco/server/parser"
 	"sacco/utils"
-	"slices"
 	"strconv"
-
-	"github.com/google/uuid"
 )
 
 func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
@@ -35,20 +31,6 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 
 		for _, modelData := range dataRows {
 			if model != nil {
-				revision := uuid.NewString()
-
-				if modelData["revision"] != nil {
-					if val, ok := modelData["revision"].(string); ok {
-						revision = val
-					}
-				}
-
-				modelData["revision"] = revision
-
-				filename := filepath.Join(sessionFolder, fmt.Sprintf("%s.%s.json", *model, revision))
-
-				transactionDone := false
-
 				for _, key := range database.FloatFields {
 					if modelData[key] != nil {
 						nv, ok := modelData[key].(string)
@@ -60,16 +42,6 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 						}
 					}
 				}
-
-				if _, err := os.Stat(filename); os.IsNotExist(err) {
-					// By default cache the data first in case we lose database connection
-					utils.CacheFile(filename, modelData, 0)
-				}
-				defer func() {
-					if transactionDone || flag.Lookup("test.v") != nil {
-						os.Remove(filename)
-					}
-				}()
 
 				if saveFunc == nil {
 					log.Printf("server.SaveModelData.%s:missing saveFunc\n", *model)
@@ -118,76 +90,6 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 					id = *mid
 
 					modelData["id"] = id
-
-					capName := utils.CapitalizeFirstLetter(*model)
-
-					groupSingleName := fmt.Sprintf("%sSingleChildren", capName)
-					groupArrayName := fmt.Sprintf("%sArrayChildren", capName)
-
-					models := []string{}
-					arrayModels := []string{}
-					singleModels := []string{}
-
-					if database.SingleChildren[groupSingleName] != nil {
-						models = append(models, database.SingleChildren[groupSingleName]...)
-
-						singleModels = append(singleModels, database.SingleChildren[groupSingleName]...)
-					}
-
-					if database.ArrayChildren[groupArrayName] != nil {
-						models = append(models, database.ArrayChildren[groupArrayName]...)
-
-						arrayModels = append(arrayModels, database.ArrayChildren[groupArrayName]...)
-					}
-
-					for _, childModel := range models {
-						childRows, err := utils.CacheDataByModel(childModel, sessionFolder)
-						if err != nil {
-							log.Println(err)
-							continue
-						}
-
-						for _, row := range childRows {
-							childData, ok := row["data"].(map[string]any)
-							if ok {
-								filename, ok := row["filename"].(string)
-								if ok {
-									parentId := fmt.Sprintf("%sId", *model)
-
-									childData[parentId] = id
-
-									lid, err := saveFunc(childData, childModel, 0)
-									if err != nil {
-										log.Println(err)
-										continue
-									}
-
-									childKey := fmt.Sprintf("%sId", childModel)
-									sessions[*phoneNumber].GlobalIds[childKey] = *lid
-
-									if sessions[*phoneNumber].ActiveData == nil {
-										sessions[*phoneNumber].ActiveData = map[string]any{}
-									}
-
-									if slices.Contains(arrayModels, childModel) {
-										if sessions[*phoneNumber].ActiveData[childModel] == nil {
-											sessions[*phoneNumber].ActiveData[childModel] = []map[string]any{}
-										}
-
-										sessions[*phoneNumber].ActiveData[childModel] = append(sessions[*phoneNumber].ActiveData[childModel].([]map[string]any), childData)
-									} else if slices.Contains(singleModels, childModel) {
-										sessions[*phoneNumber].ActiveData[childModel] = childData
-									}
-
-									if os.Getenv("DEBUG") != "true" {
-										os.Remove(filepath.Join(sessionFolder, filename))
-									}
-								}
-							}
-						}
-					}
-
-					transactionDone = true
 				}
 			}
 
@@ -195,8 +97,6 @@ func SaveModelData(data any, model, phoneNumber, cacheFolder *string,
 				sessions[*phoneNumber].UpdateActiveData(modelData, 0)
 
 				sessions[*phoneNumber].RefreshSession()
-
-				sessions[*phoneNumber].LoadCacheData(*phoneNumber, *cacheFolder)
 			}
 		}
 	}

@@ -135,11 +135,6 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println(err)
 			}
 		}
-
-		err = session.LoadCacheData(phoneNumber, cacheFolder)
-		if err != nil {
-			log.Printf("server.ussdHandler: %s", err.Error())
-		}
 	}()
 
 	response := activeMenu.LoadMenu(session.CurrentMenu, session, phoneNumber, text, preferencesFolder, cacheFolder)
