@@ -88,3 +88,4 @@ initialScreen: enterEmployerName
 model: memberOccupation
 parentIds:
     - memberId
+    - memberLoanIdId

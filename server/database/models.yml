@@ -132,6 +132,7 @@ memberNominee:
 memberOccupation:
   belongsTo:
     - member
+    - memberLoanId
   fields:
     - id:
         hidden: true
