@@ -9,10 +9,6 @@ enterId:
     hidden: true
     inputIdentifier: id
     type: hiddenField
-enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
 enterMemberLoanId:
     hidden: true
     inputIdentifier: memberLoanId
@@ -38,5 +34,4 @@ formSummary:
 initialScreen: enterDescription
 model: memberLoanSecurity
 parentIds:
-    - memberId
     - memberLoanId

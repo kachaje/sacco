@@ -30,14 +30,6 @@ enterJobVerified:
     text:
         en: Job Verified
     type: inputScreen
-enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
-enterMemberLoanId:
-    hidden: true
-    inputIdentifier: memberLoanId
-    type: hiddenField
 enterMemberOccupationId:
     hidden: true
     inputIdentifier: memberOccupationId
@@ -61,5 +53,4 @@ formSummary:
 initialScreen: enterJobVerified
 model: memberOccupationVerification
 parentIds:
-    - memberId
-    - memberLoanId
+    - memberOccupationId

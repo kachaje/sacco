@@ -30,14 +30,6 @@ enterMemberBusinessId:
     hidden: true
     inputIdentifier: memberBusinessId
     type: hiddenField
-enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
-enterMemberLoanId:
-    hidden: true
-    inputIdentifier: memberLoanId
-    type: hiddenField
 enterNetProfitLoss:
     formula: DIFF({{totalIncome}},{{totalCosts}})
     inputIdentifier: netProfitLoss
@@ -114,6 +106,4 @@ formSummary:
 initialScreen: enterFinancialYear
 model: memberNextYearBusinessProjection
 parentIds:
-    - memberId
-    - memberLoanId
     - memberBusinessId

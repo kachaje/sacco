@@ -58,10 +58,6 @@ enterJobTitle:
     text:
         en: Job Title
     type: inputScreen
-enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
 enterMemberLoanId:
     hidden: true
     inputIdentifier: memberLoanId
@@ -87,5 +83,4 @@ formSummary:
 initialScreen: enterEmployerName
 model: memberOccupation
 parentIds:
-    - memberId
     - memberLoanId

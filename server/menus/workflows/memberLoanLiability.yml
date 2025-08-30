@@ -22,14 +22,6 @@ enterId2:
     hidden: true
     inputIdentifier: id2
     type: hiddenField
-enterMemberId1:
-    hidden: true
-    inputIdentifier: memberId1
-    type: hiddenField
-enterMemberId2:
-    hidden: true
-    inputIdentifier: memberId2
-    type: hiddenField
 enterMemberLoanId1:
     hidden: true
     inputIdentifier: memberLoanId1
@@ -59,5 +51,4 @@ formSummary:
 initialScreen: enterDescription1
 model: memberLoanLiability
 parentIds:
-    - memberId
     - memberLoanId

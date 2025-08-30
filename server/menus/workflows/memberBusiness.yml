@@ -16,10 +16,6 @@ enterId:
     hidden: true
     inputIdentifier: id
     type: hiddenField
-enterMemberId:
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
 enterMemberLoanId:
     hidden: true
     inputIdentifier: memberLoanId
@@ -43,5 +39,4 @@ formSummary:
 initialScreen: enterYearsInBusiness
 model: memberBusiness
 parentIds:
-    - memberId
     - memberLoanId
