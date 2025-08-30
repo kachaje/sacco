@@ -81,3 +81,114 @@ INSERT INTO
 VALUES
   (1, "Benefator 1", 10, "P.O. Box 1"),
   (1, "Benefator 2", 8, "P.O. Box 2");
+
+INSERT INTO
+  memberLoan (
+    memberId,
+    loanAmount,
+    repaymentPeriodInMonths,
+    loanPurpose,
+    loanType
+  )
+VALUES
+  (1, 200000, 12, "School fees", "PERSONAL");
+
+INSERT INTO
+  memberBusiness (
+    memberLoanId,
+    yearsInBusiness,
+    businessNature,
+    businessName,
+    tradingArea
+  )
+VALUES
+  (1, 3, "Vendor", "Vendors Galore", "Mtandire");
+
+INSERT INTO
+  memberLastYearBusinessHistory (
+    memberBusinessId,
+    financialYear,
+    totalIncome,
+    totalCostOfGoods,
+    employeesWages,
+    ownSalary,
+    transport,
+    loanInterest,
+    utilities,
+    rentals,
+    otherCosts,
+    totalCosts,
+    netProfitLoss
+  )
+VALUES
+  (
+    1,
+    2024,
+    2000000,
+    1000000,
+    50000,
+    100000,
+    50000,
+    0,
+    35000,
+    50000,
+    0,
+    1285000,
+    715000
+  );
+
+INSERT INTO
+  memberNextYearBusinessProjection (
+    memberBusinessId,
+    financialYear,
+    totalIncome,
+    totalCostOfGoods,
+    employeesWages,
+    ownSalary,
+    transport,
+    loanInterest,
+    utilities,
+    rentals,
+    otherCosts,
+    totalCosts,
+    netProfitLoss
+  )
+VALUES
+  (
+    1,
+    2025,
+    2500000,
+    1500000,
+    50000,
+    100000,
+    50000,
+    0,
+    35000,
+    50000,
+    0,
+    1285000,
+    715000
+  );
+
+INSERT INTO
+  memberLoanApproval (
+    memberLoanId,
+    loanStatus,
+    amountRecommended,
+    approvedBy,
+    approvalDate,
+    amountApproved,
+    verifiedBy,
+    dateVerified
+  )
+VALUES
+  (
+    1,
+    "APPROVED",
+    200000,
+    "me",
+    "2025-08-30",
+    200000,
+    "me",
+    "2025-08-30"
+  );

@@ -26,6 +26,10 @@ func (d *Database) LoadSingleChildren(parentKey, model string, parentId int64) (
 			if len(results) > 0 {
 				row := results[0]
 
+				for _, field := range d.SkipFields {
+					delete(row, field)
+				}
+
 				if id, err := strconv.ParseInt(fmt.Sprintf("%v", row["id"]), 10, 64); err == nil {
 					result, err := d.LoadModelChildren(childModel, id)
 					if err != nil {
@@ -62,6 +66,11 @@ func (d *Database) LoadArrayChildren(parentKey, model string, parentId int64) (m
 				rows := []map[string]any{}
 
 				for _, row := range results {
+
+					for _, field := range d.SkipFields {
+						delete(row, field)
+					}
+
 					if id, err := strconv.ParseInt(fmt.Sprintf("%v", row["id"]), 10, 64); err == nil {
 						result, err := d.LoadModelChildren(childModel, id)
 						if err != nil {
@@ -90,6 +99,10 @@ func (d *Database) LoadModelChildren(model string, id int64) (map[string]any, er
 
 	if len(data) <= 0 {
 		return nil, fmt.Errorf("no match found")
+	}
+
+	for _, field := range d.SkipFields {
+		delete(data, field)
 	}
 
 	parentKey := fmt.Sprintf("%sId", model)

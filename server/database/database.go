@@ -30,6 +30,7 @@ type Database struct {
 	DbName        string
 	DB            *sql.DB
 	GenericModels map[string]*models.Model
+	SkipFields    []string
 
 	Mu *sync.Mutex
 }
@@ -58,6 +59,9 @@ func NewDatabase(dbname string) *Database {
 		DB:            db,
 		GenericModels: map[string]*models.Model{},
 		Mu:            &sync.Mutex{},
+		SkipFields: []string{
+			"active", "created_at", "updated_at", "dateJoined",
+			"shortMemberId", "memberIdNumber"},
 	}
 
 	err = instance.initDb()
