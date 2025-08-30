@@ -144,6 +144,7 @@ func TestGenericsSaveData(t *testing.T) {
 		"businessNature":  "Vendor",
 		"businessName":    "Vendors Galore",
 		"tradingArea":     "Mtandire",
+		"memberLoanId":    1,
 	}
 
 	mid, err := db.GenericsSaveData(data, "memberBusiness", 0)
@@ -188,6 +189,7 @@ func TestGenericModel(t *testing.T) {
 		"businessNature":  "Vendor",
 		"businessName":    "Vendors Galore",
 		"tradingArea":     "Mtandire",
+		"memberLoanId":    1,
 	}
 
 	mid, err := db.GenericModels["memberBusiness"].AddRecord(data)
@@ -324,18 +326,6 @@ func TestMemberByPhoneNumber(t *testing.T) {
 			"name":        "John Phiri",
 			"phoneNumber": "0888444666",
 		},
-		"memberOccupation": map[string]any{
-			"employerAddress":        "Kanengo",
-			"employerName":           "SOBO",
-			"employerPhone":          "01282373737",
-			"grossPay":               100000,
-			"highestQualification":   "Secondary",
-			"id":                     1,
-			"jobTitle":               "Driver",
-			"memberId":               1,
-			"netPay":                 90000,
-			"periodEmployedInMonths": 36,
-		},
 		"nationalId":        "DHFYR8475",
 		"phoneNumber":       "0999888777",
 		"title":             "Miss",
@@ -375,17 +365,6 @@ func TestMemberByPhoneNumber(t *testing.T) {
 		"phoneNumber": "0888444666",
 	}
 
-	memberOccupation := map[string]any{
-		"employerAddress":        "Kanengo",
-		"employerName":           "SOBO",
-		"employerPhone":          "01282373737",
-		"grossPay":               100000,
-		"highestQualification":   "Secondary",
-		"jobTitle":               "Driver",
-		"netPay":                 90000,
-		"periodEmployedInMonths": 36,
-	}
-
 	memberBeneficiary := []map[string]any{
 		{
 			"contact":    "0888777444",
@@ -406,7 +385,6 @@ func TestMemberByPhoneNumber(t *testing.T) {
 
 	memberContact["memberId"] = *id
 	memberNominee["memberId"] = *id
-	memberOccupation["memberId"] = *id
 	memberBeneficiary[0]["memberId"] = *id
 	memberBeneficiary[1]["memberId"] = *id
 
@@ -416,11 +394,6 @@ func TestMemberByPhoneNumber(t *testing.T) {
 	}
 
 	_, err = db.GenericModels["memberNominee"].AddRecord(memberNominee)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	_, err = db.GenericModels["memberOccupation"].AddRecord(memberOccupation)
 	if err != nil {
 		t.Fatal(err)
 	}
