@@ -33,6 +33,10 @@ func TestMainMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
+	role := "admin"
+
+	session.SessionUserRole = &role
+
 	result := m.LoadMenu("main", session, "", "", "")
 
 	target := `
@@ -170,6 +174,26 @@ func TestLoanMenu(t *testing.T) {
 	result := m.LoadMenu("loan", session, "", "", "")
 
 	target := `
+CON Loans
+1. Loan Application
+6. Employment Details
+7. Business Details
+8. Member Loans Summary
+
+00. Main Menu
+	`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	role := "admin"
+
+	session.SessionUserRole = &role
+
+	result = m.LoadMenu("loan", session, "", "", "")
+
+	target = `
 CON Loans
 1. Loan Application
 2. Loan Liability

@@ -74,6 +74,10 @@ func TestMembershipApplication(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
+	role := "admin"
+
+	session.SessionUserRole = &role
+
 	session.GlobalIds = map[string]int64{
 		"memberId":     1,
 		"memberLoanId": 1,
