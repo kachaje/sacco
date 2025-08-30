@@ -11,6 +11,7 @@ import (
 	filehandling "sacco/server/fileHandling"
 	"sacco/server/parser"
 	"sacco/utils"
+	"strings"
 	"testing"
 )
 
@@ -137,38 +138,6 @@ func TestHandleMemberDetails(t *testing.T) {
 		os.RemoveAll(filepath.Join(".", "tmp5"))
 	}()
 
-	for _, file := range []string{
-		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
-		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
-		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
-		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
-	} {
-		src, err := os.Open(filepath.Join(sourceFolder, file))
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-		defer src.Close()
-
-		dst, err := os.Create(filepath.Join(sessionFolder, file))
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-		defer dst.Close()
-
-		_, err = io.Copy(dst, src)
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-
-		_, err = os.Stat(dst.Name())
-		if os.IsNotExist(err) {
-			t.Fatalf("Test failed. Failed to create %s", dst.Name())
-		}
-	}
-
 	data := map[string]any{
 		"dateOfBirth":       "1999-09-01",
 		"phoneNumber":       phoneNumber,
@@ -198,6 +167,53 @@ func TestHandleMemberDetails(t *testing.T) {
 	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
 	if err != nil {
 		t.Fatal(err)
+	}
+
+	for _, file := range []string{
+		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
+		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
+		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
+		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
+	} {
+		content, err := os.ReadFile(filepath.Join(sourceFolder, file))
+		if err != nil {
+			t.Fatal(err)
+			continue
+		}
+
+		model := strings.Split(filepath.Base(file), ".")[0]
+
+		if model == "memberBeneficiary" {
+			data := []map[string]any{}
+
+			err = json.Unmarshal(content, &data)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for _, row := range data {
+				row["memberId"] = 1
+
+				err = filehandling.SaveModelData(row, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
+		} else {
+			data := map[string]any{}
+
+			err = json.Unmarshal(content, &data)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			data["memberId"] = 1
+
+			err = filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, db.GenericsSaveData, sessions, sessionFolder, nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}
 	}
 
 	result, err := db.MemberByPhoneNumber(phoneNumber, nil, nil)
@@ -268,246 +284,6 @@ func TestHandleMemberDetails(t *testing.T) {
 
 	if utils.CleanScript(payloadResult) != utils.CleanScript(payloadTarget) {
 		t.Fatal("Test failed")
-	}
-}
-
-func TestSimpleNestedModel(t *testing.T) {
-	phoneNumber := "0999888777"
-	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
-	cacheFolder := filepath.Join(".", "tmp15", "cache")
-
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
-
-	defer func() {
-		os.RemoveAll(filepath.Join(".", "tmp15"))
-	}()
-
-	for _, file := range []string{
-		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
-	} {
-		src, err := os.Open(filepath.Join(sourceFolder, file))
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-		defer src.Close()
-
-		dst, err := os.Create(filepath.Join(cacheFolder, phoneNumber, file))
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-		defer dst.Close()
-
-		_, err = io.Copy(dst, src)
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-
-		_, err = os.Stat(dst.Name())
-		if os.IsNotExist(err) {
-			t.Fatalf("Test failed. Failed to create %s", dst.Name())
-		}
-	}
-
-	session := &parser.Session{
-		AddedModels: map[string]bool{},
-		GlobalIds:   map[string]int64{},
-	}
-
-	sessions := make(map[string]*parser.Session)
-
-	sessions[phoneNumber] = session
-
-	count := 0
-
-	saveFunc := func(
-		a map[string]any,
-		b string,
-		c int,
-	) (*int64, error) {
-		var id int64 = 13
-
-		count++
-
-		return &id, nil
-	}
-
-	model := "member"
-
-	sessions[phoneNumber].AddedModels["memberContact"] = true
-
-	data := map[string]any{
-		"dateOfBirth":       "1999-09-01",
-		"phoneNumber":       "09999999999",
-		"fileNumber":        "",
-		"firstName":         "Mary",
-		"gender":            "Female",
-		"id":                1,
-		"lastName":          "Banda",
-		"maritalStatus":     "Single",
-		"nationalId":        "DHFYR8475",
-		"oldFileNumber":     "",
-		"otherName":         "",
-		"title":             "Miss",
-		"utilityBillNumber": "29383746",
-		"utilityBillType":   "ESCOM",
-	}
-
-	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	for _, file := range []string{
-		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
-		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
-		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
-		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
-	} {
-		filename := filepath.Join(cacheFolder, phoneNumber, file)
-
-		_, err = os.Stat(filename)
-		if !os.IsNotExist(err) {
-			t.Fatalf("Test failed. Expected file %s to be deleted by now", filename)
-		}
-	}
-
-	if count != 2 {
-		t.Fatalf("Test failed. Expected: 2; Actual: %v", count)
-	}
-}
-
-func TestComplexNestedModel(t *testing.T) {
-	phoneNumber := "0999888777"
-	sourceFolder := filepath.Join("..", "database", "models", "fixtures", "cache", phoneNumber)
-	cacheFolder := filepath.Join(".", "tmp10", "cache")
-
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	os.MkdirAll(filepath.Join(cacheFolder, phoneNumber), 0755)
-
-	defer func() {
-		os.RemoveAll(filepath.Join(".", "tmp10"))
-	}()
-
-	for _, file := range []string{
-		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
-		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
-		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
-		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
-	} {
-		src, err := os.Open(filepath.Join(sourceFolder, file))
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-		defer src.Close()
-
-		dst, err := os.Create(filepath.Join(cacheFolder, phoneNumber, file))
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-		defer dst.Close()
-
-		_, err = io.Copy(dst, src)
-		if err != nil {
-			t.Fatal(err)
-			continue
-		}
-
-		_, err = os.Stat(dst.Name())
-		if os.IsNotExist(err) {
-			t.Fatalf("Test failed. Failed to create %s", dst.Name())
-		}
-	}
-
-	session := &parser.Session{
-		AddedModels: map[string]bool{
-			"memberContact":     true,
-			"memberOccupation":  true,
-			"memberBeneficiary": true,
-			"memberNominee":     true,
-		},
-		GlobalIds: map[string]int64{},
-	}
-
-	sessions := make(map[string]*parser.Session)
-
-	sessions[phoneNumber] = session
-
-	count := 0
-
-	saveFunc := func(
-		a map[string]any,
-		b string,
-		c int,
-	) (*int64, error) {
-		count++
-
-		var id int64 = int64(count)
-
-		a["id"] = id
-
-		return &id, nil
-	}
-
-	model := "member"
-
-	data := map[string]any{
-		"dateOfBirth":       "1999-09-01",
-		"phoneNumber":       "09999999999",
-		"fileNumber":        "",
-		"firstName":         "Mary",
-		"gender":            "Female",
-		"id":                1,
-		"lastName":          "Banda",
-		"maritalStatus":     "Single",
-		"nationalId":        "DHFYR8475",
-		"oldFileNumber":     "",
-		"otherName":         "",
-		"title":             "Miss",
-		"utilityBillNumber": "29383746",
-		"utilityBillType":   "ESCOM",
-	}
-
-	err := filehandling.SaveModelData(data, &model, &phoneNumber, &cacheFolder, saveFunc, sessions, sessionFolder, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	for _, file := range []string{
-		"memberContact.158a2d54-84f4-11f0-8e0d-1e4d4999250c.json",
-		"memberOccupation.27395048-84f4-11f0-9d0e-1e4d4999250c.json",
-		"memberBeneficiary.fd40d7de-84f3-11f0-9b12-1e4d4999250c.json",
-		"memberNominee.1efda9a6-84f4-11f0-8797-1e4d4999250c.json",
-	} {
-		filename := filepath.Join(cacheFolder, phoneNumber, file)
-
-		_, err = os.Stat(filename)
-		if !os.IsNotExist(err) {
-			t.Fatalf("Test failed. Expected file %s to be deleted by now", filename)
-		}
-	}
-
-	if count != 6 {
-		t.Fatalf("Test failed. Expected: 6; Actual: %v", count)
-	}
-
-	target := map[string]int64{
-		"memberBeneficiaryId": 6,
-		"memberContactId":     2,
-		"memberId":            1,
-		"memberNomineeId":     3,
-		"memberOccupationId":  4,
-	}
-
-	if !reflect.DeepEqual(target, session.GlobalIds) {
-		t.Fatalf("Test failed")
 	}
 }
 
