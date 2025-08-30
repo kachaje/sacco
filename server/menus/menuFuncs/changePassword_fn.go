@@ -73,7 +73,7 @@ func ChangePassword(
 
 				content = newPassword("(Password Mismatch!)")
 			} else {
-				if id, ok := DB.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]); ok {
+				if id, _, ok := DB.ValidatePassword(*session.SessionUser, session.Cache["currentPassword"]); ok {
 					err := DB.GenericModels["user"].UpdateRecord(map[string]any{
 						"password": session.Cache["newPassword"],
 					}, *id)

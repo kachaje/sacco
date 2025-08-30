@@ -35,9 +35,10 @@ type Session struct {
 
 	Mu *sync.Mutex
 
-	SessionToken  *string
-	SessionUser   *string
-	SessionUserId *int64
+	SessionToken    *string
+	SessionUser     *string
+	SessionUserRole *string
+	SessionUserId   *int64
 
 	Cache      map[string]string
 	LastPrompt string

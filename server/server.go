@@ -72,9 +72,11 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		if demoMode {
 			defaultUser := "admin"
 			defaultUserId := int64(1)
+			defaultRole := "admin"
 
 			session.SessionUser = &defaultUser
 			session.SessionUserId = &defaultUserId
+			session.SessionUserRole = &defaultRole
 		}
 
 		menufuncs.Sessions[phoneNumber] = session

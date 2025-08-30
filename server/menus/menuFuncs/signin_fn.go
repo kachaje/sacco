@@ -75,10 +75,11 @@ func SignIn(
 
 			text = ""
 
-			if id, ok := DB.ValidatePassword(session.Cache["username"], session.Cache["password"]); ok {
+			if id, role, ok := DB.ValidatePassword(session.Cache["username"], session.Cache["password"]); ok {
 				token := uuid.NewString()
 				session.SessionToken = &token
 				session.SessionUserId = id
+				session.SessionUserRole = role
 
 				session.CurrentMenu = "main"
 
