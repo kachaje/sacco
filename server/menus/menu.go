@@ -148,15 +148,29 @@ func (m *Menus) populateMenus() error {
 
 		group := re.ReplaceAllLiteralString(strings.Split(filepath.Base(file), ".")[0], "")
 
+		m.ActiveMenus[group] = map[string]any{}
+
 		if val, ok := data["title"].(string); ok {
 			m.Titles[group] = val
+		}
+
+		if data["allowedRoles"] != nil {
+			allowedRoles := []string{}
+
+			if val, ok := data["allowedRoles"].([]any); ok {
+				for _, key := range val {
+					allowedRoles = append(allowedRoles, fmt.Sprintf("%v", key))
+				}
+			} else if val, ok := data["allowedRoles"].([]string); ok {
+				allowedRoles = append(allowedRoles, val...)
+			}
+
+			m.ActiveMenus[group].(map[string]any)["allowedRoles"] = allowedRoles
 		}
 
 		m.LabelWorkflow[group] = map[string]any{}
 
 		if val, ok := data["fields"].(map[string]any); ok {
-			m.ActiveMenus[group] = map[string]any{}
-
 			keys := []string{}
 			values := []string{}
 			kv := map[string]any{}
