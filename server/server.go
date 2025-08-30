@@ -36,6 +36,7 @@ var RawWorkflows embed.FS
 
 var mu sync.Mutex
 var port int
+var demoMode bool
 
 var workflowsData map[string]map[string]any
 
@@ -110,6 +111,14 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 
 		if preferredLanguage != nil {
 			session.PreferredLanguage = *preferredLanguage
+		}
+
+		if demoMode {
+			defaultUser := "admin"
+			defaultUserId := int64(1)
+
+			session.SessionUser = &defaultUser
+			session.SessionUserId = &defaultUserId
 		}
 
 		menufuncs.Sessions[phoneNumber] = session
@@ -220,7 +229,6 @@ func Main() {
 	var err error
 	var dbname string = ":memory:"
 	var devMode bool
-	var demoMode bool
 
 	flag.IntVar(&port, "p", port, "server port")
 	flag.StringVar(&dbname, "n", dbname, "database name")

@@ -115,7 +115,7 @@ func DevConsole(
 				username = *session.SessionUser
 			}
 			if session.SessionUserId != nil {
-				username = fmt.Sprint(*session.SessionUserId)
+				userId = fmt.Sprint(*session.SessionUserId)
 			}
 
 			content = fmt.Sprintf("sessionId: %s\nsessioUser: %s\nsessionUserId: %v\n",
