@@ -27,6 +27,9 @@ fields:
     id: admin
     label:
       en: Administration
+    allowedRoles:
+      - admin
+      - dev
   "7":
     id: exit
     label:

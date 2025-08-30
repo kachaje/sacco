@@ -175,6 +175,7 @@ func (m *Menus) populateMenus() error {
 			values := []string{}
 			kv := map[string]any{}
 			devMenus := map[string]any{}
+			menuRoles := map[string][]string{}
 
 			for key, row := range val {
 				keys = append(keys, key)
@@ -188,11 +189,29 @@ func (m *Menus) populateMenus() error {
 						id := fmt.Sprintf("%v", val["id"])
 						label := fmt.Sprintf("%v", val["label"].(map[string]any)["en"])
 
-						kv[key] = id
+						if val["allowedRoles"] != nil {
+							allowedRoles := []string{}
+
+							if vc, ok := val["allowedRoles"].([]any); ok {
+								for _, key := range vc {
+									allowedRoles = append(allowedRoles, fmt.Sprintf("%v", key))
+								}
+							} else if vc, ok := val["allowedRoles"].([]string); ok {
+								allowedRoles = append(allowedRoles, vc...)
+							}
+
+							menuRoles[id] = allowedRoles
+						}
 
 						value := fmt.Sprintf("%v. %v\n", key, label)
 
 						values = append(values, value)
+
+						kv[key] = map[string]any{
+							"menu":  id,
+							"key":   key,
+							"value": value,
+						}
 
 						if val["workflow"] != nil {
 							if v, ok := val["workflow"].(string); ok {
@@ -236,6 +255,24 @@ func (m *Menus) populateMenus() error {
 								}
 							}
 						}
+
+						if val["allowedRoles"] != nil {
+							allowedRoles := []string{}
+
+							if vc, ok := val["allowedRoles"].([]any); ok {
+								for _, key := range vc {
+									allowedRoles = append(allowedRoles, fmt.Sprintf("%v", key))
+								}
+							} else if vc, ok := val["allowedRoles"].([]string); ok {
+								allowedRoles = append(allowedRoles, vc...)
+							}
+
+							if m.ActiveMenus[group].(map[string]any)[id] == nil {
+								m.ActiveMenus[group].(map[string]any)[id] = map[string]any{}
+							}
+
+							m.ActiveMenus[group].(map[string]any)[id].(map[string]any)["menuRoles"] = allowedRoles
+						}
 					}
 				}
 			}
@@ -244,6 +281,7 @@ func (m *Menus) populateMenus() error {
 			m.ActiveMenus[group].(map[string]any)["kv"] = kv
 			m.ActiveMenus[group].(map[string]any)["values"] = values
 			m.ActiveMenus[group].(map[string]any)["devMenus"] = devMenus
+			m.ActiveMenus[group].(map[string]any)["menuRoles"] = menuRoles
 		}
 
 		return nil
@@ -301,23 +339,42 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 	keys := []string{}
 	values := []string{}
 	kv := map[string]string{}
+	menuRoles := map[string][]string{}
 
 	if val, ok := m.ActiveMenus[menuName].(map[string]any); ok {
-		if val["keys"] != nil {
-			if v, ok := val["keys"].([]string); ok {
-				keys = v
-			}
-		}
-		if val["values"] != nil {
-			if v, ok := val["values"].([]string); ok {
-				values = v
+		if val["menuRoles"] != nil {
+			if v, ok := val["menuRoles"].(map[string][]string); ok {
+				menuRoles = v
 			}
 		}
 		if val["kv"] != nil {
 			if v, ok := val["kv"].(map[string]any); ok {
 				for key, value := range v {
-					if vs, ok := value.(string); ok {
-						kv[key] = vs
+					if vs, ok := value.(map[string]any); ok {
+						menuId := fmt.Sprintf("%v", vs["menu"])
+						menuKey := fmt.Sprintf("%v", vs["key"])
+						menuValue := fmt.Sprintf("%v", vs["value"])
+
+						if menuRoles[menuId] != nil {
+							found := false
+
+							for _, role := range menuRoles[menuId] {
+								if session.SessionUserRole == nil {
+									break
+								} else if *session.SessionUserRole == role {
+									found = true
+									break
+								}
+							}
+
+							if !found {
+								continue
+							}
+						}
+
+						keys = append(keys, menuKey)
+						values = append(values, menuValue)
+						kv[key] = menuId
 					}
 				}
 			}

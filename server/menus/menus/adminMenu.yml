@@ -1,7 +1,4 @@
 title: System Administration
-allowedRoles:
-  - admin
-  - dev
 fields:
   "1":
     id: addUser
