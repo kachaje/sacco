@@ -165,6 +165,19 @@ response: %s`, text, payload)
 				content = ""
 			}
 
+		case "console.10":
+			title = "Active Sessions"
+
+			keys := []string{}
+
+			for key, value := range Sessions {
+				keys = append(keys, fmt.Sprintf(`%s: %v`, key, value.SessionId))
+			}
+
+			payload, _ := json.MarshalIndent(keys, "", "  ")
+
+			content = string(payload)
+
 		default:
 			session.CurrentMenu = "console"
 
@@ -177,7 +190,8 @@ response: %s`, text, payload)
 				"6. Session Details\n" +
 				"7. PhoneNumber\n" +
 				"8. SQL Query\n" +
-				"9. Member By PhoneNumber"
+				"9. Member By PhoneNumber\n" +
+				"10. Active Sessions"
 		}
 	} else {
 		content = "No active session provided"
