@@ -523,6 +523,6 @@ VALUES
   (
     "admin",
     "$2a$10$Xo4x3KiCkB3xGKvaCI4Hn.Be95DEiaIT3lbvHx/kOmyx7IqGY6ILK",
-    "Admin",
-    "Admin"
+    "Admin User",
+    "admin"
   );
