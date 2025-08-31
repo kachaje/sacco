@@ -21,6 +21,8 @@ var (
 		map[string]any,
 		*parser.Session,
 	) string{}
+
+	ReRouteRemaps = map[string]any{}
 )
 
 func init() {
