@@ -6,7 +6,6 @@ import (
 	"sacco/server/parser"
 	"sacco/utils"
 	"testing"
-	"time"
 )
 
 func TestGetTokens(t *testing.T) {
@@ -109,13 +108,11 @@ func TestCalculateFormulae(t *testing.T) {
 	}
 
 	wf.FormulaFields["totalCosts"] = "SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
-	wf.FormulaFields["netProfitLoss"] = "DIFF({{totalIncome}},{{totalCosts}})"
+	wf.FormulaFields["netProfitLoss"] = "DIFF({{totalIncome}},{{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
 
 	wait := make(chan bool, 1)
 
 	wf.CalculateFormulae(wait)
-
-	time.Sleep(1 * time.Second)
 
 	target := map[string]any{
 		"employeesWages":   "500000",
