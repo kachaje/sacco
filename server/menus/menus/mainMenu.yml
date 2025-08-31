@@ -44,3 +44,8 @@ fields:
       en: Dev Console
     function: devConsole
     devOnly: true
+  "9":
+    id: setPhoneNumber
+    label:
+      en: Set PhoneNumber
+    function: setPhoneNumber

@@ -31,6 +31,7 @@ func init() {
 	FunctionsMap["landing"] = Landing
 	FunctionsMap["listUsers"] = ListUsers
 	FunctionsMap["memberLoansSummary"] = MemberLoansSummary
+	FunctionsMap["setPhoneNumber"] = SetPhoneNumber
 	FunctionsMap["signIn"] = SignIn
 	FunctionsMap["signUp"] = SignUp
 	FunctionsMap["viewMemberDetails"] = ViewMemberDetails
