@@ -64,7 +64,7 @@ func NewSession(
 	}
 
 	if phoneNumber != nil {
-		s.PhoneNumber = *phoneNumber
+		s.CurrentPhoneNumber = *phoneNumber
 	}
 	if sessionId != nil {
 		s.SessionId = *sessionId
@@ -278,8 +278,8 @@ func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 }
 
 func (s *Session) RefreshSession() (map[string]any, error) {
-	if s.PhoneNumber != "" && s.QueryFn != nil {
-		data, err := s.QueryFn(s.PhoneNumber, s.SkipFields)
+	if s.CurrentPhoneNumber != "" && s.QueryFn != nil {
+		data, err := s.QueryFn(s.CurrentPhoneNumber, s.SkipFields)
 		if err != nil {
 			return s.ActiveData, err
 		}
