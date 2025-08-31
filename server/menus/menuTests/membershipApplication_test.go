@@ -118,6 +118,7 @@ CON Welcome to Kaso SACCO
 5. Preferred Language
 6. Administration
 7. Exit
+9. Set PhoneNumber
 `
 
 	if utils.CleanString(result) != utils.CleanString(target) {
