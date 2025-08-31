@@ -11,6 +11,8 @@ var (
 
 	WorkflowsData = map[string]map[string]any{}
 
+	DemoMode bool
+
 	FunctionsMap = map[string]func(
 		func(
 			string, *parser.Session,

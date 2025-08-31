@@ -29,7 +29,6 @@ import (
 var indexHTML string
 
 var port int
-var demoMode bool
 
 var preferencesFolder = filepath.Join(".", "settings")
 
@@ -58,7 +57,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 		preferredLanguage = *result
 	}
 
-	session := menufuncs.CreateNewSession(phoneNumber, sessionID, preferencesFolder, preferredLanguage, demoMode)
+	session := menufuncs.CreateNewSession(phoneNumber, sessionID, preferencesFolder, preferredLanguage, menufuncs.DemoMode)
 
 	go func() {
 		_, err := session.RefreshSession()
@@ -168,7 +167,7 @@ func Main() {
 	flag.IntVar(&port, "p", port, "server port")
 	flag.StringVar(&dbname, "n", dbname, "database name")
 	flag.BoolVar(&devMode, "d", devMode, "dev mode")
-	flag.BoolVar(&demoMode, "o", demoMode, "demo mode")
+	flag.BoolVar(&menufuncs.DemoMode, "o", menufuncs.DemoMode, "demo mode")
 
 	flag.Parse()
 
@@ -191,7 +190,7 @@ func Main() {
 		panic(err)
 	}
 
-	activeMenu = menus.NewMenus(&devMode, &demoMode)
+	activeMenu = menus.NewMenus(&devMode, &menufuncs.DemoMode)
 
 	http.HandleFunc("/ws", wsHandler)
 

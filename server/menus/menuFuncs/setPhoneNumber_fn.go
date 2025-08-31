@@ -14,7 +14,7 @@ func SetPhoneNumber(
 	data map[string]any,
 ) string {
 	var response string
-	var content, text, preferencesFolder string
+	var content, text, preferencesFolder, preferredLanguage string
 	var session *parser.Session
 
 	title := "CON Set PhoneNumber\n\n"
@@ -35,6 +35,11 @@ func SetPhoneNumber(
 			preferencesFolder = val
 		}
 	}
+	if data["preferredLanguage"] != nil {
+		if val, ok := data["preferredLanguage"].(string); ok {
+			preferredLanguage = val
+		}
+	}
 
 	if text == "00" {
 		session.CurrentMenu = "main"
@@ -49,7 +54,10 @@ func SetPhoneNumber(
 		if !regexp.MustCompile(`^\d+$`).MatchString(text) {
 			content = askPhoneNumber("(Invalid input)")
 		} else {
-			session.PhoneNumber = text
+			phoneNumber := text
+			sessionId := session.SessionId
+
+			session = CreateNewSession(phoneNumber, sessionId, preferencesFolder, preferredLanguage, DemoMode)
 
 			_, err := session.RefreshSession()
 			if err == nil {
