@@ -32,6 +32,7 @@ type Menus struct {
 			string, string, string,
 		) string,
 		map[string]any,
+		*parser.Session,
 	) string
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
@@ -92,6 +93,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 				string, string, string,
 			) string,
 			map[string]any,
+			*parser.Session,
 		) string{},
 		TargetKeys:    map[string][]string{},
 		LabelWorkflow: map[string]any{},
@@ -306,7 +308,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 					"preferredLanguage": preferredLanguage,
 					"preferencesFolder": preferencesFolder,
 					"text":              text,
-				})
+				}, session)
 		case "signUp":
 			return menufuncs.SignUp(
 				m.LoadMenu,
@@ -316,7 +318,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 					"preferredLanguage": preferredLanguage,
 					"preferencesFolder": preferencesFolder,
 					"text":              text,
-				})
+				}, session)
 		default:
 			return menufuncs.Landing(
 				m.LoadMenu,
@@ -326,7 +328,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 					"preferredLanguage": preferredLanguage,
 					"preferencesFolder": preferencesFolder,
 					"text":              text,
-				})
+				}, session)
 		}
 	}
 
@@ -499,11 +501,11 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 						m.LoadMenu,
 						map[string]any{
 							"phoneNumber":       phoneNumber,
-							"session":           session,
 							"preferredLanguage": preferredLanguage,
 							"preferencesFolder": preferencesFolder,
 							"text":              text,
-						})
+						},
+						session)
 				} else {
 					response = fmt.Sprintf("Function %s not found\n\n", m.Functions[menuRoot]) +
 						"00. Main Menu\n"

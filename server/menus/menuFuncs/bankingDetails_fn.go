@@ -11,6 +11,7 @@ func BankingDetails(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var preferredLanguage *string
 	var response, text string

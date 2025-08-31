@@ -12,19 +12,14 @@ func SetPhoneNumber(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var response string
 	var content, text, preferencesFolder, preferredLanguage string
-	var session *parser.Session
 
 	title := "CON Set PhoneNumber\n\n"
 	footer := "\n00. Main Menu\n"
 
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
 	if data["text"] != nil {
 		if val, ok := data["text"].(string); ok {
 			text = val

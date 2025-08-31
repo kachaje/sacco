@@ -10,6 +10,7 @@ func MemberLoansSummary(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var response string = "Member Loans Summary\n\n00. Main Menu"
 

@@ -19,6 +19,7 @@ var (
 			string, string, string,
 		) string,
 		map[string]any,
+		*parser.Session,
 	) string{}
 )
 

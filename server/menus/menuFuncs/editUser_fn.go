@@ -10,6 +10,7 @@ func EditUser(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var response string = "Edit User\n\n00. Main Menu"
 

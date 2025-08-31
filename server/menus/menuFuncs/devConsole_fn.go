@@ -13,15 +13,10 @@ func DevConsole(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
-	var session *parser.Session
 	var response, content, text, title string
 
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
 	if data["text"] != nil {
 		if val, ok := data["text"].(string); ok {
 			text = val

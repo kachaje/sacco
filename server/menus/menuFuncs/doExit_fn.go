@@ -16,11 +16,11 @@ func DoExit(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	mu.Lock()
 	defer mu.Unlock()
 
-	var session *parser.Session
 	var phoneNumber string
 	var cacheFolder string
 

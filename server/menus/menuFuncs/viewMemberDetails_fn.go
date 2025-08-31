@@ -29,17 +29,12 @@ func ViewMemberDetails(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
-	var session *parser.Session
 	var preferredLanguage *string
 	var response string
 	var phoneNumber, text, preferencesFolder string
 
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
 	if data["preferredLanguage"] != nil {
 		if val, ok := data["preferredLanguage"].(*string); ok {
 			preferredLanguage = val

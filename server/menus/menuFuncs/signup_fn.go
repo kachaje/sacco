@@ -13,20 +13,15 @@ func SignUp(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var response string
 	var phoneNumber, text, preferencesFolder string
-	var session *parser.Session
 	var content string
 
 	title := "Member SignUp\n\n"
 	footer := "\n00. Main Menu\n"
 
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
 	if data["phoneNumber"] != nil {
 		if val, ok := data["phoneNumber"].(string); ok {
 			phoneNumber = val

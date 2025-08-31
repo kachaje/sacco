@@ -12,6 +12,7 @@ func ListUsers(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var response, content string
 

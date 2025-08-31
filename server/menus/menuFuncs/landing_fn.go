@@ -9,10 +9,10 @@ func Landing(loadMenu func(
 	phoneNumber, text, preferencesFolder string,
 ) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var response string
 	var phoneNumber, text, preferencesFolder string
-	var session *parser.Session
 
 	if data["session"] != nil {
 		if val, ok := data["session"].(*parser.Session); ok {
@@ -49,12 +49,12 @@ func Landing(loadMenu func(
 	case "1":
 		session.CurrentMenu = "signIn"
 		data["text"] = ""
-		return SignIn(loadMenu, data)
+		return SignIn(loadMenu, data, session)
 	case "2":
 		session.CurrentMenu = "signUp"
 		session.LastPrompt = "username"
 		data["text"] = ""
-		return SignUp(loadMenu, data)
+		return SignUp(loadMenu, data, session)
 	default:
 		response = "Welcome! Select Action\n\n" +
 			"1. Sign In\n" +

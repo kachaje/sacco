@@ -13,19 +13,14 @@ func SignIn(
 		phoneNumber, text, preferencesFolder string,
 	) string,
 	data map[string]any,
+	session *parser.Session,
 ) string {
 	var response string
 	var phoneNumber, text, preferencesFolder, content string
-	var session *parser.Session
 
 	title := "Login\n\n"
 	footer := "\n00. Main Menu\n"
 
-	if data["session"] != nil {
-		if val, ok := data["session"].(*parser.Session); ok {
-			session = val
-		}
-	}
 	if data["phoneNumber"] != nil {
 		if val, ok := data["phoneNumber"].(string); ok {
 			phoneNumber = val
