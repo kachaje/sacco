@@ -248,7 +248,7 @@ memberLastYearBusinessHistory:
     - netProfitLoss:
         readOnly: true
         numericField: true
-        formula: "DIFF({{totalIncome}},{{totalCosts}})"
+        formula: "DIFF({{totalIncome}},{{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
 
 memberNextYearBusinessProjection:
   belongsTo:
@@ -295,7 +295,7 @@ memberNextYearBusinessProjection:
     - netProfitLoss:
         readOnly: true
         numericField: true
-        formula: "DIFF({{totalIncome}},{{totalCosts}})"
+        formula: "DIFF({{totalIncome}},{{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})"
 
 memberShares:
   belongsTo:

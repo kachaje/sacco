@@ -31,7 +31,7 @@ enterMemberBusinessId:
     inputIdentifier: memberBusinessId
     type: hiddenField
 enterNetProfitLoss:
-    formula: DIFF({{totalIncome}},{{totalCosts}})
+    formula: DIFF({{totalIncome}},{{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
     inputIdentifier: netProfitLoss
     readOnly: true
     text:
