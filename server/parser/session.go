@@ -18,9 +18,10 @@ type Session struct {
 	CurrentMenu string
 	Data        map[string]string
 
-	PreferredLanguage string
-	SessionId         string
-	PhoneNumber       string
+	PreferredLanguage  string
+	SessionId          string
+	PhoneNumber        string
+	CurrentPhoneNumber string
 
 	GlobalIds map[string]int64
 

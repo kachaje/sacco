@@ -29,6 +29,8 @@ func CreateNewSession(phoneNumber, sessionId, preferencesFolder, preferredLangua
 			session.SessionUserRole = &defaultRole
 		}
 
+		session.CurrentPhoneNumber = phoneNumber
+
 		Sessions[phoneNumber] = session
 	}
 	mu.Unlock()

@@ -123,7 +123,7 @@ func DevConsole(
 		case "console.7":
 			title = "PhoneNumber"
 
-			content = session.PhoneNumber
+			content = session.CurrentPhoneNumber
 
 		case "console.8":
 			title = "SQL Query"

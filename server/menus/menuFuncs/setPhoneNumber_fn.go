@@ -15,7 +15,7 @@ func SetPhoneNumber(
 	session *parser.Session,
 ) string {
 	var response string
-	var content, text, preferencesFolder, preferredLanguage string
+	var content, text, preferencesFolder string
 
 	title := "CON Set PhoneNumber\n\n"
 	footer := "\n00. Main Menu\n"
@@ -30,15 +30,10 @@ func SetPhoneNumber(
 			preferencesFolder = val
 		}
 	}
-	if data["preferredLanguage"] != nil {
-		if val, ok := data["preferredLanguage"].(string); ok {
-			preferredLanguage = val
-		}
-	}
 
 	if text == "00" {
 		session.CurrentMenu = "main"
-		return loadMenu("main", session, session.PhoneNumber, "", preferencesFolder)
+		return loadMenu("main", session, session.CurrentPhoneNumber, "", preferencesFolder)
 	}
 
 	askPhoneNumber := func(msg string) string {
@@ -49,15 +44,7 @@ func SetPhoneNumber(
 		if !regexp.MustCompile(`^\d+$`).MatchString(text) {
 			content = askPhoneNumber("(Invalid input)")
 		} else {
-			phoneNumber := text
-			sessionId := session.SessionId
-
-			session = CreateNewSession(phoneNumber, sessionId, preferencesFolder, preferredLanguage, DemoMode)
-
-			_, err := session.RefreshSession()
-			if err == nil {
-				session.UpdateSessionFlags()
-			}
+			session.CurrentPhoneNumber = text
 
 			text = ""
 			content = "Success. Phone Number set!\n"
