@@ -46,6 +46,8 @@ func SetPhoneNumber(
 		} else {
 			session.CurrentPhoneNumber = text
 
+			session.ClearSession()
+
 			_, err := session.RefreshSession()
 			if err == nil {
 				session.UpdateSessionFlags()

@@ -277,11 +277,18 @@ func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 	return nil
 }
 
+func (s *Session) ClearSession() {
+	s.ActiveData = map[string]any{}
+	s.Data = map[string]string{}
+	s.AddedModels = map[string]bool{}
+	s.GlobalIds = map[string]int64{}
+}
+
 func (s *Session) RefreshSession() (map[string]any, error) {
 	if s.CurrentPhoneNumber != "" && s.QueryFn != nil {
 		data, err := s.QueryFn(s.CurrentPhoneNumber, s.SkipFields)
 		if err != nil {
-			return s.ActiveData, err
+			return nil, err
 		}
 
 		s.UpdateActiveData(data, 0)
