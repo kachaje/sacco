@@ -12,13 +12,10 @@ import (
 	"path/filepath"
 	"regexp"
 	"sacco/server/database"
-	filehandling "sacco/server/fileHandling"
 	"sacco/server/menus"
 	menufuncs "sacco/server/menus/menuFuncs"
-	"sacco/server/parser"
 	"sacco/utils"
 	"strings"
-	"sync"
 
 	"html/template"
 
@@ -31,7 +28,6 @@ import (
 //go:embed index.html
 var indexHTML string
 
-var mu sync.Mutex
 var port int
 var demoMode bool
 
@@ -56,32 +52,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 
 	preferredLanguage := menufuncs.CheckPreferredLanguage(phoneNumber, preferencesFolder)
 
-	mu.Lock()
-	session, exists := menufuncs.Sessions[phoneNumber]
-	if !exists {
-		session = parser.NewSession(menufuncs.DB.MemberByPhoneNumber, &phoneNumber, &sessionID)
-
-		for model, data := range menufuncs.WorkflowsData {
-			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &preferencesFolder, menufuncs.DB.GenericsSaveData, menufuncs.Sessions, nil)
-		}
-
-		if preferredLanguage != nil {
-			session.PreferredLanguage = *preferredLanguage
-		}
-
-		if demoMode {
-			defaultUser := "admin"
-			defaultUserId := int64(1)
-			defaultRole := "admin"
-
-			session.SessionUser = &defaultUser
-			session.SessionUserId = &defaultUserId
-			session.SessionUserRole = &defaultRole
-		}
-
-		menufuncs.Sessions[phoneNumber] = session
-	}
-	mu.Unlock()
+	session := menufuncs.CreateNewSession(phoneNumber, sessionID, preferencesFolder, *preferredLanguage, demoMode)
 
 	go func() {
 		_, err := session.RefreshSession()
