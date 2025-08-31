@@ -30,7 +30,7 @@ type Session struct {
 
 	ActiveData map[string]any
 
-	QueryFn    func(string, []string, []string) (map[string]any, error)
+	QueryFn    func(string, []string) (map[string]any, error)
 	SkipFields []string
 
 	Mu *sync.Mutex
@@ -45,7 +45,7 @@ type Session struct {
 }
 
 func NewSession(
-	queryFn func(string, []string, []string) (map[string]any, error),
+	queryFn func(string, []string) (map[string]any, error),
 	phoneNumber, sessionId *string,
 ) *Session {
 	s := &Session{
@@ -278,7 +278,7 @@ func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
 
 func (s *Session) RefreshSession() (map[string]any, error) {
 	if s.PhoneNumber != "" && s.QueryFn != nil {
-		data, err := s.QueryFn(s.PhoneNumber, nil, s.SkipFields)
+		data, err := s.QueryFn(s.PhoneNumber, s.SkipFields)
 		if err != nil {
 			return s.ActiveData, err
 		}

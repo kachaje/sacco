@@ -198,13 +198,14 @@ func TestHandleMemberDetails(t *testing.T) {
 		}
 	}
 
-	result, err := db.MemberByPhoneNumber(phoneNumber, nil, nil)
+	result, err := db.MemberByPhoneNumber(phoneNumber, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	target := map[string]any{
 		"dateOfBirth":   "1999-09-01",
+		"fileNumber":    "",
 		"firstName":     "Mary",
 		"gender":        "Female",
 		"id":            1,
@@ -227,6 +228,7 @@ func TestHandleMemberDetails(t *testing.T) {
 			},
 		},
 		"memberContact": map[string]any{
+			"email":                    any(nil),
 			"homeDistrict":             "Lilongwe",
 			"homeTraditionalAuthority": "Kalolo",
 			"homeVillage":              "Kalulu",
@@ -236,13 +238,15 @@ func TestHandleMemberDetails(t *testing.T) {
 			"residentialAddress":       "Area 49",
 		},
 		"memberNominee": map[string]any{
+			"address":     "P.O. Box 1",
 			"id":          1,
 			"memberId":    1,
-			"address":     "P.O. Box 1",
 			"name":        "John Phiri",
 			"phoneNumber": "0888444666",
 		},
 		"nationalId":        "DHFYR8475",
+		"oldFileNumber":     "",
+		"otherName":         "",
 		"phoneNumber":       "0999888777",
 		"title":             "Miss",
 		"utilityBillNumber": "29383746",

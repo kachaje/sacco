@@ -9,7 +9,6 @@ import (
 	"regexp"
 	"sacco/server/database/models"
 	"sacco/utils"
-	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -190,16 +189,7 @@ func (d *Database) GenericsSaveData(data map[string]any,
 	return id, nil
 }
 
-func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFields []string) (map[string]any, error) {
-	results, err := d.GenericModels["member"].FilterBy(fmt.Sprintf(`WHERE phoneNumber = "%s" AND active = 1`, phoneNumber))
-	if err != nil {
-		return nil, err
-	}
-
-	if arrayFields == nil {
-		arrayFields = MemberArrayChildren
-	}
-
+func (d *Database) MemberByPhoneNumber(phoneNumber string, skipFields []string) (map[string]any, error) {
 	if skipFields == nil {
 		skipFields = []string{
 			"active", "created_at", "updated_at", "dateJoined",
@@ -207,76 +197,9 @@ func (d *Database) MemberByPhoneNumber(phoneNumber string, arrayFields, skipFiel
 		}
 	}
 
-	var member = map[string]any{}
+	d.SkipFields = skipFields
 
-	if len(results) > 0 {
-		member = map[string]any{}
-
-		for key, value := range results[0] {
-			if skipFields != nil && slices.Contains(skipFields, key) {
-				continue
-			}
-
-			if value != nil && len(fmt.Sprintf("%v", value)) > 0 {
-				member[key] = value
-			}
-		}
-
-		memberId := member["id"]
-
-		models := []string{}
-
-		models = append(models, MemberArrayChildren...)
-
-		models = append(models, MemberSingleChildren...)
-
-		for _, model := range models {
-			if skipFields != nil && slices.Contains(skipFields, model) {
-				continue
-			}
-
-			results, err := d.GenericModels[model].FilterBy(fmt.Sprintf(`WHERE memberId = %v AND active = 1`, memberId))
-			if err != nil {
-				return nil, fmt.Errorf("model %s: %s", model, err.Error())
-			}
-
-			if len(results) > 0 {
-				if slices.Contains(arrayFields, model) {
-					member[model] = []map[string]any{}
-
-					for i := range results {
-						row := map[string]any{}
-
-						for key, value := range results[i] {
-							if skipFields != nil && slices.Contains(skipFields, key) {
-								continue
-							}
-
-							if value != nil && len(fmt.Sprintf("%v", value)) > 0 {
-								row[key] = value
-							}
-						}
-
-						member[model] = append(member[model].([]map[string]any), row)
-					}
-				} else {
-					member[model] = map[string]any{}
-
-					for key, value := range results[0] {
-						if skipFields != nil && slices.Contains(skipFields, key) {
-							continue
-						}
-
-						if value != nil && len(fmt.Sprintf("%v", value)) > 0 {
-							member[model].(map[string]any)[key] = value
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return member, nil
+	return d.FullMemberRecord(phoneNumber)
 }
 
 func (d *Database) SQLQuery(query string) ([]map[string]any, error) {

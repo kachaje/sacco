@@ -155,7 +155,7 @@ response: %s`, text, payload)
 			title = "Member By PhoneNumber"
 
 			if text != "" {
-				result, err := DB.MemberByPhoneNumber(text, nil, nil)
+				result, err := DB.MemberByPhoneNumber(text, nil)
 				if err != nil {
 					content = fmt.Sprintf("%s\n", err.Error())
 				} else {
