@@ -50,9 +50,15 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Received USSD request: SessionID=%s, ServiceCode=%s, PhoneNumber=%s, Text=%s",
 		sessionID, serviceCode, phoneNumber, text)
 
-	preferredLanguage := menufuncs.CheckPreferredLanguage(phoneNumber, preferencesFolder)
+	var preferredLanguage string
 
-	session := menufuncs.CreateNewSession(phoneNumber, sessionID, preferencesFolder, *preferredLanguage, demoMode)
+	result := menufuncs.CheckPreferredLanguage(phoneNumber, preferencesFolder)
+
+	if result != nil {
+		preferredLanguage = *result
+	}
+
+	session := menufuncs.CreateNewSession(phoneNumber, sessionID, preferencesFolder, preferredLanguage, demoMode)
 
 	go func() {
 		_, err := session.RefreshSession()
