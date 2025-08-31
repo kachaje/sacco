@@ -5,16 +5,6 @@ var (
 		"accountJournal",
 		"accountTransaction",
 	}
-	AccountTransactionArrayChildren = []string{
-		"accountJournal",
-	}
-	MemberOccupationSingleChildren = []string{
-		"memberOccupationVerification",
-	}
-	MemberBusinessArrayChildren = []string{
-		"memberLastYearBusinessHistory",
-		"memberNextYearBusinessProjection",
-	}
 	MemberLoanSingleChildren = []string{
 		"memberBusiness",
 		"memberOccupation",
@@ -23,6 +13,9 @@ var (
 		"memberLoanWitness",
 		"memberOccupationVerification",
 		"memberLoanApproval",
+	}
+	AccountTransactionArrayChildren = []string{
+		"accountJournal",
 	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
@@ -33,84 +26,91 @@ var (
 		"memberContact",
 		"memberNominee",
 	}
+	MemberBusinessArrayChildren = []string{
+		"memberLastYearBusinessHistory",
+		"memberNextYearBusinessProjection",
+	}
+	MemberOccupationSingleChildren = []string{
+		"memberOccupationVerification",
+	}
 	SingleChildren = map[string][]string{
-		"MemberOccupationSingleChildren": MemberOccupationSingleChildren,
 		"MemberLoanSingleChildren":       MemberLoanSingleChildren,
 		"MemberSingleChildren":           MemberSingleChildren,
+		"MemberOccupationSingleChildren": MemberOccupationSingleChildren,
 	}
 	ArrayChildren = map[string][]string{
 		"AccountArrayChildren":            AccountArrayChildren,
 		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
-		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 		"MemberArrayChildren":             MemberArrayChildren,
+		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 	}
 	FloatFields = []string{
+		"netProfitLoss",
 		"financialYear",
 		"totalIncome",
 		"totalCostOfGoods",
-		"employeesWages",
-		"ownSalary",
-		"utilities",
+		"loanInterest",
 		"rentals",
 		"otherCosts",
+		"employeesWages",
+		"ownSalary",
+		"transport",
+		"utilities",
+		"totalCosts",
+		"repaymentPeriodInMonths",
+		"loanAmount",
+		"password",
+		"debit",
+		"credit",
+		"numberOfShares",
+		"pricePerShare",
+		"value",
+		"totalCostOfGoods",
 		"transport",
 		"loanInterest",
+		"utilities",
+		"otherCosts",
+		"totalIncome",
+		"employeesWages",
+		"ownSalary",
+		"rentals",
 		"totalCosts",
 		"netProfitLoss",
+		"financialYear",
 		"value",
-		"password",
 		"grossPay",
 		"netPay",
 		"periodEmployedInMonths",
-		"totalIncome",
-		"totalCostOfGoods",
-		"transport",
-		"loanInterest",
-		"otherCosts",
-		"netProfitLoss",
-		"financialYear",
-		"employeesWages",
-		"ownSalary",
-		"utilities",
-		"rentals",
-		"totalCosts",
-		"numberOfShares",
-		"pricePerShare",
 		"amountRecommended",
 		"amountApproved",
-		"loanAmount",
-		"repaymentPeriodInMonths",
-		"value",
-		"debit",
-		"credit",
 	}
 	ParentModels = map[string][]string{
-		"memberNextYearBusinessProjection": {
-			"memberBusiness",
-		},
-		"memberLoanLiability": {
-			"memberLoan",
-		},
-		"accountTransaction": {
-			"account",
-		},
-		"memberNominee": {
-			"member",
-		},
-		"memberOccupation": {
-			"memberLoan",
-		},
 		"memberBeneficiary": {
 			"member",
 		},
-		"memberLastYearBusinessHistory": {
+		"memberNextYearBusinessProjection": {
 			"memberBusiness",
+		},
+		"memberLoan": {
+			"member",
+		},
+		"memberOccupationVerification": {
+			"memberOccupation",
+		},
+		"accountJournal": {
+			"account",
 		},
 		"memberShares": {
 			"member",
 		},
-		"memberLoanApproval": {
+		"memberLoanLiability": {
 			"memberLoan",
+		},
+		"memberLoanWitness": {
+			"memberLoan",
+		},
+		"accountTransaction": {
+			"account",
 		},
 		"memberContact": {
 			"member",
@@ -118,20 +118,20 @@ var (
 		"memberBusiness": {
 			"memberLoan",
 		},
-		"memberLoan": {
-			"member",
+		"memberLastYearBusinessHistory": {
+			"memberBusiness",
 		},
 		"memberLoanSecurity": {
 			"memberLoan",
 		},
-		"accountJournal": {
-			"account",
+		"memberNominee": {
+			"member",
 		},
-		"memberLoanWitness": {
+		"memberOccupation": {
 			"memberLoan",
 		},
-		"memberOccupationVerification": {
-			"memberOccupation",
+		"memberLoanApproval": {
+			"memberLoan",
 		},
 	}
 )

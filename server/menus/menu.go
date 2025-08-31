@@ -45,14 +45,8 @@ type Menus struct {
 	LastPrompt string
 }
 
-var WorkflowsData map[string]map[string]any
-
 func init() {
-	var err error
-
-	WorkflowsData = map[string]map[string]any{}
-
-	err = fs.WalkDir(RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(RawWorkflows, ".", func(file string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -77,7 +71,7 @@ func init() {
 
 		model := strings.Split(filepath.Base(file), ".")[0]
 
-		WorkflowsData[model] = data
+		menufuncs.WorkflowsData[model] = data
 
 		return nil
 	})
@@ -219,10 +213,10 @@ func (m *Menus) populateMenus() error {
 
 								parentIds := []string{}
 
-								if WorkflowsData[v]["parentIds"] != nil {
-									if val, ok := WorkflowsData[v]["parentIds"].([]string); ok {
+								if menufuncs.WorkflowsData[v]["parentIds"] != nil {
+									if val, ok := menufuncs.WorkflowsData[v]["parentIds"].([]string); ok {
 										parentIds = val
-									} else if val, ok := WorkflowsData[v]["parentIds"].([]any); ok {
+									} else if val, ok := menufuncs.WorkflowsData[v]["parentIds"].([]any); ok {
 										for _, vc := range val {
 											parentIds = append(parentIds, fmt.Sprintf("%v", vc))
 										}

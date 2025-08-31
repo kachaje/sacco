@@ -61,7 +61,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	if !exists {
 		session = parser.NewSession(menufuncs.DB.MemberByPhoneNumber, &phoneNumber, &sessionID)
 
-		for model, data := range menus.WorkflowsData {
+		for model, data := range menufuncs.WorkflowsData {
 			session.WorkflowsMapping[model] = parser.NewWorkflow(data, filehandling.SaveData, preferredLanguage, &phoneNumber, &sessionID, &preferencesFolder, menufuncs.DB.GenericsSaveData, menufuncs.Sessions, nil)
 		}
 

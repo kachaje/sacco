@@ -58,6 +58,8 @@ var (
 	DB       *database.Database
 	Sessions = map[string]*parser.Session{}
 
+	WorkflowsData = map[string]map[string]any{}
+
 	FunctionsMap = map[string]func(
 		func(
 			string, *parser.Session,
