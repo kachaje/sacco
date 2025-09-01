@@ -11,62 +11,60 @@ import (
 
 func TestLoadKeys(t *testing.T) {
 	data := map[string]any{
-		"child": map[string]any{
-			"id":    "1",
+		"id":    "1",
+		"field": "value",
+		"child1": map[string]any{
+			"id":    "2",
 			"field": "value",
-			"child1": map[string]any{
-				"id":    "2",
+			"child1_1": map[string]any{
+				"id":    "3",
 				"field": "value",
-				"child1_1": map[string]any{
-					"id":    "3",
+				"child1_1_1": map[string]any{
+					"id":    "4",
 					"field": "value",
-					"child1_1_1": map[string]any{
-						"id":    "4",
+				},
+				"child1_1_2": []map[string]any{
+					{
+						"id":    "5",
 						"field": "value",
 					},
-					"child1_1_2": []map[string]any{
+					{
+						"id":    "6",
+						"field": "value",
+					},
+				},
+				"child1_1_3": map[string]any{
+					"id":    "7",
+					"field": "value",
+					"child1_1_3_1": map[string]any{
+						"id":    "8",
+						"field": "value",
+					},
+				},
+			},
+		},
+		"child2": []map[string]any{
+			{
+				"id":    "9",
+				"field": "value",
+				"child2_1": map[string]any{
+					"id":    "10",
+					"field": "value",
+					"child2_1_1": []map[string]any{
 						{
-							"id":    "5",
+							"id":    "11",
 							"field": "value",
 						},
 						{
-							"id":    "6",
-							"field": "value",
-						},
-					},
-					"child1_1_3": map[string]any{
-						"id":    "7",
-						"field": "value",
-						"child1_1_3_1": map[string]any{
-							"id":    "8",
+							"id":    "12",
 							"field": "value",
 						},
 					},
 				},
 			},
-			"child2": []map[string]any{
-				{
-					"id":    "9",
-					"field": "value",
-					"child2_1": map[string]any{
-						"id":    "10",
-						"field": "value",
-						"child2_1_1": []map[string]any{
-							{
-								"id":    "11",
-								"field": "value",
-							},
-							{
-								"id":    "12",
-								"field": "value",
-							},
-						},
-					},
-				},
-				{
-					"id":    "13",
-					"field": "value",
-				},
+			{
+				"id":    "13",
+				"field": "value",
 			},
 		},
 	}
@@ -101,7 +99,7 @@ func TestLoadKeys(t *testing.T) {
 				"child2Id": "13",
 			},
 		},
-		"childId": "1",
+		"id": "1",
 	}
 
 	session := parser.NewSession(nil, nil, nil)
@@ -144,7 +142,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 			},
 		},
 		"memberContactId": "1",
-		"memberId":        "1",
+		"id":        "1",
 		"memberLoan": []map[string]any{
 			{
 				"memberBusinessId": "1",

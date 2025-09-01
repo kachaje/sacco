@@ -72,38 +72,12 @@ func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map
 		seed = map[string]any{}
 	}
 
-	if data, ok := rawData.(map[string]any); ok {
-		for key, value := range data {
-			if value == nil {
-				continue
-			}
-
-			if key == "id" {
-				if parent != nil {
-					seed[fmt.Sprintf("%vId", *parent)] = fmt.Sprintf("%v", value)
-				}
-			} else if reflect.TypeOf(value).String() == "map[string]interface {}" {
-				if val, ok := value.(map[string]any); ok {
-					for k, v := range val {
-						if v == nil {
-							continue
-						}
-
-						if k == "id" {
-							seed[fmt.Sprintf("%vId", key)] = fmt.Sprintf("%v", v)
-						} else {
-							seed = s.LoadKeys(v, seed, &k)
-						}
-					}
-				}
-			}
-		}
-	} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(rawData).String()) && rawData != nil {
+	handleArrayValues := func(value any, seed map[string]any, parent *string) map[string]any {
 		rows := []map[string]any{}
 
-		if val, ok := rawData.([]map[string]any); ok {
+		if val, ok := value.([]map[string]any); ok {
 			rows = val
-		} else if val, ok := rawData.([]any); ok {
+		} else if val, ok := value.([]any); ok {
 			for _, row := range val {
 				if v, ok := row.(map[string]any); ok {
 					rows = append(rows, v)
@@ -122,6 +96,42 @@ func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map
 				}
 			}
 		}
+
+		return seed
+	}
+
+	if data, ok := rawData.(map[string]any); ok {
+		for key, value := range data {
+			if value == nil {
+				continue
+			}
+
+			if key == "id" {
+				if parent != nil {
+					seed[fmt.Sprintf("%vId", *parent)] = fmt.Sprintf("%v", value)
+				} else {
+					seed[key] = fmt.Sprintf("%v", value)
+				}
+			} else if reflect.TypeOf(value).String() == "map[string]interface {}" {
+				if val, ok := value.(map[string]any); ok {
+					for k, v := range val {
+						if v == nil {
+							continue
+						}
+
+						if k == "id" {
+							seed[fmt.Sprintf("%vId", key)] = fmt.Sprintf("%v", v)
+						} else {
+							seed = s.LoadKeys(v, seed, &k)
+						}
+					}
+				}
+			} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(value).String()) {
+				seed = handleArrayValues(value, seed, &key)
+			}
+		}
+	} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(rawData).String()) && rawData != nil {
+		seed = handleArrayValues(rawData, seed, parent)
 	}
 
 	return seed
