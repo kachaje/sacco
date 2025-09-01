@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sacco/server/parser"
 	"testing"
 )
@@ -47,7 +48,25 @@ func TestModelsMap(t *testing.T) {
 		}
 	}
 
-	payload, _ := json.MarshalIndent(results, "", "  ")
+	target := map[string]any{
+		"memberBeneficiaryId":                1.0,
+		"memberBusinessId":                   1.0,
+		"memberContactId":                    1.0,
+		"memberId":                           1.0,
+		"memberLastYearBusinessHistoryId":    1.0,
+		"memberLoanApprovalId":               1.0,
+		"memberLoanId":                       1.0,
+		"memberLoanLiabilityId":              1.0,
+		"memberLoanSecurityId":               1.0,
+		"memberLoanWitnessId":                1.0,
+		"memberNextYearBusinessProjectionId": 1.0,
+		"memberNomineeId":                    1.0,
+		"memberOccupationId":                 1.0,
+		"memberOccupationVerificationId":     1.0,
+		"memberSharesId":                     1.0,
+	}
 
-	fmt.Println(string(payload))
+	if !reflect.DeepEqual(results, target) {
+		t.Fatal("Test failed")
+	}
 }
