@@ -118,6 +118,7 @@ func buildWorkflows() {
 	relationships := map[string]any{}
 	parentModels := []string{}
 	floatFields := []string{}
+	modelsMap := []string{}
 
 	for model := range data {
 		targetFile := filepath.Join(workingFolder, fmt.Sprintf("%s.yml", model))
@@ -217,12 +218,16 @@ func buildWorkflows() {
 	ParentModels = map[string][]string{
 		%s
 	}
+	ModelsMap = map[string]string{
+		%s
+	}
 	)`,
 		strings.Join(script, "\n"),
 		strings.Join(singlesGroup, "\n"),
 		strings.Join(arraysGroup, "\n"),
 		strings.Join(floatFields, "\n"),
 		strings.Join(parentModels, "\n"),
+		strings.Join(modelsMap, "\n"),
 	))
 	if err != nil {
 		panic(err)
