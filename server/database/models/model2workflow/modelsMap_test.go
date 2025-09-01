@@ -25,7 +25,7 @@ func TestModelsMap(t *testing.T) {
 
 	data := map[string]string{}
 
-	content, err = os.ReadFile(filepath.Join(".", "modelsMap.json"))
+	content, err = os.ReadFile(filepath.Join(".", "fixtures", "modelsMap.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
