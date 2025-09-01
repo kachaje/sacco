@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"sync"
@@ -73,13 +74,21 @@ func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map
 
 	if data, ok := rawData.(map[string]any); ok {
 		for key, value := range data {
+			if value == nil {
+				continue
+			}
+
 			if key == "id" {
 				if parent != nil {
 					seed[fmt.Sprintf("%vId", *parent)] = fmt.Sprintf("%v", value)
 				}
-			} else if reflect.TypeOf(value).String() == "map[string]interface {}" && value != nil {
+			} else if reflect.TypeOf(value).String() == "map[string]interface {}" {
 				if val, ok := value.(map[string]any); ok {
 					for k, v := range val {
+						if v == nil {
+							continue
+						}
+
 						if k == "id" {
 							seed[fmt.Sprintf("%vId", key)] = fmt.Sprintf("%v", v)
 						} else {
@@ -111,7 +120,9 @@ func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map
 func (s *Session) UpdateSessionFlags() error {
 	data := s.LoadKeys(s.ActiveData, map[string]any{}, nil)
 
-	fmt.Println(data)
+	payload, _ := json.MarshalIndent(data, "", "  ")
+
+	fmt.Println(string(payload))
 
 	return nil
 }
