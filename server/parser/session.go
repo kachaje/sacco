@@ -162,10 +162,22 @@ func (s *Session) DecodeKey(keyPath string, data map[string]any) (any, bool) {
 
 		if val, ok := currentMap.(map[string]any); ok {
 			value = val
-		} else if val, ok := currentMap.([]map[string]any); ok {
+		} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(currentMap).String()) {
+			target := []map[string]any{}
+
+			if val, ok := currentMap.([]map[string]any); ok {
+				target = val
+			} else if val, ok := currentMap.([]any); ok {
+				for _, child := range val {
+					if v, ok := child.(map[string]any); ok {
+						target = append(target, v)
+					}
+				}
+			}
+
 			index, err := strconv.Atoi(key)
 			if err == nil {
-				currentMap = val[index]
+				currentMap = target[index]
 			}
 			continue
 		}
@@ -177,8 +189,20 @@ func (s *Session) DecodeKey(keyPath string, data map[string]any) (any, bool) {
 
 			if nestedMap, isMap := val.(map[string]any); isMap {
 				currentMap = nestedMap
-			} else if arrMap, isArr := val.([]map[string]any); isArr {
-				currentMap = arrMap
+			} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(val).String()) {
+				target := []map[string]any{}
+
+				if vt, ok := val.([]map[string]any); ok {
+					target = vt
+				} else if vt, ok := val.([]any); ok {
+					for _, child := range vt {
+						if v, ok := child.(map[string]any); ok {
+							target = append(target, v)
+						}
+					}
+				}
+
+				currentMap = target
 			} else {
 				return nil, false
 			}
@@ -191,6 +215,8 @@ func (s *Session) DecodeKey(keyPath string, data map[string]any) (any, bool) {
 						return val, true
 					}
 				}
+			} else if reflect.TypeOf(value).String() == "map[string]interface {}" {
+				continue
 			}
 
 			return nil, false
