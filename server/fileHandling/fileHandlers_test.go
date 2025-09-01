@@ -320,10 +320,10 @@ func TestChildNestedModel(t *testing.T) {
 		t.Fatalf("Test failed. Expected: 1; Actual: %v", count)
 	}
 
-	target := map[string]int64{
-		"memberOccupationId": 1,
+	target := map[string]any{
 		"memberId":           16,
 		"memberLoanId":       13,
+		"memberOccupationId": int64(1),
 	}
 
 	if !reflect.DeepEqual(target, session.GlobalIds) {
