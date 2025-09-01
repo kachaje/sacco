@@ -127,6 +127,8 @@ func TestEmployementMenu(t *testing.T) {
 	result := m.LoadMenu("employment", session, "", "", "")
 
 	target := `CON Employement
+1. Employement Details
+2. Employement Verification
 3. Employement Summary
 
 99. Cancel
@@ -143,14 +145,13 @@ func TestEmployementMenu(t *testing.T) {
 
 	result = m.LoadMenu("employment", session, "", "", "")
 
-	target = `
-CON Employement
+	target = `CON Employement
 1. Employement Details
+2. Employement Verification
 3. Employement Summary
 
 99. Cancel
-00. Main Menu
-`
+00. Main Menu`
 
 	if utils.CleanString(result) != utils.CleanString(target) {
 		t.Fatal("Test failed")
