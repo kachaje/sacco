@@ -39,15 +39,12 @@ func TestDatabase(t *testing.T) {
 		}
 	}
 }
+
 func TestDatabaseMemberBeneficiaries(t *testing.T) {
 	dbname := ":memory:"
 	db := database.NewDatabase(dbname)
 	defer func() {
 		db.Close()
-
-		if _, err := os.Stat("memberBeneficiary.json"); !os.IsNotExist(err) {
-			os.Remove("memberBeneficiary.json")
-		}
 	}()
 
 	content, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "member.sql"))
@@ -71,7 +68,7 @@ func TestDatabaseMemberBeneficiaries(t *testing.T) {
 
 	memberBeneficiary := map[string]any{}
 
-	val, ok := result["memberBeneficiary"].([]map[string]any)
+	val, ok := result["member"].(map[string]any)["memberBeneficiary"].([]map[string]any)
 	if ok {
 		for i, row := range val {
 			for key, value := range row {
@@ -116,7 +113,7 @@ func TestDatabaseMemberBeneficiaries(t *testing.T) {
 	{
 		memberBeneficiary := []map[string]any{}
 
-		rows, ok := result["memberBeneficiary"].([]map[string]any)
+		rows, ok := result["member"].(map[string]any)["memberBeneficiary"].([]map[string]any)
 		if ok {
 			memberBeneficiary = append(memberBeneficiary, rows...)
 		}
