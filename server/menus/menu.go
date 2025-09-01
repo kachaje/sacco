@@ -435,7 +435,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 				}
 
 				if session.WorkflowsMapping[model].Data["phoneNumber"] == nil {
-					session.WorkflowsMapping[model].Data["phoneNumber"] = phoneNumber
+					session.WorkflowsMapping[model].Data["phoneNumber"] = session.CurrentPhoneNumber
 				}
 			}
 		}

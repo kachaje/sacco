@@ -78,6 +78,8 @@ func TestNewMembership(t *testing.T) {
 
 	session.SessionUserRole = &role
 
+	session.CurrentPhoneNumber = "0999888777"
+
 	session.GlobalIds = map[string]int64{
 		"memberId":     1,
 		"memberLoanId": 1,
