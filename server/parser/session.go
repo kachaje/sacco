@@ -67,6 +67,90 @@ func NewSession(
 	return s
 }
 
+func (s *Session) FlattenKeys(rawData any, seed map[string]any, parent *string) map[string]any {
+	handleArrayValues := func(value any, seed map[string]any, parent *string) map[string]any {
+		rows := []map[string]any{}
+
+		if val, ok := value.([]map[string]any); ok {
+			rows = val
+		} else if val, ok := value.([]any); ok {
+			for _, row := range val {
+				if v, ok := row.(map[string]any); ok {
+					rows = append(rows, v)
+				}
+			}
+		}
+
+		if parent != nil {
+			for i, row := range rows {
+				refKey := fmt.Sprintf("%s.%d", *parent, i)
+
+				seed = s.FlattenKeys(row, seed, &refKey)
+			}
+		}
+
+		return seed
+	}
+
+	var refKey string
+
+	if data, ok := rawData.(map[string]any); ok {
+		for key, value := range data {
+			if value == nil {
+				continue
+			}
+
+			if reflect.TypeOf(value).String() == "map[string]interface {}" {
+				if val, ok := value.(map[string]any); ok {
+					for k, v := range val {
+						if v == nil {
+							continue
+						}
+
+						if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}", "map[string]interface {}"}, reflect.TypeOf(v).String()) {
+							if parent != nil {
+								refKey = fmt.Sprintf("%s.%s.%s", *parent, key, k)
+							} else {
+								refKey = fmt.Sprintf("%s.%s", key, k)
+							}
+
+							s.FlattenKeys(v, seed, &refKey)
+						} else {
+							if k == "id" {
+								refKey = fmt.Sprintf("%sId", key)
+							} else {
+								refKey = fmt.Sprintf("%s.%s", key, k)
+							}
+
+							seed[refKey] = v
+						}
+					}
+				}
+			} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(value).String()) {
+				if parent != nil {
+					refKey = fmt.Sprintf("%s.%s", *parent, key)
+				} else {
+					refKey = key
+				}
+
+				handleArrayValues(value, seed, &refKey)
+			} else {
+				if parent != nil {
+					refKey = fmt.Sprintf("%s.%s", *parent, key)
+				} else {
+					refKey = key
+				}
+
+				seed[refKey] = value
+			}
+		}
+	} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(rawData).String()) && rawData != nil {
+		handleArrayValues(rawData, seed, parent)
+	}
+
+	return seed
+}
+
 func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map[string]any {
 	if seed == nil {
 		seed = map[string]any{}

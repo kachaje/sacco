@@ -9,6 +9,68 @@ import (
 	"testing"
 )
 
+func TestFlattenKeys(t *testing.T) {
+	data := map[string]any{
+		"child": map[string]any{
+			"child1Id":     "2",
+			"child1_1Id":   "3",
+			"child1_1_1Id": "4",
+			"child1_1_2": []map[string]any{
+				{
+					"child1_1_2Id": "5",
+				},
+				{
+					"child1_1_2Id": "6",
+				},
+			},
+			"child1_1_3Id":   "7",
+			"child1_1_3_1Id": "8",
+			"child2": []map[string]any{
+				{
+					"child2Id":   "9",
+					"child2_1Id": "10",
+					"child2_1_1": []map[string]any{
+						{
+							"child2_1_1Id": "11",
+						},
+						{
+							"child2_1_1Id": "12",
+						},
+					},
+				},
+				{
+					"child2Id": "13",
+				},
+			},
+			"id": "1",
+		},
+	}
+
+	target := map[string]any{
+		"childId":                                  "1",
+		"child.child1Id":                           "2",
+		"child.child1_1Id":                         "3",
+		"child.child1_1_1Id":                       "4",
+		"child.child1_1_2.0.child1_1_2Id":          "5",
+		"child.child1_1_2.1.child1_1_2Id":          "6",
+		"child.child1_1_3Id":                       "7",
+		"child.child1_1_3_1Id":                     "8",
+		"child.child2.0.child2Id":                  "9",
+		"child.child2.0.child2_1Id":                "10",
+		"child.child2.0.child2_1_1.0.child2_1_1Id": "11",
+		"child.child2.0.child2_1_1.1.child2_1_1Id": "12",
+		"child.child2.1.child2Id":                  "13",
+	}
+
+	session := parser.NewSession(nil, nil, nil)
+
+	result := session.FlattenKeys(data, map[string]any{}, nil)
+
+	if !reflect.DeepEqual(target, result) {
+		t.Fatal("Test failed")
+	}
+}
+
 func TestLoadKeys(t *testing.T) {
 	data := map[string]any{
 		"id":    "1",
