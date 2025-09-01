@@ -121,7 +121,9 @@ func (d *Database) LoadModelChildren(model string, id int64) (map[string]any, er
 
 	maps.Copy(data, singleChidren)
 
-	return data, nil
+	return map[string]any{
+		model: data,
+	}, nil
 }
 
 func (d *Database) FullMemberRecord(phoneNumber string) (map[string]any, error) {
