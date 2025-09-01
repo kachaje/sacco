@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"reflect"
 	"slices"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -149,6 +151,53 @@ func (s *Session) FlattenKeys(rawData any, seed map[string]any, parent *string) 
 	}
 
 	return seed
+}
+
+func (s *Session) DecodeKey(keyPath string, data map[string]any) (any, bool) {
+	var currentMap any = data
+	keys := strings.Split(keyPath, ".")
+
+	for i, key := range keys {
+		var value map[string]any
+
+		if val, ok := currentMap.(map[string]any); ok {
+			value = val
+		} else if val, ok := currentMap.([]map[string]any); ok {
+			index, err := strconv.Atoi(key)
+			if err == nil {
+				currentMap = val[index]
+			}
+			continue
+		}
+
+		if val, ok := value[key]; ok {
+			if i == len(keys)-1 {
+				return val, true
+			}
+
+			if nestedMap, isMap := val.(map[string]any); isMap {
+				currentMap = nestedMap
+			} else if arrMap, isArr := val.([]map[string]any); isArr {
+				currentMap = arrMap
+			} else {
+				return nil, false
+			}
+		} else {
+			if strings.HasSuffix(key, "Id") {
+				rootKey := key[:len(key)-2]
+
+				if val, ok := value[rootKey].(map[string]any)["id"]; ok {
+					if i == len(keys)-1 {
+						return val, true
+					}
+				}
+			}
+
+			return nil, false
+		}
+	}
+
+	return nil, false
 }
 
 func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map[string]any {
