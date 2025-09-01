@@ -14,7 +14,7 @@ fields:
       - jobTitle
       - netPay
       - periodEmployedInMonths
-      - memberId
+      - memberLoanId
       - id
   "2":
     id: employment.2
@@ -23,8 +23,6 @@ fields:
     workflow: memberOccupationVerification
     targetKeys:
       - id
-      - memberId
-      - memberLoanId
       - memberOccupationId
       - jobVerified
       - grossVerified
