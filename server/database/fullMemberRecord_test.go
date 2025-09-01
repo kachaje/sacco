@@ -40,6 +40,8 @@ func TestLoadModelChildren(t *testing.T) {
 
 	payload, _ := json.MarshalIndent(result, "", "  ")
 
+	os.WriteFile(filepath.Join(".", "models", "fixtures", "sample.json"), payload, 0644)
+
 	target, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "sample.json"))
 	if err != nil {
 		t.Fatal(err)
@@ -65,6 +67,8 @@ func TestFullMemberRecord(t *testing.T) {
 	}
 
 	payload, _ := json.MarshalIndent(result, "", "  ")
+
+	_ = payload
 
 	target, err := os.ReadFile(filepath.Join(".", "models", "fixtures", "sample.json"))
 	if err != nil {
