@@ -293,6 +293,24 @@ func TestGetSkippedRefIds(t *testing.T) {
 	}
 }
 
+func TestFlattenMap(t *testing.T) {
+	content, err := os.ReadFile(filepath.Join("..", "server", "database", "models", "fixtures", "sample.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := utils.LoadYaml(string(content))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := utils.FlattenMap(data)
+
+	payload, _ := json.MarshalIndent(result, "", "  ")
+
+	fmt.Println(string(payload))
+}
+
 func TestLoadRelations(t *testing.T) {
 	content, err := os.ReadFile(filepath.Join("..", "server", "database", "models.yml"))
 	if err != nil {
