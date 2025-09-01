@@ -1,14 +1,8 @@
 package parser
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
-	"regexp"
 	"sacco/server/database"
-	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -204,77 +198,6 @@ func (s *Session) ReadFromMap(key string, retries int) any {
 	defer s.Mu.Unlock()
 
 	return s.ActiveData[key]
-}
-
-func (s *Session) LoadCacheData(phoneNumber, cacheFolder string) error {
-	sessionFolder := filepath.Join(cacheFolder, phoneNumber)
-
-	_, err := os.Stat(sessionFolder)
-	if !os.IsNotExist(err) {
-		os.MkdirAll(sessionFolder, 0755)
-	}
-
-	arraysModels := []string{}
-
-	for _, group := range database.ArrayChildren {
-		arraysModels = append(arraysModels, group...)
-	}
-
-	err = filepath.WalkDir(sessionFolder, func(fullpath string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if d.IsDir() {
-			return nil
-		}
-
-		filename := filepath.Base(fullpath)
-
-		re := regexp.MustCompile(`\.[a-z0-9-]+\.json$`)
-
-		if !re.MatchString(filename) {
-			return nil
-		}
-
-		model := re.ReplaceAllLiteralString(filename, "")
-
-		content, err := os.ReadFile(fullpath)
-		if err != nil {
-			return err
-		}
-
-		if slices.Contains(arraysModels, model) {
-			data := []map[string]any{}
-			err = json.Unmarshal(content, &data)
-			if err != nil {
-				data := map[string]any{}
-				err = json.Unmarshal(content, &data)
-				if err != nil {
-					return err
-				}
-				s.WriteToMap(model, data, 0)
-			} else {
-				s.WriteToMap(model, data, 0)
-			}
-		} else {
-			data := map[string]any{}
-			err = json.Unmarshal(content, &data)
-			if err != nil {
-				return err
-			}
-
-			s.WriteToMap(model, data, 0)
-		}
-
-		return nil
-	})
-	if err != nil {
-		return err
-	}
-
-	s.UpdateSessionFlags()
-
-	return nil
 }
 
 func (s *Session) ClearSession() {

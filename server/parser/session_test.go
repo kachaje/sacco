@@ -29,28 +29,3 @@ func TestUpdateSessionFlags(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-
-func TestLoadMemberCache(t *testing.T) {
-	session := parser.NewSession(nil, nil, nil)
-
-	err := session.LoadCacheData("0999888777", filepath.Join("..", "database", "models", "fixtures", "cache"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if !session.AddedModels["memberContact"] {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberContact"])
-	}
-
-	if !session.AddedModels["memberNominee"] {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberNominee"])
-	}
-
-	if !session.AddedModels["memberBeneficiary"] {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberBeneficiary"])
-	}
-
-	if !session.AddedModels["memberOccupation"] {
-		t.Fatalf("Test failed. Expected: true; Actual: %v", session.AddedModels["memberOccupation"])
-	}
-}
