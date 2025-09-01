@@ -2,8 +2,7 @@ package parser
 
 import (
 	"fmt"
-	"sacco/server/database"
-	"strconv"
+	"reflect"
 	"sync"
 	"time"
 )
@@ -67,72 +66,52 @@ func NewSession(
 	return s
 }
 
+func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map[string]any {
+	if seed == nil {
+		seed = map[string]any{}
+	}
+
+	if data, ok := rawData.(map[string]any); ok {
+		for key, value := range data {
+			if key == "id" {
+				if parent != nil {
+					seed[fmt.Sprintf("%vId", *parent)] = fmt.Sprintf("%v", value)
+				}
+			} else if reflect.TypeOf(value).String() == "map[string]interface {}" && value != nil {
+				if val, ok := value.(map[string]any); ok {
+					for k, v := range val {
+						if k == "id" {
+							seed[fmt.Sprintf("%vId", key)] = fmt.Sprintf("%v", v)
+						} else {
+							seed = s.LoadKeys(v, seed, &k)
+						}
+					}
+				}
+			}
+		}
+	} else if reflect.TypeOf(rawData).String() == "[]map[string]interface {}" && rawData != nil {
+		if val, ok := rawData.([]map[string]any); ok {
+			if parent != nil {
+				seed[*parent] = []map[string]any{}
+
+				for _, row := range val {
+					result := s.LoadKeys(row, map[string]any{}, parent)
+
+					if len(result) > 0 {
+						seed[*parent] = append(seed[*parent].([]map[string]any), result)
+					}
+				}
+			}
+		}
+	}
+
+	return seed
+}
+
 func (s *Session) UpdateSessionFlags() error {
-	for _, group := range database.SingleChildren {
-		for _, model := range group {
-			data := s.ReadFromMap(model, 0)
-			if data != nil {
-				if val, ok := data.(map[string]any); ok && len(val) > 0 {
-					s.AddedModels[model] = true
+	data := s.LoadKeys(s.ActiveData, map[string]any{}, nil)
 
-					if s.GlobalIds == nil {
-						s.GlobalIds = map[string]int64{}
-					}
-
-					id, err := strconv.ParseInt(fmt.Sprintf("%v", val["id"]), 10, 64)
-					if err == nil {
-						s.GlobalIds[fmt.Sprintf("%sId", model)] = id
-					}
-				}
-			}
-		}
-	}
-
-	for _, group := range database.ArrayChildren {
-		for _, model := range group {
-			data := s.ReadFromMap(model, 0)
-			if data != nil {
-				if val, ok := data.([]any); ok && len(val) > 0 {
-					s.AddedModels[model] = true
-
-					if len(val) > 0 {
-						if v, ok := val[0].(map[string]any); ok {
-							id, err := strconv.ParseInt(fmt.Sprintf("%v", v), 10, 64)
-							if err == nil {
-								s.GlobalIds[fmt.Sprintf("%sId", model)] = id
-							}
-						}
-					}
-				} else if val, ok := data.([]map[string]any); ok && len(val) > 0 {
-					s.AddedModels[model] = true
-
-					if len(val) > 0 {
-						id, err := strconv.ParseInt(fmt.Sprintf("%v", val[0]), 10, 64)
-						if err == nil {
-							s.GlobalIds[fmt.Sprintf("%sId", model)] = id
-						}
-					}
-				} else if val, ok := data.(map[string]any); ok && len(val) > 0 {
-					s.AddedModels[model] = true
-
-					id, err := strconv.ParseInt(fmt.Sprintf("%v", val["id"]), 10, 64)
-					if err == nil {
-						s.GlobalIds[fmt.Sprintf("%sId", model)] = id
-					}
-				}
-			}
-		}
-	}
-
-	idData := s.ReadFromMap("id", 0)
-	if idData != nil {
-		s.AddedModels["member"] = true
-
-		id, err := strconv.ParseInt(fmt.Sprintf("%v", idData), 10, 64)
-		if err == nil {
-			s.GlobalIds["memberId"] = id
-		}
-	}
+	fmt.Println(data)
 
 	return nil
 }
