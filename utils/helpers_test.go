@@ -292,3 +292,21 @@ func TestGetSkippedRefIds(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 }
+
+func TestLoadRelations(t *testing.T) {
+	content, err := os.ReadFile(filepath.Join("..", "server", "database", "models.yml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := utils.LoadYaml(string(content))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := utils.LoadRelations(data)
+
+	payload, _ := json.MarshalIndent(result, "", "  ")
+
+	fmt.Println(string(payload))
+}

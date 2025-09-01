@@ -385,3 +385,44 @@ func GetMapDiff(map1, map2 map[string]any) DiffResult {
 
 	return diff
 }
+
+func LoadRelations(data map[string]any) map[string]any {
+	parents := map[string]any{}
+
+	checkParent := func(v []any, key string) {
+		for _, m := range v {
+			if kc, ok := m.(string); ok {
+				if _, ok := parents[kc]; !ok {
+					parents[kc] = map[string]any{}
+				}
+
+				parents[kc].(map[string]any)["parent"] = key
+			}
+		}
+	}
+
+	for key, value := range data {
+		if val, ok := value.(map[string]any); ok {
+			if _, ok := parents[key]; !ok {
+				parents[key] = map[string]any{}
+			}
+
+			if hasMany, ok := val["hasMany"]; ok {
+				parents[key].(map[string]any)["hasMany"] = hasMany
+
+				if v, ok := hasMany.([]any); ok {
+					checkParent(v, key)
+				}
+			}
+			if hasOne, ok := val["hasOne"]; ok {
+				parents[key].(map[string]any)["hasOne"] = hasOne
+
+				if v, ok := hasOne.([]any); ok {
+					checkParent(v, key)
+				}
+			}
+		}
+	}
+
+	return parents
+}

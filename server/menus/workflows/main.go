@@ -115,6 +115,10 @@ func buildWorkflows() {
 		log.Panic(err)
 	}
 
+	immediateParents := utils.LoadRelations(data)
+
+	_ = immediateParents
+
 	relationships := map[string]any{}
 	parentModels := []string{}
 	floatFields := []string{}
