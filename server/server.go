@@ -62,7 +62,7 @@ func ussdHandler(w http.ResponseWriter, r *http.Request) {
 	go func() {
 		_, err := session.RefreshSession()
 		if err == nil {
-			session.UpdateSessionFlags()
+			session.UpdateSessionFlags(nil)
 		} else {
 			if !strings.HasSuffix(err.Error(), "sql: no rows in result set") {
 				log.Println(err)

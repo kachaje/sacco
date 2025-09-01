@@ -127,7 +127,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 	session := parser.NewSession(nil, nil, nil)
 	session.UpdateActiveData(data, 0)
 
-	err = session.UpdateSessionFlags()
+	err = session.UpdateSessionFlags(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -142,7 +142,7 @@ func TestUpdateSessionFlags(t *testing.T) {
 			},
 		},
 		"memberContactId": "1",
-		"id":        "1",
+		"memberId":        "1",
 		"memberLoan": []map[string]any{
 			{
 				"memberBusinessId": "1",

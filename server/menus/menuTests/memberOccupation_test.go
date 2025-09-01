@@ -50,7 +50,7 @@ func TestMemberOccupation(t *testing.T) {
 			"memberOccupation": data,
 		}, 0)
 
-		session.UpdateSessionFlags()
+		session.UpdateSessionFlags(nil)
 
 		return nil
 	}

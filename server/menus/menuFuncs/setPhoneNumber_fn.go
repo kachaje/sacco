@@ -50,7 +50,7 @@ func SetPhoneNumber(
 
 			_, err := session.RefreshSession()
 			if err == nil {
-				session.UpdateSessionFlags()
+				session.UpdateSessionFlags(nil)
 			}
 
 			text = ""

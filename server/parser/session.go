@@ -137,8 +137,14 @@ func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map
 	return seed
 }
 
-func (s *Session) UpdateSessionFlags() error {
-	data := s.LoadKeys(s.ActiveData, map[string]any{}, nil)
+func (s *Session) UpdateSessionFlags(model *string) error {
+	if model == nil {
+		defaultModel := "member"
+
+		model = &defaultModel
+	}
+
+	data := s.LoadKeys(s.ActiveData, map[string]any{}, model)
 
 	s.GlobalIds = data
 

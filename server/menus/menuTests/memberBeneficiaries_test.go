@@ -82,7 +82,7 @@ func TestMemberBeneficiaries(t *testing.T) {
 			"memberBeneficiary": localData,
 		}, 0)
 
-		session.UpdateSessionFlags()
+		session.UpdateSessionFlags(nil)
 
 		return nil
 	}
