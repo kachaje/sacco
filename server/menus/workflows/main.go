@@ -115,14 +115,29 @@ func buildWorkflows() {
 		log.Panic(err)
 	}
 
-	immediateParents := utils.LoadRelations(data)
+	modelsMap := []string{}
 
-	_ = immediateParents
+	immediateParents := map[string]string{
+		"memberBeneficiaryId":                "member.memberBeneficiary.0.id",
+		"memberBusinessId":                   "member.memberLoan.0.memberBusiness.id",
+		"memberContactId":                    "member.memberContact.id",
+		"memberId":                           "member.id",
+		"memberLastYearBusinessHistoryId":    "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.id",
+		"memberLoanApprovalId":               "member.memberLoan.0.memberLoanApproval.id",
+		"memberLoanId":                       "member.memberLoan.0.id",
+		"memberNextYearBusinessProjectionId": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.id",
+		"memberNomineeId":                    "member.memberNominee.id",
+		"memberOccupationId":                 "member.memberLoan.0.memberOccupation.id",
+		"memberOccupationVerificationId":     "member.memberLoan.0.memberOccupation.memberOccupationVerification.id",
+	}
+
+	for key, value := range immediateParents {
+		modelsMap = append(modelsMap, fmt.Sprintf(`"%s": "%s",`, key, value))
+	}
 
 	relationships := map[string]any{}
 	parentModels := []string{}
 	floatFields := []string{}
-	modelsMap := []string{}
 
 	for model := range data {
 		targetFile := filepath.Join(workingFolder, fmt.Sprintf("%s.yml", model))
