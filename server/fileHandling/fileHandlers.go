@@ -49,7 +49,7 @@ func SaveModelData(data any, model, phoneNumber *string,
 
 				if sessions[*phoneNumber] != nil {
 					if sessions[*phoneNumber].GlobalIds == nil {
-						sessions[*phoneNumber].GlobalIds = map[string]int64{}
+						sessions[*phoneNumber].GlobalIds = map[string]any{}
 					}
 					if sessions[*phoneNumber].AddedModels == nil {
 						sessions[*phoneNumber].AddedModels = map[string]bool{}
@@ -58,7 +58,7 @@ func SaveModelData(data any, model, phoneNumber *string,
 					if database.ParentModels[*model] != nil {
 						for _, value := range database.ParentModels[*model] {
 							key := fmt.Sprintf("%sId", value)
-							if sessions[*phoneNumber].GlobalIds[key] > 0 {
+							if sessions[*phoneNumber].GlobalIds[key] != nil {
 								modelData[key] = sessions[*phoneNumber].GlobalIds[key]
 							}
 						}

@@ -1,9 +1,9 @@
 package parser
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
+	"slices"
 	"sync"
 	"time"
 )
@@ -17,7 +17,7 @@ type Session struct {
 	PhoneNumber        string
 	CurrentPhoneNumber string
 
-	GlobalIds map[string]int64
+	GlobalIds map[string]any
 
 	WorkflowsMapping map[string]*WorkFlow
 
@@ -54,7 +54,7 @@ func NewSession(
 		WorkflowsMapping: map[string]*WorkFlow{},
 		Cache:            map[string]string{},
 		LastPrompt:       "",
-		GlobalIds:        map[string]int64{},
+		GlobalIds:        map[string]any{},
 	}
 
 	if phoneNumber != nil {
@@ -98,17 +98,27 @@ func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map
 				}
 			}
 		}
-	} else if reflect.TypeOf(rawData).String() == "[]map[string]interface {}" && rawData != nil {
+	} else if slices.Contains([]string{"[]map[string]interface {}", "[]interface {}"}, reflect.TypeOf(rawData).String()) && rawData != nil {
+		rows := []map[string]any{}
+
 		if val, ok := rawData.([]map[string]any); ok {
-			if parent != nil {
-				seed[*parent] = []map[string]any{}
+			rows = val
+		} else if val, ok := rawData.([]any); ok {
+			for _, row := range val {
+				if v, ok := row.(map[string]any); ok {
+					rows = append(rows, v)
+				}
+			}
+		}
 
-				for _, row := range val {
-					result := s.LoadKeys(row, map[string]any{}, parent)
+		if parent != nil {
+			seed[*parent] = []map[string]any{}
 
-					if len(result) > 0 {
-						seed[*parent] = append(seed[*parent].([]map[string]any), result)
-					}
+			for _, row := range rows {
+				result := s.LoadKeys(row, map[string]any{}, parent)
+
+				if len(result) > 0 {
+					seed[*parent] = append(seed[*parent].([]map[string]any), result)
 				}
 			}
 		}
@@ -120,9 +130,7 @@ func (s *Session) LoadKeys(rawData any, seed map[string]any, parent *string) map
 func (s *Session) UpdateSessionFlags() error {
 	data := s.LoadKeys(s.ActiveData, map[string]any{}, nil)
 
-	payload, _ := json.MarshalIndent(data, "", "  ")
-
-	fmt.Println(string(payload))
+	s.GlobalIds = data
 
 	return nil
 }
@@ -194,7 +202,7 @@ func (s *Session) ClearSession() {
 	s.ActiveData = map[string]any{}
 	s.Data = map[string]string{}
 	s.AddedModels = map[string]bool{}
-	s.GlobalIds = map[string]int64{}
+	s.GlobalIds = map[string]any{}
 }
 
 func (s *Session) RefreshSession() (map[string]any, error) {

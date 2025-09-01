@@ -34,7 +34,7 @@ func TestMemberOccupation(t *testing.T) {
 
 	session.SessionUserRole = &role
 
-	session.GlobalIds = map[string]int64{
+	session.GlobalIds = map[string]any{
 		"memberId":     1,
 		"memberLoanId": 1,
 	}

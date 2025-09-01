@@ -266,7 +266,7 @@ func TestChildNestedModel(t *testing.T) {
 
 	session := &parser.Session{
 		AddedModels: map[string]bool{},
-		GlobalIds: map[string]int64{
+		GlobalIds: map[string]any{
 			"memberId":     16,
 			"memberLoanId": 13,
 		},
@@ -342,7 +342,7 @@ func TestArrayChildData(t *testing.T) {
 
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
-			GlobalIds:   map[string]int64{},
+			GlobalIds:   map[string]any{},
 			ActiveData:  map[string]any{},
 			AddedModels: map[string]bool{},
 		},

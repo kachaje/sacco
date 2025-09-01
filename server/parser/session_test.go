@@ -2,7 +2,6 @@ package parser_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -135,5 +134,40 @@ func TestUpdateSessionFlags(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	fmt.Println(session.GlobalIds)
+	target := map[string]any{
+		"memberBeneficiary": []map[string]any{
+			{
+				"memberBeneficiaryId": "1",
+			},
+			{
+				"memberBeneficiaryId": "2",
+			},
+		},
+		"memberContactId": "1",
+		"memberId":        "1",
+		"memberLoan": []map[string]any{
+			{
+				"memberBusinessId": "1",
+				"memberLastYearBusinessHistory": []map[string]any{
+					{
+						"memberLastYearBusinessHistoryId": "1",
+					},
+				},
+				"memberLoanApprovalId": "1",
+				"memberLoanId":         "1",
+				"memberNextYearBusinessProjection": []map[string]any{
+					{
+						"memberNextYearBusinessProjectionId": "1",
+					},
+				},
+				"memberOccupationId":             "1",
+				"memberOccupationVerificationId": "1",
+			},
+		},
+		"memberNomineeId": "1",
+	}
+
+	if !reflect.DeepEqual(target, session.GlobalIds) {
+		t.Fatal("Test failed")
+	}
 }

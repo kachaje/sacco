@@ -80,7 +80,7 @@ func TestNewMembership(t *testing.T) {
 
 	session.CurrentPhoneNumber = "0999888777"
 
-	session.GlobalIds = map[string]int64{
+	session.GlobalIds = map[string]any{
 		"memberId":     1,
 		"memberLoanId": 1,
 	}

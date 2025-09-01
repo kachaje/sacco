@@ -63,7 +63,7 @@ func TestRegistrationSubMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	session.GlobalIds = map[string]int64{
+	session.GlobalIds = map[string]any{
 		"memberId":     1,
 		"memberLoanId": 1,
 	}
@@ -93,7 +93,7 @@ func TestBusinessMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	session.GlobalIds = map[string]int64{
+	session.GlobalIds = map[string]any{
 		"memberId":         1,
 		"memberLoanId":     1,
 		"memberBusinessId": 1,
@@ -136,7 +136,7 @@ func TestEmployementMenu(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 
-	session.GlobalIds = map[string]int64{
+	session.GlobalIds = map[string]any{
 		"memberId":     1,
 		"memberLoanId": 1,
 	}
@@ -164,7 +164,7 @@ func TestLoanMenu(t *testing.T) {
 
 	session := parser.NewSession(nil, nil, nil)
 
-	session.GlobalIds = map[string]int64{
+	session.GlobalIds = map[string]any{
 		"memberId":         1,
 		"memberLoanId":     1,
 		"memberBusinessId": 1,
