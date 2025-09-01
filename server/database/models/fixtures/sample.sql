@@ -192,3 +192,28 @@ VALUES
     "me",
     "2025-08-30"
   );
+
+INSERT INTO
+  memberOccupation (
+    memberLoanId,
+    employerName,
+    grossPay,
+    netPay,
+    jobTitle,
+    employerAddress,
+    employerPhone,
+    periodEmployedInMonths,
+    highestQualification
+  )
+VALUES
+  (
+    1,
+    "SOBO",
+    100000,
+    90000,
+    "Driver",
+    "Kanengo",
+    "0999888474",
+    36,
+    "Secondary"
+  );

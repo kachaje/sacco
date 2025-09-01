@@ -1,13 +1,6 @@
 package database
 
 var (
-	AccountTransactionArrayChildren = []string{
-		"accountJournal",
-	}
-	MemberBusinessArrayChildren = []string{
-		"memberLastYearBusinessHistory",
-		"memberNextYearBusinessProjection",
-	}
 	MemberArrayChildren = []string{
 		"memberBeneficiary",
 		"memberShares",
@@ -16,6 +9,9 @@ var (
 	MemberSingleChildren = []string{
 		"memberContact",
 		"memberNominee",
+	}
+	MemberOccupationSingleChildren = []string{
+		"memberOccupationVerification",
 	}
 	AccountArrayChildren = []string{
 		"accountJournal",
@@ -30,96 +26,88 @@ var (
 		"memberOccupationVerification",
 		"memberLoanApproval",
 	}
-	MemberOccupationSingleChildren = []string{
-		"memberOccupationVerification",
+	AccountTransactionArrayChildren = []string{
+		"accountJournal",
+	}
+	MemberBusinessArrayChildren = []string{
+		"memberLastYearBusinessHistory",
+		"memberNextYearBusinessProjection",
 	}
 	SingleChildren = map[string][]string{
 		"MemberSingleChildren":           MemberSingleChildren,
-		"MemberLoanSingleChildren":       MemberLoanSingleChildren,
 		"MemberOccupationSingleChildren": MemberOccupationSingleChildren,
+		"MemberLoanSingleChildren":       MemberLoanSingleChildren,
 	}
 	ArrayChildren = map[string][]string{
-		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
-		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 		"MemberArrayChildren":             MemberArrayChildren,
 		"AccountArrayChildren":            AccountArrayChildren,
+		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
+		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
 	}
 	FloatFields = []string{
-		"value",
-		"value",
-		"amountRecommended",
-		"amountApproved",
+		"grossPay",
+		"netPay",
+		"periodEmployedInMonths",
+		"totalCosts",
+		"totalCostOfGoods",
+		"employeesWages",
+		"transport",
+		"loanInterest",
+		"rentals",
+		"otherCosts",
+		"netProfitLoss",
+		"financialYear",
+		"totalIncome",
+		"ownSalary",
+		"utilities",
+		"password",
 		"debit",
 		"credit",
-		"password",
-		"financialYear",
-		"totalIncome",
-		"totalCostOfGoods",
-		"employeesWages",
-		"ownSalary",
-		"loanInterest",
-		"rentals",
-		"otherCosts",
-		"transport",
-		"utilities",
-		"totalCosts",
-		"netProfitLoss",
-		"otherCosts",
-		"totalCostOfGoods",
-		"employeesWages",
-		"ownSalary",
-		"rentals",
-		"totalCosts",
-		"netProfitLoss",
-		"financialYear",
-		"totalIncome",
-		"transport",
-		"loanInterest",
-		"utilities",
+		"amountRecommended",
+		"amountApproved",
 		"numberOfShares",
 		"pricePerShare",
 		"loanAmount",
 		"repaymentPeriodInMonths",
-		"periodEmployedInMonths",
-		"grossPay",
-		"netPay",
+		"value",
+		"value",
+		"transport",
+		"loanInterest",
+		"utilities",
+		"rentals",
+		"otherCosts",
+		"financialYear",
+		"totalIncome",
+		"totalCosts",
+		"netProfitLoss",
+		"totalCostOfGoods",
+		"employeesWages",
+		"ownSalary",
 	}
 	ParentModels = map[string][]string{
-		"memberLoanSecurity": {
-			"memberLoan",
-		},
-		"accountTransaction": {
-			"account",
-		},
 		"memberContact": {
 			"member",
 		},
-		"memberBeneficiary": {
-			"member",
-		},
-		"memberBusiness": {
+		"memberOccupation": {
 			"memberLoan",
 		},
-		"memberLoanLiability": {
+		"memberNextYearBusinessProjection": {
+			"memberBusiness",
+		},
+		"accountJournal": {
+			"account",
+		},
+		"memberNominee": {
+			"member",
+		},
+		"memberLoanWitness": {
 			"memberLoan",
 		},
 		"memberLoanApproval": {
 			"memberLoan",
 		},
-		"accountJournal": {
-			"account",
-		},
-		"memberOccupationVerification": {
-			"memberOccupation",
-		},
-		"memberLoanWitness": {
-			"memberLoan",
-		},
-		"memberLastYearBusinessHistory": {
-			"memberBusiness",
-		},
-		"memberNextYearBusinessProjection": {
-			"memberBusiness",
+		"memberBeneficiary": {
+			"member",
 		},
 		"memberShares": {
 			"member",
@@ -127,11 +115,23 @@ var (
 		"memberLoan": {
 			"member",
 		},
-		"memberNominee": {
-			"member",
-		},
-		"memberOccupation": {
+		"memberLoanLiability": {
 			"memberLoan",
+		},
+		"memberLoanSecurity": {
+			"memberLoan",
+		},
+		"memberOccupationVerification": {
+			"memberOccupation",
+		},
+		"accountTransaction": {
+			"account",
+		},
+		"memberBusiness": {
+			"memberLoan",
+		},
+		"memberLastYearBusinessHistory": {
+			"memberBusiness",
 		},
 	}
 )
