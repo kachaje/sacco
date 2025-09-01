@@ -231,7 +231,7 @@ func (m *Menus) populateMenus() error {
 								}
 
 								if len(parentIds) > 0 {
-									m.LabelWorkflow[group].(map[string]any)[value].(map[string]any)["parentsIds"] = parentIds
+									m.LabelWorkflow[group].(map[string]any)[value].(map[string]any)["parentIds"] = parentIds
 								}
 							}
 						}
@@ -525,31 +525,36 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 							suffix = "(*)"
 						}
 
-						if m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentsIds"] != nil {
+						if m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentIds"] != nil {
 							found := true
 
-							if val, ok := m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentsIds"].([]any); ok {
+							checkIfExists := func(val []string) bool {
+								found := true
+
 								for _, key := range val {
-									if session == nil || session.GlobalIds == nil {
+									if session == nil || len(session.GlobalIds) <= 0 {
 										found = false
 									} else {
-										found = session.GlobalIds[fmt.Sprintf("%v", key)] != 0
+										_, found = session.GlobalIds[fmt.Sprintf("%v", key)]
 									}
 									if !found {
 										break
 									}
 								}
-							} else if val, ok := m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentsIds"].([]string); ok {
+
+								return found
+							}
+
+							if val, ok := m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentIds"].([]any); ok {
+								vals := []string{}
+
 								for _, key := range val {
-									if session == nil || session.GlobalIds == nil {
-										found = false
-									} else {
-										found = session.GlobalIds[fmt.Sprintf("%v", key)] != 0
-									}
-									if !found {
-										break
-									}
+									vals = append(vals, fmt.Sprintf("%v", key))
 								}
+
+								found = checkIfExists(vals)
+							} else if val, ok := m.LabelWorkflow[menuName].(map[string]any)[value].(map[string]any)["parentIds"].([]string); ok {
+								found = checkIfExists(val)
 							}
 
 							if !found {
