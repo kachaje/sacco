@@ -324,7 +324,6 @@ memberLoan:
     - memberLoanLiability
     - memberLoanSecurity
     - memberLoanWitness
-    - memberOccupationVerification
     - memberLoanApproval
   belongsTo:
     - member

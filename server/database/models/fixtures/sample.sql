@@ -217,3 +217,13 @@ VALUES
     36,
     "Secondary"
   );
+
+INSERT INTO
+  memberOccupationVerification (
+    memberOccupationId,
+    jobVerified,
+    grossVerified,
+    netVerified
+  )
+VALUES
+  (1, "Yes", "Yes", "Yes");

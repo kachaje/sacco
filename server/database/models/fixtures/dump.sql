@@ -22,7 +22,7 @@ CREATE TABLE member (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
-INSERT INTO member VALUES(1,'Mary','Banda','','Female','Miss','Single','1999-09-01','DHFYR8475','ESCOM','29383746','','','09999999999',NULL,NULL,NULL,1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO member VALUES(1,'Mary','Banda','','Female','Miss','Single','1999-09-01','DHFYR8475','ESCOM','29383746','','','09999999999',NULL,NULL,NULL,1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberContact (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
@@ -37,8 +37,8 @@ CREATE TABLE memberContact (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE
   );
-INSERT INTO memberContact VALUES(1,1,'P.O. Box 3200, Blantyre','Chilomoni, Blantrye',NULL,'Thumba','Kabudula','Lilongwe',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
-INSERT INTO memberContact VALUES(2,1,'P.O. Box 1000, Lilongwe','Area 2, Lilongwe',NULL,'Songwe','Kyungu','Karonga',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberContact VALUES(1,1,'P.O. Box 3200, Blantyre','Chilomoni, Blantrye',NULL,'Thumba','Kabudula','Lilongwe',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
+INSERT INTO memberContact VALUES(2,1,'P.O. Box 1000, Lilongwe','Area 2, Lilongwe',NULL,'Songwe','Kyungu','Karonga',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberNominee (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE memberNominee (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE
   );
-INSERT INTO memberNominee VALUES(1,1,'John Banda','0888888888','Same as member',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberNominee VALUES(1,1,'John Banda','0888888888','Same as member',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberOccupation (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberLoanId INTEGER NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE memberOccupation (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
-INSERT INTO memberOccupation VALUES(1,1,'SOBO','Kanengo','0999888474','Driver',36.0,100000.0,90000.0,'Secondary',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberOccupation VALUES(1,1,'SOBO','Kanengo','0999888474','Driver',36.0,100000.0,90000.0,'Secondary',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberBeneficiary (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
@@ -79,8 +79,8 @@ CREATE TABLE memberBeneficiary (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE
   );
-INSERT INTO memberBeneficiary VALUES(1,1,'Benefator 1',10.0,'P.O. Box 1',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
-INSERT INTO memberBeneficiary VALUES(2,1,'Benefator 2',8.0,'P.O. Box 2',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberBeneficiary VALUES(1,1,'Benefator 1',10.0,'P.O. Box 1',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
+INSERT INTO memberBeneficiary VALUES(2,1,'Benefator 2',8.0,'P.O. Box 2',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberBusiness (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberLoanId INTEGER NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE memberBusiness (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
-INSERT INTO memberBusiness VALUES(1,1,3.0,'Vendor','Vendors Galore','Mtandire',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberBusiness VALUES(1,1,3.0,'Vendor','Vendors Galore','Mtandire',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberLastYearBusinessHistory (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberBusinessId INTEGER NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE memberLastYearBusinessHistory (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE
   );
-INSERT INTO memberLastYearBusinessHistory VALUES(1,1,'2024',2000000.0,1000000.0,50000.0,100000.0,50000.0,0.0,35000.0,50000.0,0.0,1285000.0,715000.0,1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberLastYearBusinessHistory VALUES(1,1,'2024',2000000.0,1000000.0,50000.0,100000.0,50000.0,0.0,35000.0,50000.0,0.0,1285000.0,715000.0,1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberNextYearBusinessProjection (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberBusinessId INTEGER NOT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE memberNextYearBusinessProjection (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE
   );
-INSERT INTO memberNextYearBusinessProjection VALUES(1,1,'2025',2500000.0,1500000.0,50000.0,100000.0,50000.0,0.0,35000.0,50000.0,0.0,1285000.0,715000.0,1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberNextYearBusinessProjection VALUES(1,1,'2025',2500000.0,1500000.0,50000.0,100000.0,50000.0,0.0,35000.0,50000.0,0.0,1285000.0,715000.0,1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberShares (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
@@ -167,7 +167,7 @@ CREATE TABLE memberLoan (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE
   );
-INSERT INTO memberLoan VALUES(1,1,NULL,200000.0,12.0,'School fees','PERSONAL',1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberLoan VALUES(1,1,NULL,200000.0,12.0,'School fees','PERSONAL',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberLoanApproval (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberLoanId INTEGER NOT NULL,
@@ -184,7 +184,7 @@ CREATE TABLE memberLoanApproval (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
   );
-INSERT INTO memberLoanApproval VALUES(1,1,'APPROVED',200000.0,'me','2025-08-30',200000.0,'me','2025-08-30',NULL,1,'2025-09-01 06:48:29','2025-09-01 06:48:29');
+INSERT INTO memberLoanApproval VALUES(1,1,'APPROVED',200000.0,'me','2025-08-30',200000.0,'me','2025-08-30',NULL,1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE memberLoanLiability (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberLoanId INTEGER NOT NULL,
@@ -229,6 +229,7 @@ CREATE TABLE memberOccupationVerification (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberOccupationId) REFERENCES memberOccupation (id) ON DELETE CASCADE
   );
+INSERT INTO memberOccupationVerification VALUES(1,1,'Yes','Yes','Yes',1,'2025-09-01 07:15:08','2025-09-01 07:15:08');
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
@@ -239,7 +240,7 @@ CREATE TABLE user (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
-INSERT INTO user VALUES(1,'admin','$2a$10$Xo4x3KiCkB3xGKvaCI4Hn.Be95DEiaIT3lbvHx/kOmyx7IqGY6ILK','Admin User','admin',1,'2025-09-01 06:48:17','2025-09-01 06:48:17');
+INSERT INTO user VALUES(1,'admin','$2a$10$Xo4x3KiCkB3xGKvaCI4Hn.Be95DEiaIT3lbvHx/kOmyx7IqGY6ILK','Admin User','admin',1,'2025-09-01 07:15:03','2025-09-01 07:15:03');
 CREATE TABLE role (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
@@ -247,12 +248,12 @@ CREATE TABLE role (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
-INSERT INTO role VALUES(1,'Member',1,'2025-09-01 06:48:17','2025-09-01 06:48:17');
-INSERT INTO role VALUES(2,'Admin',1,'2025-09-01 06:48:17','2025-09-01 06:48:17');
-INSERT INTO role VALUES(3,'Cashier',1,'2025-09-01 06:48:17','2025-09-01 06:48:17');
-INSERT INTO role VALUES(4,'Accountant',1,'2025-09-01 06:48:17','2025-09-01 06:48:17');
-INSERT INTO role VALUES(5,'Loans Officer',1,'2025-09-01 06:48:17','2025-09-01 06:48:17');
-INSERT INTO role VALUES(6,'Manager',1,'2025-09-01 06:48:17','2025-09-01 06:48:17');
+INSERT INTO role VALUES(1,'Member',1,'2025-09-01 07:15:03','2025-09-01 07:15:03');
+INSERT INTO role VALUES(2,'Admin',1,'2025-09-01 07:15:03','2025-09-01 07:15:03');
+INSERT INTO role VALUES(3,'Cashier',1,'2025-09-01 07:15:03','2025-09-01 07:15:03');
+INSERT INTO role VALUES(4,'Accountant',1,'2025-09-01 07:15:03','2025-09-01 07:15:03');
+INSERT INTO role VALUES(5,'Loans Officer',1,'2025-09-01 07:15:03','2025-09-01 07:15:03');
+INSERT INTO role VALUES(6,'Manager',1,'2025-09-01 07:15:03','2025-09-01 07:15:03');
 CREATE TABLE account (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     accountName TEXT NOT NULL UNIQUE,
@@ -301,6 +302,7 @@ INSERT INTO sqlite_sequence VALUES('memberLastYearBusinessHistory',1);
 INSERT INTO sqlite_sequence VALUES('memberNextYearBusinessProjection',1);
 INSERT INTO sqlite_sequence VALUES('memberLoanApproval',1);
 INSERT INTO sqlite_sequence VALUES('memberOccupation',1);
+INSERT INTO sqlite_sequence VALUES('memberOccupationVerification',1);
 CREATE TRIGGER memberUpdated AFTER
 UPDATE ON member FOR EACH ROW BEGIN
 UPDATE member

@@ -95,6 +95,25 @@
         "memberLoanId": 1,
         "verifiedBy": "me"
       },
+      "memberOccupation": {
+        "employerAddress": "Kanengo",
+        "employerName": "SOBO",
+        "employerPhone": "0999888474",
+        "grossPay": 100000,
+        "highestQualification": "Secondary",
+        "id": 1,
+        "jobTitle": "Driver",
+        "memberLoanId": 1,
+        "memberOccupationVerification": {
+          "grossVerified": "Yes",
+          "id": 1,
+          "jobVerified": "Yes",
+          "memberOccupationId": 1,
+          "netVerified": "Yes"
+        },
+        "netPay": 90000,
+        "periodEmployedInMonths": 36
+      },
       "phoneNumber": null,
       "repaymentPeriodInMonths": 12
     }
