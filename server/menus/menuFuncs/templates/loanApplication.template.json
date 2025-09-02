@@ -1,0 +1,162 @@
+{
+  "1. OFFICIAL DETAILS": {
+    "level": "root",
+    "label": "INDIVIDUAL LOAN APPLICATION FORM",
+    "data": {
+      "memberIdNumber": {
+        "order": 1,
+        "label": "Member ID No.",
+        "cachQuery": "member.memberIdNumber"
+      },
+      "loanNumber": {
+        "order": 2,
+        "label": "Loan Number"
+      },
+      "employerNumber": {
+        "order": 3,
+        "label": "Employment Number"
+      }
+    }
+  },
+  "A. PERSONAL INFORMATION": {
+    "level": "root",
+    "data": {
+      "lastName": {
+        "order": 1,
+        "label": "Surname",
+        "cachQuery": "member.lastName"
+      },
+      "firstName": {
+        "order": 2,
+        "label": "First Name",
+        "cachQuery": "member.firstName"
+      },
+      "title": {
+        "order": 3,
+        "label": "Title",
+        "cachQuery": "member.title"
+      },
+      "dateOfBirth": {
+        "order": 4,
+        "label": "Age",
+        "cachQuery": "member.dateOfBirth",
+        "formula": "DATE_DIFF_YEARS({{TODAY}}-{{dateOfBirth}})"
+      },
+      "gender": {
+        "order": 5,
+        "label": "Gender",
+        "cachQuery": "member.gender"
+      },
+      "residentialAddress": {
+        "order": 6,
+        "label": "Physical Address",
+        "cachQuery": "member.memberContact.residentialAddress"
+      },
+      "postalAddress": {
+        "order": 7,
+        "label": "Mailing Address",
+        "cachQuery": "member.memberContact.postalAddress"
+      },
+      "homeVillage": {
+        "order": 8,
+        "label": "Home Village",
+        "cachQuery": "member.memberContact.homeVillage"
+      },
+      "homeTraditionalAuthority": {
+        "order": 9,
+        "label": "Home T/A",
+        "cachQuery": "member.memberContact.homeTraditionalAuthority"
+      },
+      "homeDistrict": {
+        "order": 10,
+        "label": "Home District",
+        "cachQuery": "member.memberContact.homeDistrict"
+      },
+      "phoneNumber": {
+        "order": 11,
+        "label": "Phone Number",
+        "cachQuery": "member.phoneNumber"
+      },
+      "email": {
+        "order": 12,
+        "label": "Email",
+        "cachQuery": "member.memberContact.email"
+      }
+    }
+  },
+  "B. TYPE OF LOAN": {
+    "level": "root",
+    "data": {
+      "loanType": {
+        "order": 1,
+        "label": "Loan Type",
+        "cachQuery": "member.memberLoan.0.loanType"
+      }
+    }
+  },
+  "C. LOAN INFORMATION": {
+    "level": "root",
+    "data": {
+      "loanAmount": {
+        "order": 1,
+        "label": "Loan Amount",
+        "cachQuery": "member.memberLoan.0.loanAmount"
+      },
+      "loanPurpose": {
+        "order": 2,
+        "label": "Purpose of Loan",
+        "cachQuery": "member.memberLoan.0.loanPurpose"
+      },
+      "repaymentPeriodInMonths": {
+        "order": 3,
+        "label": "Repayment Period (months)",
+        "cachQuery": "member.memberLoan.0.repaymentPeriodInMonths"
+      }
+    }
+  },
+  "D. EMPLOYMENT INFORMATION": {
+    "level": "root",
+    "data": {
+      "employerName": {
+        "order": 1,
+        "label": "Name of Employer",
+        "cachQuery": "member.memberLoan.0.memberOccupation.employerName"
+      },
+      "employerAddress": {
+        "order": 2,
+        "label": "Employer's Address",
+        "cachQuery": "member.memberLoan.0.memberOccupation.employerAddress"
+      },
+      "jobTitle": {
+        "order": 3,
+        "label": "Job Title",
+        "cachQuery": "member.memberLoan.0.memberOccupation.jobTitle"
+      },
+      "jobVerified": {
+        "order": 4,
+        "label": "Job Verified",
+        "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.jobVerified"
+      },
+      "grossPay": {
+        "order": 5,
+        "label": "Gross Salary",
+        "cachQuery": "member.memberLoan.0.memberOccupation.grossPay"
+      },
+      "grossVerified": {
+        "order": 6,
+        "label": "Gross Verified",
+        "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.grossVerified"
+      },
+      "netPay": {
+        "order": 7,
+        "label": "Net Income",
+        "cachQuery": "member.memberLoan.0.memberOccupation.netPay"
+      },
+      "netVerified": {
+        "order": 8,
+        "label": "Net Verified",
+        "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.netVerified" 
+      }
+    }
+  }
+}
