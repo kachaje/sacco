@@ -36,6 +36,7 @@ type Menus struct {
 	) string
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
+	CacheQueries  map[string]string
 
 	mu sync.Mutex
 
@@ -96,6 +97,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 			*parser.Session,
 		) string{},
 		TargetKeys:    map[string][]string{},
+		CacheQueries:  map[string]string{},
 		LabelWorkflow: map[string]any{},
 		mu:            sync.Mutex{},
 

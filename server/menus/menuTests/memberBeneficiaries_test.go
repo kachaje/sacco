@@ -12,7 +12,7 @@ import (
 
 func TestMemberBeneficiaries(t *testing.T) {
 	t.Skip()
-
+	
 	var data map[string]any
 
 	refData := map[string]any{
@@ -39,8 +39,14 @@ func TestMemberBeneficiaries(t *testing.T) {
 	session.SessionUserRole = &role
 
 	session.GlobalIds = map[string]any{
-		"memberId":     1,
-		"memberLoanId": 1,
+		"memberId": map[string]any{
+			"key":   "member.id",
+			"value": "1",
+		},
+		"memberLoanId": map[string]any{
+			"key":   "member.memberLoan.0.id",
+			"value": "1",
+		},
 	}
 
 	menufuncs.Sessions[phoneNumber] = session
@@ -359,6 +365,32 @@ Summary
 
 	text = "0"
 
+	session.ActiveData = map[string]any{
+		"member.memberBeneficiary.0.contact":    "P.O. Box 1",
+		"member.memberBeneficiary.0.id":         1,
+		"member.memberBeneficiary.0.memberId":   1,
+		"member.memberBeneficiary.0.name":       "John Phiri",
+		"member.memberBeneficiary.0.percentage": 10,
+
+		"member.memberBeneficiary.1.contact":    "P.O. Box 2",
+		"member.memberBeneficiary.1.id":         2,
+		"member.memberBeneficiary.1.memberId":   1,
+		"member.memberBeneficiary.1.name":       "Peter Banda",
+		"member.memberBeneficiary.1.percentage": 8,
+
+		"member.memberBeneficiary.2.contact":    "P.O. Box 3",
+		"member.memberBeneficiary.2.id":         3,
+		"member.memberBeneficiary.2.memberId":   1,
+		"member.memberBeneficiary.2.name":       "Mirriam Jere",
+		"member.memberBeneficiary.2.percentage": 6,
+
+		"member.memberBeneficiary.3.contact":    "P.O. Box 4",
+		"member.memberBeneficiary.3.id":         4,
+		"member.memberBeneficiary.3.memberId":   1,
+		"member.memberBeneficiary.3.name":       "Bornface Harawa",
+		"member.memberBeneficiary.3.percentage": 4,
+	}
+
 	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
 	target = `
@@ -387,6 +419,8 @@ CON Choose Activity
 	text = "4"
 
 	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
+
+	fmt.Println(result)
 
 	target = `
 Name: (John Phiri)
