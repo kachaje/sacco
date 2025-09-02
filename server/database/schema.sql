@@ -16,7 +16,7 @@ CREATE TABLE
     phoneNumber TEXT NOT NULL,
     memberIdNumber TEXT,
     shortMemberId TEXT,
-    dateJoined TEXT,
+    dateJoined TEXT DEFAULT CURRENT_TIMESTAMP,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
