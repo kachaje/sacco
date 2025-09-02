@@ -10,6 +10,7 @@ import (
 	"sacco/server/database/models/model2workflow"
 	"sacco/utils"
 	"slices"
+	"sort"
 	"strings"
 )
 
@@ -198,6 +199,12 @@ func buildWorkflows() {
 			}
 		}
 	}
+
+	sort.Strings(script)
+	sort.Strings(singlesGroup)
+	sort.Strings(arraysGroup)
+	sort.Strings(floatFields)
+	sort.Strings(parentModels)
 
 	targetName := filepath.Join("..", "..", "database", "models.go")
 
