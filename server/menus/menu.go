@@ -36,7 +36,7 @@ type Menus struct {
 	) string
 	TargetKeys    map[string][]string
 	LabelWorkflow map[string]any
-	CacheQueries  map[string]string
+	CacheQueries  map[string]any
 
 	mu sync.Mutex
 
@@ -97,7 +97,7 @@ func NewMenus(devMode, demoMode *bool) *Menus {
 			*parser.Session,
 		) string{},
 		TargetKeys:    map[string][]string{},
-		CacheQueries:  map[string]string{},
+		CacheQueries:  map[string]any{},
 		LabelWorkflow: map[string]any{},
 		mu:            sync.Mutex{},
 
@@ -227,7 +227,9 @@ func (m *Menus) populateMenus() error {
 									}
 								}
 
-								fmt.Println("#########", v, id)
+								if menufuncs.WorkflowsData[v]["cacheQueries"] != nil {
+									m.CacheQueries[v] = menufuncs.WorkflowsData[v]["cacheQueries"]
+								}
 
 								m.LabelWorkflow[group].(map[string]any)[value] = map[string]any{
 									"model": v,
@@ -397,42 +399,15 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 		if session.ActiveData != nil {
 			if regexp.MustCompile(`^\d+$`).MatchString(phoneNumber) && session.WorkflowsMapping != nil &&
 				session.WorkflowsMapping[model] != nil {
-				if m.TargetKeys[workingMenu] != nil {
-					targetKeys := m.TargetKeys[workingMenu]
-
-					updateArrayRow := func(row map[string]any, i int) {
-						for key, value := range row {
-							localKey := fmt.Sprintf("%s%d", key, i+1)
-
-							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[model].Data[localKey] == nil {
-
-								session.WorkflowsMapping[model].Data[localKey] = fmt.Sprintf("%v", value)
-							}
-						}
-					}
-
-					if session.ActiveData[model] != nil {
-						if val, ok := session.ActiveData[model].(map[string]any); ok {
-							for key, value := range val {
-								if slices.Contains(targetKeys, key) && session.WorkflowsMapping[model].Data[key] == nil {
-									session.WorkflowsMapping[model].Data[key] = fmt.Sprintf("%v", value)
+				if m.TargetKeys[workingMenu] != nil && m.CacheQueries[model] != nil {
+					if cacheQueries, ok := m.CacheQueries[model].(map[string]any); ok {
+						for key, value := range cacheQueries {
+							if _, ok := session.WorkflowsMapping[model].Data[key]; !ok {
+								if vs, ok := value.(string); ok {
+									if val, ok := session.ActiveData[vs]; ok {
+										session.WorkflowsMapping[model].Data[key] = val
+									}
 								}
-							}
-						} else if val, ok := session.ActiveData[model].([]any); ok {
-							for i, row := range val {
-								if rowVal, ok := row.(map[string]any); ok {
-									updateArrayRow(rowVal, i)
-								}
-							}
-						} else if val, ok := session.ActiveData[model].([]map[string]any); ok {
-							for i, row := range val {
-								updateArrayRow(row, i)
-							}
-						}
-					} else {
-						for key, value := range session.ActiveData {
-							if slices.Contains(targetKeys, key) && session.WorkflowsMapping[model].Data[key] == nil {
-								session.WorkflowsMapping[model].Data[key] = fmt.Sprintf("%v", value)
 							}
 						}
 					}

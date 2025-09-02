@@ -11,8 +11,6 @@ import (
 )
 
 func TestMemberBeneficiaries(t *testing.T) {
-	t.Skip()
-	
 	var data map[string]any
 
 	refData := map[string]any{
@@ -420,8 +418,6 @@ CON Choose Activity
 
 	result = m.LoadMenu(session.CurrentMenu, session, phoneNumber, text, "")
 
-	fmt.Println(result)
-
 	target = `
 Name: (John Phiri)
 
@@ -681,10 +677,10 @@ CON Choose Activity
 		"name2":       "Peter Banda",
 		"name3":       "Mirriam Jere",
 		"name4":       "Bornface Harawa",
-		"percentage1": "10",
+		"percentage1": 10,
 		"percentage2": "20",
-		"percentage3": "6",
-		"percentage4": "4",
+		"percentage3": 6,
+		"percentage4": 4,
 	}
 
 	if !reflect.DeepEqual(data, refData) {
