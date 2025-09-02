@@ -87,6 +87,14 @@ func (s *Session) updateActiveData(data map[string]any, retries int) {
 	idsData := utils.FlattenMap(data, true)
 
 	s.GlobalIds = idsData
+
+	s.AddedModels = map[string]bool{}
+
+	for key := range idsData {
+		model := key[:len(key)-2]
+
+		s.AddedModels[model] = true
+	}
 }
 
 func (s *Session) WriteToMap(key string, value any, retries int) {
@@ -143,6 +151,8 @@ func (s *Session) RefreshSession() (map[string]any, error) {
 	if s.CurrentPhoneNumber != "" && s.QueryFn != nil {
 		data, err := s.QueryFn(s.CurrentPhoneNumber, s.SkipFields)
 		if err != nil {
+			s.updateActiveData(map[string]any{}, 0)
+
 			return nil, err
 		}
 
