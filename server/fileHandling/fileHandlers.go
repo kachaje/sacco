@@ -94,8 +94,6 @@ func SaveModelData(data any, model, phoneNumber *string,
 			}
 
 			if sessions != nil && sessions[*phoneNumber] != nil {
-				sessions[*phoneNumber].UpdateActiveData(modelData, 0)
-
 				sessions[*phoneNumber].RefreshSession()
 			}
 		}

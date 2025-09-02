@@ -65,7 +65,7 @@ func NewSession(
 	return s
 }
 
-func (s *Session) UpdateActiveData(data map[string]any, retries int) {
+func (s *Session) updateActiveData(data map[string]any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
 	if s.Mu == nil {
@@ -76,7 +76,7 @@ func (s *Session) UpdateActiveData(data map[string]any, retries int) {
 	if !done {
 		if retries < 3 {
 			retries++
-			s.UpdateActiveData(data, retries)
+			s.updateActiveData(data, retries)
 			return
 		}
 	}
@@ -146,7 +146,7 @@ func (s *Session) RefreshSession() (map[string]any, error) {
 			return nil, err
 		}
 
-		s.UpdateActiveData(data, 0)
+		s.updateActiveData(data, 0)
 
 		return data, nil
 	}

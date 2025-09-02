@@ -80,9 +80,9 @@ func TestMemberBeneficiaries(t *testing.T) {
 			localData = append(localData, row)
 		}
 
-		session.UpdateActiveData(map[string]any{
-			"memberBeneficiary": localData,
-		}, 0)
+		_ = localData
+
+		session.RefreshSession()
 
 		return nil
 	}

@@ -94,7 +94,7 @@ func TestNewMembership(t *testing.T) {
 			data = val
 		}
 
-		session.UpdateActiveData(data, 0)
+		session.RefreshSession()
 
 		return nil
 	}

@@ -46,9 +46,7 @@ func TestMemberOccupation(t *testing.T) {
 			data = val
 		}
 
-		session.UpdateActiveData(map[string]any{
-			"memberOccupation": data,
-		}, 0)
+		session.RefreshSession()
 
 		return nil
 	}
