@@ -1,45 +1,45 @@
 cacheQueries:
-    accountId: account.accountJournal.0.accountId
-    accountTransactionId: account.accountJournal.0.accountTransactionId
-    credit: account.accountJournal.0.credit
-    debit: account.accountJournal.0.debit
-    id: account.accountJournal.0.id
+  accountId: account.accountJournal.0.accountId
+  accountTransactionId: account.accountJournal.0.accountTransactionId
+  credit: account.accountJournal.0.credit
+  debit: account.accountJournal.0.debit
+  id: account.accountJournal.0.id
 enterAccountId:
-    cacheQuery: account.accountJournal.0.accountId
-    hidden: true
-    inputIdentifier: accountId
-    type: hiddenField
+  cacheQuery: account.accountJournal.0.accountId
+  hidden: true
+  inputIdentifier: accountId
+  type: hiddenField
 enterAccountTransactionId:
-    cacheQuery: account.accountJournal.0.accountTransactionId
-    hidden: true
-    inputIdentifier: accountTransactionId
-    type: hiddenField
+  cacheQuery: account.accountJournal.0.accountTransactionId
+  hidden: true
+  inputIdentifier: accountTransactionId
+  type: hiddenField
 enterCredit:
-    cacheQuery: account.accountJournal.0.credit
-    inputIdentifier: credit
-    nextScreen: formSummary
-    order: 2
-    text:
-        en: Credit
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  cacheQuery: account.accountJournal.0.credit
+  inputIdentifier: credit
+  nextScreen: formSummary
+  order: 2
+  text:
+    en: Credit
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterDebit:
-    cacheQuery: account.accountJournal.0.debit
-    inputIdentifier: debit
-    nextScreen: enterCredit
-    order: 1
-    text:
-        en: Debit
-    type: inputScreen
-    validationRule: ^\d+\.*\d*$
+  cacheQuery: account.accountJournal.0.debit
+  inputIdentifier: debit
+  nextScreen: enterCredit
+  order: 1
+  text:
+    en: Debit
+  type: inputScreen
+  validationRule: ^\d+\.*\d*$
 enterId:
-    cacheQuery: account.accountJournal.0.id
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  cacheQuery: account.accountJournal.0.id
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterDebit
 model: accountJournal
 parentIds:
-    - accountId
+  - accountId

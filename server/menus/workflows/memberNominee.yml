@@ -1,46 +1,46 @@
 cacheQueries:
-    address: member.memberNominee.address
-    id: member.memberNominee.id
-    memberId: member.memberNominee.memberId
-    name: member.memberNominee.name
-    phoneNumber: member.memberNominee.phoneNumber
+  address: member.memberNominee.address
+  id: member.memberNominee.id
+  memberId: member.memberNominee.memberId
+  name: member.memberNominee.name
+  phoneNumber: member.memberNominee.phoneNumber
 enterAddress:
-    cacheQuery: member.memberNominee.address
-    inputIdentifier: address
-    nextScreen: formSummary
-    order: 3
-    text:
-        en: Address
-    type: inputScreen
+  cacheQuery: member.memberNominee.address
+  inputIdentifier: address
+  nextScreen: formSummary
+  order: 3
+  text:
+    en: Address
+  type: inputScreen
 enterId:
-    cacheQuery: member.memberNominee.id
-    hidden: true
-    inputIdentifier: id
-    type: hiddenField
+  cacheQuery: member.memberNominee.id
+  hidden: true
+  inputIdentifier: id
+  type: hiddenField
 enterMemberId:
-    cacheQuery: member.memberNominee.memberId
-    hidden: true
-    inputIdentifier: memberId
-    type: hiddenField
+  cacheQuery: member.memberNominee.memberId
+  hidden: true
+  inputIdentifier: memberId
+  type: hiddenField
 enterName:
-    cacheQuery: member.memberNominee.name
-    inputIdentifier: name
-    nextScreen: enterPhoneNumber
-    order: 1
-    text:
-        en: Name
-    type: inputScreen
+  cacheQuery: member.memberNominee.name
+  inputIdentifier: name
+  nextScreen: enterPhoneNumber
+  order: 1
+  text:
+    en: Name
+  type: inputScreen
 enterPhoneNumber:
-    cacheQuery: member.memberNominee.phoneNumber
-    inputIdentifier: phoneNumber
-    nextScreen: enterAddress
-    order: 2
-    text:
-        en: Phone Number
-    type: inputScreen
+  cacheQuery: member.memberNominee.phoneNumber
+  inputIdentifier: phoneNumber
+  nextScreen: enterAddress
+  order: 2
+  text:
+    en: Phone Number
+  type: inputScreen
 formSummary:
-    type: quitScreen
+  type: quitScreen
 initialScreen: enterName
 model: memberNominee
 parentIds:
-    - memberId
+  - memberId
