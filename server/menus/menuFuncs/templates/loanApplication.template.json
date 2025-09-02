@@ -127,35 +127,80 @@
         "label": "Employer's Address",
         "cachQuery": "member.memberLoan.0.memberOccupation.employerAddress"
       },
-      "jobTitle": {
+      "employerPhone": {
         "order": 3,
+        "label": "Employer's Phone Number",
+        "cachQuery": "member.memberLoan.0.memberOccupation.employerPhone"
+      },
+      "jobTitle": {
+        "order": 4,
         "label": "Job Title",
         "cachQuery": "member.memberLoan.0.memberOccupation.jobTitle"
       },
       "jobVerified": {
-        "order": 4,
+        "order": 5,
         "label": "Job Verified",
         "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.jobVerified"
       },
       "grossPay": {
-        "order": 5,
+        "order": 6,
         "label": "Gross Salary",
         "cachQuery": "member.memberLoan.0.memberOccupation.grossPay"
       },
       "grossVerified": {
-        "order": 6,
+        "order": 7,
         "label": "Gross Verified",
         "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.grossVerified"
       },
       "netPay": {
-        "order": 7,
+        "order": 8,
         "label": "Net Income",
         "cachQuery": "member.memberLoan.0.memberOccupation.netPay"
       },
       "netVerified": {
-        "order": 8,
+        "order": 9,
         "label": "Net Verified",
         "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.netVerified" 
+      }
+    }
+  },
+  "E BUSINESS INFORMATION": {
+    "level": "root",
+    "data": {
+      "businessName": {
+        "order": 1,
+        "label": "Name of Business",
+        "cachQuery": "member.memberLoan.0.memberBusiness.businessName"
+      },
+      "businessNature": {
+        "order": 2,
+        "label": "Nature of Business",
+        "cachQuery": "member.memberLoan.0.memberBusiness.businessNature"
+      },
+      "tradingArea": {
+        "order": 3,
+        "label": "Trading Area",
+        "cachQuery": "member.memberLoan.0.memberBusiness.tradingArea"
+      },
+      "yearsInBusiness": {
+        "order": 4,
+        "label": "Number of Years in Business",
+        "cachQuery": "member.memberLoan.0.memberBusiness.yearsInBusiness"
+      },
+      "businessVerified": {
+        "order": 5,
+        "label": "Business Verified",
+        "cachQuery": "member.memberLoan.0.memberBusiness.memberBusinessVerification.businessVerified"
+      },
+      "grossIncomeVerified": {
+        "order": 6,
+        "label": "Gross Income Verified",
+        "cachQuery": "member.memberLoan.0.memberBusiness.memberBusinessVerification.grossIncomeVerified"
+      },
+      "netIncomeVerified": {
+        "order": 7,
+        "label": "Net Income Verified",
+        "cachQuery": "member.memberLoan.0.memberBusiness.memberBusinessVerification.netIncomeVerified"
       }
     }
   }

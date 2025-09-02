@@ -396,6 +396,29 @@ WHERE
 END;
 
 CREATE TABLE
+  IF NOT EXISTS memberBusinessVerification (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    memberBusinessId INTEGER NOT NULL,
+    businessVerified TEXT NOT NULL CHECK (businessVerified IN ('Yes', 'No')) DEFAULT 'No',
+    grossIncomeVerified TEXT NOT NULL CHECK (grossIncomeVerified IN ('Yes', 'No')) DEFAULT 'No',
+    netIncomeVerified TEXT NOT NULL CHECK (netIncomeVerified IN ('Yes', 'No')) DEFAULT 'No',
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE
+  );
+
+CREATE TRIGGER IF NOT EXISTS businessVerificationUpdated AFTER
+UPDATE ON memberBusinessVerification FOR EACH ROW BEGIN
+UPDATE memberBusinessVerification
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
   IF NOT EXISTS user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
