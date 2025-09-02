@@ -1,4 +1,5 @@
 enterGrossVerified:
+    cacheQuery: member.memberLoan.0.memberOccupation.memberOccupationVerification.grossVerified
     inputIdentifier: grossVerified
     nextScreen: enterNetVerified
     options:
@@ -13,10 +14,12 @@ enterGrossVerified:
         en: Gross Verified
     type: inputScreen
 enterId:
+    cacheQuery: member.memberLoan.0.memberOccupation.memberOccupationVerification.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterJobVerified:
+    cacheQuery: member.memberLoan.0.memberOccupation.memberOccupationVerification.jobVerified
     inputIdentifier: jobVerified
     nextScreen: enterGrossVerified
     options:
@@ -31,10 +34,12 @@ enterJobVerified:
         en: Job Verified
     type: inputScreen
 enterMemberOccupationId:
+    cacheQuery: member.memberLoan.0.memberOccupation.memberOccupationVerification.memberOccupationId
     hidden: true
     inputIdentifier: memberOccupationId
     type: hiddenField
 enterNetVerified:
+    cacheQuery: member.memberLoan.0.memberOccupation.memberOccupationVerification.netVerified
     inputIdentifier: netVerified
     nextScreen: formSummary
     options:

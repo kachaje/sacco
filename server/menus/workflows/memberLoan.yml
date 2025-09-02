@@ -1,8 +1,10 @@
 enterId:
+    cacheQuery: member.memberLoan.0.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterLoanAmount:
+    cacheQuery: member.memberLoan.0.loanAmount
     inputIdentifier: loanAmount
     nextScreen: enterRepaymentPeriodInMonths
     order: 2
@@ -11,6 +13,7 @@ enterLoanAmount:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterLoanPurpose:
+    cacheQuery: member.memberLoan.0.loanPurpose
     inputIdentifier: loanPurpose
     nextScreen: enterLoanType
     order: 4
@@ -18,6 +21,7 @@ enterLoanPurpose:
         en: Loan Purpose
     type: inputScreen
 enterLoanType:
+    cacheQuery: member.memberLoan.0.loanType
     inputIdentifier: loanType
     nextScreen: formSummary
     options:
@@ -38,10 +42,12 @@ enterLoanType:
         en: Loan Type
     type: inputScreen
 enterMemberId:
+    cacheQuery: member.memberLoan.0.memberId
     hidden: true
     inputIdentifier: memberId
     type: hiddenField
 enterPhoneNumber:
+    cacheQuery: member.memberLoan.0.phoneNumber
     inputIdentifier: phoneNumber
     nextScreen: enterLoanAmount
     order: 1
@@ -49,6 +55,7 @@ enterPhoneNumber:
         en: Phone Number
     type: inputScreen
 enterRepaymentPeriodInMonths:
+    cacheQuery: member.memberLoan.0.repaymentPeriodInMonths
     inputIdentifier: repaymentPeriodInMonths
     nextScreen: enterLoanPurpose
     order: 3

@@ -1,4 +1,5 @@
 enterEmployeesWages:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.employeesWages
     inputIdentifier: employeesWages
     nextScreen: enterOwnSalary
     order: 4
@@ -7,6 +8,7 @@ enterEmployeesWages:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterFinancialYear:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.financialYear
     inputIdentifier: financialYear
     nextScreen: enterTotalIncome
     order: 1
@@ -15,10 +17,12 @@ enterFinancialYear:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterId:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterLoanInterest:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.loanInterest
     inputIdentifier: loanInterest
     nextScreen: enterUtilities
     order: 7
@@ -27,10 +31,12 @@ enterLoanInterest:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterMemberBusinessId:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.memberBusinessId
     hidden: true
     inputIdentifier: memberBusinessId
     type: hiddenField
 enterNetProfitLoss:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.netProfitLoss
     formula: DIFF({{totalIncome}},{{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
     inputIdentifier: netProfitLoss
     readOnly: true
@@ -38,6 +44,7 @@ enterNetProfitLoss:
         en: Net Profit Loss
     type: inputScreen
 enterOtherCosts:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.otherCosts
     inputIdentifier: otherCosts
     nextScreen: formSummary
     optional: true
@@ -47,6 +54,7 @@ enterOtherCosts:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterOwnSalary:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.ownSalary
     inputIdentifier: ownSalary
     nextScreen: enterTransport
     order: 5
@@ -55,6 +63,7 @@ enterOwnSalary:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterRentals:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.rentals
     inputIdentifier: rentals
     nextScreen: enterOtherCosts
     order: 9
@@ -63,6 +72,7 @@ enterRentals:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterTotalCostOfGoods:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCostOfGoods
     inputIdentifier: totalCostOfGoods
     nextScreen: enterEmployeesWages
     order: 3
@@ -71,6 +81,7 @@ enterTotalCostOfGoods:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterTotalCosts:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCosts
     formula: SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
     inputIdentifier: totalCosts
     readOnly: true
@@ -78,6 +89,7 @@ enterTotalCosts:
         en: Total Costs
     type: inputScreen
 enterTotalIncome:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalIncome
     inputIdentifier: totalIncome
     nextScreen: enterTotalCostOfGoods
     order: 2
@@ -86,6 +98,7 @@ enterTotalIncome:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterTransport:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.transport
     inputIdentifier: transport
     nextScreen: enterLoanInterest
     order: 6
@@ -94,6 +107,7 @@ enterTransport:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterUtilities:
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.utilities
     inputIdentifier: utilities
     nextScreen: enterRentals
     order: 8

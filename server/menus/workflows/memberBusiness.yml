@@ -1,4 +1,5 @@
 enterBusinessName:
+    cacheQuery: member.memberLoan.0.memberBusiness.businessName
     inputIdentifier: businessName
     nextScreen: enterTradingArea
     order: 3
@@ -6,6 +7,7 @@ enterBusinessName:
         en: Business Name
     type: inputScreen
 enterBusinessNature:
+    cacheQuery: member.memberLoan.0.memberBusiness.businessNature
     inputIdentifier: businessNature
     nextScreen: enterBusinessName
     order: 2
@@ -13,14 +15,17 @@ enterBusinessNature:
         en: Business Nature
     type: inputScreen
 enterId:
+    cacheQuery: member.memberLoan.0.memberBusiness.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterMemberLoanId:
+    cacheQuery: member.memberLoan.0.memberBusiness.memberLoanId
     hidden: true
     inputIdentifier: memberLoanId
     type: hiddenField
 enterTradingArea:
+    cacheQuery: member.memberLoan.0.memberBusiness.tradingArea
     inputIdentifier: tradingArea
     nextScreen: formSummary
     order: 4
@@ -28,6 +33,7 @@ enterTradingArea:
         en: Trading Area
     type: inputScreen
 enterYearsInBusiness:
+    cacheQuery: member.memberLoan.0.memberBusiness.yearsInBusiness
     inputIdentifier: yearsInBusiness
     nextScreen: enterBusinessNature
     order: 1

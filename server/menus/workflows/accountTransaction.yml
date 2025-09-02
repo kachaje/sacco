@@ -1,12 +1,15 @@
 enterAccountId:
+    cacheQuery: account.accountTransaction.0.accountId
     hidden: true
     inputIdentifier: accountId
     type: hiddenField
 enterAccountTransactionDate:
+    cacheQuery: account.accountTransaction.0.accountTransactionDate
     hidden: true
     inputIdentifier: accountTransactionDate
     type: hiddenField
 enterDescription:
+    cacheQuery: account.accountTransaction.0.description
     inputIdentifier: description
     nextScreen: formSummary
     order: 1
@@ -14,6 +17,7 @@ enterDescription:
         en: Description
     type: inputScreen
 enterId:
+    cacheQuery: account.accountTransaction.0.id
     hidden: true
     inputIdentifier: id
     type: hiddenField

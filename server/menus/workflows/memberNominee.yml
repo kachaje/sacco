@@ -1,4 +1,5 @@
 enterAddress:
+    cacheQuery: member.memberNominee.address
     inputIdentifier: address
     nextScreen: formSummary
     order: 3
@@ -6,14 +7,17 @@ enterAddress:
         en: Address
     type: inputScreen
 enterId:
+    cacheQuery: member.memberNominee.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterMemberId:
+    cacheQuery: member.memberNominee.memberId
     hidden: true
     inputIdentifier: memberId
     type: hiddenField
 enterName:
+    cacheQuery: member.memberNominee.name
     inputIdentifier: name
     nextScreen: enterPhoneNumber
     order: 1
@@ -21,6 +25,7 @@ enterName:
         en: Name
     type: inputScreen
 enterPhoneNumber:
+    cacheQuery: member.memberNominee.phoneNumber
     inputIdentifier: phoneNumber
     nextScreen: enterAddress
     order: 2

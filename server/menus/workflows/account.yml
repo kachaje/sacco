@@ -1,4 +1,5 @@
 enterAccountName:
+    cacheQuery: account.accountName
     inputIdentifier: accountName
     nextScreen: formSummary
     order: 1
@@ -6,6 +7,7 @@ enterAccountName:
         en: Account Name
     type: inputScreen
 enterId:
+    cacheQuery: account.id
     hidden: true
     inputIdentifier: id
     type: hiddenField

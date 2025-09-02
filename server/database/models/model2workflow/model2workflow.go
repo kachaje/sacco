@@ -3,6 +3,7 @@ package model2workflow
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"sacco/utils"
 )
 
@@ -75,11 +76,10 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 			}
 		}
 
-		for i := range count {
+		for index := range count {
 			suffix := ""
-
 			if count > 1 {
-				suffix = fmt.Sprint(i + 1)
+				suffix = fmt.Sprint(index + 1)
 			}
 
 			for _, row := range rawData["fields"].([]any) {
@@ -104,6 +104,28 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 
 							data[tag] = map[string]any{
 								"inputIdentifier": fmt.Sprintf("%s%v", key, suffix),
+							}
+
+							if rawData["rootQuery"] != nil {
+								rootQuery := fmt.Sprintf("%v", rawData["rootQuery"])
+
+								re := regexp.MustCompile(`(#\d+#)`)
+
+								matches := re.FindAllStringSubmatch(rootQuery, -1)
+
+								if len(matches) > 0 {
+									size := len(matches)
+
+									for i, val := range matches {
+										if i == size-1 {
+											rootQuery = regexp.MustCompile(val[0]).ReplaceAllLiteralString(rootQuery, fmt.Sprint(index))
+										} else {
+											rootQuery = regexp.MustCompile(val[0]).ReplaceAllLiteralString(rootQuery, "0")
+										}
+									}
+								}
+
+								data[tag].(map[string]any)["cacheQuery"] = fmt.Sprintf("%v.%s", rootQuery, key)
 							}
 
 							if value["readOnly"] != nil {

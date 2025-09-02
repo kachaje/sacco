@@ -1,8 +1,10 @@
 enterId:
+    cacheQuery: user.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterName:
+    cacheQuery: user.name
     inputIdentifier: name
     nextScreen: enterUsername
     order: 1
@@ -10,6 +12,7 @@ enterName:
         en: Name
     type: inputScreen
 enterPassword:
+    cacheQuery: user.password
     inputIdentifier: password
     nextScreen: enterRole
     order: 3
@@ -18,6 +21,7 @@ enterPassword:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterRole:
+    cacheQuery: user.role
     inputIdentifier: role
     nextScreen: formSummary
     options:
@@ -44,6 +48,7 @@ enterRole:
         en: Role
     type: inputScreen
 enterUsername:
+    cacheQuery: user.username
     inputIdentifier: username
     nextScreen: enterPassword
     order: 2

@@ -1,12 +1,15 @@
 enterAccountId:
+    cacheQuery: account.accountJournal.0.accountId
     hidden: true
     inputIdentifier: accountId
     type: hiddenField
 enterAccountTransactionId:
+    cacheQuery: account.accountJournal.0.accountTransactionId
     hidden: true
     inputIdentifier: accountTransactionId
     type: hiddenField
 enterCredit:
+    cacheQuery: account.accountJournal.0.credit
     inputIdentifier: credit
     nextScreen: formSummary
     order: 2
@@ -15,6 +18,7 @@ enterCredit:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterDebit:
+    cacheQuery: account.accountJournal.0.debit
     inputIdentifier: debit
     nextScreen: enterCredit
     order: 1
@@ -23,6 +27,7 @@ enterDebit:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterId:
+    cacheQuery: account.accountJournal.0.id
     hidden: true
     inputIdentifier: id
     type: hiddenField

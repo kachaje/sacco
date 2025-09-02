@@ -1,20 +1,25 @@
 enterActive1:
+    cacheQuery: member.memberBeneficiary.0.active
     hidden: true
     inputIdentifier: active1
     type: hiddenField
 enterActive2:
+    cacheQuery: member.memberBeneficiary.1.active
     hidden: true
     inputIdentifier: active2
     type: hiddenField
 enterActive3:
+    cacheQuery: member.memberBeneficiary.2.active
     hidden: true
     inputIdentifier: active3
     type: hiddenField
 enterActive4:
+    cacheQuery: member.memberBeneficiary.3.active
     hidden: true
     inputIdentifier: active4
     type: hiddenField
 enterContact1:
+    cacheQuery: member.memberBeneficiary.0.contact
     inputIdentifier: contact1
     nextScreen: enterName2
     order: 3
@@ -22,6 +27,7 @@ enterContact1:
         en: Contact
     type: inputScreen
 enterContact2:
+    cacheQuery: member.memberBeneficiary.1.contact
     inputIdentifier: contact2
     nextScreen: enterName3
     order: 6
@@ -29,6 +35,7 @@ enterContact2:
         en: Contact
     type: inputScreen
 enterContact3:
+    cacheQuery: member.memberBeneficiary.2.contact
     inputIdentifier: contact3
     nextScreen: enterName4
     order: 9
@@ -36,6 +43,7 @@ enterContact3:
         en: Contact
     type: inputScreen
 enterContact4:
+    cacheQuery: member.memberBeneficiary.3.contact
     inputIdentifier: contact4
     nextScreen: formSummary
     order: 12
@@ -43,38 +51,47 @@ enterContact4:
         en: Contact
     type: inputScreen
 enterId1:
+    cacheQuery: member.memberBeneficiary.0.id
     hidden: true
     inputIdentifier: id1
     type: hiddenField
 enterId2:
+    cacheQuery: member.memberBeneficiary.1.id
     hidden: true
     inputIdentifier: id2
     type: hiddenField
 enterId3:
+    cacheQuery: member.memberBeneficiary.2.id
     hidden: true
     inputIdentifier: id3
     type: hiddenField
 enterId4:
+    cacheQuery: member.memberBeneficiary.3.id
     hidden: true
     inputIdentifier: id4
     type: hiddenField
 enterMemberId1:
+    cacheQuery: member.memberBeneficiary.0.memberId
     hidden: true
     inputIdentifier: memberId1
     type: hiddenField
 enterMemberId2:
+    cacheQuery: member.memberBeneficiary.1.memberId
     hidden: true
     inputIdentifier: memberId2
     type: hiddenField
 enterMemberId3:
+    cacheQuery: member.memberBeneficiary.2.memberId
     hidden: true
     inputIdentifier: memberId3
     type: hiddenField
 enterMemberId4:
+    cacheQuery: member.memberBeneficiary.3.memberId
     hidden: true
     inputIdentifier: memberId4
     type: hiddenField
 enterName1:
+    cacheQuery: member.memberBeneficiary.0.name
     inputIdentifier: name1
     nextScreen: enterPercentage1
     order: 1
@@ -83,6 +100,7 @@ enterName1:
         en: Name
     type: inputScreen
 enterName2:
+    cacheQuery: member.memberBeneficiary.1.name
     inputIdentifier: name2
     nextScreen: enterPercentage2
     order: 4
@@ -91,6 +109,7 @@ enterName2:
         en: Name
     type: inputScreen
 enterName3:
+    cacheQuery: member.memberBeneficiary.2.name
     inputIdentifier: name3
     nextScreen: enterPercentage3
     order: 7
@@ -99,6 +118,7 @@ enterName3:
         en: Name
     type: inputScreen
 enterName4:
+    cacheQuery: member.memberBeneficiary.3.name
     inputIdentifier: name4
     nextScreen: enterPercentage4
     order: 10
@@ -107,6 +127,7 @@ enterName4:
         en: Name
     type: inputScreen
 enterPercentage1:
+    cacheQuery: member.memberBeneficiary.0.percentage
     inputIdentifier: percentage1
     nextScreen: enterContact1
     order: 2
@@ -114,6 +135,7 @@ enterPercentage1:
         en: Percentage
     type: inputScreen
 enterPercentage2:
+    cacheQuery: member.memberBeneficiary.1.percentage
     inputIdentifier: percentage2
     nextScreen: enterContact2
     order: 5
@@ -121,6 +143,7 @@ enterPercentage2:
         en: Percentage
     type: inputScreen
 enterPercentage3:
+    cacheQuery: member.memberBeneficiary.2.percentage
     inputIdentifier: percentage3
     nextScreen: enterContact3
     order: 8
@@ -128,6 +151,7 @@ enterPercentage3:
         en: Percentage
     type: inputScreen
 enterPercentage4:
+    cacheQuery: member.memberBeneficiary.3.percentage
     inputIdentifier: percentage4
     nextScreen: enterContact4
     order: 11

@@ -1,12 +1,15 @@
 enterId:
+    cacheQuery: member.memberShares.0.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterMemberId:
+    cacheQuery: member.memberShares.0.memberId
     hidden: true
     inputIdentifier: memberId
     type: hiddenField
 enterNumberOfShares:
+    cacheQuery: member.memberShares.0.numberOfShares
     inputIdentifier: numberOfShares
     nextScreen: enterPricePerShare
     order: 1
@@ -15,6 +18,7 @@ enterNumberOfShares:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterPricePerShare:
+    cacheQuery: member.memberShares.0.pricePerShare
     inputIdentifier: pricePerShare
     nextScreen: 'enterSharesType:'
     order: 2
@@ -23,6 +27,7 @@ enterPricePerShare:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 'enterSharesType:':
+    cacheQuery: 'member.memberShares.0.sharesType:'
     inputIdentifier: 'sharesType:'
     nextScreen: formSummary
     options:

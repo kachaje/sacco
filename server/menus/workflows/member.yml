@@ -1,8 +1,10 @@
 enterDateJoined:
+    cacheQuery: member.dateJoined
     hidden: true
     inputIdentifier: dateJoined
     type: hiddenField
 enterDateOfBirth:
+    cacheQuery: member.dateOfBirth
     inputIdentifier: dateOfBirth
     nextScreen: enterNationalId
     order: 8
@@ -11,10 +13,12 @@ enterDateOfBirth:
     type: inputScreen
     validationRule: ^\d{4}-\d{2}-\d{2}$
 enterFileNumber:
+    cacheQuery: member.fileNumber
     hidden: true
     inputIdentifier: fileNumber
     type: hiddenField
 enterFirstName:
+    cacheQuery: member.firstName
     inputIdentifier: firstName
     nextScreen: enterLastName
     order: 1
@@ -22,6 +26,7 @@ enterFirstName:
         en: First Name
     type: inputScreen
 enterGender:
+    cacheQuery: member.gender
     inputIdentifier: gender
     nextScreen: enterPhoneNumber
     options:
@@ -36,10 +41,12 @@ enterGender:
         en: Gender
     type: inputScreen
 enterId:
+    cacheQuery: member.id
     hidden: true
     inputIdentifier: id
     type: hiddenField
 enterLastName:
+    cacheQuery: member.lastName
     inputIdentifier: lastName
     nextScreen: enterOtherName
     order: 2
@@ -47,6 +54,7 @@ enterLastName:
         en: Last Name
     type: inputScreen
 enterMaritalStatus:
+    cacheQuery: member.maritalStatus
     inputIdentifier: maritalStatus
     nextScreen: enterDateOfBirth
     options:
@@ -67,10 +75,12 @@ enterMaritalStatus:
         en: Marital Status
     type: inputScreen
 enterMemberIdNumber:
+    cacheQuery: member.memberIdNumber
     hidden: true
     inputIdentifier: memberIdNumber
     type: hiddenField
 enterNationalId:
+    cacheQuery: member.nationalId
     inputIdentifier: nationalId
     nextScreen: enterUtilityBillType
     order: 9
@@ -78,10 +88,12 @@ enterNationalId:
         en: National Id
     type: inputScreen
 enterOldFileNumber:
+    cacheQuery: member.oldFileNumber
     hidden: true
     inputIdentifier: oldFileNumber
     type: hiddenField
 enterOtherName:
+    cacheQuery: member.otherName
     inputIdentifier: otherName
     nextScreen: enterGender
     optional: true
@@ -90,6 +102,7 @@ enterOtherName:
         en: Other Name
     type: inputScreen
 enterPhoneNumber:
+    cacheQuery: member.phoneNumber
     inputIdentifier: phoneNumber
     nextScreen: enterTitle
     order: 5
@@ -97,10 +110,12 @@ enterPhoneNumber:
         en: Phone Number
     type: inputScreen
 enterShortMemberId:
+    cacheQuery: member.shortMemberId
     hidden: true
     inputIdentifier: shortMemberId
     type: hiddenField
 enterTitle:
+    cacheQuery: member.title
     inputIdentifier: title
     nextScreen: enterMaritalStatus
     options:
@@ -130,6 +145,7 @@ enterTitle:
         en: Title
     type: inputScreen
 enterUtilityBillNumber:
+    cacheQuery: member.utilityBillNumber
     inputIdentifier: utilityBillNumber
     nextScreen: formSummary
     order: 11
@@ -137,6 +153,7 @@ enterUtilityBillNumber:
         en: Utility Bill Number
     type: inputScreen
 enterUtilityBillType:
+    cacheQuery: member.utilityBillType
     inputIdentifier: utilityBillType
     nextScreen: enterUtilityBillNumber
     options:

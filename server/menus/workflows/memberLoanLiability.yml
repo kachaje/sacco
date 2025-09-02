@@ -1,4 +1,5 @@
 enterDescription1:
+    cacheQuery: member.memberLoan.0.memberLoanLiability.description
     inputIdentifier: description1
     nextScreen: enterValue1
     order: 1
@@ -7,6 +8,7 @@ enterDescription1:
         en: Description
     type: inputScreen
 enterDescription2:
+    cacheQuery: member.memberLoan.1.memberLoanLiability.description
     inputIdentifier: description2
     nextScreen: enterValue2
     order: 3
@@ -15,22 +17,27 @@ enterDescription2:
         en: Description
     type: inputScreen
 enterId1:
+    cacheQuery: member.memberLoan.0.memberLoanLiability.id
     hidden: true
     inputIdentifier: id1
     type: hiddenField
 enterId2:
+    cacheQuery: member.memberLoan.1.memberLoanLiability.id
     hidden: true
     inputIdentifier: id2
     type: hiddenField
 enterMemberLoanId1:
+    cacheQuery: member.memberLoan.0.memberLoanLiability.memberLoanId
     hidden: true
     inputIdentifier: memberLoanId1
     type: hiddenField
 enterMemberLoanId2:
+    cacheQuery: member.memberLoan.1.memberLoanLiability.memberLoanId
     hidden: true
     inputIdentifier: memberLoanId2
     type: hiddenField
 enterValue1:
+    cacheQuery: member.memberLoan.0.memberLoanLiability.value
     inputIdentifier: value1
     nextScreen: enterDescription2
     order: 2
@@ -39,6 +46,7 @@ enterValue1:
     type: inputScreen
     validationRule: ^\d+\.*\d*$
 enterValue2:
+    cacheQuery: member.memberLoan.1.memberLoanLiability.value
     inputIdentifier: value2
     nextScreen: formSummary
     order: 4
