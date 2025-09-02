@@ -1,3 +1,12 @@
+cacheQueries:
+    description1: member.memberLoan.0.memberLoanLiability.description
+    description2: member.memberLoan.1.memberLoanLiability.description
+    id1: member.memberLoan.0.memberLoanLiability.id
+    id2: member.memberLoan.1.memberLoanLiability.id
+    memberLoanId1: member.memberLoan.0.memberLoanLiability.memberLoanId
+    memberLoanId2: member.memberLoan.1.memberLoanLiability.memberLoanId
+    value1: member.memberLoan.0.memberLoanLiability.value
+    value2: member.memberLoan.1.memberLoanLiability.value
 enterDescription1:
     cacheQuery: member.memberLoan.0.memberLoanLiability.description
     inputIdentifier: description1

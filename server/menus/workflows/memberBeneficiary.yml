@@ -1,3 +1,28 @@
+cacheQueries:
+    active1: member.memberBeneficiary.0.active
+    active2: member.memberBeneficiary.1.active
+    active3: member.memberBeneficiary.2.active
+    active4: member.memberBeneficiary.3.active
+    contact1: member.memberBeneficiary.0.contact
+    contact2: member.memberBeneficiary.1.contact
+    contact3: member.memberBeneficiary.2.contact
+    contact4: member.memberBeneficiary.3.contact
+    id1: member.memberBeneficiary.0.id
+    id2: member.memberBeneficiary.1.id
+    id3: member.memberBeneficiary.2.id
+    id4: member.memberBeneficiary.3.id
+    memberId1: member.memberBeneficiary.0.memberId
+    memberId2: member.memberBeneficiary.1.memberId
+    memberId3: member.memberBeneficiary.2.memberId
+    memberId4: member.memberBeneficiary.3.memberId
+    name1: member.memberBeneficiary.0.name
+    name2: member.memberBeneficiary.1.name
+    name3: member.memberBeneficiary.2.name
+    name4: member.memberBeneficiary.3.name
+    percentage1: member.memberBeneficiary.0.percentage
+    percentage2: member.memberBeneficiary.1.percentage
+    percentage3: member.memberBeneficiary.2.percentage
+    percentage4: member.memberBeneficiary.3.percentage
 enterActive1:
     cacheQuery: member.memberBeneficiary.0.active
     hidden: true

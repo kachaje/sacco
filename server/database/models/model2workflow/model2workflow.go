@@ -76,6 +76,8 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 			}
 		}
 
+		cacheQueries := map[string]string{}
+
 		for index := range count {
 			suffix := ""
 			if count > 1 {
@@ -102,8 +104,10 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 								data["initialScreen"] = tag
 							}
 
+							inputIdentifier := fmt.Sprintf("%s%v", key, suffix)
+
 							data[tag] = map[string]any{
-								"inputIdentifier": fmt.Sprintf("%s%v", key, suffix),
+								"inputIdentifier": inputIdentifier,
 							}
 
 							if rawData["rootQuery"] != nil {
@@ -125,7 +129,11 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 									}
 								}
 
-								data[tag].(map[string]any)["cacheQuery"] = fmt.Sprintf("%v.%s", rootQuery, key)
+								cacheQuery := fmt.Sprintf("%v.%s", rootQuery, key)
+
+								data[tag].(map[string]any)["cacheQuery"] = cacheQuery
+
+								cacheQueries[inputIdentifier] = cacheQuery
 							}
 
 							if value["readOnly"] != nil {
@@ -217,6 +225,8 @@ func Main(model, destinationFile string, sourceData map[string]any) (*string, ma
 				}
 			}
 		}
+
+		data["cacheQueries"] = cacheQueries
 	}
 
 	yamlString, err := utils.DumpYaml(data)

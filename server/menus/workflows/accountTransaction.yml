@@ -1,3 +1,8 @@
+cacheQueries:
+    accountId: account.accountTransaction.0.accountId
+    accountTransactionDate: account.accountTransaction.0.accountTransactionDate
+    description: account.accountTransaction.0.description
+    id: account.accountTransaction.0.id
 enterAccountId:
     cacheQuery: account.accountTransaction.0.accountId
     hidden: true

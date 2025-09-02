@@ -1,3 +1,11 @@
+cacheQueries:
+    id: member.memberLoan.0.id
+    loanAmount: member.memberLoan.0.loanAmount
+    loanPurpose: member.memberLoan.0.loanPurpose
+    loanType: member.memberLoan.0.loanType
+    memberId: member.memberLoan.0.memberId
+    phoneNumber: member.memberLoan.0.phoneNumber
+    repaymentPeriodInMonths: member.memberLoan.0.repaymentPeriodInMonths
 enterId:
     cacheQuery: member.memberLoan.0.id
     hidden: true

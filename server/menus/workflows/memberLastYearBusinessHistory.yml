@@ -1,3 +1,18 @@
+cacheQueries:
+    employeesWages: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.employeesWages
+    financialYear: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.financialYear
+    id: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.id
+    loanInterest: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.loanInterest
+    memberBusinessId: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.memberBusinessId
+    netProfitLoss: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.netProfitLoss
+    otherCosts: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.otherCosts
+    ownSalary: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.ownSalary
+    rentals: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.rentals
+    totalCostOfGoods: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCostOfGoods
+    totalCosts: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCosts
+    totalIncome: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalIncome
+    transport: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.transport
+    utilities: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.utilities
 enterEmployeesWages:
     cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.employeesWages
     inputIdentifier: employeesWages

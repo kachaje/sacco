@@ -1,3 +1,9 @@
+cacheQueries:
+    id: member.memberShares.0.id
+    memberId: member.memberShares.0.memberId
+    numberOfShares: member.memberShares.0.numberOfShares
+    pricePerShare: member.memberShares.0.pricePerShare
+    'sharesType:': 'member.memberShares.0.sharesType:'
 enterId:
     cacheQuery: member.memberShares.0.id
     hidden: true

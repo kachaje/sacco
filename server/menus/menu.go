@@ -227,6 +227,8 @@ func (m *Menus) populateMenus() error {
 									}
 								}
 
+								fmt.Println("#########", v, id)
+
 								m.LabelWorkflow[group].(map[string]any)[value] = map[string]any{
 									"model": v,
 									"id":    id,

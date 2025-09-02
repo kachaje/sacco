@@ -1,3 +1,9 @@
+cacheQueries:
+    accountId: account.accountJournal.0.accountId
+    accountTransactionId: account.accountJournal.0.accountTransactionId
+    credit: account.accountJournal.0.credit
+    debit: account.accountJournal.0.debit
+    id: account.accountJournal.0.id
 enterAccountId:
     cacheQuery: account.accountJournal.0.accountId
     hidden: true

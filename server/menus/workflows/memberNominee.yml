@@ -1,3 +1,9 @@
+cacheQueries:
+    address: member.memberNominee.address
+    id: member.memberNominee.id
+    memberId: member.memberNominee.memberId
+    name: member.memberNominee.name
+    phoneNumber: member.memberNominee.phoneNumber
 enterAddress:
     cacheQuery: member.memberNominee.address
     inputIdentifier: address

@@ -1,3 +1,10 @@
+cacheQueries:
+    address: member.memberLoan.0.memberLoanWitness.address
+    date: member.memberLoan.0.memberLoanWitness.date
+    id: member.memberLoan.0.memberLoanWitness.id
+    memberLoanId: member.memberLoan.0.memberLoanWitness.memberLoanId
+    name: member.memberLoan.0.memberLoanWitness.name
+    telephone: member.memberLoan.0.memberLoanWitness.telephone
 enterAddress:
     cacheQuery: member.memberLoan.0.memberLoanWitness.address
     inputIdentifier: address

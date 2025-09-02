@@ -1,3 +1,9 @@
+cacheQueries:
+    id: user.id
+    name: user.name
+    password: user.password
+    role: user.role
+    username: user.username
 enterId:
     cacheQuery: user.id
     hidden: true

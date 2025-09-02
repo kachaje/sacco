@@ -1,3 +1,6 @@
+cacheQueries:
+    accountName: account.accountName
+    id: account.id
 enterAccountName:
     cacheQuery: account.accountName
     inputIdentifier: accountName

@@ -1,3 +1,10 @@
+cacheQueries:
+    businessName: member.memberLoan.0.memberBusiness.businessName
+    businessNature: member.memberLoan.0.memberBusiness.businessNature
+    id: member.memberLoan.0.memberBusiness.id
+    memberLoanId: member.memberLoan.0.memberBusiness.memberLoanId
+    tradingArea: member.memberLoan.0.memberBusiness.tradingArea
+    yearsInBusiness: member.memberLoan.0.memberBusiness.yearsInBusiness
 enterBusinessName:
     cacheQuery: member.memberLoan.0.memberBusiness.businessName
     inputIdentifier: businessName

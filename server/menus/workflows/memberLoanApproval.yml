@@ -1,3 +1,14 @@
+cacheQueries:
+    amountApproved: member.memberLoan.0.memberLoanApproval.amountApproved
+    amountRecommended: member.memberLoan.0.memberLoanApproval.amountRecommended
+    approvalDate: member.memberLoan.0.memberLoanApproval.approvalDate
+    approvedBy: member.memberLoan.0.memberLoanApproval.approvedBy
+    dateVerified: member.memberLoan.0.memberLoanApproval.dateVerified
+    denialOrPartialReason: member.memberLoan.0.memberLoanApproval.denialOrPartialReason
+    id: member.memberLoan.0.memberLoanApproval.id
+    loanStatus: member.memberLoan.0.memberLoanApproval.loanStatus
+    memberLoanId: member.memberLoan.0.memberLoanApproval.memberLoanId
+    verifiedBy: member.memberLoan.0.memberLoanApproval.verifiedBy
 enterAmountApproved:
     adminOnly: true
     cacheQuery: member.memberLoan.0.memberLoanApproval.amountApproved
