@@ -2,7 +2,6 @@ package filehandling_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -86,7 +85,7 @@ func TestHandleBeneficiaries(t *testing.T) {
 	sessions := map[string]*parser.Session{
 		phoneNumber: {
 			ActiveData:  map[string]any{},
-			AddedModels: map[string]bool{},
+			AddedModels: map[string]bool{"memberBeneficiary": true},
 		},
 	}
 
@@ -269,8 +268,9 @@ func TestChildNestedModel(t *testing.T) {
 	session := &parser.Session{
 		AddedModels: map[string]bool{},
 		GlobalIds: map[string]any{
-			"memberId":     16,
-			"memberLoanId": 13,
+			"memberId":           16,
+			"memberLoanId":       13,
+			"memberOccupationId": 1,
 		},
 	}
 
@@ -285,10 +285,6 @@ func TestChildNestedModel(t *testing.T) {
 		model string,
 		retries int,
 	) (*int64, error) {
-		if data["memberLoanId"] == nil {
-			return nil, fmt.Errorf("missing required field memberLoanId")
-		}
-
 		count++
 
 		var id int64 = int64(count)
@@ -325,7 +321,7 @@ func TestChildNestedModel(t *testing.T) {
 	target := map[string]any{
 		"memberId":           16,
 		"memberLoanId":       13,
-		"memberOccupationId": int64(1),
+		"memberOccupationId": 1,
 	}
 
 	if !reflect.DeepEqual(target, session.GlobalIds) {
@@ -346,7 +342,7 @@ func TestArrayChildData(t *testing.T) {
 		phoneNumber: {
 			GlobalIds:   map[string]any{},
 			ActiveData:  map[string]any{},
-			AddedModels: map[string]bool{},
+			AddedModels: map[string]bool{"memberBeneficiary": true},
 		},
 	}
 

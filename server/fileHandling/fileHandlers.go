@@ -59,13 +59,18 @@ func SaveModelData(data any, model, phoneNumber *string,
 						for _, value := range database.ParentModels[*model] {
 							key := fmt.Sprintf("%sId", value)
 							if sessions[*phoneNumber].GlobalIds[key] != nil {
-								modelData[key] = sessions[*phoneNumber].GlobalIds[key]
+								if val, ok := sessions[*phoneNumber].GlobalIds[key].(map[string]any); ok {
+									vr, err := strconv.Atoi(fmt.Sprintf("%v", val["value"]))
+									if err == nil {
+										modelData[key] = vr
+									}
+								}
 							}
 						}
 					}
 				}
 
-				mid, err := saveFunc(modelData, *model, 0)
+				_, err := saveFunc(modelData, *model, 0)
 				if err != nil {
 					return err
 				}
@@ -74,28 +79,6 @@ func SaveModelData(data any, model, phoneNumber *string,
 					if val, ok := modelData["phoneNumber"].(string); ok {
 						sessions[*phoneNumber].CurrentPhoneNumber = val
 					}
-				}
-
-				var id int64
-
-				if mid == nil && modelData["id"] != nil {
-					val, err := strconv.ParseInt(fmt.Sprintf("%v", modelData["id"]), 10, 64)
-					if err == nil {
-						mid = &val
-					}
-				}
-				if mid != nil {
-					if sessions[*phoneNumber] != nil {
-						if len(dataRows) == 1 {
-							sessions[*phoneNumber].GlobalIds[fmt.Sprintf("%sId", *model)] = *mid
-						}
-
-						sessions[*phoneNumber].AddedModels[*model] = true
-					}
-
-					id = *mid
-
-					modelData["id"] = id
 				}
 			}
 
