@@ -4,15 +4,18 @@
     "data": {
       "dateJoined": {
         "order": 1,
-        "label": "Date Joined"
+        "label": "Date Joined",
+        "cachQuery": "member.dateJoined"
       },
       "memberIdNumber": {
         "order": 2,
-        "label": "Full File Number"
+        "label": "Full File Number",
+        "cachQuery": "member.memberIdNumber"
       },
       "shortMemberId": {
         "order": 3,
-        "label": "Short File Number"
+        "label": "Short File Number",
+        "cachQuery": "member.shortMemberId"
       }
     }
   },
@@ -21,47 +24,58 @@
     "data": {
       "lastName": {
         "order": 1,
-        "label": "Surname"
+        "label": "Surname",
+        "cachQuery": "member.lastName"
       },
       "firstName": {
         "order": 2,
-        "label": "First Name"
+        "label": "First Name",
+        "cachQuery": "member.firstName"
       },
       "otherName": {
         "order": 3,
-        "label": "Other Name(s)"
+        "label": "Other Name(s)",
+        "cachQuery": "member.otherName"
       },
       "gender": {
         "order": 4,
-        "label": "Gender"
+        "label": "Gender",
+        "cachQuery": "member.gender"
       },
       "phoneNumber": {
         "order": 5,
-        "label": "Phone Number"
+        "label": "Phone Number",
+        "cachQuery": "member.phoneNumber"
       },
       "title": {
         "order": 6,
-        "label": "Title"
+        "label": "Title",
+        "cachQuery": "member.title"
       },
       "maritalStatus": {
         "order": 7,
-        "label": "Marital Status"
+        "label": "Marital Status",
+        "cachQuery": "member.maritalStatus"
       },
       "dateOfBirth": {
         "order": 8,
-        "label": "Date of Birth"
+        "label": "Date of Birth",
+        "cachQuery": "member.dateOfBirth"
       },
       "nationalId": {
         "order": 9,
-        "label": "National ID"
+        "label": "National ID",
+        "cachQuery": "member.nationalId"
       },
       "utilityBillNumber": {
         "order": 10,
-        "label": "Utility Bill No"
+        "label": "Utility Bill No",
+        "cachQuery": "member.utilityBillNumber"
       },
       "utilityBillType": {
         "order": 11,
-        "label": "Utility Bill Type"
+        "label": "Utility Bill Type",
+        "cachQuery": "member.utilityBillType"
       }
     }
   },
@@ -70,23 +84,28 @@
     "data": {
       "employerName": {
         "order": 1,
-        "label": "Name of Employer"
+        "label": "Name of Employer",
+        "cachQuery": "member.memberLoan.0.memberOccupation.employerName"
       },
       "netPay": {
         "order": 2,
-        "label": "Net Pay"
+        "label": "Net Pay",
+        "cachQuery": "member.memberLoan.0.memberOccupation.netPay"
       },
       "jobTitle": {
         "order": 3,
-        "label": "Job Title"
+        "label": "Job Title",
+        "cachQuery": "member.memberLoan.0.memberOccupation.jobTitle"
       },
       "employerAddress": {
         "order": 4,
-        "label": "Employer Address"
+        "label": "Employer Address",
+        "cachQuery": "member.memberLoan.0.memberOccupation.employerAddress"
       },
       "highestQualification": {
         "order": 5,
-        "label": "Highest Qualification"
+        "label": "Highest Qualification",
+        "cachQuery": "member.memberLoan.0.memberOccupation.highestQualification"
       }
     }
   },
@@ -95,27 +114,33 @@
     "data": {
       "postalAddress": {
         "order": 1,
-        "label": "Postal Address"
+        "label": "Postal Address",
+        "cachQuery": "member.memberContact.postalAddress"
       },
       "residentialAddress": {
         "order": 2,
-        "label": "Residential Address"
+        "label": "Residential Address",
+        "cachQuery": "member.memberContact.residentialAddress"
       },
       "email": {
         "order": 4,
-        "label": "Email"
+        "label": "Email",
+        "cachQuery": "member.memberContact.email"
       },
       "homeVillage": {
         "order": 5,
-        "label": "Village"
+        "label": "Village",
+        "cachQuery": "member.memberContact.homeVillage"
       },
       "homeTraditionalAuthority": {
         "order": 6,
-        "label": "Traditional Authority"
+        "label": "Traditional Authority",
+        "cachQuery": "member.memberContact.homeTraditionalAuthority"
       },
       "homeDistrict": {
         "order": 7,
-        "label": "District"
+        "label": "District",
+        "cachQuery": "member.memberContact.homeDistrict"
       }
     }
   },
@@ -124,15 +149,18 @@
     "data": {
       "name": {
         "order": 1,
-        "label": "Name"
+        "label": "Name",
+        "cachQuery": "member.memberNominee.name"
       },
       "phoneNumber": {
         "order": 2,
-        "label": "Cell Phone Number"
+        "label": "Cell Phone Number",
+        "cachQuery": "member.memberNominee.phoneNumber"
       },
       "address": {
         "order": 3,
-        "label": "Postal Address/Email"
+        "label": "Postal Address/Email",
+        "cachQuery": "member.memberNominee.address"
       }
     }
   },
@@ -141,13 +169,16 @@
     "array": true,
     "data": {
       "name": {
-        "label": "Name of Beneficiary"
+        "label": "Name of Beneficiary",
+        "cachQuery": "member.memberBeneficiary.#0#.name"
       },
       "percentage": {
-        "label": "Percentage"
+        "label": "Percentage",
+        "cachQuery": "member.memberBeneficiary.#0#.percentage"
       },
       "contact": {
-        "label": "Contact"
+        "label": "Contact",
+        "cachQuery": "member.memberBeneficiary.#0#.contact"
       }
     }
   }
