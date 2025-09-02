@@ -160,7 +160,7 @@
       "netVerified": {
         "order": 9,
         "label": "Net Verified",
-        "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.netVerified" 
+        "cachQuery": "member.memberLoan.0.memberOccupation.memberOccupationVerification.netVerified"
       }
     }
   },
@@ -201,6 +201,129 @@
         "order": 7,
         "label": "Net Income Verified",
         "cachQuery": "member.memberLoan.0.memberBusiness.memberBusinessVerification.netIncomeVerified"
+      }
+    },
+    "tables": {
+      "label": "Profit and Loss",
+      "sections": {
+        "Previous 12 Months": {
+          "data": {
+            "totalIncome": {
+              "order": 1,
+              "label": "Total Sales/Income",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.totalIncome"
+            },
+            "totalCostOfGoods": {
+              "order": 2,
+              "label": "Total Cost of Gooods",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.totalCostOfGoods"
+            },
+            "employeesWages": {
+              "order": 3,
+              "label": "Employees Wages",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.employeesWages"
+            },
+            "ownSalary": {
+              "order": 4,
+              "label": "Own Salary",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.ownSalary"
+            },
+            "transport": {
+              "order": 5,
+              "label": "Transport",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.transport"
+            },
+            "loanInterest": {
+              "order": 6,
+              "label": "Loan Interest",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.loanInterest"
+            },
+            "utilities": {
+              "order": 7,
+              "label": "Electricity/Water",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.utilities"
+            },
+            "rentals": {
+              "order": 8,
+              "label": "Rentals",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.rentals"
+            },
+            "otherCosts": {
+              "order": 9,
+              "label": "Other Costs",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.otherCosts"
+            },
+            "totalCosts": {
+              "order": 10,
+              "label": "Total Costs",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.totalCosts"
+            },
+            "netProfitLoss": {
+              "order": 11,
+              "label": "Net Profit",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.netProfitLoss"
+            }
+          }
+        },
+        "Next 12 Months Projections": {
+          "data": {
+            "totalIncome": {
+              "order": 1,
+              "label": "Total Sales/Income",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.totalIncome"
+            },
+            "totalCostOfGoods": {
+              "order": 2,
+              "label": "Total Cost of Gooods",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.totalCostOfGoods"
+            },
+            "employeesWages": {
+              "order": 3,
+              "label": "Employees Wages",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.employeesWages"
+            },
+            "ownSalary": {
+              "order": 4,
+              "label": "Own Salary",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.ownSalary"
+            },
+            "transport": {
+              "order": 5,
+              "label": "Transport",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.transport"
+            },
+            "loanInterest": {
+              "order": 6,
+              "label": "Loan Interest",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.loanInterest"
+            },
+            "utilities": {
+              "order": 7,
+              "label": "Electricity/Water",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.utilities"
+            },
+            "rentals": {
+              "order": 8,
+              "label": "Rentals",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.rentals"
+            },
+            "otherCosts": {
+              "order": 9,
+              "label": "Other Costs",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.otherCosts"
+            },
+            "totalCosts": {
+              "order": 10,
+              "label": "Total Costs",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.totalCosts"
+            },
+            "netProfitLoss": {
+              "order": 11,
+              "label": "Net Profit",
+              "cachQuery": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.netProfitLoss"
+            }
+          }
+        }
       }
     }
   }
