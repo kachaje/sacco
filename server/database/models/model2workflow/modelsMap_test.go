@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"sacco/server/parser"
+	"sacco/utils"
 	"testing"
 )
 
@@ -37,10 +37,8 @@ func TestModelsMap(t *testing.T) {
 
 	results := map[string]any{}
 
-	session := parser.NewSession(nil, nil, nil)
-
 	for key, value := range data {
-		result, ok := session.DecodeKey(value, sample)
+		result, ok := utils.DecodeKey(value, sample)
 		if ok {
 			results[key] = result
 		} else {

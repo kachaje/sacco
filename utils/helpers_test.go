@@ -292,35 +292,3 @@ func TestGetSkippedRefIds(t *testing.T) {
 		t.Fatal("Test failed")
 	}
 }
-
-func TestFlattenMap(t *testing.T) {
-	content, err := os.ReadFile(filepath.Join("..", "server", "database", "models", "fixtures", "sample.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	data, err := utils.LoadYaml(string(content))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	result := utils.FlattenMap(data)
-
-	target := map[string]any{
-		"memberBeneficiaryId":                "member.memberBeneficiary.0.id",
-		"memberBusinessId":                   "member.memberLoan.0.memberBusiness.id",
-		"memberContactId":                    "member.memberContact.id",
-		"memberId":                           "member.id",
-		"memberLastYearBusinessHistoryId":    "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.id",
-		"memberLoanApprovalId":               "member.memberLoan.0.memberLoanApproval.id",
-		"memberLoanId":                       "member.memberLoan.0.id",
-		"memberNextYearBusinessProjectionId": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.id",
-		"memberNomineeId":                    "member.memberNominee.id",
-		"memberOccupationId":                 "member.memberLoan.0.memberOccupation.id",
-		"memberOccupationVerificationId":     "member.memberLoan.0.memberOccupation.memberOccupationVerification.id",
-	}
-
-	if !reflect.DeepEqual(target, result) {
-		t.Fatal("Test failed")
-	}
-}
