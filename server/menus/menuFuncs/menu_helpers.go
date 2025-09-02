@@ -239,3 +239,80 @@ func TabulateData(data map[string]any) []string {
 
 	return result
 }
+
+func LoadLoanApplicationForm(data map[string]any, template map[string]any) map[string]any {
+	result := map[string]any{}
+
+	keys := []string{}
+
+	for key := range template {
+		keys = append(keys, key)
+	}
+
+	sort.Strings(keys)
+
+	loadData := func(fieldData, parentMap map[string]any, key string) {
+		for field, values := range fieldData {
+			if value, ok := values.(map[string]any); ok {
+				if order, err := strconv.ParseFloat(fmt.Sprintf("%v", value["order"]), 64); err == nil {
+					parentMap[key].(map[string]any)[field] = map[string]any{
+						"order": order,
+						"label": fmt.Sprintf("%v", value["label"]),
+					}
+
+					if value["cachQuery"] != nil {
+						if query, ok := value["cachQuery"].(string); ok {
+							if val, ok := data[query]; ok {
+								if value["formula"] != nil {
+									if formula, ok := value["formula"].(string); ok {
+										fmt.Println("######## TODO:", formula, val)
+									}
+								} else {
+									parentMap[key].(map[string]any)[field].(map[string]any)["value"] = val
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	for _, key := range keys {
+		result[key] = map[string]any{}
+
+		if rawData, ok := template[key].(map[string]any); ok {
+			if fieldData, ok := rawData["data"].(map[string]any); ok {
+				loadData(fieldData, result, key)
+			}
+
+			if tables, ok := rawData["tables"]; ok {
+				if tablesData, ok := tables.(map[string]any); ok {
+					var tableLabel string
+
+					if tablesData["label"] != nil {
+						if val, ok := tablesData["label"].(string); ok {
+							tableLabel = val
+						}
+					}
+
+					if sectionsData, ok := tablesData["sections"].(map[string]any); ok {
+						for section, sectionData := range sectionsData {
+							if value, ok := sectionData.(map[string]any); ok {
+								if fieldData, ok := value["data"].(map[string]any); ok {
+									result[key].(map[string]any)[tableLabel] = map[string]any{
+										section: map[string]any{},
+									}
+
+									loadData(fieldData, result[key].(map[string]any)[tableLabel].(map[string]any), section)
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result
+}

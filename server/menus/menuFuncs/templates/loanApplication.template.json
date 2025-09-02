@@ -215,7 +215,7 @@
             },
             "totalCostOfGoods": {
               "order": 2,
-              "label": "Total Cost of Gooods",
+              "label": "Total Cost of Goods",
               "cachQuery": "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.totalCostOfGoods"
             },
             "employeesWages": {

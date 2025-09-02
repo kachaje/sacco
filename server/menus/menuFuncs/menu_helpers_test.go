@@ -12,6 +12,48 @@ import (
 	"testing"
 )
 
+func TestLoadLoanApplicationForm(t *testing.T) {
+	data := map[string]any{}
+	templateData := map[string]any{}
+	targetData := map[string]any{}
+
+	content, err := os.ReadFile(filepath.Join("..", "..", "..", "utils", "fixtures", "sample.flatmap.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = json.Unmarshal(content, &data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	content, err = os.ReadFile(filepath.Join(".", "templates", "loanApplication.template.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = json.Unmarshal(content, &templateData)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := menufuncs.LoadLoanApplicationForm(data, templateData)
+
+	content, err = os.ReadFile(filepath.Join("..", "..", "..", "utils", "fixtures", "loanApplication.template.output.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = json.Unmarshal(content, &targetData)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(targetData, result) {
+		t.Fatal("Test failed")
+	}
+}
+
 func TestLoadTemplateData(t *testing.T) {
 	data := map[string]any{}
 	templateData := map[string]any{}
