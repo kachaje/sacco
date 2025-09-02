@@ -33,7 +33,9 @@ func flattenRecursive(m map[string]any, prefix string, flat map[string]any, idMa
 				newKey = fmt.Sprintf("%s.%v", prefix+"."+key, i)
 
 				flattenRecursive(vc, newKey, flat, idMapOnly)
-				break
+				if idMapOnly {
+					break
+				}
 			}
 		default:
 			if idMapOnly && strings.HasSuffix(newKey, ".id") {
