@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func flattenRecursive(m map[string]any, prefix string, flat map[string]any) {
+func flattenRecursive(m map[string]any, prefix string, flat map[string]any, idMapOnly bool) {
 	for key, value := range m {
 		newKey := key
 		if prefix != "" {
@@ -18,7 +18,7 @@ func flattenRecursive(m map[string]any, prefix string, flat map[string]any) {
 
 		switch v := value.(type) {
 		case map[string]any:
-			flattenRecursive(v, newKey, flat)
+			flattenRecursive(v, newKey, flat, idMapOnly)
 		case []map[string]any, []any:
 			arr := []map[string]any{}
 
@@ -35,11 +35,11 @@ func flattenRecursive(m map[string]any, prefix string, flat map[string]any) {
 			for i, vc := range arr {
 				newKey = fmt.Sprintf("%s.%v", prefix+"."+key, i)
 
-				flattenRecursive(vc, newKey, flat)
+				flattenRecursive(vc, newKey, flat, idMapOnly)
 				break
 			}
 		default:
-			if strings.HasSuffix(newKey, ".id") {
+			if idMapOnly && strings.HasSuffix(newKey, ".id") {
 				re := regexp.MustCompile(`([A-Z-a-z]+)\.*0*\.id$`)
 
 				if re.MatchString(newKey) {
@@ -47,14 +47,16 @@ func flattenRecursive(m map[string]any, prefix string, flat map[string]any) {
 
 					flat[model+"Id"] = newKey
 				}
+			} else if !idMapOnly {
+				flat[newKey] = v
 			}
 		}
 	}
 }
 
-func FlattenMap(m map[string]any) map[string]any {
+func FlattenMap(m map[string]any, idMapOnly bool) map[string]any {
 	flat := make(map[string]any)
-	flattenRecursive(m, "", flat)
+	flattenRecursive(m, "", flat, idMapOnly)
 	return flat
 }
 
