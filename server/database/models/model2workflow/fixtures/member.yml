@@ -1,3 +1,21 @@
+cacheQueries:
+    dateJoined: member.dateJoined
+    dateOfBirth: member.dateOfBirth
+    fileNumber: member.fileNumber
+    firstName: member.firstName
+    gender: member.gender
+    id: member.id
+    lastName: member.lastName
+    maritalStatus: member.maritalStatus
+    memberIdNumber: member.memberIdNumber
+    nationalId: member.nationalId
+    oldFileNumber: member.oldFileNumber
+    otherName: member.otherName
+    phoneNumber: member.phoneNumber
+    shortMemberId: member.shortMemberId
+    title: member.title
+    utilityBillNumber: member.utilityBillNumber
+    utilityBillType: member.utilityBillType
 enterDateJoined:
     cacheQuery: member.dateJoined
     hidden: true
