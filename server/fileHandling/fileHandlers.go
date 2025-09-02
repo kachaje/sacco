@@ -70,6 +70,12 @@ func SaveModelData(data any, model, phoneNumber *string,
 					return err
 				}
 
+				if *model == "member" && modelData["phoneNumber"] != nil && sessions[*phoneNumber] != nil {
+					if val, ok := modelData["phoneNumber"].(string); ok {
+						sessions[*phoneNumber].CurrentPhoneNumber = val
+					}
+				}
+
 				var id int64
 
 				if mid == nil && modelData["id"] != nil {
