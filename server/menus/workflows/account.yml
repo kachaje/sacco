@@ -1,20 +1,20 @@
 cacheQueries:
-  accountName: account.accountName
-  id: account.id
+    accountName: account.accountName
+    id: account.id
 enterAccountName:
-  cacheQuery: account.accountName
-  inputIdentifier: accountName
-  nextScreen: formSummary
-  order: 1
-  text:
-    en: Account Name
-  type: inputScreen
+    cacheQuery: account.accountName
+    inputIdentifier: accountName
+    nextScreen: formSummary
+    order: 1
+    text:
+        en: Account Name
+    type: inputScreen
 enterId:
-  cacheQuery: account.id
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
+    cacheQuery: account.id
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
 formSummary:
-  type: quitScreen
+    type: quitScreen
 initialScreen: enterAccountName
 model: account

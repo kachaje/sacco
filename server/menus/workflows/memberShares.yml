@@ -1,55 +1,55 @@
 cacheQueries:
-  id: member.memberShares.0.id
-  memberId: member.memberShares.0.memberId
-  numberOfShares: member.memberShares.0.numberOfShares
-  pricePerShare: member.memberShares.0.pricePerShare
-  "sharesType:": "member.memberShares.0.sharesType:"
+    id: member.memberShares.0.id
+    memberId: member.memberShares.0.memberId
+    numberOfShares: member.memberShares.0.numberOfShares
+    pricePerShare: member.memberShares.0.pricePerShare
+    'sharesType:': 'member.memberShares.0.sharesType:'
 enterId:
-  cacheQuery: member.memberShares.0.id
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
+    cacheQuery: member.memberShares.0.id
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
 enterMemberId:
-  cacheQuery: member.memberShares.0.memberId
-  hidden: true
-  inputIdentifier: memberId
-  type: hiddenField
+    cacheQuery: member.memberShares.0.memberId
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
 enterNumberOfShares:
-  cacheQuery: member.memberShares.0.numberOfShares
-  inputIdentifier: numberOfShares
-  nextScreen: enterPricePerShare
-  order: 1
-  text:
-    en: Number Of Shares
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberShares.0.numberOfShares
+    inputIdentifier: numberOfShares
+    nextScreen: enterPricePerShare
+    order: 1
+    text:
+        en: Number Of Shares
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterPricePerShare:
-  cacheQuery: member.memberShares.0.pricePerShare
-  inputIdentifier: pricePerShare
-  nextScreen: "enterSharesType:"
-  order: 2
-  text:
-    en: Price Per Share
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
-"enterSharesType:":
-  cacheQuery: "member.memberShares.0.sharesType:"
-  inputIdentifier: "sharesType:"
-  nextScreen: formSummary
-  options:
-    - label:
-        en: FIXED
-      position: 1
-    - label:
-        en: REDEEMABLE
-      position: 2
-  order: 3
-  text:
-    en: Shares Type
-  type: inputScreen
+    cacheQuery: member.memberShares.0.pricePerShare
+    inputIdentifier: pricePerShare
+    nextScreen: 'enterSharesType:'
+    order: 2
+    text:
+        en: Price Per Share
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
+'enterSharesType:':
+    cacheQuery: 'member.memberShares.0.sharesType:'
+    inputIdentifier: 'sharesType:'
+    nextScreen: formSummary
+    options:
+        - label:
+            en: FIXED
+          position: 1
+        - label:
+            en: REDEEMABLE
+          position: 2
+    order: 3
+    text:
+        en: Shares Type
+    type: inputScreen
 formSummary:
-  type: quitScreen
+    type: quitScreen
 initialScreen: enterNumberOfShares
 model: memberShares
 parentIds:
-  - memberId
+    - memberId

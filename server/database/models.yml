@@ -327,11 +327,12 @@ memberShares:
           - REDEEMABLE
 
 memberLoan:
+  hasMany:
+    - memberLoanLiability
+    - memberLoanSecurity
   hasOne:
     - memberBusiness
     - memberOccupation
-    - memberLoanLiability
-    - memberLoanSecurity
     - memberLoanWitness
     - memberLoanApproval
   belongsTo:
@@ -363,7 +364,7 @@ memberLoan:
 memberLoanLiability:
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.#0#.memberLoanLiability
+  rootQuery: member.memberLoan.#0#.memberLoanLiability.#1#
   settings:
     hasLoops: true
     totalLoops: 2
@@ -382,7 +383,10 @@ memberLoanLiability:
 memberLoanSecurity:
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.#0#.memberLoanSecurity
+  rootQuery: member.memberLoan.#0#.memberLoanSecurity.#1#
+  settings:
+    hasLoops: true
+    totalLoops: 2
   fields:
     - id:
         hidden: true

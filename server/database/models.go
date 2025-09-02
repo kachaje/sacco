@@ -17,11 +17,13 @@ var (
 		"memberLastYearBusinessHistory",
 		"memberNextYearBusinessProjection",
 	}
+	MemberLoanArrayChildren = []string{
+		"memberLoanLiability",
+		"memberLoanSecurity",
+	}
 	MemberLoanSingleChildren = []string{
 		"memberBusiness",
 		"memberOccupation",
-		"memberLoanLiability",
-		"memberLoanSecurity",
 		"memberLoanWitness",
 		"memberLoanApproval",
 	}
@@ -42,6 +44,7 @@ var (
 		"AccountTransactionArrayChildren": AccountTransactionArrayChildren,
 		"MemberArrayChildren":             MemberArrayChildren,
 		"MemberBusinessArrayChildren":     MemberBusinessArrayChildren,
+		"MemberLoanArrayChildren":         MemberLoanArrayChildren,
 	}
 	FloatFields = []string{
 		"amountApproved",

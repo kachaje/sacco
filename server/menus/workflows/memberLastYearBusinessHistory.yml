@@ -1,138 +1,138 @@
 cacheQueries:
-  employeesWages: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.employeesWages
-  financialYear: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.financialYear
-  id: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.id
-  loanInterest: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.loanInterest
-  memberBusinessId: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.memberBusinessId
-  netProfitLoss: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.netProfitLoss
-  otherCosts: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.otherCosts
-  ownSalary: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.ownSalary
-  rentals: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.rentals
-  totalCostOfGoods: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCostOfGoods
-  totalCosts: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCosts
-  totalIncome: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalIncome
-  transport: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.transport
-  utilities: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.utilities
+    employeesWages: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.employeesWages
+    financialYear: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.financialYear
+    id: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.id
+    loanInterest: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.loanInterest
+    memberBusinessId: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.memberBusinessId
+    netProfitLoss: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.netProfitLoss
+    otherCosts: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.otherCosts
+    ownSalary: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.ownSalary
+    rentals: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.rentals
+    totalCostOfGoods: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCostOfGoods
+    totalCosts: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCosts
+    totalIncome: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalIncome
+    transport: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.transport
+    utilities: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.utilities
 enterEmployeesWages:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.employeesWages
-  inputIdentifier: employeesWages
-  nextScreen: enterOwnSalary
-  order: 4
-  text:
-    en: Employees Wages
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.employeesWages
+    inputIdentifier: employeesWages
+    nextScreen: enterOwnSalary
+    order: 4
+    text:
+        en: Employees Wages
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterFinancialYear:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.financialYear
-  inputIdentifier: financialYear
-  nextScreen: enterTotalIncome
-  order: 1
-  text:
-    en: Financial Year
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.financialYear
+    inputIdentifier: financialYear
+    nextScreen: enterTotalIncome
+    order: 1
+    text:
+        en: Financial Year
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterId:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.id
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.id
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
 enterLoanInterest:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.loanInterest
-  inputIdentifier: loanInterest
-  nextScreen: enterUtilities
-  order: 7
-  text:
-    en: Loan Interest
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.loanInterest
+    inputIdentifier: loanInterest
+    nextScreen: enterUtilities
+    order: 7
+    text:
+        en: Loan Interest
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterMemberBusinessId:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.memberBusinessId
-  hidden: true
-  inputIdentifier: memberBusinessId
-  type: hiddenField
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.memberBusinessId
+    hidden: true
+    inputIdentifier: memberBusinessId
+    type: hiddenField
 enterNetProfitLoss:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.netProfitLoss
-  formula: DIFF({{totalIncome}},{{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
-  inputIdentifier: netProfitLoss
-  readOnly: true
-  text:
-    en: Net Profit Loss
-  type: inputScreen
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.netProfitLoss
+    formula: DIFF({{totalIncome}},{{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
+    inputIdentifier: netProfitLoss
+    readOnly: true
+    text:
+        en: Net Profit Loss
+    type: inputScreen
 enterOtherCosts:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.otherCosts
-  inputIdentifier: otherCosts
-  nextScreen: formSummary
-  optional: true
-  order: 10
-  text:
-    en: Other Costs
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.otherCosts
+    inputIdentifier: otherCosts
+    nextScreen: formSummary
+    optional: true
+    order: 10
+    text:
+        en: Other Costs
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterOwnSalary:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.ownSalary
-  inputIdentifier: ownSalary
-  nextScreen: enterTransport
-  order: 5
-  text:
-    en: Own Salary
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.ownSalary
+    inputIdentifier: ownSalary
+    nextScreen: enterTransport
+    order: 5
+    text:
+        en: Own Salary
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterRentals:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.rentals
-  inputIdentifier: rentals
-  nextScreen: enterOtherCosts
-  order: 9
-  text:
-    en: Rentals
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.rentals
+    inputIdentifier: rentals
+    nextScreen: enterOtherCosts
+    order: 9
+    text:
+        en: Rentals
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterTotalCostOfGoods:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCostOfGoods
-  inputIdentifier: totalCostOfGoods
-  nextScreen: enterEmployeesWages
-  order: 3
-  text:
-    en: Total Cost Of Goods
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCostOfGoods
+    inputIdentifier: totalCostOfGoods
+    nextScreen: enterEmployeesWages
+    order: 3
+    text:
+        en: Total Cost Of Goods
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterTotalCosts:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCosts
-  formula: SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
-  inputIdentifier: totalCosts
-  readOnly: true
-  text:
-    en: Total Costs
-  type: inputScreen
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalCosts
+    formula: SUM({{totalCostOfGoods}}, {{employeesWages}}, {{ownSalary}}, {{transport}}, {{loanInterest}}, {{utilities}}, {{rentals}}, {{otherCosts}})
+    inputIdentifier: totalCosts
+    readOnly: true
+    text:
+        en: Total Costs
+    type: inputScreen
 enterTotalIncome:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalIncome
-  inputIdentifier: totalIncome
-  nextScreen: enterTotalCostOfGoods
-  order: 2
-  text:
-    en: Total Income
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.totalIncome
+    inputIdentifier: totalIncome
+    nextScreen: enterTotalCostOfGoods
+    order: 2
+    text:
+        en: Total Income
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterTransport:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.transport
-  inputIdentifier: transport
-  nextScreen: enterLoanInterest
-  order: 6
-  text:
-    en: Transport
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.transport
+    inputIdentifier: transport
+    nextScreen: enterLoanInterest
+    order: 6
+    text:
+        en: Transport
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 enterUtilities:
-  cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.utilities
-  inputIdentifier: utilities
-  nextScreen: enterRentals
-  order: 8
-  text:
-    en: Utilities
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    cacheQuery: member.memberLoan.0.memberBusiness.0.memberLastYearBusinessHistory.0.utilities
+    inputIdentifier: utilities
+    nextScreen: enterRentals
+    order: 8
+    text:
+        en: Utilities
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 formSummary:
-  type: quitScreen
+    type: quitScreen
 initialScreen: enterFinancialYear
 model: memberLastYearBusinessHistory
 parentIds:
-  - memberBusinessId
+    - memberBusinessId

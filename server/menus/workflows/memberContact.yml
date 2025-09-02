@@ -1,159 +1,159 @@
 cacheQueries:
-  email: member.memberContact.email
-  homeDistrict: member.memberContact.homeDistrict
-  homeTraditionalAuthority: member.memberContact.homeTraditionalAuthority
-  homeVillage: member.memberContact.homeVillage
-  id: member.memberContact.id
-  memberId: member.memberContact.memberId
-  postalAddress: member.memberContact.postalAddress
-  residentialAddress: member.memberContact.residentialAddress
+    email: member.memberContact.email
+    homeDistrict: member.memberContact.homeDistrict
+    homeTraditionalAuthority: member.memberContact.homeTraditionalAuthority
+    homeVillage: member.memberContact.homeVillage
+    id: member.memberContact.id
+    memberId: member.memberContact.memberId
+    postalAddress: member.memberContact.postalAddress
+    residentialAddress: member.memberContact.residentialAddress
 enterEmail:
-  cacheQuery: member.memberContact.email
-  inputIdentifier: email
-  nextScreen: enterHomeVillage
-  optional: true
-  order: 3
-  text:
-    en: Email
-  type: inputScreen
+    cacheQuery: member.memberContact.email
+    inputIdentifier: email
+    nextScreen: enterHomeVillage
+    optional: true
+    order: 3
+    text:
+        en: Email
+    type: inputScreen
 enterHomeDistrict:
-  cacheQuery: member.memberContact.homeDistrict
-  inputIdentifier: homeDistrict
-  nextScreen: formSummary
-  options:
-    - label:
-        en: Dedza
-      position: 1
-    - label:
-        en: Dowa
-      position: 2
-    - label:
-        en: Kasungu
-      position: 3
-    - label:
-        en: Lilongwe
-      position: 4
-    - label:
-        en: Mchinji
-      position: 5
-    - label:
-        en: Nkhotakota
-      position: 6
-    - label:
-        en: Ntcheu
-      position: 7
-    - label:
-        en: Ntchisi
-      position: 8
-    - label:
-        en: Salima
-      position: 9
-    - label:
-        en: Chitipa
-      position: 10
-    - label:
-        en: Karonga
-      position: 11
-    - label:
-        en: Likoma
-      position: 12
-    - label:
-        en: Mzimba
-      position: 13
-    - label:
-        en: Nkhata Bay
-      position: 14
-    - label:
-        en: Rumphi
-      position: 15
-    - label:
-        en: Balaka
-      position: 16
-    - label:
-        en: Blantyre
-      position: 17
-    - label:
-        en: Chikwawa
-      position: 18
-    - label:
-        en: Chiradzulu
-      position: 19
-    - label:
-        en: Machinga
-      position: 20
-    - label:
-        en: Mangochi
-      position: 21
-    - label:
-        en: Mulanje
-      position: 22
-    - label:
-        en: Mwanza
-      position: 23
-    - label:
-        en: Nsanje
-      position: 24
-    - label:
-        en: Thyolo
-      position: 25
-    - label:
-        en: Phalombe
-      position: 26
-    - label:
-        en: Zomba
-      position: 27
-    - label:
-        en: Neno
-      position: 28
-  order: 6
-  text:
-    en: Home District
-  type: inputScreen
+    cacheQuery: member.memberContact.homeDistrict
+    inputIdentifier: homeDistrict
+    nextScreen: formSummary
+    options:
+        - label:
+            en: Dedza
+          position: 1
+        - label:
+            en: Dowa
+          position: 2
+        - label:
+            en: Kasungu
+          position: 3
+        - label:
+            en: Lilongwe
+          position: 4
+        - label:
+            en: Mchinji
+          position: 5
+        - label:
+            en: Nkhotakota
+          position: 6
+        - label:
+            en: Ntcheu
+          position: 7
+        - label:
+            en: Ntchisi
+          position: 8
+        - label:
+            en: Salima
+          position: 9
+        - label:
+            en: Chitipa
+          position: 10
+        - label:
+            en: Karonga
+          position: 11
+        - label:
+            en: Likoma
+          position: 12
+        - label:
+            en: Mzimba
+          position: 13
+        - label:
+            en: Nkhata Bay
+          position: 14
+        - label:
+            en: Rumphi
+          position: 15
+        - label:
+            en: Balaka
+          position: 16
+        - label:
+            en: Blantyre
+          position: 17
+        - label:
+            en: Chikwawa
+          position: 18
+        - label:
+            en: Chiradzulu
+          position: 19
+        - label:
+            en: Machinga
+          position: 20
+        - label:
+            en: Mangochi
+          position: 21
+        - label:
+            en: Mulanje
+          position: 22
+        - label:
+            en: Mwanza
+          position: 23
+        - label:
+            en: Nsanje
+          position: 24
+        - label:
+            en: Thyolo
+          position: 25
+        - label:
+            en: Phalombe
+          position: 26
+        - label:
+            en: Zomba
+          position: 27
+        - label:
+            en: Neno
+          position: 28
+    order: 6
+    text:
+        en: Home District
+    type: inputScreen
 enterHomeTraditionalAuthority:
-  cacheQuery: member.memberContact.homeTraditionalAuthority
-  inputIdentifier: homeTraditionalAuthority
-  nextScreen: enterHomeDistrict
-  order: 5
-  text:
-    en: Home Traditional Authority
-  type: inputScreen
+    cacheQuery: member.memberContact.homeTraditionalAuthority
+    inputIdentifier: homeTraditionalAuthority
+    nextScreen: enterHomeDistrict
+    order: 5
+    text:
+        en: Home Traditional Authority
+    type: inputScreen
 enterHomeVillage:
-  cacheQuery: member.memberContact.homeVillage
-  inputIdentifier: homeVillage
-  nextScreen: enterHomeTraditionalAuthority
-  order: 4
-  text:
-    en: Home Village
-  type: inputScreen
+    cacheQuery: member.memberContact.homeVillage
+    inputIdentifier: homeVillage
+    nextScreen: enterHomeTraditionalAuthority
+    order: 4
+    text:
+        en: Home Village
+    type: inputScreen
 enterId:
-  cacheQuery: member.memberContact.id
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
+    cacheQuery: member.memberContact.id
+    hidden: true
+    inputIdentifier: id
+    type: hiddenField
 enterMemberId:
-  cacheQuery: member.memberContact.memberId
-  hidden: true
-  inputIdentifier: memberId
-  type: hiddenField
+    cacheQuery: member.memberContact.memberId
+    hidden: true
+    inputIdentifier: memberId
+    type: hiddenField
 enterPostalAddress:
-  cacheQuery: member.memberContact.postalAddress
-  inputIdentifier: postalAddress
-  nextScreen: enterResidentialAddress
-  order: 1
-  text:
-    en: Postal Address
-  type: inputScreen
+    cacheQuery: member.memberContact.postalAddress
+    inputIdentifier: postalAddress
+    nextScreen: enterResidentialAddress
+    order: 1
+    text:
+        en: Postal Address
+    type: inputScreen
 enterResidentialAddress:
-  cacheQuery: member.memberContact.residentialAddress
-  inputIdentifier: residentialAddress
-  nextScreen: enterEmail
-  order: 2
-  text:
-    en: Residential Address
-  type: inputScreen
+    cacheQuery: member.memberContact.residentialAddress
+    inputIdentifier: residentialAddress
+    nextScreen: enterEmail
+    order: 2
+    text:
+        en: Residential Address
+    type: inputScreen
 formSummary:
-  type: quitScreen
+    type: quitScreen
 initialScreen: enterPostalAddress
 model: memberContact
 parentIds:
-  - memberId
+    - memberId

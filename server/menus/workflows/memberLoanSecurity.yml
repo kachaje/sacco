@@ -1,48 +1,89 @@
 cacheQueries:
-  description: member.memberLoan.0.memberLoanSecurity.description
-  id: member.memberLoan.0.memberLoanSecurity.id
-  memberLoanId: member.memberLoan.0.memberLoanSecurity.memberLoanId
-  serialNumber: member.memberLoan.0.memberLoanSecurity.serialNumber
-  value: member.memberLoan.0.memberLoanSecurity.value
-enterDescription:
-  cacheQuery: member.memberLoan.0.memberLoanSecurity.description
-  inputIdentifier: description
-  nextScreen: enterValue
-  order: 1
-  text:
-    en: Description
-  type: inputScreen
-enterId:
-  cacheQuery: member.memberLoan.0.memberLoanSecurity.id
-  hidden: true
-  inputIdentifier: id
-  type: hiddenField
-enterMemberLoanId:
-  cacheQuery: member.memberLoan.0.memberLoanSecurity.memberLoanId
-  hidden: true
-  inputIdentifier: memberLoanId
-  type: hiddenField
-enterSerialNumber:
-  cacheQuery: member.memberLoan.0.memberLoanSecurity.serialNumber
-  inputIdentifier: serialNumber
-  nextScreen: formSummary
-  optional: true
-  order: 3
-  text:
-    en: Serial Number
-  type: inputScreen
-enterValue:
-  cacheQuery: member.memberLoan.0.memberLoanSecurity.value
-  inputIdentifier: value
-  nextScreen: enterSerialNumber
-  order: 2
-  text:
-    en: Value
-  type: inputScreen
-  validationRule: ^\d+\.*\d*$
+    description1: member.memberLoan.0.memberLoanSecurity.0.description
+    description2: member.memberLoan.0.memberLoanSecurity.1.description
+    id1: member.memberLoan.0.memberLoanSecurity.0.id
+    id2: member.memberLoan.0.memberLoanSecurity.1.id
+    memberLoanId1: member.memberLoan.0.memberLoanSecurity.0.memberLoanId
+    memberLoanId2: member.memberLoan.0.memberLoanSecurity.1.memberLoanId
+    serialNumber1: member.memberLoan.0.memberLoanSecurity.0.serialNumber
+    serialNumber2: member.memberLoan.0.memberLoanSecurity.1.serialNumber
+    value1: member.memberLoan.0.memberLoanSecurity.0.value
+    value2: member.memberLoan.0.memberLoanSecurity.1.value
+enterDescription1:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.0.description
+    inputIdentifier: description1
+    nextScreen: enterValue1
+    order: 1
+    text:
+        en: Description
+    type: inputScreen
+enterDescription2:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.1.description
+    inputIdentifier: description2
+    nextScreen: enterValue2
+    order: 4
+    text:
+        en: Description
+    type: inputScreen
+enterId1:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.0.id
+    hidden: true
+    inputIdentifier: id1
+    type: hiddenField
+enterId2:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.1.id
+    hidden: true
+    inputIdentifier: id2
+    type: hiddenField
+enterMemberLoanId1:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.0.memberLoanId
+    hidden: true
+    inputIdentifier: memberLoanId1
+    type: hiddenField
+enterMemberLoanId2:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.1.memberLoanId
+    hidden: true
+    inputIdentifier: memberLoanId2
+    type: hiddenField
+enterSerialNumber1:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.0.serialNumber
+    inputIdentifier: serialNumber1
+    nextScreen: enterDescription2
+    optional: true
+    order: 3
+    text:
+        en: Serial Number
+    type: inputScreen
+enterSerialNumber2:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.1.serialNumber
+    inputIdentifier: serialNumber2
+    nextScreen: formSummary
+    optional: true
+    order: 6
+    text:
+        en: Serial Number
+    type: inputScreen
+enterValue1:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.0.value
+    inputIdentifier: value1
+    nextScreen: enterSerialNumber1
+    order: 2
+    text:
+        en: Value
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
+enterValue2:
+    cacheQuery: member.memberLoan.0.memberLoanSecurity.1.value
+    inputIdentifier: value2
+    nextScreen: enterSerialNumber2
+    order: 5
+    text:
+        en: Value
+    type: inputScreen
+    validationRule: ^\d+\.*\d*$
 formSummary:
-  type: quitScreen
-initialScreen: enterDescription
+    type: quitScreen
+initialScreen: enterDescription1
 model: memberLoanSecurity
 parentIds:
-  - memberLoanId
+    - memberLoanId
