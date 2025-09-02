@@ -118,8 +118,6 @@ CON Business
 }
 
 func TestEmployementMenu(t *testing.T) {
-	t.Skip()
-
 	demo := true
 
 	m := menus.NewMenus(nil, &demo)
@@ -129,8 +127,6 @@ func TestEmployementMenu(t *testing.T) {
 	result := m.LoadMenu("employment", session, "", "", "")
 
 	target := `CON Employement
-1. Employement Details
-2. Employement Verification
 3. Employement Summary
 
 99. Cancel
@@ -141,14 +137,49 @@ func TestEmployementMenu(t *testing.T) {
 	}
 
 	session.GlobalIds = map[string]any{
-		"memberId":     1,
-		"memberLoanId": 1,
+		"memberId": map[string]any{
+			"key":   "member.id",
+			"value": "1",
+		},
+		"memberLoanId": map[string]any{
+			"key":   "member.memberLoan.0.id",
+			"value": "1",
+		},
 	}
 
 	result = m.LoadMenu("employment", session, "", "", "")
 
 	target = `CON Employement
 1. Employement Details
+3. Employement Summary
+
+99. Cancel
+00. Main Menu`
+
+	if utils.CleanString(result) != utils.CleanString(target) {
+		t.Fatal("Test failed")
+	}
+
+	session.GlobalIds = map[string]any{
+		"memberId": map[string]any{
+			"key":   "member.id",
+			"value": "1",
+		},
+		"memberLoanId": map[string]any{
+			"key":   "member.memberLoan.0.id",
+			"value": "1",
+		},
+		"memberOccupationId": map[string]any{
+			"key":   "member.memberLoan.0.memberOccupation.id",
+			"value": "1",
+		},
+	}
+	session.AddedModels["memberOccupation"] = true
+
+	result = m.LoadMenu("employment", session, "", "", "")
+
+	target = `CON Employement
+1. Employement Details (*)
 2. Employement Verification
 3. Employement Summary
 

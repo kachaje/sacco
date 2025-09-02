@@ -537,6 +537,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 									} else {
 										_, found = session.GlobalIds[fmt.Sprintf("%v", key)]
 									}
+
 									if !found {
 										break
 									}
