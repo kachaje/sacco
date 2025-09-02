@@ -58,6 +58,23 @@ func FlattenMap(m map[string]any) map[string]any {
 	return flat
 }
 
+func SetNestedValue(m map[string]any, key string, value any) {
+	parts := strings.Split(key, ".")
+	currentMap := m
+
+	for i, part := range parts {
+		if i == len(parts)-1 {
+			currentMap[part] = value
+		} else {
+			if _, ok := currentMap[part]; !ok {
+				currentMap[part] = make(map[string]any)
+			}
+
+			currentMap = currentMap[part].(map[string]any)
+		}
+	}
+}
+
 func FlattenKeys(rawData any, seed map[string]any, parent *string) map[string]any {
 	handleArrayValues := func(value any, seed map[string]any, parent *string) map[string]any {
 		rows := []map[string]any{}
