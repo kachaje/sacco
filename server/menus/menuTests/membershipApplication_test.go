@@ -55,8 +55,6 @@ func init() {
 }
 
 func TestNewMembership(t *testing.T) {
-	t.Skip()
-
 	var data map[string]any
 
 	refData := map[string]any{

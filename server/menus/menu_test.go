@@ -64,8 +64,14 @@ func TestRegistrationSubMenu(t *testing.T) {
 	session := parser.NewSession(nil, nil, nil)
 
 	session.GlobalIds = map[string]any{
-		"memberId":     1,
-		"memberLoanId": 1,
+		"memberId": map[string]any{
+			"key":   "member.id",
+			"value": "1",
+		},
+		"memberLoanId": map[string]any{
+			"key":   "member.memberLoan.0.id",
+			"value": "1",
+		},
 	}
 
 	result := m.LoadMenu("main", session, "", "1", "")
@@ -94,9 +100,18 @@ func TestBusinessMenu(t *testing.T) {
 	session := parser.NewSession(nil, nil, nil)
 
 	session.GlobalIds = map[string]any{
-		"memberId":         1,
-		"memberLoanId":     1,
-		"memberBusinessId": 1,
+		"memberId": map[string]any{
+			"key":   "member.id",
+			"value": "1",
+		},
+		"memberLoanId": map[string]any{
+			"key":   "member.memberLoan.0.id",
+			"value": "1",
+		},
+		"memberBusinessId": map[string]any{
+			"key":   "member.memberLoan.0.memberBusiness.id",
+			"value": "1",
+		},
 	}
 
 	result := m.LoadMenu("business", session, "", "", "")
@@ -199,9 +214,18 @@ func TestLoanMenu(t *testing.T) {
 	session := parser.NewSession(nil, nil, nil)
 
 	session.GlobalIds = map[string]any{
-		"memberId":         1,
-		"memberLoanId":     1,
-		"memberBusinessId": 1,
+		"memberId": map[string]any{
+			"key":   "member.id",
+			"value": "1",
+		},
+		"memberLoanId": map[string]any{
+			"key":   "member.memberLoan.0.id",
+			"value": "1",
+		},
+		"memberBusinessId": map[string]any{
+			"key":   "member.memberLoan.0.memberBusiness.id",
+			"value": "1",
+		},
 	}
 
 	result := m.LoadMenu("loan", session, "", "", "")
