@@ -135,7 +135,7 @@ memberOccupation:
     - memberOccupationVerification
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.*.memberOccupation
+  rootQuery: member.memberLoan.#0#.memberOccupation
   fields:
     - id:
         hidden: true
@@ -169,7 +169,7 @@ memberOccupation:
 memberBeneficiary:
   belongsTo:
     - member
-  rootQuery: member.memberBeneficiary.*
+  rootQuery: member.memberBeneficiary.#0#
   settings:
     hasLoops: true
     totalLoops: 4
@@ -194,7 +194,7 @@ memberBusiness:
     - memberNextYearBusinessProjection
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.*.memberBusiness
+  rootQuery: member.memberLoan.#0#.memberBusiness
   fields:
     - id:
         hidden: true
@@ -212,7 +212,7 @@ memberBusiness:
 memberLastYearBusinessHistory:
   belongsTo:
     - memberBusiness
-  rootQuery: member.memberLoan.*.memberBusiness.*.memberLastYearBusinessHistory.*
+  rootQuery: member.memberLoan.#0#.memberBusiness.#1#.memberLastYearBusinessHistory.#2#
   fields:
     - id:
         hidden: true
@@ -260,7 +260,7 @@ memberLastYearBusinessHistory:
 memberNextYearBusinessProjection:
   belongsTo:
     - memberBusiness
-  rootQuery: member.memberLoan.*.memberBusiness.*.memberLastYearBusinessHistory.*
+  rootQuery: member.memberLoan.#0#.memberBusiness.#1#.memberLastYearBusinessHistory.#2#
   fields:
     - id:
         hidden: true
@@ -308,7 +308,7 @@ memberNextYearBusinessProjection:
 memberShares:
   belongsTo:
     - member
-  rootQuery: member.memberShares.*
+  rootQuery: member.memberShares.#0#
   fields:
     - id:
         hidden: true
@@ -336,7 +336,7 @@ memberLoan:
     - memberLoanApproval
   belongsTo:
     - member
-  rootQuery: member.memberLoan.*
+  rootQuery: member.memberLoan.#0#
   fields:
     - id:
         hidden: true
@@ -363,7 +363,7 @@ memberLoan:
 memberLoanLiability:
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.*.memberLoanLiability
+  rootQuery: member.memberLoan.#0#.memberLoanLiability
   settings:
     hasLoops: true
     totalLoops: 2
@@ -382,7 +382,7 @@ memberLoanLiability:
 memberLoanSecurity:
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.*.memberLoanSecurity
+  rootQuery: member.memberLoan.#0#.memberLoanSecurity
   fields:
     - id:
         hidden: true
@@ -401,7 +401,7 @@ memberLoanSecurity:
 memberLoanWitness:
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.*.memberLoanWitness
+  rootQuery: member.memberLoan.#0#.memberLoanWitness
   fields:
     - id:
         hidden: true
@@ -420,7 +420,7 @@ memberLoanWitness:
 memberOccupationVerification:
   belongsTo:
     - memberOccupation
-  rootQuery: member.memberLoan.*.memberOccupation.memberOccupationVerification
+  rootQuery: member.memberLoan.#0#.memberOccupation.memberOccupationVerification
   fields:
     - id:
         hidden: true
@@ -445,7 +445,7 @@ memberOccupationVerification:
 memberLoanApproval:
   belongsTo:
     - memberLoan
-  rootQuery: member.memberLoan.*.memberLoanApproval
+  rootQuery: member.memberLoan.#0#.memberLoanApproval
   fields:
     - id:
         hidden: true
@@ -516,7 +516,7 @@ accountTransaction:
     - accountJournal
   belongsTo:
     - account
-  rootQuery: account.accountTransaction.*
+  rootQuery: account.accountTransaction.#0#
   fields:
     - id:
         hidden: true
@@ -530,7 +530,7 @@ accountTransaction:
 accountJournal:
   belongsTo:
     - account
-  rootQuery: account.accountJournal.*
+  rootQuery: account.accountJournal.#0#
   fields:
     - id:
         hidden: true
