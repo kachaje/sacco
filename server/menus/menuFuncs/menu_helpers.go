@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 )
@@ -65,71 +66,59 @@ func LoadTemplateData(data map[string]any, template map[string]any) map[string]a
 				fieldData = v
 			}
 
-			loadBeneficiary := func(vd map[string]any, i int, j *float64) {
-				for _, field := range []string{"name", "percentage", "contact"} {
-					vf, ok := fieldData[field].(map[string]any)
-					if ok {
-						keyLabel := fmt.Sprintf("%s%d", field, i+1)
-
-						result[key].(map[string]any)[keyLabel] = map[string]any{
-							"order": *j,
-							"label": fmt.Sprintf("%v", vf["label"]),
-						}
-
-						if vd[field] != nil {
-							result[key].(map[string]any)[keyLabel].(map[string]any)["value"] = vd[field]
-						}
-
-						*j++
-					}
-				}
-			}
-
 			switch level {
 			case "memberBeneficiary":
-				v, ok := data[level].([]any)
-				if ok {
-					var j float64 = 1
-					for i := range v {
-						vd, ok := v[i].(map[string]any)
-						if ok {
-							loadBeneficiary(vd, i, &j)
-						}
-					}
-				} else {
-					v, ok := data[level].([]map[string]any)
-					if ok {
-						var j float64 = 1
-						for i := range v {
-							vd := v[i]
-							if ok {
-								loadBeneficiary(vd, i, &j)
+				var j float64
+
+				keys := []string{}
+
+				for key := range fieldData {
+					keys = append(keys, key)
+				}
+
+				sort.Strings(keys)
+
+				for i := range 4 {
+					for _, field := range keys {
+						kids := fieldData[field]
+
+						if vf, ok := kids.(map[string]any); ok {
+							if vf["cachQuery"] != nil {
+								if query, ok := vf["cachQuery"].(string); ok {
+									j++
+
+									query = regexp.MustCompile("#0#").ReplaceAllLiteralString(query, fmt.Sprint(i))
+
+									if value, ok := data[query]; ok {
+										localKey := fmt.Sprintf("%s%v", field, i+1)
+
+										if result[key].(map[string]any)[localKey] == nil {
+											result[key].(map[string]any)[localKey] = map[string]any{
+												"label": fmt.Sprintf("%v", vf["label"]),
+												"order": j,
+											}
+										}
+
+										result[key].(map[string]any)[localKey].(map[string]any)["value"] = value
+									}
+								}
 							}
 						}
 					}
 				}
 			default:
 				for field, kids := range fieldData {
-					vf, ok := kids.(map[string]any)
-					if ok {
-						order, err := strconv.ParseFloat(fmt.Sprintf("%v", vf["order"]), 64)
-						if err == nil {
+					if vf, ok := kids.(map[string]any); ok {
+						if order, err := strconv.ParseFloat(fmt.Sprintf("%v", vf["order"]), 64); err == nil {
 							result[key].(map[string]any)[field] = map[string]any{
 								"order": order,
 								"label": fmt.Sprintf("%v", vf["label"]),
 							}
 
-							if level == "root" {
-								if data[field] != nil && fmt.Sprintf("%v", data[field]) != "" {
-									result[key].(map[string]any)[field].(map[string]any)["value"] = data[field]
-								}
-							} else {
-								if data[level] != nil {
-									v, ok := data[level].(map[string]any)
-									if ok {
-										if v[field] != nil {
-											result[key].(map[string]any)[field].(map[string]any)["value"] = v[field]
-										}
+							if vf["cachQuery"] != nil {
+								if query, ok := vf["cachQuery"].(string); ok {
+									if value, ok := data[query]; ok {
+										result[key].(map[string]any)[field].(map[string]any)["value"] = value
 									}
 								}
 							}

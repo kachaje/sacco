@@ -133,62 +133,62 @@
   "E. BENEFICIARIES DETAILS": {
     "contact1": {
       "label": "Contact",
-      "order": 3,
+      "order": 1,
       "value": "P.O. Box 1"
     },
     "contact2": {
       "label": "Contact",
-      "order": 6,
+      "order": 4,
       "value": "P.O. Box 2"
     },
     "contact3": {
       "label": "Contact",
-      "order": 9,
+      "order": 7,
       "value": "P.O. Box 3"
     },
     "contact4": {
       "label": "Contact",
-      "order": 12,
+      "order": 10,
       "value": "P.O. Box 4"
     },
     "name1": {
       "label": "Name of Beneficiary",
-      "order": 1,
+      "order": 2,
       "value": "Benefator 1"
     },
     "name2": {
       "label": "Name of Beneficiary",
-      "order": 4,
+      "order": 5,
       "value": "Benefator 2"
     },
     "name3": {
       "label": "Name of Beneficiary",
-      "order": 7,
+      "order": 8,
       "value": "Benefator 3"
     },
     "name4": {
       "label": "Name of Beneficiary",
-      "order": 10,
+      "order": 11,
       "value": "Benefator 4"
     },
     "percentage1": {
       "label": "Percentage",
-      "order": 2,
+      "order": 3,
       "value": 10
     },
     "percentage2": {
       "label": "Percentage",
-      "order": 5,
+      "order": 6,
       "value": 8
     },
     "percentage3": {
       "label": "Percentage",
-      "order": 8,
+      "order": 9,
       "value": 5
     },
     "percentage4": {
       "label": "Percentage",
-      "order": 11,
+      "order": 12,
       "value": 2
     }
   }
