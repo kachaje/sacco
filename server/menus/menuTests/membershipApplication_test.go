@@ -96,8 +96,6 @@ func TestNewMembership(t *testing.T) {
 
 		session.UpdateActiveData(data, 0)
 
-		session.UpdateSessionFlags(nil)
-
 		return nil
 	}
 

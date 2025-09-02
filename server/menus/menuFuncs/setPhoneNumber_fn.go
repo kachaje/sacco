@@ -2,6 +2,7 @@ package menufuncs
 
 import (
 	"fmt"
+	"log"
 	"regexp"
 	"sacco/server/parser"
 )
@@ -49,8 +50,8 @@ func SetPhoneNumber(
 			session.ClearSession()
 
 			_, err := session.RefreshSession()
-			if err == nil {
-				session.UpdateSessionFlags(nil)
+			if err != nil {
+				log.Println(err)
 			}
 
 			text = ""

@@ -65,20 +65,6 @@ func NewSession(
 	return s
 }
 
-func (s *Session) UpdateSessionFlags(model *string) error {
-	if model == nil {
-		defaultModel := "member"
-
-		model = &defaultModel
-	}
-
-	data := utils.LoadKeys(s.ActiveData, map[string]any{}, model)
-
-	s.GlobalIds = data
-
-	return nil
-}
-
 func (s *Session) UpdateActiveData(data map[string]any, retries int) {
 	time.Sleep(time.Duration(retries) * time.Second)
 
@@ -96,7 +82,11 @@ func (s *Session) UpdateActiveData(data map[string]any, retries int) {
 	}
 	defer s.Mu.Unlock()
 
-	s.ActiveData = data
+	s.ActiveData = utils.FlattenMap(data, false)
+
+	idsData := utils.FlattenMap(data, true)
+
+	s.GlobalIds = idsData
 }
 
 func (s *Session) WriteToMap(key string, value any, retries int) {

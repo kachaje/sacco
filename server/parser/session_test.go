@@ -25,11 +25,6 @@ func TestUpdateSessionFlags(t *testing.T) {
 	session := parser.NewSession(nil, nil, nil)
 	session.UpdateActiveData(data, 0)
 
-	err = session.UpdateSessionFlags(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	target := map[string]any{
 		"memberBeneficiary": []map[string]any{
 			{
