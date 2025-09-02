@@ -115,26 +115,6 @@ func buildWorkflows() {
 		log.Panic(err)
 	}
 
-	modelsMap := []string{}
-
-	immediateParents := map[string]string{
-		"memberBeneficiaryId":                "member.memberBeneficiary.0.id",
-		"memberBusinessId":                   "member.memberLoan.0.memberBusiness.id",
-		"memberContactId":                    "member.memberContact.id",
-		"memberId":                           "member.id",
-		"memberLastYearBusinessHistoryId":    "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.id",
-		"memberLoanApprovalId":               "member.memberLoan.0.memberLoanApproval.id",
-		"memberLoanId":                       "member.memberLoan.0.id",
-		"memberNextYearBusinessProjectionId": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.id",
-		"memberNomineeId":                    "member.memberNominee.id",
-		"memberOccupationId":                 "member.memberLoan.0.memberOccupation.id",
-		"memberOccupationVerificationId":     "member.memberLoan.0.memberOccupation.memberOccupationVerification.id",
-	}
-
-	for key, value := range immediateParents {
-		modelsMap = append(modelsMap, fmt.Sprintf(`"%s": "%s",`, key, value))
-	}
-
 	relationships := map[string]any{}
 	parentModels := []string{}
 	floatFields := []string{}
@@ -237,16 +217,12 @@ func buildWorkflows() {
 	ParentModels = map[string][]string{
 		%s
 	}
-	ModelsMap = map[string]string{
-		%s
-	}
 	)`,
 		strings.Join(script, "\n"),
 		strings.Join(singlesGroup, "\n"),
 		strings.Join(arraysGroup, "\n"),
 		strings.Join(floatFields, "\n"),
 		strings.Join(parentModels, "\n"),
-		strings.Join(modelsMap, "\n"),
 	))
 	if err != nil {
 		panic(err)
