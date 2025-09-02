@@ -42,7 +42,10 @@ func flattenRecursive(m map[string]any, prefix string, flat map[string]any, idMa
 				if re.MatchString(newKey) {
 					model := re.FindAllStringSubmatch(newKey, -1)[0][1]
 
-					flat[model+"Id"] = newKey
+					flat[model+"Id"] = map[string]any{
+						"key":   newKey,
+						"value": fmt.Sprintf("%v", v),
+					}
 				}
 			} else if !idMapOnly {
 				flat[newKey] = v

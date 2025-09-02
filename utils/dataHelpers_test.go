@@ -24,17 +24,50 @@ func TestFlattenMapIdMapOnly(t *testing.T) {
 	result := utils.FlattenMap(data, true)
 
 	target := map[string]any{
-		"memberBeneficiaryId":                "member.memberBeneficiary.0.id",
-		"memberBusinessId":                   "member.memberLoan.0.memberBusiness.id",
-		"memberContactId":                    "member.memberContact.id",
-		"memberId":                           "member.id",
-		"memberLastYearBusinessHistoryId":    "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.id",
-		"memberLoanApprovalId":               "member.memberLoan.0.memberLoanApproval.id",
-		"memberLoanId":                       "member.memberLoan.0.id",
-		"memberNextYearBusinessProjectionId": "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.id",
-		"memberNomineeId":                    "member.memberNominee.id",
-		"memberOccupationId":                 "member.memberLoan.0.memberOccupation.id",
-		"memberOccupationVerificationId":     "member.memberLoan.0.memberOccupation.memberOccupationVerification.id",
+		"memberBeneficiaryId": map[string]any{
+			"key":   "member.memberBeneficiary.0.id",
+			"value": "1",
+		},
+		"memberBusinessId": map[string]any{
+			"key":   "member.memberLoan.0.memberBusiness.id",
+			"value": "1",
+		},
+		"memberContactId": map[string]any{
+			"key":   "member.memberContact.id",
+			"value": "1",
+		},
+		"memberId": map[string]any{
+			"key":   "member.id",
+			"value": "1",
+		},
+		"memberLastYearBusinessHistoryId": map[string]any{
+			"key":   "member.memberLoan.0.memberBusiness.memberLastYearBusinessHistory.0.id",
+			"value": "1",
+		},
+		"memberLoanApprovalId": map[string]any{
+			"key":   "member.memberLoan.0.memberLoanApproval.id",
+			"value": "1",
+		},
+		"memberLoanId": map[string]any{
+			"key":   "member.memberLoan.0.id",
+			"value": "1",
+		},
+		"memberNextYearBusinessProjectionId": map[string]any{
+			"key":   "member.memberLoan.0.memberBusiness.memberNextYearBusinessProjection.0.id",
+			"value": "1",
+		},
+		"memberNomineeId": map[string]any{
+			"key":   "member.memberNominee.id",
+			"value": "1",
+		},
+		"memberOccupationId": map[string]any{
+			"key":   "member.memberLoan.0.memberOccupation.id",
+			"value": "1",
+		},
+		"memberOccupationVerificationId": map[string]any{
+			"key":   "member.memberLoan.0.memberOccupation.memberOccupationVerification.id",
+			"value": "1",
+		},
 	}
 
 	if !reflect.DeepEqual(target, result) {
