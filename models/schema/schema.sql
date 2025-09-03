@@ -86,7 +86,7 @@ WHERE
 END;
 
 CREATE TABLE
-  IF NOT EXISTS role (
+  IF NOT EXISTS userRole (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
     active INTEGER DEFAULT 1,
@@ -94,9 +94,51 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
-CREATE TRIGGER IF NOT EXISTS roleUpdated AFTER
-UPDATE ON role FOR EACH ROW BEGIN
-UPDATE role
+CREATE TRIGGER IF NOT EXISTS userRoleUpdated AFTER
+UPDATE ON userRole FOR EACH ROW BEGIN
+UPDATE userRole
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS memberIdNumber (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    idNumber TEXT NOT NULL UNIQUE,
+    claimed INTEGER DEFAULT 0,
+    memberId INTEGER,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS memberIdNumberUpdated AFTER
+UPDATE ON memberIdNumber FOR EACH ROW BEGIN
+UPDATE memberIdNumber
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS memberSavingIdNumber (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    idNumber TEXT NOT NULL UNIQUE,
+    claimed INTEGER DEFAULT 0,
+    memberSavingId INTEGER,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS memberSavingIdNumberUpdated AFTER
+UPDATE ON memberSavingIdNumber FOR EACH ROW BEGIN
+UPDATE memberSavingIdNumber
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
@@ -126,8 +168,7 @@ CREATE TABLE
     utilityBillType TEXT,
     utilityBillNumber TEXT,
     phoneNumber TEXT NOT NULL,
-    memberIdNumber TEXT,
-    shortMemberId TEXT,
+    memberIdNumber TEXT NOT NULL,
     dateJoined TEXT DEFAULT CURRENT_TIMESTAMP,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -197,20 +238,21 @@ WHERE
 END;
 
 CREATE TABLE
-  IF NOT EXISTS memberContribution (
+  IF NOT EXISTS memberSaving (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    monthlyContribution REAL,
-    totalContribution REAL,
+    memberSavingId TEXT NOT NULL,
+    monthlySaving REAL,
+    totalSaving REAL,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (memberId) REFERENCES member (id) ON DELETE CASCADE
   );
 
-CREATE TRIGGER IF NOT EXISTS memberContributionUpdated AFTER
-UPDATE ON memberContribution FOR EACH ROW BEGIN
-UPDATE memberContribution
+CREATE TRIGGER IF NOT EXISTS memberSavingUpdated AFTER
+UPDATE ON memberSaving FOR EACH ROW BEGIN
+UPDATE memberSaving
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
@@ -222,7 +264,7 @@ CREATE TABLE
   IF NOT EXISTS memberLoan (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    memberContributionId INTEGER,
+    memberSavingId INTEGER,
     phoneNumber TEXT,
     loanAmount REAL,
     repaymentPeriodInMonths REAL,
