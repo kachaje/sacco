@@ -167,7 +167,7 @@ CREATE TABLE
     utilityBillType TEXT,
     utilityBillNumber TEXT,
     phoneNumber TEXT NOT NULL,
-    memberIdNumber TEXT NOT NULL,
+    memberIdNumber TEXT,
     dateJoined TEXT DEFAULT CURRENT_TIMESTAMP,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -240,7 +240,7 @@ CREATE TABLE
   IF NOT EXISTS memberSaving (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberId INTEGER NOT NULL,
-    memberSavingId TEXT NOT NULL,
+    memberSavingIdNumber TEXT,
     monthlySaving REAL,
     totalSaving REAL,
     active INTEGER DEFAULT 1,
