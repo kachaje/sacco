@@ -104,7 +104,7 @@ WHERE
 END;
 
 CREATE TABLE
-  IF NOT EXISTS memberIdNumber (
+  IF NOT EXISTS memberIdsCache (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     idNumber TEXT NOT NULL UNIQUE,
     claimed INTEGER DEFAULT 0,
@@ -114,9 +114,9 @@ CREATE TABLE
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
-CREATE TRIGGER IF NOT EXISTS memberIdNumberUpdated AFTER
-UPDATE ON memberIdNumber FOR EACH ROW BEGIN
-UPDATE memberIdNumber
+CREATE TRIGGER IF NOT EXISTS memberIdsCacheUpdated AFTER
+UPDATE ON memberIdsCache FOR EACH ROW BEGIN
+UPDATE memberIdsCache
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
@@ -557,25 +557,40 @@ WHERE
 
 END;
 
+---- START addMemberIdNumber TRIGGER ----
 CREATE TRIGGER IF NOT EXISTS addMemberIdNumber AFTER INSERT ON member FOR EACH ROW BEGIN
-UPDATE memberIdNumber
+UPDATE memberIdsCache
 SET
   claimed = 1,
   memberId = NEW.id
 WHERE
-  claimed = 0;
+  id = (
+    SELECT
+      id
+    FROM
+      memberIdsCache
+    WHERE
+      claimed = 0
+    ORDER BY
+      id
+    LIMIT
+      1
+  );
 
 UPDATE member
 SET
   memberIdNumber = (
     SELECT
-      id
+      idNumber
     FROM
-      memberIdNumber
+      memberIdsCache
+    WHERE
+      memberId = NEW.id
   )
 WHERE
-  memberId = NEW.id;
+  id = NEW.id;
 
+---- END addMemberIdNumber TRIGGER ----
 END;
 
 INSERT
@@ -611,7 +626,7 @@ WITH RECURSIVE
     LIMIT
       999999
   ) INSERT
-  OR IGNORE INTO memberIdNumber (idNumber)
+  OR IGNORE INTO memberIdsCache (idNumber)
 SELECT
   CONCAT ('KSM', SUBSTR ('000000' || x, -6)) AS id
 FROM
