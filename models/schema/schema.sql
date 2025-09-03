@@ -25,8 +25,7 @@ CREATE TABLE
     description TEXT,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account) REFERENCES account (number) ON DELETE CASCADE
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
 CREATE TRIGGER IF NOT EXISTS accountTransactionUpdated AFTER
@@ -41,8 +40,8 @@ END;
 
 CREATE TABLE
   IF NOT EXISTS accountJournal (
-    id INTEGER,
     account INTEGER,
+    accountTransactionId INTEGER,
     date TEXT NOT NULL,
     amount REAL,
     direction INTEGER,
@@ -50,7 +49,7 @@ CREATE TABLE
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (account) REFERENCES account (number) ON DELETE CASCADE,
-    FOREIGN KEY (accountTransaction) REFERENCES accountTransaction (id) ON DELETE CASCADE
+    FOREIGN KEY (accountTransactionId) REFERENCES accountTransaction (id) ON DELETE CASCADE
   );
 
 CREATE TRIGGER IF NOT EXISTS accountJournalUpdated AFTER
@@ -559,7 +558,7 @@ WHERE
 END;
 
 INSERT
-OR IGNORE INTO role (name)
+OR IGNORE INTO userRole (name)
 VALUES
   ("Default"),
   ("Member"),
@@ -578,3 +577,21 @@ VALUES
     "Default User",
     "Default"
   );
+
+WITH RECURSIVE
+  cnt (x) AS (
+    SELECT
+      1
+    UNION ALL
+    SELECT
+      x + 1
+    FROM
+      cnt
+    LIMIT
+      999999
+  ) INSERT
+  OR IGNORE INTO memberIdNumber (idNumber)
+SELECT
+  CONCAT ('KSM', SUBSTR ('000000' || x, -6)) AS id
+FROM
+  cnt;
