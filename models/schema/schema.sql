@@ -557,6 +557,27 @@ WHERE
 
 END;
 
+CREATE TRIGGER IF NOT EXISTS addMemberIdNumber AFTER INSERT ON member FOR EACH ROW BEGIN
+UPDATE memberIdNumber
+SET
+  claimed = 1,
+  memberId = NEW.id
+WHERE
+  claimed = 0;
+
+UPDATE member
+SET
+  memberIdNumber = (
+    SELECT
+      id
+    FROM
+      memberIdNumber
+  )
+WHERE
+  memberId = NEW.id;
+
+END;
+
 INSERT
 OR IGNORE INTO userRole (name)
 VALUES
