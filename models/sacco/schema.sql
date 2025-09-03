@@ -22,9 +22,7 @@ CREATE TABLE
   IF NOT EXISTS accountTransaction (
     id INTEGER,
     date TEXT NOT NULL,
-    amount REAL,
-    account INTEGER,
-    direction INTEGER,
+    description TEXT,
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -34,6 +32,30 @@ CREATE TABLE
 CREATE TRIGGER IF NOT EXISTS accountTransactionUpdated AFTER
 UPDATE ON accountTransaction FOR EACH ROW BEGIN
 UPDATE accountTransaction
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS accountJournal (
+    id INTEGER,
+    account INTEGER,
+    date TEXT NOT NULL,
+    amount REAL,
+    direction INTEGER,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account) REFERENCES account (number) ON DELETE CASCADE,
+    FOREIGN KEY (accountTransaction) REFERENCES accountTransaction (id) ON DELETE CASCADE
+  );
+
+CREATE TRIGGER IF NOT EXISTS accountJournalUpdated AFTER
+UPDATE ON accountJournal FOR EACH ROW BEGIN
+UPDATE accountJournal
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
