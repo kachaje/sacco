@@ -125,7 +125,7 @@ WHERE
 END;
 
 CREATE TABLE
-  IF NOT EXISTS memberSavingIdNumber (
+  IF NOT EXISTS memberSavingIdsCache (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     idNumber TEXT NOT NULL UNIQUE,
     claimed INTEGER DEFAULT 0,
@@ -136,8 +136,8 @@ CREATE TABLE
   );
 
 CREATE TRIGGER IF NOT EXISTS memberSavingIdNumberUpdated AFTER
-UPDATE ON memberSavingIdNumber FOR EACH ROW BEGIN
-UPDATE memberSavingIdNumber
+UPDATE ON memberSavingIdsCache FOR EACH ROW BEGIN
+UPDATE memberSavingIdsCache
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
@@ -593,6 +593,42 @@ WHERE
 ---- END addMemberIdNumber TRIGGER ----
 END;
 
+---- START addMemberIdNumber TRIGGER ----
+CREATE TRIGGER IF NOT EXISTS addMemberIdNumber AFTER INSERT ON member FOR EACH ROW BEGIN
+UPDATE memberSavingIdsCache
+SET
+  claimed = 1,
+  memberSavingId = NEW.id
+WHERE
+  id = (
+    SELECT
+      id
+    FROM
+      memberSavingIdsCache
+    WHERE
+      claimed = 0
+    ORDER BY
+      id
+    LIMIT
+      1
+  );
+
+UPDATE member
+SET
+  memberSavingIdNumber = (
+    SELECT
+      idNumber
+    FROM
+      memberSavingIdsCache
+    WHERE
+      memberSavingId = NEW.id
+  )
+WHERE
+  id = NEW.id;
+
+---- END addMemberIdNumber TRIGGER ----
+END;
+
 INSERT
 OR IGNORE INTO userRole (name)
 VALUES
@@ -646,7 +682,7 @@ WITH RECURSIVE
     LIMIT
       999999
   ) INSERT
-  OR IGNORE INTO memberSavingIdNumber (idNumber)
+  OR IGNORE INTO memberSavingIdsCache (idNumber)
 SELECT
   CONCAT ('KSS', SUBSTR ('000000' || x, -6)) AS id
 FROM
