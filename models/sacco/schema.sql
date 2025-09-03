@@ -324,6 +324,34 @@ WHERE
 END;
 
 CREATE TABLE
+  IF NOT EXISTS memberOccupation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    memberLoanId INTEGER NOT NULL,
+    employerName TEXT,
+    employerAddress TEXT,
+    employerPhone TEXT,
+    jobTitle TEXT,
+    periodEmployedInMonths REAL,
+    grossPay REAL,
+    netPay REAL,
+    highestQualification TEXT,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
+  );
+
+CREATE TRIGGER IF NOT EXISTS memberOccupationUpdated AFTER
+UPDATE ON memberOccupation FOR EACH ROW BEGIN
+UPDATE memberOccupation
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
   IF NOT EXISTS memberLoanApproval (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     memberLoanId INTEGER NOT NULL,

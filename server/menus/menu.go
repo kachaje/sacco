@@ -363,7 +363,7 @@ func (m *Menus) LoadMenu(menuName string, session *parser.Session, phoneNumber, 
 							for _, role := range menuRoles[menuId] {
 								if session.SessionUserRole == nil {
 									break
-								} else if *session.SessionUserRole == role {
+								} else if strings.EqualFold(*session.SessionUserRole, role) {
 									found = true
 									break
 								}
