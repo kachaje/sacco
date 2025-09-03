@@ -595,3 +595,21 @@ SELECT
   CONCAT ('KSM', SUBSTR ('000000' || x, -6)) AS id
 FROM
   cnt;
+
+WITH RECURSIVE
+  cnt (x) AS (
+    SELECT
+      1
+    UNION ALL
+    SELECT
+      x + 1
+    FROM
+      cnt
+    LIMIT
+      999999
+  ) INSERT
+  OR IGNORE INTO memberSavingIdNumber (idNumber)
+SELECT
+  CONCAT ('KSS', SUBSTR ('000000' || x, -6)) AS id
+FROM
+  cnt;
