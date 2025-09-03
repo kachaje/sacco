@@ -594,7 +594,9 @@ WITH RECURSIVE
 SELECT
   CONCAT ('KSM', SUBSTR ('000000' || x, -6)) AS id
 FROM
-  cnt;
+  cnt
+ORDER BY
+  RANDOM ();
 
 WITH RECURSIVE
   cnt (x) AS (
@@ -612,4 +614,6 @@ WITH RECURSIVE
 SELECT
   CONCAT ('KSS', SUBSTR ('000000' || x, -6)) AS id
 FROM
-  cnt;
+  cnt
+ORDER BY
+  RANDOM ();
