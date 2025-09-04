@@ -547,9 +547,99 @@ CREATE TABLE
     FOREIGN KEY (memberBusinessId) REFERENCES memberBusiness (id) ON DELETE CASCADE
   );
 
-CREATE TRIGGER IF NOT EXISTS businessVerificationUpdated AFTER
+CREATE TRIGGER IF NOT EXISTS memberBusinessVerificationUpdated AFTER
 UPDATE ON memberBusinessVerification FOR EACH ROW BEGIN
 UPDATE memberBusinessVerification
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS insuranceProvider (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    providerName TEXT,
+    providerAddress TEXT,
+    providerPhoneNumber TEXT,
+    providerContact TEXT,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+CREATE TRIGGER IF NOT EXISTS insuranceProviderUpdated AFTER
+UPDATE ON insuranceProvider FOR EACH ROW BEGIN
+UPDATE insuranceProvider
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS memberLoanInsurance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    memberLoanId INTEGER NOT NULL,
+    insuranceProviderId INTEGER NOT NULL,
+    date TEXT,
+    amount REAL,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
+  );
+
+CREATE TRIGGER IF NOT EXISTS memberLoanInsuranceUpdated AFTER
+UPDATE ON memberLoanInsurance FOR EACH ROW BEGIN
+UPDATE memberLoanInsurance
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS memberLoanPaymentSchedule (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    memberLoanId INTEGER NOT NULL,
+    dueDate TEXT,
+    amountDue REAL,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
+  );
+
+CREATE TRIGGER IF NOT EXISTS memberLoanPaymentScheduleUpdated AFTER
+UPDATE ON memberLoanPaymentSchedule FOR EACH ROW BEGIN
+UPDATE memberLoanPaymentSchedule
+SET
+  updated_at = CURRENT_TIMESTAMP
+WHERE
+  id = OLD.id;
+
+END;
+
+CREATE TABLE
+  IF NOT EXISTS notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    memberId INTEGER NOT NULL,
+    notificationDate TEXT,
+    notificationText TEXT,
+    notificationRead INTEGER DEFAULT 0,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (memberLoanId) REFERENCES memberLoan (id) ON DELETE CASCADE
+  );
+
+CREATE TRIGGER IF NOT EXISTS notificationsUpdated AFTER
+UPDATE ON notifications FOR EACH ROW BEGIN
+UPDATE notifications
 SET
   updated_at = CURRENT_TIMESTAMP
 WHERE
